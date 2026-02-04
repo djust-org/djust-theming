@@ -67,6 +67,12 @@
                     <a href="{% url 'theme_demo:packs' %}" class="text-sm font-medium hover:text-primary transition-colors px-3 py-2 rounded-md {% if request.resolver_match.url_name == 'packs' %}bg-accent text-accent-foreground{% endif %}">
                         Packs
                     </a>
+                    <a href="{% url 'theme_demo:design_systems' %}" class="text-sm font-medium hover:text-primary transition-colors px-3 py-2 rounded-md {% if request.resolver_match.url_name == 'design_systems' %}bg-accent text-accent-foreground{% endif %}">
+                        Design Systems
+                    </a>
+                    <a href="{% url 'theme_demo:inspector' %}" class="text-sm font-medium hover:text-primary transition-colors px-3 py-2 rounded-md {% if request.resolver_match.url_name == 'inspector' %}bg-accent text-accent-foreground{% endif %}">
+                        Inspector
+                    </a>
                     <a href="{% url 'theme_demo:presets' %}" class="text-sm font-medium hover:text-primary transition-colors px-3 py-2 rounded-md {% if request.resolver_match.url_name == 'presets' %}bg-accent text-accent-foreground{% endif %}">
                         Presets
                     </a>

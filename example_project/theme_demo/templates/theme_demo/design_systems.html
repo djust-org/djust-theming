@@ -1,0 +1,220 @@
+{% extends "theme_demo/base.html" %}
+{% load theme_components %}
+
+{% block extra_head %}
+<style id="design-system-css">
+{{ current_css|safe }}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-4xl font-bold mb-2">Design Systems</h1>
+    <p class="text-muted-foreground">
+        Flexible design systems that work with any color palette - mix and match for unlimited combinations
+    </p>
+</div>
+
+<!-- Current Setup -->
+<div class="bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/20 rounded-lg p-6 mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="text-xl font-semibold mb-1">Current Setup</h2>
+            <p class="text-sm text-muted-foreground">
+                <strong>{{ current_design|title }}</strong> design system + <strong>{{ current_color|title }}</strong> colors
+            </p>
+        </div>
+        <div class="flex gap-4">
+            <select class="design-system-select border border-border rounded px-3 py-1 text-sm"
+                    onchange="updateCombination(this.value, document.querySelector('.color-preset-select').value)"
+                    aria-label="Select design system">
+                {% for design in designs %}
+                <option value="{{ design.name }}" {% if design.name == current_design %}selected{% endif %}>
+                    {{ design.display_name }}
+                </option>
+                {% endfor %}
+            </select>
+            
+            <select class="color-preset-select border border-border rounded px-3 py-1 text-sm"
+                    onchange="updateCombination(document.querySelector('.design-system-select').value, this.value)"
+                    aria-label="Select color preset">
+                {% for color in colors %}
+                <option value="{{ color.name }}" {% if color.name == current_color %}selected{% endif %}>
+                    {{ color.display_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- Live Preview Section -->
+<div class="bg-card border border-border rounded-lg p-6 mb-8">
+    <h3 class="text-lg font-semibold mb-4">Live Preview</h3>
+    <div class="space-y-4">
+        <!-- Typography Sample -->
+        <div>
+            <h1>Heading 1 - Main Title</h1>
+            <h2>Heading 2 - Section Title</h2>  
+            <h3>Heading 3 - Subsection</h3>
+            <p>This is body text showing the typography system. Notice how fonts, sizes, and spacing change with different design systems.</p>
+        </div>
+        
+        <!-- Button Samples -->
+        <div class="flex gap-4 flex-wrap">
+            <button class="btn btn-primary px-4 py-2">Primary Button</button>
+            <button class="btn btn-secondary px-4 py-2">Secondary Button</button>
+            <button class="btn btn-destructive px-4 py-2">Destructive Button</button>
+        </div>
+        
+        <!-- Card Sample -->
+        <div class="card card-theme p-4 max-w-md">
+            <h4 class="font-semibold mb-2">Card Component</h4>
+            <p class="text-sm text-muted-foreground">This card shows how borders, shadows, and radiuses change across design systems.</p>
+        </div>
+        
+        <!-- Input Sample -->
+        <div class="max-w-md">
+            <input class="input-theme w-full px-3 py-2" placeholder="Input field example" />
+        </div>
+    </div>
+</div>
+
+<!-- Design Systems Grid -->
+<div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+    {% for design in designs %}
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <h3 class="text-xl font-semibold mb-1">{{ design.display_name }}</h3>
+                <span class="text-xs bg-{{ design.category }}-100 dark:bg-{{ design.category }}-900 text-{{ design.category }}-800 dark:text-{{ design.category }}-200 px-2 py-1 rounded">{{ design.category|capfirst }}</span>
+            </div>
+            <button onclick="applyDesignSystem('{{ design.name }}')" class="btn btn-sm btn-primary">
+                Apply Design
+            </button>
+        </div>
+
+        <p class="text-sm text-muted-foreground mb-4">
+            {{ design.description }}
+        </p>
+
+        <div class="space-y-2 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Typography:</span>
+                <span class="text-muted-foreground">{{ design.typography_name|capfirst }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Layout:</span>
+                <span class="text-muted-foreground">{{ design.layout_name|capfirst }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Surface:</span>
+                <span class="text-muted-foreground">{{ design.surface_name|capfirst }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Icons:</span>
+                <span class="text-muted-foreground">{{ design.icon_style|capfirst }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Animation:</span>
+                <span class="text-muted-foreground">{{ design.animation_name|capfirst }}</span>
+            </div>
+        </div>
+
+        <!-- Visual Preview -->
+        <div class="mt-4 p-3 border border-border rounded bg-background/50">
+            <div class="text-xs text-muted-foreground mb-2">Preview with current colors:</div>
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-primary rounded border"></div>
+                <div class="w-8 h-8 bg-secondary rounded border"></div>
+                <div class="w-8 h-8 bg-accent rounded border"></div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Color Presets Grid -->
+<div class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Color Presets</h2>
+    <p class="text-muted-foreground mb-6">Choose any color palette to combine with your selected design system</p>
+    
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {% for color in colors %}
+        <div class="bg-card border border-border rounded-lg p-4 text-center cursor-pointer hover:shadow-md transition-shadow"
+             onclick="applyColorPreset('{{ color.name }}')">
+            <div class="mb-2">
+                <div class="w-12 h-12 mx-auto rounded-lg border"
+                     style="background: {{ color.light_primary }}"></div>
+            </div>
+            <div class="text-sm font-medium">{{ color.display_name }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Combination Examples -->
+<div class="mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Mix & Match Examples</h2>
+    <p class="text-muted-foreground mb-6">See how the same design system looks with different color palettes</p>
+    
+    <div class="grid md:grid-cols-3 gap-4">
+        <div class="bg-card border border-border rounded-lg p-4 text-center cursor-pointer hover:shadow-md transition-shadow"
+             onclick="updateCombination('brutalist', 'ocean')">
+            <div class="text-sm font-medium mb-2">Brutalist + Ocean</div>
+            <div class="text-xs text-muted-foreground">Sharp edges with calming blues</div>
+        </div>
+        <div class="bg-card border border-border rounded-lg p-4 text-center cursor-pointer hover:shadow-md transition-shadow"
+             onclick="updateCombination('elegant', 'sunset')">
+            <div class="text-sm font-medium mb-2">Elegant + Sunset</div>
+            <div class="text-xs text-muted-foreground">Refined typography with warm tones</div>
+        </div>
+        <div class="bg-card border border-border rounded-lg p-4 text-center cursor-pointer hover:shadow-md transition-shadow"
+             onclick="updateCombination('organic', 'cyberpunk')">
+            <div class="text-sm font-medium mb-2">Organic + Cyberpunk</div>
+            <div class="text-xs text-muted-foreground">Natural forms with neon highlights</div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function updateCombination(designName, colorName) {
+    console.log(`Switching to: ${designName} + ${colorName}`);
+    
+    // Update URL to maintain state
+    const url = new URL(window.location);
+    url.searchParams.set('design', designName);
+    url.searchParams.set('color', colorName);
+    
+    try {
+        // Fetch new CSS for the combination
+        const response = await fetch(`/design-systems/?design=${designName}&color=${colorName}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        if (response.ok) {
+            // For now, reload the page to apply the new combination
+            // TODO: Implement dynamic CSS injection for instant switching
+            window.location.href = url.toString();
+        }
+    } catch (error) {
+        console.error('Failed to update combination:', error);
+        // Fallback to page reload
+        window.location.href = url.toString();
+    }
+}
+
+function applyDesignSystem(designName) {
+    const currentColor = document.querySelector('.color-preset-select').value;
+    updateCombination(designName, currentColor);
+}
+
+function applyColorPreset(colorName) {
+    const currentDesign = document.querySelector('.design-system-select').value;
+    updateCombination(currentDesign, colorName);
+}
+</script>
+
+{% endblock %}

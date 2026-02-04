@@ -30,293 +30,54 @@
 
 <!-- Theme Packs Grid -->
 <div class="grid md:grid-cols-2 gap-6 mb-8">
-    <!-- Corporate Pack -->
+    {% for pack in packs %}
     <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
         <div class="flex items-start justify-between mb-4">
             <div>
-                <h3 class="text-xl font-semibold mb-1">Corporate Professional</h3>
-                <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:bg-blue-200 px-2 py-1 rounded">Professional</span>
+                <h3 class="text-xl font-semibold mb-1">{{ pack.display_name }}</h3>
+                <span class="text-xs bg-{{ pack.category }}-100 dark:bg-{{ pack.category }}-900 text-{{ pack.category }}-800 dark:text-{{ pack.category }}-200 px-2 py-1 rounded">{{ pack.category|capfirst }}</span>
             </div>
-            {% if theme_state.pack == "corporate" %}
+            {% if theme_state.pack == pack.name %}
                 {% theme_badge "Active" variant="success" %}
             {% else %}
-                <button onclick="setPack('corporate')" class="btn btn-sm btn-primary">
+                <button onclick="setPack('{{ pack.name }}')" class="btn btn-sm btn-primary">
                     Apply Pack
                 </button>
             {% endif %}
         </div>
 
         <p class="text-sm text-muted-foreground mb-4">
-            Clean, professional design for business applications
+            {{ pack.description }}
         </p>
 
         <div class="space-y-2 text-xs">
             <div class="flex items-center gap-2">
                 <span class="font-semibold w-24">Theme:</span>
-                <span class="text-muted-foreground">Corporate</span>
+                <span class="text-muted-foreground">{{ pack.design_theme|capfirst }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="font-semibold w-24">Colors:</span>
-                <span class="text-muted-foreground">Blue</span>
+                <span class="text-muted-foreground">{{ pack.color_preset|capfirst }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="font-semibold w-24">Icons:</span>
-                <span class="text-muted-foreground">Outlined</span>
+                <span class="text-muted-foreground">{{ pack.icon_style|capfirst }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="font-semibold w-24">Animations:</span>
-                <span class="text-muted-foreground">Smooth</span>
+                <span class="text-muted-foreground">{{ pack.animation_style|capfirst }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="font-semibold w-24">Pattern:</span>
-                <span class="text-muted-foreground">Grid</span>
+                <span class="text-muted-foreground">{{ pack.pattern_style|capfirst }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="font-semibold w-24">Interaction:</span>
-                <span class="text-muted-foreground">Subtle lift</span>
+                <span class="text-muted-foreground">{{ pack.surface_style|capfirst }}</span>
             </div>
         </div>
     </div>
-
-    <!-- Playful Pack -->
-    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
-        <div class="flex items-start justify-between mb-4">
-            <div>
-                <h3 class="text-xl font-semibold mb-1">Playful Startup</h3>
-                <span class="text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">Playful</span>
-            </div>
-            {% if theme_state.pack == "playful" %}
-                {% theme_badge "Active" variant="success" %}
-            {% else %}
-                <button onclick="setPack('playful')" class="btn btn-sm btn-primary">
-                    Apply Pack
-                </button>
-            {% endif %}
-        </div>
-
-        <p class="text-sm text-muted-foreground mb-4">
-            Fun, energetic design with personality
-        </p>
-
-        <div class="space-y-2 text-xs">
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Theme:</span>
-                <span class="text-muted-foreground">Playful</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Colors:</span>
-                <span class="text-muted-foreground">Purple</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Icons:</span>
-                <span class="text-muted-foreground">Rounded, filled</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Animations:</span>
-                <span class="text-muted-foreground">Bouncy</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Pattern:</span>
-                <span class="text-muted-foreground">Colorful dots</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Interaction:</span>
-                <span class="text-muted-foreground">Scale + bounce</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Retro Pack -->
-    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
-        <div class="flex items-start justify-between mb-4">
-            <div>
-                <h3 class="text-xl font-semibold mb-1">Retro Nostalgia</h3>
-                <span class="text-xs bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">Retro</span>
-            </div>
-            {% if theme_state.pack == "retro" %}
-                {% theme_badge "Active" variant="success" %}
-            {% else %}
-                <button onclick="setPack('retro')" class="btn btn-sm btn-primary">
-                    Apply Pack
-                </button>
-            {% endif %}
-        </div>
-
-        <p class="text-sm text-muted-foreground mb-4">
-            Classic 90s web aesthetic with pixel-perfect design
-        </p>
-
-        <div class="space-y-2 text-xs">
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Theme:</span>
-                <span class="text-muted-foreground">Retro</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Colors:</span>
-                <span class="text-muted-foreground">Default</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Icons:</span>
-                <span class="text-muted-foreground">Sharp, pixel-art</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Animations:</span>
-                <span class="text-muted-foreground">Instant</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Pattern:</span>
-                <span class="text-muted-foreground">Dithered noise</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Interaction:</span>
-                <span class="text-muted-foreground">Minimal</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Elegant Pack -->
-    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
-        <div class="flex items-start justify-between mb-4">
-            <div>
-                <h3 class="text-xl font-semibold mb-1">Elegant Luxury</h3>
-                <span class="text-xs bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 px-2 py-1 rounded">Elegant</span>
-            </div>
-            {% if theme_state.pack == "elegant" %}
-                {% theme_badge "Active" variant="success" %}
-            {% else %}
-                <button onclick="setPack('elegant')" class="btn btn-sm btn-primary">
-                    Apply Pack
-                </button>
-            {% endif %}
-        </div>
-
-        <p class="text-sm text-muted-foreground mb-4">
-            Sophisticated, premium design with refined details
-        </p>
-
-        <div class="space-y-2 text-xs">
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Theme:</span>
-                <span class="text-muted-foreground">Elegant (serif)</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Colors:</span>
-                <span class="text-muted-foreground">Default</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Icons:</span>
-                <span class="text-muted-foreground">Thin, minimal</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Animations:</span>
-                <span class="text-muted-foreground">Gentle</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Pattern:</span>
-                <span class="text-muted-foreground">Subtle gradients</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Interaction:</span>
-                <span class="text-muted-foreground">Fade, gentle</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Neo-Brutalist Pack -->
-    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
-        <div class="flex items-start justify-between mb-4">
-            <div>
-                <h3 class="text-xl font-semibold mb-1">Neo-Brutalist Edge</h3>
-                <span class="text-xs bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">Bold</span>
-            </div>
-            {% if theme_state.pack == "brutalist" %}
-                {% theme_badge "Active" variant="success" %}
-            {% else %}
-                <button onclick="setPack('brutalist')" class="btn btn-sm btn-primary">
-                    Apply Pack
-                </button>
-            {% endif %}
-        </div>
-
-        <p class="text-sm text-muted-foreground mb-4">
-            Bold, dramatic design with high contrast
-        </p>
-
-        <div class="space-y-2 text-xs">
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Theme:</span>
-                <span class="text-muted-foreground">Neo-Brutalist</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Colors:</span>
-                <span class="text-muted-foreground">High contrast</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Icons:</span>
-                <span class="text-muted-foreground">Sharp, bold</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Animations:</span>
-                <span class="text-muted-foreground">Snappy</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Pattern:</span>
-                <span class="text-muted-foreground">Minimal</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Interaction:</span>
-                <span class="text-muted-foreground">Hard snap</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Nature Pack -->
-    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
-        <div class="flex items-start justify-between mb-4">
-            <div>
-                <h3 class="text-xl font-semibold mb-1">Nature Organic</h3>
-                <span class="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded">Playful</span>
-            </div>
-            {% if theme_state.pack == "nature" %}
-                {% theme_badge "Active" variant="success" %}
-            {% else %}
-                <button onclick="setPack('nature')" class="btn btn-sm btn-primary">
-                    Apply Pack
-                </button>
-            {% endif %}
-        </div>
-
-        <p class="text-sm text-muted-foreground mb-4">
-            Soft, natural design inspired by organic forms
-        </p>
-
-        <div class="space-y-2 text-xs">
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Theme:</span>
-                <span class="text-muted-foreground">Organic</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Colors:</span>
-                <span class="text-muted-foreground">Green</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Icons:</span>
-                <span class="text-muted-foreground">Rounded, soft</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Animations:</span>
-                <span class="text-muted-foreground">Gentle, flowing</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Pattern:</span>
-                <span class="text-muted-foreground">Natural dots</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-semibold w-24">Interaction:</span>
-                <span class="text-muted-foreground">Smooth grow</span>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 </div>
 
 <!-- Icon Style Examples --><div class="bg-card border border-border rounded-lg p-8 mb-8">

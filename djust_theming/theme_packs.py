@@ -1,18 +1,81 @@
 """
-Theme Packs - Complete design systems bundling all styling dimensions.
+Design Systems - Pure visual design without color dependency.
 
-A ThemePack combines:
-- Design theme (typography, spacing, shadows)
-- Color preset
-- Icon style
-- Animation style
-- Pattern/texture style
-- Interaction style
-- Illustration style
+A DesignSystem defines the non-color aspects of UI:
+- Typography (fonts, sizes, spacing)
+- Layout (grid systems, component shapes) 
+- Visual patterns (borders, shadows, textures)
+- Animation behaviors
+- Interaction feedback
 """
 
 from dataclasses import dataclass
 from typing import Dict, Optional
+
+
+@dataclass
+class TypographyStyle:
+    """Typography configuration."""
+    name: str
+    
+    # Font families
+    heading_font: str = "system-ui"  # "system-ui", "serif", "mono", "display"
+    body_font: str = "system-ui"
+    
+    # Scale and sizing
+    base_size: str = "16px"
+    heading_scale: float = 1.25  # Multiplier between heading levels
+    line_height: str = "1.5"
+    
+    # Weight and style
+    heading_weight: str = "600"  # "300", "400", "500", "600", "700", "800", "900"
+    body_weight: str = "400"
+    letter_spacing: str = "normal"  # "tight", "normal", "wide"
+
+
+@dataclass 
+class LayoutStyle:
+    """Layout and spacing configuration."""
+    name: str
+    
+    # Spacing system
+    space_unit: str = "1rem"  # Base unit for spacing
+    space_scale: float = 1.5  # Ratio between spacing levels
+    
+    # Border radius system
+    border_radius_sm: str = "0.25rem"
+    border_radius_md: str = "0.5rem" 
+    border_radius_lg: str = "1rem"
+    
+    # Component shapes
+    button_shape: str = "rounded"  # "sharp", "rounded", "pill", "organic"
+    card_shape: str = "rounded"
+    input_shape: str = "rounded"
+    
+    # Grid and layout
+    container_width: str = "1200px"
+    grid_gap: str = "1.5rem"
+    section_spacing: str = "3rem"
+
+
+@dataclass
+class SurfaceStyle:
+    """Surface treatments and visual depth."""
+    name: str
+    
+    # Shadow system
+    shadow_sm: str = "0 1px 2px rgba(0,0,0,0.1)"
+    shadow_md: str = "0 4px 6px rgba(0,0,0,0.1)" 
+    shadow_lg: str = "0 10px 15px rgba(0,0,0,0.1)"
+    
+    # Border system
+    border_width: str = "1px"
+    border_style: str = "solid"  # "solid", "dashed", "dotted", "none"
+    
+    # Background treatments
+    surface_treatment: str = "flat"  # "flat", "glass", "textured", "gradient"
+    backdrop_blur: str = "0px"
+    noise_opacity: float = 0.0
 
 
 @dataclass
@@ -54,6 +117,532 @@ class AnimationStyle:
     duration_normal: str = "0.3s"
     duration_slow: str = "0.5s"
     easing: str = "cubic-bezier(0.4, 0, 0.2, 1)"
+
+
+@dataclass
+class InteractionStyle:
+    """User interaction feedback.""" 
+    name: str
+
+    # Hover effects
+    button_hover: str = "lift"  # "lift", "scale", "glow", "darken", "none"
+    link_hover: str = "underline"  # "underline", "color", "background", "none"
+    card_hover: str = "lift"  # "lift", "scale", "border", "shadow", "none"
+
+    # Focus effects
+    focus_style: str = "ring"  # "ring", "outline", "glow", "underline"
+    focus_ring_width: str = "2px"
+
+
+@dataclass 
+class DesignSystem:
+    """
+    Complete design system - all visual aspects EXCEPT colors.
+    
+    This allows any design system to be combined with any color preset.
+    """
+    name: str
+    display_name: str
+    description: str
+    category: str  # "minimal", "bold", "elegant", "playful", "industrial"
+    
+    # Core styling components
+    typography: TypographyStyle
+    layout: LayoutStyle  
+    surface: SurfaceStyle
+    icons: IconStyle
+    animation: AnimationStyle
+    interaction: InteractionStyle
+
+
+# =============================================================================
+# Typography Presets
+# =============================================================================
+
+TYPO_MINIMAL = TypographyStyle(
+    name="minimal",
+    heading_font="system-ui",
+    body_font="system-ui",
+    base_size="16px",
+    heading_scale=1.2,  # Subtle scale
+    line_height="1.6",
+    heading_weight="500",  # Lighter weight
+    body_weight="400", 
+    letter_spacing="normal"
+)
+
+TYPO_BRUTALIST = TypographyStyle(
+    name="brutalist", 
+    heading_font="system-ui",
+    body_font="system-ui",
+    base_size="18px",  # Larger base
+    heading_scale=1.4,  # Aggressive scale
+    line_height="1.3",  # Tighter line height
+    heading_weight="900",  # Black weight
+    body_weight="500",
+    letter_spacing="tight"
+)
+
+TYPO_ELEGANT = TypographyStyle(
+    name="elegant",
+    heading_font="serif",  # Serif headings
+    body_font="system-ui",
+    base_size="16px",
+    heading_scale=1.3,
+    line_height="1.7",  # Generous line height
+    heading_weight="400",  # Light serif
+    body_weight="400",
+    letter_spacing="wide"  # Spaced out
+)
+
+TYPO_RETRO = TypographyStyle(
+    name="retro",
+    heading_font="mono",  # Monospace
+    body_font="system-ui", 
+    base_size="14px",  # Smaller, pixel-like
+    heading_scale=1.1,  # Minimal scale
+    line_height="1.4",
+    heading_weight="700",
+    body_weight="400",
+    letter_spacing="normal"
+)
+
+TYPO_ORGANIC = TypographyStyle(
+    name="organic",
+    heading_font="system-ui",
+    body_font="system-ui",
+    base_size="16px", 
+    heading_scale=1.25,
+    line_height="1.6",
+    heading_weight="600",
+    body_weight="400",
+    letter_spacing="normal"
+)
+
+
+# =============================================================================
+# Layout Presets  
+# =============================================================================
+
+LAYOUT_MINIMAL = LayoutStyle(
+    name="minimal",
+    space_unit="1rem",
+    space_scale=1.5,
+    border_radius_sm="2px",  # Subtle radius
+    border_radius_md="4px", 
+    border_radius_lg="8px",
+    button_shape="rounded",
+    card_shape="rounded", 
+    input_shape="rounded",
+    container_width="1000px",  # Narrower
+    grid_gap="2rem",  # More space
+    section_spacing="4rem"
+)
+
+LAYOUT_BRUTALIST = LayoutStyle(
+    name="brutalist",
+    space_unit="1rem", 
+    space_scale=2.0,  # Bigger jumps
+    border_radius_sm="0px",  # No radius
+    border_radius_md="0px",
+    border_radius_lg="0px", 
+    button_shape="sharp",
+    card_shape="sharp",
+    input_shape="sharp",
+    container_width="1400px",  # Wide
+    grid_gap="1rem",  # Tight spacing
+    section_spacing="2rem"
+)
+
+LAYOUT_ELEGANT = LayoutStyle(
+    name="elegant",
+    space_unit="1rem",
+    space_scale=1.618,  # Golden ratio
+    border_radius_sm="6px",
+    border_radius_md="12px",
+    border_radius_lg="20px",
+    button_shape="rounded", 
+    card_shape="rounded",
+    input_shape="rounded",
+    container_width="900px",  # Conservative width
+    grid_gap="3rem",  # Generous spacing
+    section_spacing="5rem"
+)
+
+LAYOUT_RETRO = LayoutStyle(
+    name="retro",
+    space_unit="8px",  # Pixel-based
+    space_scale=2.0,
+    border_radius_sm="0px",  # Sharp pixels
+    border_radius_md="0px",
+    border_radius_lg="0px",
+    button_shape="sharp",
+    card_shape="sharp", 
+    input_shape="sharp",
+    container_width="1024px",  # Old screen size
+    grid_gap="16px",
+    section_spacing="32px"
+)
+
+LAYOUT_ORGANIC = LayoutStyle(
+    name="organic",
+    space_unit="1rem",
+    space_scale=1.4,
+    border_radius_sm="12px",  # Very rounded
+    border_radius_md="20px",
+    border_radius_lg="32px", 
+    button_shape="pill",  # Pill shapes
+    card_shape="organic",
+    input_shape="pill",
+    container_width="1100px",
+    grid_gap="1.5rem",
+    section_spacing="3rem"
+)
+
+
+# =============================================================================
+# Surface Presets
+# =============================================================================
+
+SURFACE_MINIMAL = SurfaceStyle(
+    name="minimal",
+    shadow_sm="0 1px 2px rgba(0,0,0,0.05)",  # Very subtle
+    shadow_md="0 2px 4px rgba(0,0,0,0.08)", 
+    shadow_lg="0 4px 8px rgba(0,0,0,0.12)",
+    border_width="1px",
+    border_style="solid",
+    surface_treatment="flat",
+    backdrop_blur="0px",
+    noise_opacity=0.0
+)
+
+SURFACE_BRUTALIST = SurfaceStyle(
+    name="brutalist", 
+    shadow_sm="4px 4px 0px rgba(0,0,0,1)",  # Hard shadows
+    shadow_md="8px 8px 0px rgba(0,0,0,1)",
+    shadow_lg="12px 12px 0px rgba(0,0,0,1)",
+    border_width="3px",  # Thick borders
+    border_style="solid",
+    surface_treatment="flat",
+    backdrop_blur="0px",
+    noise_opacity=0.0
+)
+
+SURFACE_ELEGANT = SurfaceStyle(
+    name="elegant",
+    shadow_sm="0 2px 8px rgba(0,0,0,0.08)", 
+    shadow_md="0 8px 24px rgba(0,0,0,0.12)",
+    shadow_lg="0 16px 40px rgba(0,0,0,0.16)",  # Soft, large shadows
+    border_width="1px",
+    border_style="solid", 
+    surface_treatment="gradient",  # Subtle gradients
+    backdrop_blur="0px",
+    noise_opacity=0.02  # Subtle texture
+)
+
+SURFACE_RETRO = SurfaceStyle(
+    name="retro",
+    shadow_sm="2px 2px 0px rgba(0,0,0,0.8)",  # Pixel shadows
+    shadow_md="4px 4px 0px rgba(0,0,0,0.8)",
+    shadow_lg="6px 6px 0px rgba(0,0,0,0.8)", 
+    border_width="2px",
+    border_style="solid",
+    surface_treatment="textured",  # Dithered texture
+    backdrop_blur="0px",
+    noise_opacity=0.15
+)
+
+SURFACE_ORGANIC = SurfaceStyle(
+    name="organic",
+    shadow_sm="0 3px 6px rgba(0,0,0,0.1)",
+    shadow_md="0 6px 12px rgba(0,0,0,0.15)", 
+    shadow_lg="0 12px 24px rgba(0,0,0,0.2)",
+    border_width="0px",  # No borders
+    border_style="none",
+    surface_treatment="glass",  # Soft glass effect
+    backdrop_blur="8px",
+    noise_opacity=0.0
+)
+
+
+# =============================================================================
+# Icon Style Presets
+# =============================================================================
+
+ICON_MINIMAL = IconStyle(
+    name="minimal",
+    style="outlined",
+    weight="thin",
+    size_scale=0.9,  # Smaller icons
+    stroke_width="1.5",
+    corner_rounding="2px"
+)
+
+ICON_BRUTALIST = IconStyle(
+    name="brutalist", 
+    style="filled",
+    weight="bold",
+    size_scale=1.2,  # Larger, bold icons
+    stroke_width="3",
+    corner_rounding="0px"
+)
+
+ICON_ELEGANT = IconStyle(
+    name="elegant",
+    style="outlined", 
+    weight="thin",
+    size_scale=1.0,
+    stroke_width="1",  # Very thin strokes
+    corner_rounding="4px"
+)
+
+ICON_RETRO = IconStyle(
+    name="retro",
+    style="filled",
+    weight="regular", 
+    size_scale=1.0,
+    stroke_width="2",
+    corner_rounding="0px"  # Sharp pixels
+)
+
+ICON_ORGANIC = IconStyle(
+    name="organic",
+    style="rounded",
+    weight="regular",
+    size_scale=1.1,
+    stroke_width="2",
+    corner_rounding="8px"  # Very rounded
+)
+
+
+# =============================================================================
+# Animation Style Presets
+# =============================================================================
+
+ANIM_MINIMAL = AnimationStyle(
+    name="minimal",
+    entrance_effect="fade",
+    exit_effect="fade", 
+    hover_effect="none",  # No hover effects
+    hover_scale=1.0,
+    hover_translate_y="0px",
+    click_effect="none",
+    loading_style="progress",
+    transition_style="smooth",
+    duration_fast="0.2s",
+    duration_normal="0.3s", 
+    duration_slow="0.4s",
+    easing="ease-out"
+)
+
+ANIM_BRUTALIST = AnimationStyle(
+    name="brutalist",
+    entrance_effect="none",  # Instant appearance
+    exit_effect="none",
+    hover_effect="scale",
+    hover_scale=1.05,  # Bold scale
+    hover_translate_y="0px",
+    click_effect="pulse",
+    loading_style="spinner",
+    transition_style="instant",
+    duration_fast="0.05s",  # Very fast
+    duration_normal="0.1s",
+    duration_slow="0.15s",
+    easing="linear"  # No easing curves
+)
+
+ANIM_ELEGANT = AnimationStyle(
+    name="elegant", 
+    entrance_effect="fade",
+    exit_effect="fade",
+    hover_effect="lift",
+    hover_scale=1.02,  # Subtle
+    hover_translate_y="-4px",  # Gentle lift
+    click_effect="none",  # No aggressive feedback
+    loading_style="skeleton",
+    transition_style="smooth",
+    duration_fast="0.4s",  # Slower, more graceful
+    duration_normal="0.6s",
+    duration_slow="0.8s",
+    easing="cubic-bezier(0.25, 0.46, 0.45, 0.94)"  # Elegant curve
+)
+
+ANIM_RETRO = AnimationStyle(
+    name="retro",
+    entrance_effect="slide",  # Old-school slide
+    exit_effect="slide",
+    hover_effect="glow",
+    hover_scale=1.0,  # No scaling
+    hover_translate_y="0px", 
+    click_effect="bounce",  # Arcade-style
+    loading_style="progress",
+    transition_style="snappy",
+    duration_fast="0.1s",
+    duration_normal="0.2s",
+    duration_slow="0.3s", 
+    easing="cubic-bezier(0.68, -0.55, 0.265, 1.55)"  # Bouncy
+)
+
+ANIM_ORGANIC = AnimationStyle(
+    name="organic",
+    entrance_effect="scale",  # Organic growth
+    exit_effect="scale", 
+    hover_effect="glow",
+    hover_scale=1.03,
+    hover_translate_y="-2px",
+    click_effect="ripple",  # Natural ripple
+    loading_style="pulse",
+    transition_style="bouncy",
+    duration_fast="0.3s", 
+    duration_normal="0.5s",
+    duration_slow="0.8s",
+    easing="cubic-bezier(0.34, 1.56, 0.64, 1)"  # Organic bounce
+)
+
+
+# =============================================================================
+# Interaction Style Presets
+# =============================================================================
+
+INTERACT_MINIMAL = InteractionStyle(
+    name="minimal",
+    button_hover="darken",  # Subtle color change
+    link_hover="underline",
+    card_hover="none",  # No card hover
+    focus_style="underline",
+    focus_ring_width="1px"
+)
+
+INTERACT_BRUTALIST = InteractionStyle(
+    name="brutalist",
+    button_hover="glow",  # Bold glow effect
+    link_hover="background", 
+    card_hover="shadow",  # Hard shadow change
+    focus_style="outline",
+    focus_ring_width="4px"  # Thick focus ring
+)
+
+INTERACT_ELEGANT = InteractionStyle(
+    name="elegant",
+    button_hover="lift", 
+    link_hover="color",  # Subtle color shift
+    card_hover="shadow",  # Soft shadow lift
+    focus_style="glow",
+    focus_ring_width="2px"
+)
+
+INTERACT_RETRO = InteractionStyle(
+    name="retro", 
+    button_hover="scale",  # Arcade-style scale
+    link_hover="background",
+    card_hover="border",  # Pixel border change
+    focus_style="outline",
+    focus_ring_width="2px"
+)
+
+INTERACT_ORGANIC = InteractionStyle(
+    name="organic",
+    button_hover="glow",  # Soft organic glow
+    link_hover="color",
+    card_hover="lift",  # Natural lift
+    focus_style="glow", 
+    focus_ring_width="3px"
+)
+
+
+# =============================================================================
+# Complete Design Systems (Color-Independent)
+# =============================================================================
+
+DESIGN_MINIMAL = DesignSystem(
+    name="minimal",
+    display_name="Minimal Clean", 
+    description="Pure, distraction-free design with maximum content focus",
+    category="minimal",
+    typography=TYPO_MINIMAL,
+    layout=LAYOUT_MINIMAL,
+    surface=SURFACE_MINIMAL,
+    icons=ICON_MINIMAL, 
+    animation=ANIM_MINIMAL,
+    interaction=INTERACT_MINIMAL
+)
+
+DESIGN_BRUTALIST = DesignSystem(
+    name="brutalist",
+    display_name="Neo-Brutalist",
+    description="Bold, aggressive design with sharp edges and high contrast", 
+    category="bold",
+    typography=TYPO_BRUTALIST,
+    layout=LAYOUT_BRUTALIST,
+    surface=SURFACE_BRUTALIST,
+    icons=ICON_BRUTALIST,
+    animation=ANIM_BRUTALIST,
+    interaction=INTERACT_BRUTALIST
+)
+
+DESIGN_ELEGANT = DesignSystem(
+    name="elegant",
+    display_name="Refined Elegance", 
+    description="Sophisticated typography with generous spacing and subtle details",
+    category="elegant",
+    typography=TYPO_ELEGANT,
+    layout=LAYOUT_ELEGANT,
+    surface=SURFACE_ELEGANT,
+    icons=ICON_ELEGANT,
+    animation=ANIM_ELEGANT,
+    interaction=INTERACT_ELEGANT
+)
+
+DESIGN_RETRO = DesignSystem(
+    name="retro", 
+    display_name="Pixel Perfect",
+    description="Nostalgic pixel-art aesthetic with sharp edges and chunky shadows",
+    category="retro",
+    typography=TYPO_RETRO,
+    layout=LAYOUT_RETRO,
+    surface=SURFACE_RETRO,
+    icons=ICON_RETRO,
+    animation=ANIM_RETRO,
+    interaction=INTERACT_RETRO
+)
+
+DESIGN_ORGANIC = DesignSystem(
+    name="organic",
+    display_name="Natural Flow",
+    description="Soft, rounded design inspired by natural forms and gentle motion", 
+    category="playful",
+    typography=TYPO_ORGANIC,
+    layout=LAYOUT_ORGANIC,
+    surface=SURFACE_ORGANIC,
+    icons=ICON_ORGANIC,
+    animation=ANIM_ORGANIC,
+    interaction=INTERACT_ORGANIC
+)
+
+
+# Design System Registry
+DESIGN_SYSTEMS: Dict[str, DesignSystem] = {
+    "minimal": DESIGN_MINIMAL,
+    "brutalist": DESIGN_BRUTALIST, 
+    "elegant": DESIGN_ELEGANT,
+    "retro": DESIGN_RETRO,
+    "organic": DESIGN_ORGANIC,
+}
+
+
+def get_design_system(name: str) -> Optional[DesignSystem]:
+    """Get a design system by name."""
+    return DESIGN_SYSTEMS.get(name)
+
+
+def get_all_design_systems() -> Dict[str, DesignSystem]:
+    """Get all available design systems."""
+    return DESIGN_SYSTEMS.copy()
+
+
+# =============================================================================
+# Legacy Theme Packs (for backward compatibility)
+# =============================================================================
 
 
 @dataclass
@@ -526,6 +1115,80 @@ PACK_NATURE = ThemePack(
     illustration_style=ILLUST_HAND_DRAWN,
 )
 
+# ============================================
+# Qwen-Generated Theme Packs
+# ============================================
+
+PACK_CYBERPUNK = ThemePack(
+    name="cyberpunk",
+    display_name="Cyberpunk Future",
+    description="Futuristic interface with neon highlights and dark aesthetics",
+    category="bold",
+    design_theme="neo_brutalist",
+    color_preset="cyberpunk",
+    icon_style=ICON_SHARP,
+    animation_style=ANIM_SNAPPY,
+    pattern_style=PATTERN_GRID,
+    interaction_style=INTERACT_BOLD,
+    illustration_style=ILLUST_FLAT,
+)
+
+PACK_SUNSET = ThemePack(
+    name="sunset",
+    display_name="Golden Sunset",
+    description="Warm, inviting design with golden hour color palette",
+    category="elegant",
+    design_theme="elegant",
+    color_preset="sunset",
+    icon_style=ICON_ROUNDED,
+    animation_style=ANIM_GENTLE,
+    pattern_style=PATTERN_GRADIENT,
+    interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_HAND_DRAWN,
+)
+
+PACK_FOREST = ThemePack(
+    name="forest",
+    display_name="Forest Explorer",
+    description="Natural, earthy design inspired by woodland environments",
+    category="playful",
+    design_theme="organic",
+    color_preset="forest",
+    icon_style=ICON_ROUNDED,
+    animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_DOTS,
+    interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_HAND_DRAWN,
+)
+
+PACK_OCEAN = ThemePack(
+    name="ocean",
+    display_name="Ocean Depths",
+    description="Calming, fluid design with deep blue and teal tones",
+    category="minimal",
+    design_theme="material",
+    color_preset="ocean",
+    icon_style=ICON_FILLED,
+    animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_MINIMAL,
+    interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_FLAT,
+)
+
+PACK_METALLIC = ThemePack(
+    name="metallic",
+    display_name="Metallic Industrial",
+    description="Sleek, modern design with industrial metallic aesthetics",
+    category="professional",
+    design_theme="corporate",
+    color_preset="metallic",
+    icon_style=ICON_OUTLINED,
+    animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_NOISE,
+    interaction_style=INTERACT_MINIMAL,
+    illustration_style=ILLUST_LINE,
+)
+
 
 # Theme Pack Registry
 THEME_PACKS: Dict[str, ThemePack] = {
@@ -535,6 +1198,11 @@ THEME_PACKS: Dict[str, ThemePack] = {
     "elegant": PACK_ELEGANT,
     "brutalist": PACK_BRUTALIST,
     "nature": PACK_NATURE,
+    "cyberpunk": PACK_CYBERPUNK,
+    "sunset": PACK_SUNSET,
+    "forest": PACK_FOREST,
+    "ocean": PACK_OCEAN,
+    "metallic": PACK_METALLIC,
 }
 
 

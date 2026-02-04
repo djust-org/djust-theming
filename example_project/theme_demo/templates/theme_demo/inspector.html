@@ -1,0 +1,435 @@
+{% extends "theme_demo/base.html" %}
+{% load theme_components %}
+
+{% block extra_head %}
+<style>
+.inspector-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.color-swatch {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.25rem;
+    border: 1px solid var(--border);
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.token-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+}
+
+.token-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    font-family: monospace;
+    font-size: 0.875rem;
+}
+
+.css-output {
+    background: var(--muted);
+    color: var(--muted-foreground);
+    padding: 1rem;
+    border-radius: var(--radius);
+    font-family: monospace;
+    font-size: 0.75rem;
+    max-height: 400px;
+    overflow-y: auto;
+    white-space: pre;
+}
+
+.inspector-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+}
+
+.tab {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+    border-bottom-color: var(--primary);
+    color: var(--primary);
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-4xl font-bold mb-2">Theme Inspector</h1>
+    <p class="text-muted-foreground">
+        Debug and analyze theme combinations in real-time
+    </p>
+</div>
+
+<!-- Inspector Controls -->
+<div class="inspector-controls">
+    <div>
+        <label for="design-select" class="text-sm font-medium">Design System:</label>
+        <select id="design-select" class="border border-border rounded px-3 py-1 ml-2">
+            {% for design in design_systems %}
+            <option value="{{ design }}" {% if design == current_design %}selected{% endif %}>
+                {{ design|title }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div>
+        <label for="color-select" class="text-sm font-medium">Color Preset:</label>
+        <select id="color-select" class="border border-border rounded px-3 py-1 ml-2">
+            {% for color in color_presets %}
+            <option value="{{ color }}" {% if color == current_color %}selected{% endif %}>
+                {{ color|title }}
+            </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <button onclick="refreshInspector()" class="btn btn-primary">
+        Inspect Theme
+    </button>
+    
+    <button onclick="toggleComparison()" class="btn btn-secondary" id="compare-btn">
+        Enable Comparison
+    </button>
+</div>
+
+<!-- Theme Info Display -->
+<div id="theme-info" class="mb-8">
+    <div class="inspector-panel">
+        <h3 class="text-lg font-semibold mb-4">Current Theme: {{ theme_info.combination }}</h3>
+        <div class="grid md:grid-cols-2 gap-4">
+            <div>
+                <h4 class="font-medium mb-2">Design System</h4>
+                <p><strong>{{ theme_info.design_system.display_name }}</strong></p>
+                <p class="text-sm text-muted-foreground">{{ theme_info.design_system.description }}</p>
+                <p class="text-xs mt-1">Category: {{ theme_info.design_system.category }}</p>
+            </div>
+            <div>
+                <h4 class="font-medium mb-2">Color Preset</h4>
+                <p><strong>{{ theme_info.color_preset.display_name }}</strong></p>
+                <div class="flex items-center gap-2 mt-2">
+                    <div class="color-swatch" style="background: {{ theme_info.color_preset.light.primary.hsl_func }};"></div>
+                    <span class="text-sm">Primary Light</span>
+                    <div class="color-swatch ml-4" style="background: {{ theme_info.color_preset.dark.primary.hsl_func }};"></div>
+                    <span class="text-sm">Primary Dark</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tabbed Inspector -->
+<div class="tabs">
+    <button class="tab active" onclick="showTab('colors')">Colors</button>
+    <button class="tab" onclick="showTab('typography')">Typography</button>
+    <button class="tab" onclick="showTab('layout')">Layout</button>
+    <button class="tab" onclick="showTab('surface')">Surface</button>
+    <button class="tab" onclick="showTab('animation')">Animation</button>
+    <button class="tab" onclick="showTab('css')">Generated CSS</button>
+</div>
+
+<!-- Colors Tab -->
+<div id="tab-colors" class="tab-content active">
+    <div class="inspector-panel">
+        <h3 class="text-lg font-semibold mb-4">Color Tokens</h3>
+        <div class="token-grid">
+            {% for token_name, token_data in theme_info.color_preset.light.items %}
+            {% if token_name != 'radius' %}
+            <div class="token-item">
+                <div class="color-swatch" style="background: {{ token_data.hsl_func }};"></div>
+                <div>
+                    <div class="font-medium">{{ token_name }}</div>
+                    <div class="text-xs text-muted-foreground">{{ token_data.hsl }}</div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Typography Tab -->
+<div id="tab-typography" class="tab-content">
+    <div class="inspector-panel">
+        <h3 class="text-lg font-semibold mb-4">Typography System</h3>
+        <div class="grid md:grid-cols-2 gap-4">
+            <div>
+                <h4 class="font-medium mb-2">Font Configuration</h4>
+                <div class="space-y-2 text-sm">
+                    <div><strong>Heading Font:</strong> {{ theme_info.design_system.typography.heading_font }}</div>
+                    <div><strong>Body Font:</strong> {{ theme_info.design_system.typography.body_font }}</div>
+                    <div><strong>Base Size:</strong> {{ theme_info.design_system.typography.base_size }}</div>
+                    <div><strong>Scale:</strong> {{ theme_info.design_system.typography.heading_scale }}</div>
+                    <div><strong>Line Height:</strong> {{ theme_info.design_system.typography.line_height }}</div>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-medium mb-2">Typography Preview</h4>
+                <div class="space-y-2">
+                    <h1 style="font-family: var(--font-heading); font-weight: var(--font-weight-heading);">
+                        Heading 1 Sample
+                    </h1>
+                    <h3 style="font-family: var(--font-heading); font-weight: var(--font-weight-heading);">
+                        Heading 3 Sample
+                    </h3>
+                    <p style="font-family: var(--font-body); font-weight: var(--font-weight-body);">
+                        Body text sample showing the typography system in action.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Layout Tab -->
+<div id="tab-layout" class="tab-content">
+    <div class="inspector-panel">
+        <h3 class="text-lg font-semibold mb-4">Layout System</h3>
+        <div class="grid md:grid-cols-2 gap-4">
+            <div>
+                <h4 class="font-medium mb-2">Spacing & Sizing</h4>
+                <div class="space-y-2 text-sm">
+                    <div><strong>Space Unit:</strong> {{ theme_info.design_system.layout.space_unit }}</div>
+                    <div><strong>Space Scale:</strong> {{ theme_info.design_system.layout.space_scale }}</div>
+                    <div><strong>Container Width:</strong> {{ theme_info.design_system.layout.container_width }}</div>
+                    <div><strong>Grid Gap:</strong> {{ theme_info.design_system.layout.grid_gap }}</div>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-medium mb-2">Component Shapes</h4>
+                <div class="space-y-2 text-sm">
+                    <div><strong>Button Shape:</strong> {{ theme_info.design_system.layout.button_shape }}</div>
+                    <div><strong>Card Shape:</strong> {{ theme_info.design_system.layout.card_shape }}</div>
+                    <div><strong>Input Shape:</strong> {{ theme_info.design_system.layout.input_shape }}</div>
+                </div>
+                
+                <h4 class="font-medium mb-2 mt-4">Border Radius</h4>
+                <div class="space-y-2 text-sm">
+                    <div><strong>Small:</strong> {{ theme_info.design_system.layout.border_radius_sm }}</div>
+                    <div><strong>Medium:</strong> {{ theme_info.design_system.layout.border_radius_md }}</div>
+                    <div><strong>Large:</strong> {{ theme_info.design_system.layout.border_radius_lg }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Surface Tab -->
+<div id="tab-surface" class="tab-content">
+    <div class="inspector-panel">
+        <h3 class="text-lg font-semibold mb-4">Surface Treatment</h3>
+        <div class="grid md:grid-cols-2 gap-4">
+            <div>
+                <h4 class="font-medium mb-2">Shadows</h4>
+                <div class="space-y-3">
+                    <div class="p-3 border rounded" style="box-shadow: {{ theme_info.design_system.surface.shadow_sm }}">
+                        <div class="text-sm">Small Shadow</div>
+                        <div class="text-xs text-muted-foreground">{{ theme_info.design_system.surface.shadow_sm }}</div>
+                    </div>
+                    <div class="p-3 border rounded" style="box-shadow: {{ theme_info.design_system.surface.shadow_md }}">
+                        <div class="text-sm">Medium Shadow</div>
+                        <div class="text-xs text-muted-foreground">{{ theme_info.design_system.surface.shadow_md }}</div>
+                    </div>
+                    <div class="p-3 border rounded" style="box-shadow: {{ theme_info.design_system.surface.shadow_lg }}">
+                        <div class="text-sm">Large Shadow</div>
+                        <div class="text-xs text-muted-foreground">{{ theme_info.design_system.surface.shadow_lg }}</div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-medium mb-2">Border & Effects</h4>
+                <div class="space-y-2 text-sm">
+                    <div><strong>Border Width:</strong> {{ theme_info.design_system.surface.border_width }}</div>
+                    <div><strong>Border Style:</strong> {{ theme_info.design_system.surface.border_style }}</div>
+                    <div><strong>Surface Treatment:</strong> {{ theme_info.design_system.surface.surface_treatment }}</div>
+                    {% if theme_info.design_system.surface.backdrop_blur != "0px" %}
+                    <div><strong>Backdrop Blur:</strong> {{ theme_info.design_system.surface.backdrop_blur }}</div>
+                    {% endif %}
+                    {% if theme_info.design_system.surface.noise_opacity > 0 %}
+                    <div><strong>Noise Opacity:</strong> {{ theme_info.design_system.surface.noise_opacity }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Animation Tab -->
+<div id="tab-animation" class="tab-content">
+    <div class="inspector-panel">
+        <h3 class="text-lg font-semibold mb-4">Animation System</h3>
+        <div class="grid md:grid-cols-2 gap-4">
+            <div>
+                <h4 class="font-medium mb-2">Timing & Easing</h4>
+                <div class="space-y-2 text-sm">
+                    <div><strong>Fast:</strong> {{ theme_info.design_system.animation.duration_fast }}</div>
+                    <div><strong>Normal:</strong> {{ theme_info.design_system.animation.duration_normal }}</div>
+                    <div><strong>Slow:</strong> {{ theme_info.design_system.animation.duration_slow }}</div>
+                    <div><strong>Easing:</strong> {{ theme_info.design_system.animation.easing }}</div>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-medium mb-2">Effects</h4>
+                <div class="space-y-2 text-sm">
+                    <div><strong>Entrance:</strong> {{ theme_info.design_system.animation.entrance_effect }}</div>
+                    <div><strong>Hover Effect:</strong> {{ theme_info.design_system.animation.hover_effect }}</div>
+                    <div><strong>Click Effect:</strong> {{ theme_info.design_system.animation.click_effect }}</div>
+                    <div><strong>Loading Style:</strong> {{ theme_info.design_system.animation.loading_style }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CSS Tab -->
+<div id="tab-css" class="tab-content">
+    <div class="inspector-panel">
+        <h3 class="text-lg font-semibold mb-4">Generated CSS</h3>
+        <div class="mb-4">
+            <div class="text-sm text-muted-foreground">
+                Size: {{ theme_info.css_size }} characters
+                <button onclick="copyCss()" class="btn btn-sm btn-secondary ml-4">Copy CSS</button>
+            </div>
+        </div>
+        <div class="css-output" id="css-output">{{ theme_info.generated_css }}</div>
+    </div>
+</div>
+
+<!-- Comparison Mode (initially hidden) -->
+<div id="comparison-mode" class="mt-8" style="display: none;">
+    <div class="inspector-panel">
+        <h3 class="text-lg font-semibold mb-4">Theme Comparison</h3>
+        <div class="comparison-grid" id="comparison-grid">
+            <!-- Comparison content will be populated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<script>
+let comparisonMode = false;
+let currentThemeInfo = {{ theme_info|safe }};
+
+function showTab(tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Show selected tab
+    document.getElementById(`tab-${tabName}`).classList.add('active');
+    event.target.classList.add('active');
+}
+
+async function refreshInspector() {
+    const design = document.getElementById('design-select').value;
+    const color = document.getElementById('color-select').value;
+    
+    try {
+        const response = await fetch(`/theme-inspector-api/?design=${design}&color=${color}`);
+        const themeInfo = await response.json();
+        
+        if (themeInfo.error) {
+            alert('Error: ' + themeInfo.error);
+            return;
+        }
+        
+        currentThemeInfo = themeInfo;
+        
+        // Update URL
+        const url = new URL(window.location);
+        url.searchParams.set('design', design);
+        url.searchParams.set('color', color);
+        window.history.pushState({}, '', url);
+        
+        // Reload page to update all content
+        // TODO: Implement dynamic content updates
+        location.reload();
+        
+    } catch (error) {
+        alert('Failed to load theme info: ' + error.message);
+    }
+}
+
+function toggleComparison() {
+    comparisonMode = !comparisonMode;
+    const btn = document.getElementById('compare-btn');
+    const comparisonDiv = document.getElementById('comparison-mode');
+    
+    if (comparisonMode) {
+        btn.textContent = 'Disable Comparison';
+        comparisonDiv.style.display = 'block';
+        // TODO: Implement comparison UI
+    } else {
+        btn.textContent = 'Enable Comparison';
+        comparisonDiv.style.display = 'none';
+    }
+}
+
+function copyCss() {
+    const cssOutput = document.getElementById('css-output');
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(cssOutput.textContent).then(() => {
+            alert('CSS copied to clipboard!');
+        });
+    } else {
+        // Fallback
+        const range = document.createRange();
+        range.selectNode(cssOutput);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+        alert('CSS copied to clipboard!');
+    }
+}
+
+// Auto-refresh when dropdowns change
+document.getElementById('design-select').addEventListener('change', refreshInspector);
+document.getElementById('color-select').addEventListener('change', refreshInspector);
+</script>
+
+{% endblock %}
