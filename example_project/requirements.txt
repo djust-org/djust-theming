@@ -1,0 +1,10 @@
+# Core dependencies
+Django>=4.2,<5.0
+
+# djust-theming (install from parent directory)
+# Run: pip install -e ..
+
+# Optional: djust LiveView for reactive theme switching
+# Uncomment to enable:
+# channels>=4.0.0
+# djust>=0.3.0

@@ -1,0 +1,49 @@
+<span class="badge badge-{{ variant }} {% if attrs.class %}{{ attrs.class }}{% endif %}"
+      {% if attrs.id %}id="{{ attrs.id }}"{% endif %}>
+    {{ text }}
+</span>
+
+<style>
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1rem;
+    border-radius: calc(var(--radius) - 2px);
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.badge-default {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+}
+
+.badge-secondary {
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--secondary-foreground));
+}
+
+.badge-success {
+    background-color: hsl(var(--success));
+    color: hsl(var(--success-foreground));
+}
+
+.badge-warning {
+    background-color: hsl(var(--warning));
+    color: hsl(var(--warning-foreground));
+}
+
+.badge-destructive {
+    background-color: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
+}
+
+.badge-outline {
+    background-color: transparent;
+    border-color: hsl(var(--border));
+    color: hsl(var(--foreground));
+}
+</style>

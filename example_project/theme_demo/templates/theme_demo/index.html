@@ -1,0 +1,123 @@
+{% extends "theme_demo/base.html" %}
+{% load theme_components %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="gradient-bg rounded-2xl p-12 mb-12 text-center">
+    <h1 class="text-5xl font-bold mb-4">
+        Welcome to <span class="text-primary">djust-theming</span>
+    </h1>
+    <p class="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+        A production-ready theming system for Django with shadcn/ui compatibility,
+        reactive LiveView integration, and Tailwind CSS support.
+    </p>
+    <div class="flex justify-center gap-4">
+        <a href="{% url 'theme_demo:components' %}" class="btn btn-primary px-8 py-3 text-base no-underline">View Components</a>
+        <a href="{% url 'theme_demo:presets' %}" class="btn btn-secondary px-8 py-3 text-base no-underline">Explore Presets</a>
+    </div>
+</div>
+
+<!-- Features Grid -->
+<div class="grid md:grid-cols-3 gap-6 mb-12">
+    <div class="bg-card border border-border rounded-lg p-6 demo-card">
+        <div class="text-3xl mb-4">🔄</div>
+        <h3 class="text-lg font-semibold mb-2">Reactive Switching</h3>
+        <p class="text-sm text-muted-foreground">
+            Change themes instantly without page reload using djust LiveView integration
+        </p>
+    </div>
+
+    <div class="bg-card border border-border rounded-lg p-6 demo-card">
+        <div class="text-3xl mb-4">🎨</div>
+        <h3 class="text-lg font-semibold mb-2">7 Built-in Presets</h3>
+        <p class="text-sm text-muted-foreground">
+            Choose from Default, Shadcn, Blue, Green, Purple, Orange, or Rose themes
+        </p>
+    </div>
+
+    <div class="bg-card border border-border rounded-lg p-6 demo-card">
+        <div class="text-3xl mb-4">🌓</div>
+        <h3 class="text-lg font-semibold mb-2">Light/Dark Mode</h3>
+        <p class="text-sm text-muted-foreground">
+            Automatic system detection with manual override and smooth transitions
+        </p>
+    </div>
+
+    <div class="bg-card border border-border rounded-lg p-6 demo-card">
+        <div class="text-3xl mb-4">⚡</div>
+        <h3 class="text-lg font-semibold mb-2">Tailwind Ready</h3>
+        <p class="text-sm text-muted-foreground">
+            Generate Tailwind configs with theme colors and use @apply directives
+        </p>
+    </div>
+
+    <div class="bg-card border border-border rounded-lg p-6 demo-card">
+        <div class="text-3xl mb-4">🔗</div>
+        <h3 class="text-lg font-semibold mb-2">shadcn/ui Compatible</h3>
+        <p class="text-sm text-muted-foreground">
+            Import and export themes in shadcn/ui format for maximum compatibility
+        </p>
+    </div>
+
+    <div class="bg-card border border-border rounded-lg p-6 demo-card">
+        <div class="text-3xl mb-4">🧩</div>
+        <h3 class="text-lg font-semibold mb-2">Component Library</h3>
+        <p class="text-sm text-muted-foreground">
+            6 ready-to-use components that automatically adapt to your theme
+        </p>
+    </div>
+</div>
+
+<!-- Quick Start -->
+<div class="bg-card border border-border rounded-lg p-8 mb-12">
+    <h2 class="text-2xl font-bold mb-6">Quick Start</h2>
+
+    <div class="space-y-4">
+        <div>
+            <h3 class="text-lg font-semibold mb-2">1. Install</h3>
+            <div class="code-block">
+                pip install djust-theming
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-lg font-semibold mb-2">2. Initialize</h3>
+            <div class="code-block">
+                python manage.py djust_theme init --with-tailwind --with-examples
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-lg font-semibold mb-2">3. Use in Templates</h3>
+            <div class="code-block">
+{% verbatim %}{% load theme_components %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {{ theme_head }}
+</head>
+<body>
+    {{ theme_switcher }}
+    {% theme_button "Click me" variant="primary" %}
+</body>
+</html>{% endverbatim %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Try it Now -->
+<div class="bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-8 text-center">
+    <h2 class="text-2xl font-bold mb-4">Try it Now!</h2>
+    <p class="text-muted-foreground mb-6">
+        Use the theme switcher in the top-right corner to change presets and modes
+    </p>
+    <div class="flex justify-center gap-3 flex-wrap">
+        {% theme_badge "Reactive" variant="success" %}
+        {% theme_badge "Fast" variant="default" %}
+        {% theme_badge "Beautiful" variant="secondary" %}
+        {% theme_badge "Open Source" variant="default" %}
+    </div>
+</div>
+{% endblock %}

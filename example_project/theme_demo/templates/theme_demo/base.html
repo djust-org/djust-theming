@@ -1,0 +1,105 @@
+{% load static theme_components %}
+<!DOCTYPE html>
+<html lang="en" class="loading">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | djust-theming Demo</title>
+
+    <!-- djust-theming CSS + JS -->
+    {{ theme_head }}
+
+    <!-- Performance optimizations -->
+    <link href="{% static 'djust_theming/css/performance.css' %}" rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN for demo) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Base CSS from djust-theming -->
+    <link href="{% static 'djust_theming/css/base.css' %}" rel="stylesheet">
+
+    <style>
+        /* Additional demo styles */
+        .gradient-bg {
+            background: linear-gradient(135deg, hsl(var(--primary) / 0.1), hsl(var(--accent) / 0.1));
+            will-change: background;
+        }
+
+        .code-block {
+            background: hsl(var(--muted));
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            contain: layout style paint;
+        }
+
+        /* Optimize navigation blur */
+        nav {
+            transform: translateZ(0);
+        }
+    </style>
+</head>
+<body class="bg-background text-foreground min-h-screen">
+
+<!-- Navigation -->
+<nav class="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center space-x-8">
+                <a href="{% url 'theme_demo:index' %}" class="flex items-center space-x-2">
+                    <span class="text-2xl">🎨</span>
+                    <span class="text-xl font-bold">djust-theming</span>
+                </a>
+
+                <div class="hidden md:flex space-x-4">
+                    <a href="{% url 'theme_demo:index' %}" class="text-sm font-medium hover:text-primary transition-colors px-3 py-2 rounded-md {% if request.resolver_match.url_name == 'index' %}bg-accent text-accent-foreground{% endif %}">
+                        Home
+                    </a>
+                    <a href="{% url 'theme_demo:components' %}" class="text-sm font-medium hover:text-primary transition-colors px-3 py-2 rounded-md {% if request.resolver_match.url_name == 'components' %}bg-accent text-accent-foreground{% endif %}">
+                        Components
+                    </a>
+                    <a href="{% url 'theme_demo:themes' %}" class="text-sm font-medium hover:text-primary transition-colors px-3 py-2 rounded-md {% if request.resolver_match.url_name == 'themes' %}bg-accent text-accent-foreground{% endif %}">
+                        Themes
+                    </a>
+                    <a href="{% url 'theme_demo:packs' %}" class="text-sm font-medium hover:text-primary transition-colors px-3 py-2 rounded-md {% if request.resolver_match.url_name == 'packs' %}bg-accent text-accent-foreground{% endif %}">
+                        Packs
+                    </a>
+                    <a href="{% url 'theme_demo:presets' %}" class="text-sm font-medium hover:text-primary transition-colors px-3 py-2 rounded-md {% if request.resolver_match.url_name == 'presets' %}bg-accent text-accent-foreground{% endif %}">
+                        Presets
+                    </a>
+                    <a href="{% url 'theme_demo:tailwind' %}" class="text-sm font-medium hover:text-primary transition-colors px-3 py-2 rounded-md {% if request.resolver_match.url_name == 'tailwind' %}bg-accent text-accent-foreground{% endif %}">
+                        Tailwind
+                    </a>
+                </div>
+            </div>
+
+            <!-- Theme Switcher -->
+            <div class="flex items-center space-x-4">
+                {{ theme_switcher }}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    {% block content %}{% endblock %}
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-border mt-16 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-muted-foreground">
+        <p>
+            Built with <a href="https://djust.org" target="_blank" class="text-primary hover:underline">djust-theming</a> v1.0.0
+        </p>
+        <p class="mt-2">
+            MIT License • <a href="https://github.com/djust-org/djust-theming" target="_blank" class="hover:text-foreground transition-colors">GitHub</a>
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>

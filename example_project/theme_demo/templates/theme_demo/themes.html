@@ -1,0 +1,399 @@
+{% extends "theme_demo/base.html" %}
+{% load theme_components %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-4xl font-bold mb-2">Design System Themes</h1>
+    <p class="text-muted-foreground">
+        Complete design systems with typography, spacing, shadows, animations and component styles
+    </p>
+</div>
+
+<!-- Current Theme -->
+<div class="bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/20 rounded-lg p-6 mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="text-xl font-semibold mb-1">Current Theme</h2>
+            <p class="text-sm text-muted-foreground">
+                Using: <span class="font-mono text-primary">{{ theme_state.theme }}</span>
+            </p>
+        </div>
+        <div class="flex gap-2">
+            {% theme_badge theme_state.theme variant="default" %}
+            {% theme_badge theme_state.preset variant="secondary" %}
+        </div>
+    </div>
+</div>
+
+<!-- Theme Grid -->
+<div class="grid md:grid-cols-2 gap-6 mb-8">
+    <!-- Material Design -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <h3 class="text-xl font-semibold mb-2">Material Design</h3>
+        <p class="text-sm text-muted-foreground mb-4">Google's Material Design system</p>
+
+        <div class="space-y-2 mb-4">
+            <div class="text-xs">
+                <span class="font-semibold">Font:</span> Roboto
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Corners:</span> Rounded (4-12px)
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Shadows:</span> Material elevation
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Style:</span> Solid buttons, elevated cards
+            </div>
+        </div>
+
+        {% if theme_state.theme == "material" %}
+            {% theme_badge "Active" variant="success" %}
+        {% else %}
+            <button onclick="setTheme('material')" class="btn btn-sm btn-primary">
+                Switch to Material
+            </button>
+        {% endif %}
+    </div>
+
+    <!-- iOS -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <h3 class="text-xl font-semibold mb-2">iOS</h3>
+        <p class="text-sm text-muted-foreground mb-4">Apple's iOS design language</p>
+
+        <div class="space-y-2 mb-4">
+            <div class="text-xs">
+                <span class="font-semibold">Font:</span> SF Pro
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Corners:</span> Very rounded (8-20px)
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Shadows:</span> Subtle, soft
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Style:</span> Clean, tight spacing
+            </div>
+        </div>
+
+        {% if theme_state.theme == "ios" %}
+            {% theme_badge "Active" variant="success" %}
+        {% else %}
+            <button onclick="setTheme('ios')" class="btn btn-sm btn-primary">
+                Switch to iOS
+            </button>
+        {% endif %}
+    </div>
+
+    <!-- Fluent Design -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <h3 class="text-xl font-semibold mb-2">Fluent Design</h3>
+        <p class="text-sm text-muted-foreground mb-4">Microsoft's Fluent Design System</p>
+
+        <div class="space-y-2 mb-4">
+            <div class="text-xs">
+                <span class="font-semibold">Font:</span> Segoe UI
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Corners:</span> Subtle (2-8px)
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Shadows:</span> Acrylic, layered
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Style:</span> Depth, reveal
+            </div>
+        </div>
+
+        {% if theme_state.theme == "fluent" %}
+            {% theme_badge "Active" variant="success" %}
+        {% else %}
+            <button onclick="setTheme('fluent')" class="btn btn-sm btn-primary">
+                Switch to Fluent
+            </button>
+        {% endif %}
+    </div>
+
+    <!-- Minimalist -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <h3 class="text-xl font-semibold mb-2">Minimalist</h3>
+        <p class="text-sm text-muted-foreground mb-4">Clean, minimal, brutalist design</p>
+
+        <div class="space-y-2 mb-4">
+            <div class="text-xs">
+                <span class="font-semibold">Font:</span> Inter
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Corners:</span> Sharp (0px)
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Shadows:</span> Flat, minimal
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Style:</span> Outlined, borders
+            </div>
+        </div>
+
+        {% if theme_state.theme == "minimalist" %}
+            {% theme_badge "Active" variant="success" %}
+        {% else %}
+            <button onclick="setTheme('minimalist')" class="btn btn-sm btn-primary">
+                Switch to Minimalist
+            </button>
+        {% endif %}
+    </div>
+
+    <!-- Playful -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <h3 class="text-xl font-semibold mb-2">Playful</h3>
+        <p class="text-sm text-muted-foreground mb-4">Modern, friendly, with personality</p>
+
+        <div class="space-y-2 mb-4">
+            <div class="text-xs">
+                <span class="font-semibold">Font:</span> DM Sans
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Corners:</span> Pill-shaped (16px+)
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Shadows:</span> Soft, elevated
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Style:</span> Bouncy, friendly
+            </div>
+        </div>
+
+        {% if theme_state.theme == "playful" %}
+            {% theme_badge "Active" variant="success" %}
+        {% else %}
+            <button onclick="setTheme('playful')" class="btn btn-sm btn-primary">
+                Switch to Playful
+            </button>
+        {% endif %}
+    </div>
+
+    <!-- Corporate -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <h3 class="text-xl font-semibold mb-2">Corporate</h3>
+        <p class="text-sm text-muted-foreground mb-4">Professional, clean, business-focused</p>
+
+        <div class="space-y-2 mb-4">
+            <div class="text-xs">
+                <span class="font-semibold">Font:</span> IBM Plex Sans
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Corners:</span> Subtle (2-8px)
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Shadows:</span> Subtle, professional
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Style:</span> Clean, structured
+            </div>
+        </div>
+
+        {% if theme_state.theme == "corporate" %}
+            {% theme_badge "Active" variant="success" %}
+        {% else %}
+            <button onclick="setTheme('corporate')" class="btn btn-sm btn-primary">
+                Switch to Corporate
+            </button>
+        {% endif %}
+    </div>
+
+    <!-- Retro -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <h3 class="text-xl font-semibold mb-2">Retro</h3>
+        <p class="text-sm text-muted-foreground mb-4">Classic web 1.0 with system fonts and sharp edges</p>
+
+        <div class="space-y-2 mb-4">
+            <div class="text-xs">
+                <span class="font-semibold">Font:</span> MS Sans Serif, Verdana
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Corners:</span> Sharp (0px)
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Shadows:</span> Hard drop shadows
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Style:</span> Classic 90s web aesthetic
+            </div>
+        </div>
+
+        {% if theme_state.theme == "retro" %}
+            {% theme_badge "Active" variant="success" %}
+        {% else %}
+            <button onclick="setTheme('retro')" class="btn btn-sm btn-primary">
+                Switch to Retro
+            </button>
+        {% endif %}
+    </div>
+
+    <!-- Elegant -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <h3 class="text-xl font-semibold mb-2">Elegant</h3>
+        <p class="text-sm text-muted-foreground mb-4">Premium design with serif fonts and generous spacing</p>
+
+        <div class="space-y-2 mb-4">
+            <div class="text-xs">
+                <span class="font-semibold">Font:</span> Crimson Pro, serif
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Corners:</span> Subtle (0.125-0.5rem)
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Shadows:</span> Soft, elegant
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Style:</span> Sophisticated, refined
+            </div>
+        </div>
+
+        {% if theme_state.theme == "elegant" %}
+            {% theme_badge "Active" variant="success" %}
+        {% else %}
+            <button onclick="setTheme('elegant')" class="btn btn-sm btn-primary">
+                Switch to Elegant
+            </button>
+        {% endif %}
+    </div>
+
+    <!-- Neo-Brutalist -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <h3 class="text-xl font-semibold mb-2">Neo-Brutalist</h3>
+        <p class="text-sm text-muted-foreground mb-4">Bold, dramatic design with thick borders and high contrast</p>
+
+        <div class="space-y-2 mb-4">
+            <div class="text-xs">
+                <span class="font-semibold">Font:</span> Space Grotesk, bold
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Corners:</span> Sharp (0px)
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Shadows:</span> Dramatic hard shadows
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Style:</span> Bold, high-contrast
+            </div>
+        </div>
+
+        {% if theme_state.theme == "neo_brutalist" %}
+            {% theme_badge "Active" variant="success" %}
+        {% else %}
+            <button onclick="setTheme('neo_brutalist')" class="btn btn-sm btn-primary">
+                Switch to Neo-Brutalist
+            </button>
+        {% endif %}
+    </div>
+
+    <!-- Organic -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <h3 class="text-xl font-semibold mb-2">Organic</h3>
+        <p class="text-sm text-muted-foreground mb-4">Soft, nature-inspired design with gentle curves</p>
+
+        <div class="space-y-2 mb-4">
+            <div class="text-xs">
+                <span class="font-semibold">Font:</span> Nunito, rounded
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Corners:</span> Very rounded (1-3rem)
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Shadows:</span> Soft, natural
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Style:</span> Warm, friendly
+            </div>
+        </div>
+
+        {% if theme_state.theme == "organic" %}
+            {% theme_badge "Active" variant="success" %}
+        {% else %}
+            <button onclick="setTheme('organic')" class="btn btn-sm btn-primary">
+                Switch to Organic
+            </button>
+        {% endif %}
+    </div>
+
+    <!-- Dense -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <h3 class="text-xl font-semibold mb-2">Dense</h3>
+        <p class="text-sm text-muted-foreground mb-4">Compact design for maximum information density</p>
+
+        <div class="space-y-2 mb-4">
+            <div class="text-xs">
+                <span class="font-semibold">Font:</span> Roboto Condensed, small
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Corners:</span> Minimal (0.125-0.25rem)
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Shadows:</span> Minimal
+            </div>
+            <div class="text-xs">
+                <span class="font-semibold">Style:</span> Compact, efficient
+            </div>
+        </div>
+
+        {% if theme_state.theme == "dense" %}
+            {% theme_badge "Active" variant="success" %}
+        {% else %}
+            <button onclick="setTheme('dense')" class="btn btn-sm btn-primary">
+                Switch to Dense
+            </button>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Comparison -->
+<div class="bg-card border border-border rounded-lg p-8">
+    <h2 class="text-2xl font-semibold mb-4">What Makes Themes Different?</h2>
+    <p class="text-sm text-muted-foreground mb-6">
+        Unlike color presets which only change colors, themes change the entire design system
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-6">
+        <div>
+            <h3 class="text-lg font-semibold mb-3">Typography</h3>
+            <ul class="text-sm space-y-2">
+                <li>• Font families (system vs. custom)</li>
+                <li>• Font sizes and scales</li>
+                <li>• Line heights</li>
+                <li>• Font weights</li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="text-lg font-semibold mb-3">Layout & Spacing</h3>
+            <ul class="text-sm space-y-2">
+                <li>• Spacing scales (tight/normal/loose)</li>
+                <li>• Border radius (sharp/rounded/pill)</li>
+                <li>• Shadow depths</li>
+                <li>• Container widths</li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="text-lg font-semibold mb-3">Components</h3>
+            <ul class="text-sm space-y-2">
+                <li>• Button styles (solid/outlined/ghost)</li>
+                <li>• Card styles (elevated/outlined/flat)</li>
+                <li>• Input styles (outlined/filled/underlined)</li>
+                <li>• Animation timing</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+function setTheme(themeName) {
+    // Set cookie for server-side rendering
+    document.cookie = `djust_theme=${themeName};path=/;max-age=31536000;SameSite=Lax`;
+
+    // Reload page to apply new theme
+    window.location.reload();
+}
+</script>
+{% endblock %}

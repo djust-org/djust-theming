@@ -1,0 +1,480 @@
+{% extends "theme_demo/base.html" %}
+{% load theme_components %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-4xl font-bold mb-2">Theme Packs</h1>
+    <p class="text-muted-foreground">
+        Complete design systems bundling theme + colors + icons + animations + patterns + interactions
+    </p>
+</div>
+
+<!-- Current Pack -->
+<div class="bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/20 rounded-lg p-6 mb-8">
+    <div class="flex items-center justify-between">
+        <div>
+            <h2 class="text-xl font-semibold mb-1">Current Setup</h2>
+            <p class="text-sm text-muted-foreground">
+                {% if theme_state.pack %}
+                    Pack: <span class="font-mono text-primary">{{ theme_state.pack }}</span>
+                {% else %}
+                    Custom: <span class="font-mono text-primary">{{ theme_state.theme }} + {{ theme_state.preset }}</span>
+                {% endif %}
+            </p>
+        </div>
+        {% if theme_state.pack %}
+            {% theme_badge theme_state.pack variant="default" %}
+        {% endif %}
+    </div>
+</div>
+
+<!-- Theme Packs Grid -->
+<div class="grid md:grid-cols-2 gap-6 mb-8">
+    <!-- Corporate Pack -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <h3 class="text-xl font-semibold mb-1">Corporate Professional</h3>
+                <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:bg-blue-200 px-2 py-1 rounded">Professional</span>
+            </div>
+            {% if theme_state.pack == "corporate" %}
+                {% theme_badge "Active" variant="success" %}
+            {% else %}
+                <button onclick="setPack('corporate')" class="btn btn-sm btn-primary">
+                    Apply Pack
+                </button>
+            {% endif %}
+        </div>
+
+        <p class="text-sm text-muted-foreground mb-4">
+            Clean, professional design for business applications
+        </p>
+
+        <div class="space-y-2 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Theme:</span>
+                <span class="text-muted-foreground">Corporate</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Colors:</span>
+                <span class="text-muted-foreground">Blue</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Icons:</span>
+                <span class="text-muted-foreground">Outlined</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Animations:</span>
+                <span class="text-muted-foreground">Smooth</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Pattern:</span>
+                <span class="text-muted-foreground">Grid</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Interaction:</span>
+                <span class="text-muted-foreground">Subtle lift</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Playful Pack -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <h3 class="text-xl font-semibold mb-1">Playful Startup</h3>
+                <span class="text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">Playful</span>
+            </div>
+            {% if theme_state.pack == "playful" %}
+                {% theme_badge "Active" variant="success" %}
+            {% else %}
+                <button onclick="setPack('playful')" class="btn btn-sm btn-primary">
+                    Apply Pack
+                </button>
+            {% endif %}
+        </div>
+
+        <p class="text-sm text-muted-foreground mb-4">
+            Fun, energetic design with personality
+        </p>
+
+        <div class="space-y-2 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Theme:</span>
+                <span class="text-muted-foreground">Playful</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Colors:</span>
+                <span class="text-muted-foreground">Purple</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Icons:</span>
+                <span class="text-muted-foreground">Rounded, filled</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Animations:</span>
+                <span class="text-muted-foreground">Bouncy</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Pattern:</span>
+                <span class="text-muted-foreground">Colorful dots</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Interaction:</span>
+                <span class="text-muted-foreground">Scale + bounce</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Retro Pack -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <h3 class="text-xl font-semibold mb-1">Retro Nostalgia</h3>
+                <span class="text-xs bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">Retro</span>
+            </div>
+            {% if theme_state.pack == "retro" %}
+                {% theme_badge "Active" variant="success" %}
+            {% else %}
+                <button onclick="setPack('retro')" class="btn btn-sm btn-primary">
+                    Apply Pack
+                </button>
+            {% endif %}
+        </div>
+
+        <p class="text-sm text-muted-foreground mb-4">
+            Classic 90s web aesthetic with pixel-perfect design
+        </p>
+
+        <div class="space-y-2 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Theme:</span>
+                <span class="text-muted-foreground">Retro</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Colors:</span>
+                <span class="text-muted-foreground">Default</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Icons:</span>
+                <span class="text-muted-foreground">Sharp, pixel-art</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Animations:</span>
+                <span class="text-muted-foreground">Instant</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Pattern:</span>
+                <span class="text-muted-foreground">Dithered noise</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Interaction:</span>
+                <span class="text-muted-foreground">Minimal</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Elegant Pack -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <h3 class="text-xl font-semibold mb-1">Elegant Luxury</h3>
+                <span class="text-xs bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 px-2 py-1 rounded">Elegant</span>
+            </div>
+            {% if theme_state.pack == "elegant" %}
+                {% theme_badge "Active" variant="success" %}
+            {% else %}
+                <button onclick="setPack('elegant')" class="btn btn-sm btn-primary">
+                    Apply Pack
+                </button>
+            {% endif %}
+        </div>
+
+        <p class="text-sm text-muted-foreground mb-4">
+            Sophisticated, premium design with refined details
+        </p>
+
+        <div class="space-y-2 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Theme:</span>
+                <span class="text-muted-foreground">Elegant (serif)</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Colors:</span>
+                <span class="text-muted-foreground">Default</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Icons:</span>
+                <span class="text-muted-foreground">Thin, minimal</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Animations:</span>
+                <span class="text-muted-foreground">Gentle</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Pattern:</span>
+                <span class="text-muted-foreground">Subtle gradients</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Interaction:</span>
+                <span class="text-muted-foreground">Fade, gentle</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Neo-Brutalist Pack -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <h3 class="text-xl font-semibold mb-1">Neo-Brutalist Edge</h3>
+                <span class="text-xs bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">Bold</span>
+            </div>
+            {% if theme_state.pack == "brutalist" %}
+                {% theme_badge "Active" variant="success" %}
+            {% else %}
+                <button onclick="setPack('brutalist')" class="btn btn-sm btn-primary">
+                    Apply Pack
+                </button>
+            {% endif %}
+        </div>
+
+        <p class="text-sm text-muted-foreground mb-4">
+            Bold, dramatic design with high contrast
+        </p>
+
+        <div class="space-y-2 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Theme:</span>
+                <span class="text-muted-foreground">Neo-Brutalist</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Colors:</span>
+                <span class="text-muted-foreground">High contrast</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Icons:</span>
+                <span class="text-muted-foreground">Sharp, bold</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Animations:</span>
+                <span class="text-muted-foreground">Snappy</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Pattern:</span>
+                <span class="text-muted-foreground">Minimal</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Interaction:</span>
+                <span class="text-muted-foreground">Hard snap</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nature Pack -->
+    <div class="bg-card border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+        <div class="flex items-start justify-between mb-4">
+            <div>
+                <h3 class="text-xl font-semibold mb-1">Nature Organic</h3>
+                <span class="text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded">Playful</span>
+            </div>
+            {% if theme_state.pack == "nature" %}
+                {% theme_badge "Active" variant="success" %}
+            {% else %}
+                <button onclick="setPack('nature')" class="btn btn-sm btn-primary">
+                    Apply Pack
+                </button>
+            {% endif %}
+        </div>
+
+        <p class="text-sm text-muted-foreground mb-4">
+            Soft, natural design inspired by organic forms
+        </p>
+
+        <div class="space-y-2 text-xs">
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Theme:</span>
+                <span class="text-muted-foreground">Organic</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Colors:</span>
+                <span class="text-muted-foreground">Green</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Icons:</span>
+                <span class="text-muted-foreground">Rounded, soft</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Animations:</span>
+                <span class="text-muted-foreground">Gentle, flowing</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Pattern:</span>
+                <span class="text-muted-foreground">Natural dots</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="font-semibold w-24">Interaction:</span>
+                <span class="text-muted-foreground">Smooth grow</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Icon Style Examples --><div class="bg-card border border-border rounded-lg p-8 mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Icon Style Preview</h2>
+    <p class="text-sm text-muted-foreground mb-6">
+        Visual comparison of icon styles across different packs
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-6">
+        <!-- Outlined Icons (Corporate, Retro) -->
+        <div class="border border-border rounded-lg p-4">
+            <h3 class="text-sm font-semibold mb-3">Outlined</h3>
+            <div class="flex gap-4 text-foreground">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+            </div>
+            <p class="text-xs text-muted-foreground mt-2">Clean lines, stroke-based</p>
+        </div>
+
+        <!-- Rounded/Filled Icons (Playful, Nature) -->
+        <div class="border border-border rounded-lg p-4">
+            <h3 class="text-sm font-semibold mb-3">Rounded & Filled</h3>
+            <div class="flex gap-4 text-foreground">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path fill="white" d="M12 6v6l4 2"/>
+                </svg>
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+            </div>
+            <p class="text-xs text-muted-foreground mt-2">Soft, approachable feel</p>
+        </div>
+
+        <!-- Sharp Icons (Neo-Brutalist) -->
+        <div class="border border-border rounded-lg p-4">
+            <h3 class="text-sm font-semibold mb-3">Sharp & Bold</h3>
+            <div class="flex gap-4 text-foreground">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <polygon points="12,2 22,12 12,22 2,12"/>
+                </svg>
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M2 2h20v20H2z"/>
+                    <path fill="white" d="M8 8l8 8M16 8l-8 8" stroke="white" stroke-width="2"/>
+                </svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <polygon stroke-linecap="square" stroke-linejoin="miter" points="12,2 2,22 22,22"/>
+                </svg>
+            </div>
+            <p class="text-xs text-muted-foreground mt-2">Angular, high impact</p>
+        </div>
+
+        <!-- Thin Icons (Elegant) -->
+        <div class="border border-border rounded-lg p-4">
+            <h3 class="text-sm font-semibold mb-3">Thin & Minimal</h3>
+            <div class="flex gap-4 text-foreground">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"/>
+                </svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                </svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+            </div>
+            <p class="text-xs text-muted-foreground mt-2">Refined, sophisticated</p>
+        </div>
+
+        <!-- Animation Comparison -->
+        <div class="border border-border rounded-lg p-4">
+            <h3 class="text-sm font-semibold mb-3">Animation Style</h3>
+            <div class="flex gap-4">
+                <button class="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:scale-105 transition-transform duration-150">
+                    Smooth
+                </button>
+                <button class="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:scale-110 transition-transform duration-100">
+                    Snappy
+                </button>
+            </div>
+            <p class="text-xs text-muted-foreground mt-2">Hover to see motion</p>
+        </div>
+
+        <!-- Pattern Preview -->
+        <div class="border border-border rounded-lg p-4 relative overflow-hidden">
+            <h3 class="text-sm font-semibold mb-3">Pattern Style</h3>
+            <div class="grid grid-cols-2 gap-2">
+                <div class="h-12 bg-muted rounded relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, currentColor 1px, transparent 1px); background-size: 8px 8px;"></div>
+                    <span class="absolute inset-0 flex items-center justify-center text-xs">Dots</span>
+                </div>
+                <div class="h-12 bg-muted rounded relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px); background-size: 10px 10px;"></div>
+                    <span class="absolute inset-0 flex items-center justify-center text-xs">Grid</span>
+                </div>
+            </div>
+            <p class="text-xs text-muted-foreground mt-2">Background patterns</p>
+        </div>
+    </div>
+</div>
+
+<!-- What's in a Pack -->
+<div class="bg-card border border-border rounded-lg p-8">
+    <h2 class="text-2xl font-semibold mb-4">What's in a Theme Pack?</h2>
+    <p class="text-sm text-muted-foreground mb-6">
+        A Theme Pack bundles all styling dimensions into a cohesive design system
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-6">
+        <div>
+            <h3 class="text-lg font-semibold mb-3">Core Design</h3>
+            <ul class="text-sm space-y-2">
+                <li>• Typography (fonts, sizes)</li>
+                <li>• Spacing scales</li>
+                <li>• Border radius</li>
+                <li>• Shadow depths</li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="text-lg font-semibold mb-3">Visual Style</h3>
+            <ul class="text-sm space-y-2">
+                <li>• Icon styling</li>
+                <li>• Background patterns</li>
+                <li>• Surface treatments</li>
+                <li>• Image filters</li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="text-lg font-semibold mb-3">Interactions</h3>
+            <ul class="text-sm space-y-2">
+                <li>• Animation timing</li>
+                <li>• Hover effects</li>
+                <li>• Click feedback</li>
+                <li>• Focus states</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+function setPack(packName) {
+    // Set cookie for server-side rendering
+    document.cookie = `djust_theme_pack=${packName};path=/;max-age=31536000;SameSite=Lax`;
+
+    // Reload page to apply new pack
+    window.location.reload();
+}
+</script>
+{% endblock %}

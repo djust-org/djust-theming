@@ -1,0 +1,82 @@
+<div class="alert alert-{{ variant }} {% if attrs.class %}{{ attrs.class }}{% endif %}"
+     role="alert"
+     {% if attrs.id %}id="{{ attrs.id }}"{% endif %}>
+    <div class="alert-content">
+        {% if title %}
+        <div class="alert-title">{{ title }}</div>
+        {% endif %}
+        <div class="alert-message">{{ message }}</div>
+    </div>
+    {% if dismissible %}
+    <button class="alert-dismiss" onclick="this.parentElement.remove()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    </button>
+    {% endif %}
+</div>
+
+<style>
+.alert {
+    position: relative;
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid;
+}
+
+.alert-content {
+    flex: 1;
+}
+
+.alert-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.alert-message {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.alert-dismiss {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+    color: inherit;
+}
+
+.alert-dismiss:hover {
+    opacity: 1;
+}
+
+.alert-default {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    border-color: hsl(var(--border));
+}
+
+.alert-success {
+    background-color: hsl(var(--success) / 0.1);
+    color: hsl(var(--success));
+    border-color: hsl(var(--success) / 0.2);
+}
+
+.alert-warning {
+    background-color: hsl(var(--warning) / 0.1);
+    color: hsl(var(--warning));
+    border-color: hsl(var(--warning) / 0.2);
+}
+
+.alert-destructive {
+    background-color: hsl(var(--destructive) / 0.1);
+    color: hsl(var(--destructive));
+    border-color: hsl(var(--destructive) / 0.2);
+}
+</style>
