@@ -22,7 +22,7 @@ except ImportError:
         return decorator
 
 
-from .css_generator import ThemeCSSGenerator
+from .theme_css_generator import CompleteThemeCSSGenerator
 from .manager import ThemeManager
 from .presets import THEME_PRESETS
 
@@ -84,8 +84,8 @@ class ThemeMixin:
         state = self._theme_state
         presets = self._theme_manager.get_available_presets()
 
-        # Generate CSS
-        generator = ThemeCSSGenerator(preset_name=state.preset)
+        # Generate CSS using the complete generator
+        generator = CompleteThemeCSSGenerator(theme_name=state.theme, color_preset=state.preset)
         css = generator.generate_css()
 
         # Anti-FOUC script - runs before page renders
@@ -104,12 +104,23 @@ class ThemeMixin:
 </script>"""
 
         # Set theme_head - complete head content for theming
+        # Use link_css=True logic similar to context processor for consistency
+        from django.urls import reverse, NoReverseMatch
+        try:
+            url = reverse("djust_theming:theme_css")
+            cache_buster = f"t={state.theme}&p={state.preset}&m={state.mode}"
+            if state.pack:
+                cache_buster += f"&pk={state.pack}"
+            css_include = f'<link rel="stylesheet" href="{url}?{cache_buster}" data-djust-theme id="djust-theme-css">'
+        except NoReverseMatch:
+            css_include = f'<style id="djust-theme-css" data-djust-theme>{css}</style>'
+
         self.theme_head = f"""{anti_fouc}
-<style id="djust-theme-css" data-djust-theme>{css}</style>
+{css_include}
 <script src="/static/djust_theming/js/theme.js?v=3" defer></script>"""
 
         # Set theme_css - just the CSS (for cases where you want more control)
-        self.theme_css = f'<style id="djust-theme-css" data-djust-theme>{css}</style>'
+        self.theme_css = css_include
         
         # Raw CSS content (for push_event updates)
         self._theme_css_raw = css

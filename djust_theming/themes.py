@@ -1,4 +1,15 @@
 """
+DEPRECATED: This module is deprecated in favor of theme_packs.py
+
+Please use theme_packs.py instead, which provides:
+- DesignSystem objects (color-independent design systems)
+- Better separation between design systems and color presets
+- More flexible mix-and-match capabilities
+
+This module is kept for backward compatibility only.
+
+---
+
 Complete theming system with design system variants.
 
 Each theme defines a complete design system including:

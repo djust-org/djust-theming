@@ -54,43 +54,29 @@ class DesignSystemCSSGenerator:
     def _typography_to_css_vars(self, typography: TypographyStyle, indent: str = "  ") -> str:
         """Convert typography style to CSS variables."""
         lines = []
-        lines.append(f"{indent}{self._get_css_var_name('font-heading')}: {typography.heading_font};")
-        lines.append(f"{indent}{self._get_css_var_name('font-body')}: {typography.body_font};")
-        lines.append(f"{indent}{self._get_css_var_name('font-size-base')}: {typography.base_size};")
-        lines.append(f"{indent}{self._get_css_var_name('font-scale')}: {typography.heading_scale};")
-        lines.append(f"{indent}{self._get_css_var_name('line-height')}: {typography.line_height};")
-        lines.append(f"{indent}{self._get_css_var_name('font-weight-heading')}: {typography.heading_weight};")
-        lines.append(f"{indent}{self._get_css_var_name('font-weight-body')}: {typography.body_weight};")
-        lines.append(f"{indent}{self._get_css_var_name('letter-spacing')}: {typography.letter_spacing};")
+        lines.append(f"{indent}{self._get_css_var_name('font-sans')}: {typography.body_font};")
+        lines.append(f"{indent}{self._get_css_var_name('font-display')}: {typography.heading_font};")
+        lines.append(f"{indent}{self._get_css_var_name('text-base')}: {typography.base_size};")
+        lines.append(f"{indent}{self._get_css_var_name('leading-normal')}: {typography.line_height};")
         return "\n".join(lines)
         
     def _layout_to_css_vars(self, layout: LayoutStyle, indent: str = "  ") -> str:
         """Convert layout style to CSS variables.""" 
         lines = []
-        lines.append(f"{indent}{self._get_css_var_name('space-unit')}: {layout.space_unit};")
-        lines.append(f"{indent}{self._get_css_var_name('space-scale')}: {layout.space_scale};")
-        lines.append(f"{indent}{self._get_css_var_name('border-radius-sm')}: {layout.border_radius_sm};")
-        lines.append(f"{indent}{self._get_css_var_name('border-radius-md')}: {layout.border_radius_md};")
-        lines.append(f"{indent}{self._get_css_var_name('border-radius-lg')}: {layout.border_radius_lg};")
-        lines.append(f"{indent}{self._get_css_var_name('container-width')}: {layout.container_width};")
-        lines.append(f"{indent}{self._get_css_var_name('grid-gap')}: {layout.grid_gap};")
-        lines.append(f"{indent}{self._get_css_var_name('section-spacing')}: {layout.section_spacing};")
+        lines.append(f"{indent}{self._get_css_var_name('radius-sm')}: {layout.border_radius_sm};")
+        lines.append(f"{indent}{self._get_css_var_name('radius')}: {layout.border_radius_md};")
+        lines.append(f"{indent}{self._get_css_var_name('radius-lg')}: {layout.border_radius_lg};")
         
-        # Shape mappings for components
+        # Also keep component specific ones if needed by custom styles
         shape_map = {
             "sharp": "0px",
-            "rounded": "var(--border-radius-md)", 
+            "rounded": "var(--radius)", 
             "pill": "9999px",
-            "organic": "var(--border-radius-lg)"
+            "organic": "var(--radius-lg)"
         }
         
         button_radius = shape_map.get(layout.button_shape, layout.border_radius_md)
-        card_radius = shape_map.get(layout.card_shape, layout.border_radius_md)
-        input_radius = shape_map.get(layout.input_shape, layout.border_radius_sm)
-        
         lines.append(f"{indent}{self._get_css_var_name('button-radius')}: {button_radius};")
-        lines.append(f"{indent}{self._get_css_var_name('card-radius')}: {card_radius};")
-        lines.append(f"{indent}{self._get_css_var_name('input-radius')}: {input_radius};")
         
         return "\n".join(lines)
         
@@ -98,17 +84,8 @@ class DesignSystemCSSGenerator:
         """Convert surface style to CSS variables."""
         lines = []
         lines.append(f"{indent}{self._get_css_var_name('shadow-sm')}: {surface.shadow_sm};")
-        lines.append(f"{indent}{self._get_css_var_name('shadow-md')}: {surface.shadow_md};")
+        lines.append(f"{indent}{self._get_css_var_name('shadow')}: {surface.shadow_md};")
         lines.append(f"{indent}{self._get_css_var_name('shadow-lg')}: {surface.shadow_lg};")
-        lines.append(f"{indent}{self._get_css_var_name('border-width')}: {surface.border_width};")
-        lines.append(f"{indent}{self._get_css_var_name('border-style')}: {surface.border_style};")
-        
-        if surface.backdrop_blur != "0px":
-            lines.append(f"{indent}{self._get_css_var_name('backdrop-blur')}: {surface.backdrop_blur};")
-            
-        if surface.noise_opacity > 0:
-            lines.append(f"{indent}{self._get_css_var_name('noise-opacity')}: {surface.noise_opacity};")
-            
         return "\n".join(lines)
         
     def _animation_to_css_vars(self, animation: AnimationStyle, indent: str = "  ") -> str:
@@ -212,60 +189,42 @@ class DesignSystemCSSGenerator:
         """Generate typography-related styles."""
         return """/* Typography */
 body {
-  font-family: var(--font-body);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height);
-  font-weight: var(--font-weight-body);
-  letter-spacing: var(--letter-spacing);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  font-weight: var(--font-weight-heading);
-  letter-spacing: var(--letter-spacing);
+  font-family: var(--font-display);
 }
 
-h1 { font-size: calc(var(--font-size-base) * var(--font-scale) * var(--font-scale) * var(--font-scale)); }
-h2 { font-size: calc(var(--font-size-base) * var(--font-scale) * var(--font-scale)); }
-h3 { font-size: calc(var(--font-size-base) * var(--font-scale)); }
-h4 { font-size: var(--font-size-base); }
-h5 { font-size: calc(var(--font-size-base) * 0.9); }
-h6 { font-size: calc(var(--font-size-base) * 0.8); }"""
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }"""
 
     def _generate_layout_styles(self) -> str:
         """Generate layout-related styles."""
         return """/* Layout */
 .container {
-  max-width: var(--container-width);
+  max-width: 1200px;
   margin: 0 auto;
-}
-
-.section {
-  margin-bottom: var(--section-spacing);
-}
-
-.grid {
-  display: grid;
-  gap: var(--grid-gap);
 }
 
 /* Component shapes */
 .btn, button {
-  border-radius: var(--button-radius);
+  border-radius: var(--radius);
 }
 
 .card {
-  border-radius: var(--card-radius);
+  border-radius: var(--radius-lg);
 }
 
 .input, input, textarea, select {
-  border-radius: var(--input-radius);
-}
-
-/* Spacing utilities */
-.space-unit { margin: var(--space-unit); }
-.space-unit-x { margin-left: var(--space-unit); margin-right: var(--space-unit); }
-.space-unit-y { margin-top: var(--space-unit); margin-bottom: var(--space-unit); }"""
+  border-radius: var(--radius-sm);
+}"""
 
     def _generate_surface_styles(self) -> str:
         """Generate surface-related styles."""

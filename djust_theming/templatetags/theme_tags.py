@@ -18,39 +18,69 @@ Usage:
 """
 
 from django import template
+from django.urls import reverse, NoReverseMatch
 from django.utils.safestring import mark_safe
 
 from ..components import PresetSelector, ThemeModeButton, ThemeSwitcher, ThemeSwitcherConfig
 from ..theme_css_generator import CompleteThemeCSSGenerator
+from ..pack_css_generator import ThemePackCSSGenerator
 from ..manager import ThemeManager, get_theme_config
 
 register = template.Library()
 
 
 @register.simple_tag(takes_context=True)
-def theme_head(context, include_js: bool = True):
+def theme_head(context, include_js: bool = True, link_css: bool = False):
     """
     Render theme CSS and anti-FOUC script in the <head>.
 
     Usage:
         {% theme_head %}
         {% theme_head include_js=False %}
+        {% theme_head link_css=True %}
 
     This renders:
     - Anti-flash script (runs before page render to set correct theme)
-    - Theme CSS custom properties
+    - Theme CSS (either inline <style> or <link> tag)
     - Optionally, the theme.js script tag
     """
     request = context.get("request")
-    config = get_theme_config()
-
+    
     # Get current theme state
     manager = ThemeManager(request=request)
     state = manager.get_state()
 
-    # Generate CSS for current theme and preset
-    generator = CompleteThemeCSSGenerator(theme_name=state.theme, color_preset=state.preset)
-    css = generator.generate_css()
+    css_block = ""
+    
+    if link_css:
+        try:
+            url = reverse("djust_theming:theme_css")
+            # Add cache buster based on state
+            cache_buster = f"t={state.theme}&p={state.preset}&m={state.mode}"
+            if state.pack:
+                cache_buster += f"&pk={state.pack}"
+            
+            css_block = f'<link rel="stylesheet" href="{url}?{cache_buster}" data-djust-theme>'
+        except NoReverseMatch:
+            # Fallback to inline if URL not configured
+            pass
+
+    if not css_block:
+        # Generate CSS inline
+        css = ""
+        if state.pack:
+            try:
+                generator = ThemePackCSSGenerator(pack_name=state.pack)
+                css = generator.generate_css()
+            except ValueError:
+                # Fall back if pack not found
+                pass
+        
+        if not css:
+            generator = CompleteThemeCSSGenerator(theme_name=state.theme, color_preset=state.preset)
+            css = generator.generate_css()
+            
+        css_block = f"<style data-djust-theme>{css}</style>"
 
     # Anti-FOUC script - runs immediately to set theme before render
     anti_fouc_script = """
@@ -74,9 +104,6 @@ def theme_head(context, include_js: bool = True):
     </script>
     """
 
-    # CSS styles
-    css_block = f"<style data-djust-theme>{css}</style>"
-
     # Optional JS include
     js_include = ""
     if include_js:
@@ -99,8 +126,17 @@ def theme_css(context):
     manager = ThemeManager(request=request)
     state = manager.get_state()
 
-    generator = CompleteThemeCSSGenerator(theme_name=state.theme, color_preset=state.preset)
-    css = generator.generate_css()
+    css = ""
+    if state.pack:
+        try:
+            generator = ThemePackCSSGenerator(pack_name=state.pack)
+            css = generator.generate_css()
+        except ValueError:
+            pass
+            
+    if not css:
+        generator = CompleteThemeCSSGenerator(theme_name=state.theme, color_preset=state.preset)
+        css = generator.generate_css()
 
     return mark_safe(f"<style data-djust-theme>{css}</style>")
 

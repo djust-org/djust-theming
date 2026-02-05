@@ -50,7 +50,7 @@
         {% if theme_state.theme == "material" %}
             {% theme_badge "Active" variant="success" %}
         {% else %}
-            <button onclick="setTheme('material')" class="btn btn-sm btn-primary">
+            <button onclick="window.djustTheme && window.djustTheme.setTheme('material')" class="btn btn-sm btn-primary">
                 Switch to Material
             </button>
         {% endif %}
@@ -79,7 +79,7 @@
         {% if theme_state.theme == "ios" %}
             {% theme_badge "Active" variant="success" %}
         {% else %}
-            <button onclick="setTheme('ios')" class="btn btn-sm btn-primary">
+            <button onclick="window.djustTheme && window.djustTheme.setTheme('ios')" class="btn btn-sm btn-primary">
                 Switch to iOS
             </button>
         {% endif %}
@@ -108,7 +108,7 @@
         {% if theme_state.theme == "fluent" %}
             {% theme_badge "Active" variant="success" %}
         {% else %}
-            <button onclick="setTheme('fluent')" class="btn btn-sm btn-primary">
+            <button onclick="window.djustTheme && window.djustTheme.setTheme('fluent')" class="btn btn-sm btn-primary">
                 Switch to Fluent
             </button>
         {% endif %}
@@ -137,7 +137,7 @@
         {% if theme_state.theme == "minimalist" %}
             {% theme_badge "Active" variant="success" %}
         {% else %}
-            <button onclick="setTheme('minimalist')" class="btn btn-sm btn-primary">
+            <button onclick="window.djustTheme && window.djustTheme.setTheme('minimalist')" class="btn btn-sm btn-primary">
                 Switch to Minimalist
             </button>
         {% endif %}
@@ -166,7 +166,7 @@
         {% if theme_state.theme == "playful" %}
             {% theme_badge "Active" variant="success" %}
         {% else %}
-            <button onclick="setTheme('playful')" class="btn btn-sm btn-primary">
+            <button onclick="window.djustTheme && window.djustTheme.setTheme('playful')" class="btn btn-sm btn-primary">
                 Switch to Playful
             </button>
         {% endif %}
@@ -195,7 +195,7 @@
         {% if theme_state.theme == "corporate" %}
             {% theme_badge "Active" variant="success" %}
         {% else %}
-            <button onclick="setTheme('corporate')" class="btn btn-sm btn-primary">
+            <button onclick="window.djustTheme && window.djustTheme.setTheme('corporate')" class="btn btn-sm btn-primary">
                 Switch to Corporate
             </button>
         {% endif %}
@@ -224,7 +224,7 @@
         {% if theme_state.theme == "retro" %}
             {% theme_badge "Active" variant="success" %}
         {% else %}
-            <button onclick="setTheme('retro')" class="btn btn-sm btn-primary">
+            <button onclick="window.djustTheme && window.djustTheme.setTheme('retro')" class="btn btn-sm btn-primary">
                 Switch to Retro
             </button>
         {% endif %}
@@ -253,7 +253,7 @@
         {% if theme_state.theme == "elegant" %}
             {% theme_badge "Active" variant="success" %}
         {% else %}
-            <button onclick="setTheme('elegant')" class="btn btn-sm btn-primary">
+            <button onclick="window.djustTheme && window.djustTheme.setTheme('elegant')" class="btn btn-sm btn-primary">
                 Switch to Elegant
             </button>
         {% endif %}
@@ -282,7 +282,7 @@
         {% if theme_state.theme == "neo_brutalist" %}
             {% theme_badge "Active" variant="success" %}
         {% else %}
-            <button onclick="setTheme('neo_brutalist')" class="btn btn-sm btn-primary">
+            <button onclick="window.djustTheme && window.djustTheme.setTheme('neo_brutalist')" class="btn btn-sm btn-primary">
                 Switch to Neo-Brutalist
             </button>
         {% endif %}
@@ -311,7 +311,7 @@
         {% if theme_state.theme == "organic" %}
             {% theme_badge "Active" variant="success" %}
         {% else %}
-            <button onclick="setTheme('organic')" class="btn btn-sm btn-primary">
+            <button onclick="window.djustTheme && window.djustTheme.setTheme('organic')" class="btn btn-sm btn-primary">
                 Switch to Organic
             </button>
         {% endif %}
@@ -340,7 +340,7 @@
         {% if theme_state.theme == "dense" %}
             {% theme_badge "Active" variant="success" %}
         {% else %}
-            <button onclick="setTheme('dense')" class="btn btn-sm btn-primary">
+            <button onclick="window.djustTheme && window.djustTheme.setTheme('dense')" class="btn btn-sm btn-primary">
                 Switch to Dense
             </button>
         {% endif %}
@@ -386,14 +386,4 @@
         </div>
     </div>
 </div>
-
-<script>
-function setTheme(themeName) {
-    // Set cookie for server-side rendering
-    document.cookie = `djust_theme=${themeName};path=/;max-age=31536000;SameSite=Lax`;
-
-    // Reload page to apply new theme
-    window.location.reload();
-}
-</script>
 {% endblock %}

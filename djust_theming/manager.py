@@ -99,6 +99,8 @@ class ThemeManager:
             ThemeState with current theme, preset and mode
         """
         from .themes import THEMES
+        import logging
+        logger = logging.getLogger(__name__)
 
         session_data = self._get_session_data()
 
@@ -110,6 +112,7 @@ class ThemeManager:
             theme = self.request.COOKIES.get("djust_theme")
             preset = self.request.COOKIES.get("djust_theme_preset")
             pack = self.request.COOKIES.get("djust_theme_pack")
+            logger.debug(f"Cookies: theme={theme}, preset={preset}, pack={pack}")
 
         # Fall back to session, then config default
         if not theme:
@@ -120,6 +123,8 @@ class ThemeManager:
             pack = session_data.get("pack")
 
         mode = session_data.get("mode", self.config["default_mode"])
+        
+        logger.debug(f"Resolved before validation: theme={theme}, preset={preset}, pack={pack}, mode={mode}")
 
         # If pack is set, override theme and preset from pack
         if pack:

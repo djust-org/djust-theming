@@ -14,7 +14,12 @@
 
     const STORAGE_KEY_MODE = 'djust-theme-mode';
     const STORAGE_KEY_PRESET = 'djust-theme-preset';
+    const STORAGE_KEY_THEME = 'djust-theme-design';
+    const STORAGE_KEY_PACK = 'djust-theme-pack';
+    
     const COOKIE_KEY_PRESET = 'djust_theme_preset';
+    const COOKIE_KEY_THEME = 'djust_theme';
+    const COOKIE_KEY_PACK = 'djust_theme_pack';
 
     class DjustThemeManager {
         constructor() {
@@ -144,6 +149,9 @@
             // Also set a cookie so the server can read it
             document.cookie = `${COOKIE_KEY_PRESET}=${preset};path=/;max-age=31536000;SameSite=Lax`;
 
+            // Clear pack if setting preset manually
+            this.clearPack();
+
             // Dispatch event - actual CSS update requires page reload
             window.dispatchEvent(new CustomEvent('djust-preset-changed', {
                 detail: { preset }
@@ -151,6 +159,43 @@
 
             // Reload the page to apply the new theme CSS
             window.location.reload();
+        }
+
+        /**
+         * Set design system theme and persist to storage
+         */
+        setTheme(theme) {
+            localStorage.setItem(STORAGE_KEY_THEME, theme);
+
+            // Set cookie for server
+            document.cookie = `${COOKIE_KEY_THEME}=${theme};path=/;max-age=31536000;SameSite=Lax`;
+
+            // Clear pack if setting theme manually
+            this.clearPack();
+
+            // Reload to apply
+            window.location.reload();
+        }
+
+        /**
+         * Set theme pack and persist to storage
+         */
+        setPack(pack) {
+            localStorage.setItem(STORAGE_KEY_PACK, pack);
+
+            // Set cookie for server
+            document.cookie = `${COOKIE_KEY_PACK}=${pack};path=/;max-age=31536000;SameSite=Lax`;
+
+            // Reload to apply
+            window.location.reload();
+        }
+
+        /**
+         * Clear theme pack
+         */
+        clearPack() {
+            localStorage.removeItem(STORAGE_KEY_PACK);
+            document.cookie = `${COOKIE_KEY_PACK}=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT`;
         }
 
         /**

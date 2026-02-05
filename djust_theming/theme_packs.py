@@ -159,6 +159,78 @@ class DesignSystem:
 # Typography Presets
 # =============================================================================
 
+TYPO_MATERIAL = TypographyStyle(
+    name="material",
+    heading_font="system-ui",
+    body_font="system-ui",
+    base_size="16px",
+    heading_scale=1.25,
+    line_height="1.5",
+    heading_weight="500",
+    body_weight="400",
+    letter_spacing="normal"
+)
+
+TYPO_IOS = TypographyStyle(
+    name="ios",
+    heading_font="system-ui",
+    body_font="system-ui",
+    base_size="17px",
+    heading_scale=1.3,
+    line_height="1.4",
+    heading_weight="600",
+    body_weight="400",
+    letter_spacing="tight"
+)
+
+TYPO_FLUENT = TypographyStyle(
+    name="fluent",
+    heading_font="system-ui",
+    body_font="system-ui",
+    base_size="14px",
+    heading_scale=1.25,
+    line_height="1.5",
+    heading_weight="600",
+    body_weight="400",
+    letter_spacing="normal"
+)
+
+TYPO_PLAYFUL = TypographyStyle(
+    name="playful",
+    heading_font="display",
+    body_font="system-ui",
+    base_size="16px",
+    heading_scale=1.3,
+    line_height="1.75",
+    heading_weight="700",
+    body_weight="400",
+    letter_spacing="normal"
+)
+
+TYPO_CORPORATE = TypographyStyle(
+    name="corporate",
+    heading_font="system-ui",
+    body_font="system-ui",
+    base_size="16px",
+    heading_scale=1.2,
+    line_height="1.6",
+    heading_weight="600",
+    body_weight="400",
+    letter_spacing="normal"
+)
+
+TYPO_DENSE = TypographyStyle(
+    name="dense",
+    heading_font="system-ui",
+    body_font="system-ui",
+    base_size="13px",
+    heading_scale=1.15,
+    line_height="1.35",
+    heading_weight="600",
+    body_weight="400",
+    letter_spacing="tight"
+)
+
 TYPO_MINIMAL = TypographyStyle(
     name="minimal",
     heading_font="system-ui",
@@ -167,7 +239,7 @@ TYPO_MINIMAL = TypographyStyle(
     heading_scale=1.2,  # Subtle scale
     line_height="1.6",
     heading_weight="500",  # Lighter weight
-    body_weight="400", 
+    body_weight="400",
     letter_spacing="normal"
 )
 
@@ -221,18 +293,108 @@ TYPO_ORGANIC = TypographyStyle(
 
 
 # =============================================================================
-# Layout Presets  
+# Layout Presets
 # =============================================================================
+
+LAYOUT_MATERIAL = LayoutStyle(
+    name="material",
+    space_unit="1rem",
+    space_scale=2.0,
+    border_radius_sm="4px",
+    border_radius_md="8px",
+    border_radius_lg="12px",
+    button_shape="rounded",
+    card_shape="rounded",
+    input_shape="rounded",
+    container_width="1200px",
+    grid_gap="1.5rem",
+    section_spacing="3rem"
+)
+
+LAYOUT_IOS = LayoutStyle(
+    name="ios",
+    space_unit="1rem",
+    space_scale=1.5,
+    border_radius_sm="8px",
+    border_radius_md="12px",
+    border_radius_lg="16px",
+    button_shape="rounded",
+    card_shape="rounded",
+    input_shape="rounded",
+    container_width="1100px",
+    grid_gap="1.5rem",
+    section_spacing="3rem"
+)
+
+LAYOUT_FLUENT = LayoutStyle(
+    name="fluent",
+    space_unit="1rem",
+    space_scale=1.5,
+    border_radius_sm="2px",
+    border_radius_md="4px",
+    border_radius_lg="8px",
+    button_shape="rounded",
+    card_shape="rounded",
+    input_shape="rounded",
+    container_width="1200px",
+    grid_gap="1.5rem",
+    section_spacing="3rem"
+)
+
+LAYOUT_PLAYFUL = LayoutStyle(
+    name="playful",
+    space_unit="1rem",
+    space_scale=1.5,
+    border_radius_sm="8px",
+    border_radius_md="16px",
+    border_radius_lg="24px",
+    button_shape="pill",
+    card_shape="rounded",
+    input_shape="pill",
+    container_width="1200px",
+    grid_gap="2rem",
+    section_spacing="4rem"
+)
+
+LAYOUT_CORPORATE = LayoutStyle(
+    name="corporate",
+    space_unit="1rem",
+    space_scale=1.5,
+    border_radius_sm="2px",
+    border_radius_md="4px",
+    border_radius_lg="8px",
+    button_shape="rounded",
+    card_shape="rounded",
+    input_shape="rounded",
+    container_width="1200px",
+    grid_gap="1.5rem",
+    section_spacing="3rem"
+)
+
+LAYOUT_DENSE = LayoutStyle(
+    name="dense",
+    space_unit="0.5rem",
+    space_scale=1.5,
+    border_radius_sm="2px",
+    border_radius_md="2px",
+    border_radius_lg="4px",
+    button_shape="rounded",
+    card_shape="sharp",
+    input_shape="rounded",
+    container_width="1400px",
+    grid_gap="1rem",
+    section_spacing="2rem"
+)
 
 LAYOUT_MINIMAL = LayoutStyle(
     name="minimal",
     space_unit="1rem",
     space_scale=1.5,
     border_radius_sm="2px",  # Subtle radius
-    border_radius_md="4px", 
+    border_radius_md="4px",
     border_radius_lg="8px",
     button_shape="rounded",
-    card_shape="rounded", 
+    card_shape="rounded",
     input_shape="rounded",
     container_width="1000px",  # Narrower
     grid_gap="2rem",  # More space
@@ -304,10 +466,82 @@ LAYOUT_ORGANIC = LayoutStyle(
 # Surface Presets
 # =============================================================================
 
+SURFACE_MATERIAL = SurfaceStyle(
+    name="material",
+    shadow_sm="0 2px 4px rgba(0,0,0,0.14), 0 3px 4px rgba(0,0,0,0.12)",
+    shadow_md="0 4px 8px rgba(0,0,0,0.14), 0 6px 10px rgba(0,0,0,0.12)",
+    shadow_lg="0 12px 17px rgba(0,0,0,0.14), 0 5px 22px rgba(0,0,0,0.12)",
+    border_width="1px",
+    border_style="solid",
+    surface_treatment="flat",
+    backdrop_blur="0px",
+    noise_opacity=0.0
+)
+
+SURFACE_IOS = SurfaceStyle(
+    name="ios",
+    shadow_sm="0 2px 4px rgba(0,0,0,0.06)",
+    shadow_md="0 4px 8px rgba(0,0,0,0.08)",
+    shadow_lg="0 8px 16px rgba(0,0,0,0.1)",
+    border_width="1px",
+    border_style="solid",
+    surface_treatment="flat",
+    backdrop_blur="0px",
+    noise_opacity=0.0
+)
+
+SURFACE_FLUENT = SurfaceStyle(
+    name="fluent",
+    shadow_sm="0 1.6px 3.6px rgba(0,0,0,0.13), 0 0.3px 0.9px rgba(0,0,0,0.11)",
+    shadow_md="0 3.2px 7.2px rgba(0,0,0,0.13), 0 0.6px 1.8px rgba(0,0,0,0.11)",
+    shadow_lg="0 6.4px 14.4px rgba(0,0,0,0.13), 0 1.2px 3.6px rgba(0,0,0,0.11)",
+    border_width="1px",
+    border_style="solid",
+    surface_treatment="flat",
+    backdrop_blur="0px",
+    noise_opacity=0.0
+)
+
+SURFACE_PLAYFUL = SurfaceStyle(
+    name="playful",
+    shadow_sm="0 2px 8px rgba(0,0,0,0.08)",
+    shadow_md="0 4px 16px rgba(0,0,0,0.1)",
+    shadow_lg="0 8px 32px rgba(0,0,0,0.12)",
+    border_width="0px",
+    border_style="none",
+    surface_treatment="flat",
+    backdrop_blur="0px",
+    noise_opacity=0.0
+)
+
+SURFACE_CORPORATE = SurfaceStyle(
+    name="corporate",
+    shadow_sm="0 1px 3px rgba(0,0,0,0.08)",
+    shadow_md="0 2px 6px rgba(0,0,0,0.1)",
+    shadow_lg="0 4px 12px rgba(0,0,0,0.12)",
+    border_width="1px",
+    border_style="solid",
+    surface_treatment="flat",
+    backdrop_blur="0px",
+    noise_opacity=0.0
+)
+
+SURFACE_DENSE = SurfaceStyle(
+    name="dense",
+    shadow_sm="0 1px 2px rgba(0,0,0,0.06)",
+    shadow_md="0 1px 3px rgba(0,0,0,0.08)",
+    shadow_lg="0 2px 6px rgba(0,0,0,0.1)",
+    border_width="1px",
+    border_style="solid",
+    surface_treatment="flat",
+    backdrop_blur="0px",
+    noise_opacity=0.0
+)
+
 SURFACE_MINIMAL = SurfaceStyle(
     name="minimal",
     shadow_sm="0 1px 2px rgba(0,0,0,0.05)",  # Very subtle
-    shadow_md="0 2px 4px rgba(0,0,0,0.08)", 
+    shadow_md="0 2px 4px rgba(0,0,0,0.08)",
     shadow_lg="0 4px 8px rgba(0,0,0,0.12)",
     border_width="1px",
     border_style="solid",
@@ -369,6 +603,60 @@ SURFACE_ORGANIC = SurfaceStyle(
 # Icon Style Presets
 # =============================================================================
 
+ICON_MATERIAL = IconStyle(
+    name="material",
+    style="filled",
+    weight="regular",
+    size_scale=1.0,
+    stroke_width="2",
+    corner_rounding="0px"
+)
+
+ICON_IOS = IconStyle(
+    name="ios",
+    style="outlined",
+    weight="thin",
+    size_scale=1.0,
+    stroke_width="1.5",
+    corner_rounding="4px"
+)
+
+ICON_FLUENT = IconStyle(
+    name="fluent",
+    style="outlined",
+    weight="regular",
+    size_scale=1.0,
+    stroke_width="2",
+    corner_rounding="0px"
+)
+
+ICON_PLAYFUL = IconStyle(
+    name="playful",
+    style="rounded",
+    weight="regular",
+    size_scale=1.1,
+    stroke_width="2",
+    corner_rounding="8px"
+)
+
+ICON_CORPORATE = IconStyle(
+    name="corporate",
+    style="outlined",
+    weight="regular",
+    size_scale=1.0,
+    stroke_width="2",
+    corner_rounding="0px"
+)
+
+ICON_DENSE = IconStyle(
+    name="dense",
+    style="outlined",
+    weight="thin",
+    size_scale=0.85,
+    stroke_width="1.5",
+    corner_rounding="0px"
+)
+
 ICON_MINIMAL = IconStyle(
     name="minimal",
     style="outlined",
@@ -419,10 +707,106 @@ ICON_ORGANIC = IconStyle(
 # Animation Style Presets
 # =============================================================================
 
+ANIM_MATERIAL = AnimationStyle(
+    name="material",
+    entrance_effect="fade",
+    exit_effect="fade",
+    hover_effect="lift",
+    hover_scale=1.02,
+    hover_translate_y="-2px",
+    click_effect="ripple",
+    loading_style="spinner",
+    transition_style="smooth",
+    duration_fast="0.1s",
+    duration_normal="0.2s",
+    duration_slow="0.3s",
+    easing="cubic-bezier(0.4, 0, 0.2, 1)"
+)
+
+ANIM_IOS = AnimationStyle(
+    name="ios",
+    entrance_effect="fade",
+    exit_effect="fade",
+    hover_effect="scale",
+    hover_scale=1.05,
+    hover_translate_y="0px",
+    click_effect="none",
+    loading_style="spinner",
+    transition_style="snappy",
+    duration_fast="0.15s",
+    duration_normal="0.25s",
+    duration_slow="0.35s",
+    easing="cubic-bezier(0.42, 0, 0.58, 1)"
+)
+
+ANIM_FLUENT = AnimationStyle(
+    name="fluent",
+    entrance_effect="fade",
+    exit_effect="fade",
+    hover_effect="lift",
+    hover_scale=1.02,
+    hover_translate_y="-2px",
+    click_effect="ripple",
+    loading_style="progress",
+    transition_style="smooth",
+    duration_fast="0.167s",
+    duration_normal="0.25s",
+    duration_slow="0.367s",
+    easing="cubic-bezier(0.1, 0.9, 0.2, 1)"
+)
+
+ANIM_PLAYFUL = AnimationStyle(
+    name="playful",
+    entrance_effect="bounce",
+    exit_effect="scale",
+    hover_effect="scale",
+    hover_scale=1.05,
+    hover_translate_y="0px",
+    click_effect="bounce",
+    loading_style="pulse",
+    transition_style="bouncy",
+    duration_fast="0.2s",
+    duration_normal="0.3s",
+    duration_slow="0.5s",
+    easing="cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+)
+
+ANIM_CORPORATE = AnimationStyle(
+    name="corporate",
+    entrance_effect="fade",
+    exit_effect="fade",
+    hover_effect="lift",
+    hover_scale=1.01,
+    hover_translate_y="-1px",
+    click_effect="none",
+    loading_style="progress",
+    transition_style="smooth",
+    duration_fast="0.15s",
+    duration_normal="0.2s",
+    duration_slow="0.3s",
+    easing="cubic-bezier(0.4, 0, 0.2, 1)"
+)
+
+ANIM_DENSE = AnimationStyle(
+    name="dense",
+    entrance_effect="fade",
+    exit_effect="fade",
+    hover_effect="none",
+    hover_scale=1.0,
+    hover_translate_y="0px",
+    click_effect="none",
+    loading_style="progress",
+    transition_style="instant",
+    duration_fast="0.05s",
+    duration_normal="0.1s",
+    duration_slow="0.15s",
+    easing="linear"
+)
+
 ANIM_MINIMAL = AnimationStyle(
     name="minimal",
     entrance_effect="fade",
-    exit_effect="fade", 
+    exit_effect="fade",
     hover_effect="none",  # No hover effects
     hover_scale=1.0,
     hover_translate_y="0px",
@@ -430,7 +814,7 @@ ANIM_MINIMAL = AnimationStyle(
     loading_style="progress",
     transition_style="smooth",
     duration_fast="0.2s",
-    duration_normal="0.3s", 
+    duration_normal="0.3s",
     duration_slow="0.4s",
     easing="ease-out"
 )
@@ -504,6 +888,60 @@ ANIM_ORGANIC = AnimationStyle(
 # Interaction Style Presets
 # =============================================================================
 
+INTERACT_MATERIAL = InteractionStyle(
+    name="material",
+    button_hover="lift",
+    link_hover="underline",
+    card_hover="lift",
+    focus_style="ring",
+    focus_ring_width="2px"
+)
+
+INTERACT_IOS = InteractionStyle(
+    name="ios",
+    button_hover="scale",
+    link_hover="color",
+    card_hover="shadow",
+    focus_style="ring",
+    focus_ring_width="2px"
+)
+
+INTERACT_FLUENT = InteractionStyle(
+    name="fluent",
+    button_hover="lift",
+    link_hover="underline",
+    card_hover="shadow",
+    focus_style="ring",
+    focus_ring_width="2px"
+)
+
+INTERACT_PLAYFUL = InteractionStyle(
+    name="playful",
+    button_hover="glow",
+    link_hover="background",
+    card_hover="lift",
+    focus_style="glow",
+    focus_ring_width="3px"
+)
+
+INTERACT_CORPORATE = InteractionStyle(
+    name="corporate",
+    button_hover="darken",
+    link_hover="underline",
+    card_hover="border",
+    focus_style="ring",
+    focus_ring_width="2px"
+)
+
+INTERACT_DENSE = InteractionStyle(
+    name="dense",
+    button_hover="darken",
+    link_hover="underline",
+    card_hover="none",
+    focus_style="outline",
+    focus_ring_width="1px"
+)
+
 INTERACT_MINIMAL = InteractionStyle(
     name="minimal",
     button_hover="darken",  # Subtle color change
@@ -554,15 +992,93 @@ INTERACT_ORGANIC = InteractionStyle(
 # Complete Design Systems (Color-Independent)
 # =============================================================================
 
+DESIGN_MATERIAL = DesignSystem(
+    name="material",
+    display_name="Material Design",
+    description="Google's Material Design with elevation-based hierarchy",
+    category="professional",
+    typography=TYPO_MATERIAL,
+    layout=LAYOUT_MATERIAL,
+    surface=SURFACE_MATERIAL,
+    icons=ICON_MATERIAL,
+    animation=ANIM_MATERIAL,
+    interaction=INTERACT_MATERIAL
+)
+
+DESIGN_IOS = DesignSystem(
+    name="ios",
+    display_name="iOS",
+    description="Apple's iOS design language with fluid animations",
+    category="elegant",
+    typography=TYPO_IOS,
+    layout=LAYOUT_IOS,
+    surface=SURFACE_IOS,
+    icons=ICON_IOS,
+    animation=ANIM_IOS,
+    interaction=INTERACT_IOS
+)
+
+DESIGN_FLUENT = DesignSystem(
+    name="fluent",
+    display_name="Fluent Design",
+    description="Microsoft's Fluent Design System with depth and motion",
+    category="professional",
+    typography=TYPO_FLUENT,
+    layout=LAYOUT_FLUENT,
+    surface=SURFACE_FLUENT,
+    icons=ICON_FLUENT,
+    animation=ANIM_FLUENT,
+    interaction=INTERACT_FLUENT
+)
+
+DESIGN_PLAYFUL = DesignSystem(
+    name="playful",
+    display_name="Playful",
+    description="Fun, energetic design with bouncy animations and rounded shapes",
+    category="playful",
+    typography=TYPO_PLAYFUL,
+    layout=LAYOUT_PLAYFUL,
+    surface=SURFACE_PLAYFUL,
+    icons=ICON_PLAYFUL,
+    animation=ANIM_PLAYFUL,
+    interaction=INTERACT_PLAYFUL
+)
+
+DESIGN_CORPORATE = DesignSystem(
+    name="corporate",
+    display_name="Corporate",
+    description="Professional, clean design for business applications",
+    category="professional",
+    typography=TYPO_CORPORATE,
+    layout=LAYOUT_CORPORATE,
+    surface=SURFACE_CORPORATE,
+    icons=ICON_CORPORATE,
+    animation=ANIM_CORPORATE,
+    interaction=INTERACT_CORPORATE
+)
+
+DESIGN_DENSE = DesignSystem(
+    name="dense",
+    display_name="Dense",
+    description="Compact, information-dense design for data-heavy interfaces",
+    category="minimal",
+    typography=TYPO_DENSE,
+    layout=LAYOUT_DENSE,
+    surface=SURFACE_DENSE,
+    icons=ICON_DENSE,
+    animation=ANIM_DENSE,
+    interaction=INTERACT_DENSE
+)
+
 DESIGN_MINIMAL = DesignSystem(
     name="minimal",
-    display_name="Minimal Clean", 
+    display_name="Minimal Clean",
     description="Pure, distraction-free design with maximum content focus",
     category="minimal",
     typography=TYPO_MINIMAL,
     layout=LAYOUT_MINIMAL,
     surface=SURFACE_MINIMAL,
-    icons=ICON_MINIMAL, 
+    icons=ICON_MINIMAL,
     animation=ANIM_MINIMAL,
     interaction=INTERACT_MINIMAL
 )
@@ -622,8 +1138,14 @@ DESIGN_ORGANIC = DesignSystem(
 
 # Design System Registry
 DESIGN_SYSTEMS: Dict[str, DesignSystem] = {
-    "minimal": DESIGN_MINIMAL,
-    "brutalist": DESIGN_BRUTALIST, 
+    "material": DESIGN_MATERIAL,
+    "ios": DESIGN_IOS,
+    "fluent": DESIGN_FLUENT,
+    "playful": DESIGN_PLAYFUL,
+    "corporate": DESIGN_CORPORATE,
+    "dense": DESIGN_DENSE,
+    "minimalist": DESIGN_MINIMAL,
+    "neo_brutalist": DESIGN_BRUTALIST,
     "elegant": DESIGN_ELEGANT,
     "retro": DESIGN_RETRO,
     "organic": DESIGN_ORGANIC,

@@ -26,7 +26,7 @@ class ThemeInspector:
         
     def get_theme_info(
         self, 
-        design_system_name: str = "minimal",
+        design_system_name: str = "minimalistist",
         color_preset_name: str = "default"
     ) -> Dict[str, Any]:
         """Get comprehensive information about a theme combination."""
@@ -255,7 +255,7 @@ def theme_inspector_view(request):
     """Theme inspector interface."""
     
     inspector = ThemeInspector()
-    current_design = request.GET.get('design', 'minimal')
+    current_design = request.GET.get('design', 'minimalist')
     current_color = request.GET.get('color', 'default')
     
     theme_info = inspector.get_theme_info(current_design, current_color)
@@ -279,7 +279,7 @@ def theme_inspector_api(request):
     
     if request.method == "GET":
         # Get theme info
-        design = request.GET.get('design', 'minimal')
+        design = request.GET.get('design', 'minimalist')
         color = request.GET.get('color', 'default')
         
         try:
@@ -314,7 +314,7 @@ def theme_inspector_api(request):
 def theme_css_api(request):
     """API endpoint to get CSS for a theme combination."""
     
-    design = request.GET.get('design', 'minimal')
+    design = request.GET.get('design', 'minimalist')
     color = request.GET.get('color', 'default')
     
     try:

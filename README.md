@@ -23,8 +23,11 @@ Works standalone with any Django project, or integrates deeply with [djust](http
 
 ## Features
 
-### Core Theming
-- 🎨 **7 built-in presets**: Default, Shadcn, Blue, Green, Purple, Orange, Rose
+### Design Systems & Color Presets
+- 🎨 **11 design systems**: Material, iOS, Fluent, Minimalist, Playful, Corporate, Retro, Elegant, Neo-Brutalist, Organic, Dense
+- 🌈 **12 color presets**: Default, Shadcn, Blue, Green, Purple, Orange, Rose, Cyberpunk, Sunset, Forest, Ocean, Metallic
+- 🔀 **Mix & match**: Combine any design system with any color preset (132 combinations)
+- 🎯 **Complete control**: Typography, spacing, shadows, animations, border radius, component styles
 - 🌓 **Light/Dark/System mode** with anti-FOUC (Flash of Unstyled Content) protection
 - 📦 **Context processor** for template variable injection
 - 💾 **Session + localStorage persistence**
@@ -60,6 +63,67 @@ Works standalone with any Django project, or integrates deeply with [djust](http
 - 📋 **List presets**, export colors, import themes
 - 💡 **Interactive** with helpful error messages
 
+## What Makes djust-theming Different?
+
+### Design Systems Beyond Colors
+
+Most theming libraries only change colors. djust-theming provides **complete design systems** that control:
+
+- **Typography** - Font families, sizes, weights, and line heights
+- **Spacing** - Consistent spacing scales (tight, normal, loose)
+- **Border Radius** - Sharp, rounded, or pill-shaped components
+- **Shadows** - Flat, subtle, material, or elevated depth systems
+- **Animations** - Motion behaviors (instant, snappy, smooth, bouncy)
+- **Component Styles** - Button, card, and input variants
+
+### Mix & Match Any Design System with Any Color
+
+**11 Design Systems:**
+- **Material** - Google's Material Design with elevation-based hierarchy
+- **iOS** - Apple's design language with fluid animations
+- **Fluent** - Microsoft's Fluent Design System with depth and motion
+- **Minimalist** - Pure, distraction-free design with maximum content focus
+- **Playful** - Fun, energetic design with bouncy animations
+- **Corporate** - Professional, clean design for business applications
+- **Retro** - Classic web aesthetic with pixel-perfect design
+- **Elegant** - Premium design with serif fonts and generous spacing
+- **Neo-Brutalist** - Bold, dramatic design with sharp edges and high contrast
+- **Organic** - Soft, rounded design inspired by natural forms
+- **Dense** - Compact, information-dense design for data-heavy interfaces
+
+**12 Color Presets:**
+Default, Shadcn, Blue, Green, Purple, Orange, Rose, Cyberpunk, Sunset, Forest, Ocean, Metallic
+
+**= 132 Unique Combinations** out of the box, or create your own!
+
+### Example Combinations
+
+```python
+# Material Design + Cyberpunk colors
+LIVEVIEW_CONFIG = {
+    'theme': {
+        'theme': 'material',
+        'preset': 'cyberpunk',
+    }
+}
+
+# iOS + Forest green palette
+LIVEVIEW_CONFIG = {
+    'theme': {
+        'theme': 'ios',
+        'preset': 'forest',
+    }
+}
+
+# Neo-Brutalist + Sunset oranges
+LIVEVIEW_CONFIG = {
+    'theme': {
+        'theme': 'neo_brutalist',
+        'preset': 'sunset',
+    }
+}
+```
+
 ## Quick Start
 
 ### Option 1: Try the Example App
@@ -90,6 +154,14 @@ INSTALLED_APPS = [
     # ...
 ]
 
+# urls.py
+from django.urls import path, include
+
+urlpatterns = [
+    # ...
+    path('theming/', include('djust_theming.urls')),
+]
+
 TEMPLATES = [{
     # ...
     'OPTIONS': {
@@ -103,7 +175,8 @@ TEMPLATES = [{
 # Optional: customize defaults
 LIVEVIEW_CONFIG = {
     'theme': {
-        'preset': 'blue',           # default preset
+        'theme': 'material',        # Design system (material, ios, fluent, etc.)
+        'preset': 'blue',           # Color preset
         'default_mode': 'system',    # light, dark, or system
         'persist_in_session': True,
         'enable_dark_mode': True,
@@ -114,18 +187,18 @@ LIVEVIEW_CONFIG = {
 ### 3. Use in Templates
 
 ```html
-{% load static %}
+{% load static theme_tags %}
 <!DOCTYPE html>
 <html>
 <head>
-    {{ theme_head }}
+    {% theme_head link_css=True %}
     <link href="{% static 'djust_theming/css/base.css' %}" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
         <div class="navbar-inner">
             <span class="navbar-brand">My App</span>
-            {{ theme_switcher }}
+            {% theme_switcher %}
         </div>
     </nav>
 

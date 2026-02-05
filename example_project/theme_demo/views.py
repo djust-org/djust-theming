@@ -99,7 +99,7 @@ def design_systems(request):
         })
 
     # Get current design system and color from request or defaults
-    current_design = request.GET.get('design', 'minimal')
+    current_design = request.GET.get('design', 'minimalist')
     current_color = request.GET.get('color', 'default')
     
     # Generate CSS for current combination

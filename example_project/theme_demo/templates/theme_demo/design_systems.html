@@ -15,6 +15,58 @@
     </p>
 </div>
 
+<!-- Explanation Section -->
+<div class="bg-card border border-border rounded-lg p-8 mb-8">
+    <h2 class="text-2xl font-bold mb-4">Design Systems vs. Color Presets</h2>
+    <div class="space-y-4 text-muted-foreground">
+        <p>
+            Most theming libraries only change colors. djust-theming goes further by
+            providing complete design systems that control:
+        </p>
+        <div class="grid md:grid-cols-2 gap-6">
+            <div>
+                <ul class="space-y-2">
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary">•</span>
+                        <span><strong>Typography</strong> - fonts, sizes, weights, line heights</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary">•</span>
+                        <span><strong>Spacing</strong> - tight, normal, loose scales</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary">•</span>
+                        <span><strong>Border Radius</strong> - sharp, rounded, pill</span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul class="space-y-2">
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary">•</span>
+                        <span><strong>Shadows</strong> - flat, subtle, material, elevated</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary">•</span>
+                        <span><strong>Animations</strong> - instant, snappy, smooth, bouncy</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <span class="text-primary">•</span>
+                        <span><strong>Component Styles</strong> - button, card, input variants</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="bg-primary/10 border border-primary/20 rounded-lg p-4 mt-4">
+            <p class="text-foreground">
+                <strong>Mix ANY design system with ANY color preset for 132 unique combinations!</strong>
+                <br/>
+                Try switching design systems below and notice how typography, spacing, and shadows change—not just colors.
+            </p>
+        </div>
+    </div>
+</div>
+
 <!-- Current Setup -->
 <div class="bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/20 rounded-lg p-6 mb-8">
     <div class="flex items-center justify-between">
@@ -160,7 +212,7 @@
     
     <div class="grid md:grid-cols-3 gap-4">
         <div class="bg-card border border-border rounded-lg p-4 text-center cursor-pointer hover:shadow-md transition-shadow"
-             onclick="updateCombination('brutalist', 'ocean')">
+             onclick="updateCombination('neo_brutalist', 'ocean')">
             <div class="text-sm font-medium mb-2">Brutalist + Ocean</div>
             <div class="text-xs text-muted-foreground">Sharp edges with calming blues</div>
         </div>
@@ -181,29 +233,23 @@
 async function updateCombination(designName, colorName) {
     console.log(`Switching to: ${designName} + ${colorName}`);
     
-    // Update URL to maintain state
+    // 1. Set the cookies so the backend knows the new global state
+    document.cookie = `djust_theme=${designName};path=/;max-age=31536000;SameSite=Lax`;
+    document.cookie = `djust_theme_preset=${colorName};path=/;max-age=31536000;SameSite=Lax`;
+    
+    // 2. Clear any active pack
+    if (window.djustTheme) {
+        window.djustTheme.clearPack();
+        localStorage.setItem('djust-theme-design', designName);
+        localStorage.setItem('djust-theme-preset', colorName);
+    }
+    
+    // 3. Update URL to maintain the local page state (preview)
     const url = new URL(window.location);
     url.searchParams.set('design', designName);
     url.searchParams.set('color', colorName);
     
-    try {
-        // Fetch new CSS for the combination
-        const response = await fetch(`/design-systems/?design=${designName}&color=${colorName}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        });
-        
-        if (response.ok) {
-            // For now, reload the page to apply the new combination
-            // TODO: Implement dynamic CSS injection for instant switching
-            window.location.href = url.toString();
-        }
-    } catch (error) {
-        console.error('Failed to update combination:', error);
-        // Fallback to page reload
-        window.location.href = url.toString();
-    }
+    window.location.href = url.toString();
 }
 
 function applyDesignSystem(designName) {
