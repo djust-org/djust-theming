@@ -149,7 +149,7 @@ class ThemeMixin:
             mode_buttons += f'''
             <button type="button" class="theme-mode-btn {active}"
                     dj-click="set_theme_mode"
-                    data-mode="{mode}"
+                    data-dj-mode="{mode}"
                     title="{mode.title()} mode">{icons[mode]}</button>'''
 
         # Build preset options
@@ -211,7 +211,7 @@ class ThemeMixin:
             Set theme mode to light, dark, or system.
 
             Usage in template:
-                <button dj-click="set_theme_mode" data-mode="dark">Dark Mode</button>
+                <button dj-click="set_theme_mode" data-dj-mode="dark">Dark Mode</button>
             """
             # Support both data-mode (dj-click) and value (dj-change)
             mode = mode or value or "system"
@@ -232,7 +232,7 @@ class ThemeMixin:
             Set theme preset.
 
             Usage in template (button):
-                <button dj-click="set_theme_preset" data-preset="blue">Blue</button>
+                <button dj-click="set_theme_preset" data-dj-preset="blue">Blue</button>
 
             Usage in template (select):
                 <select dj-change="set_theme_preset">
