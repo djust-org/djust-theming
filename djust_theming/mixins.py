@@ -213,7 +213,7 @@ class ThemeMixin:
             Usage in template:
                 <button dj-click="set_theme_mode" data-dj-mode="dark">Dark Mode</button>
             """
-            # Support both data-mode (dj-click) and value (dj-change)
+            # Support both data-dj-mode (dj-click) and value (dj-change)
             mode = mode or value or "system"
             if mode not in ("light", "dark", "system"):
                 return
@@ -240,7 +240,7 @@ class ThemeMixin:
                     <option value="blue">Blue</option>
                 </select>
             """
-            # Support both data-preset (dj-click) and value (dj-change)
+            # Support both data-dj-preset (dj-click) and value (dj-change)
             preset = preset or value or "default"
             if preset not in THEME_PRESETS:
                 return
