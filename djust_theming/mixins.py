@@ -199,6 +199,10 @@ class ThemeMixin:
                 payload['css'] = css
 
             self.push_event('theme_update', payload)
+            # Theme changes are purely client-side (CSS variables) — skip the
+            # server render to avoid a full HTML update that mangles the page
+            # when theme state is outside <div data-djust-root> (DJE-053).
+            self._skip_render = True
 
     # Event handlers - only define if djust is available
     if DJUST_AVAILABLE:

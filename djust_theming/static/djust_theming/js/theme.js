@@ -294,7 +294,16 @@
                 // Update the CSS dynamically
                 const styleElement = document.querySelector('#djust-theme-css');
                 if (styleElement && css) {
-                    styleElement.textContent = css;
+                    if (styleElement.tagName === 'LINK') {
+                        // Replace <link> with <style> so we can set textContent
+                        const newStyle = document.createElement('style');
+                        newStyle.id = 'djust-theme-css';
+                        newStyle.setAttribute('data-djust-theme', '');
+                        newStyle.textContent = css;
+                        styleElement.replaceWith(newStyle);
+                    } else {
+                        styleElement.textContent = css;
+                    }
                 } else if (css) {
                     // Create style element if it doesn't exist
                     const newStyle = document.createElement('style');
