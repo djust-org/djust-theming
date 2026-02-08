@@ -112,7 +112,7 @@ class ThemeManager:
             theme = self.request.COOKIES.get("djust_theme")
             preset = self.request.COOKIES.get("djust_theme_preset")
             pack = self.request.COOKIES.get("djust_theme_pack")
-            logger.debug(f"Cookies: theme={theme}, preset={preset}, pack={pack}")
+            logger.debug("Cookies: theme=%s, preset=%s, pack=%s", theme, preset, pack)
 
         # Fall back to session, then config default
         if not theme:
@@ -124,7 +124,7 @@ class ThemeManager:
 
         mode = session_data.get("mode", self.config["default_mode"])
         
-        logger.debug(f"Resolved before validation: theme={theme}, preset={preset}, pack={pack}, mode={mode}")
+        logger.debug("Resolved before validation: theme=%s, preset=%s, pack=%s, mode=%s", theme, preset, pack, mode)
 
         # If pack is set, override theme and preset from pack
         if pack:
@@ -245,6 +245,8 @@ class ThemeManager:
                 "display_name": preset.display_name,
                 "description": preset.description,
                 "is_active": preset.name == self.get_state().preset,
+                "primary_hsl": preset.dark.primary.to_hsl(),
+                "primary_hsl_light": preset.light.primary.to_hsl(),
             }
             for preset in THEME_PRESETS.values()
         ]
