@@ -149,7 +149,7 @@ class ThemeMixin:
             mode_buttons += f'''
             <button type="button" class="theme-mode-btn {active}"
                     dj-click="set_theme_mode"
-                    data-dj-mode="{mode}"
+                    data-mode="{mode}"
                     title="{mode.title()} mode">{icons[mode]}</button>'''
 
         # Build preset options
@@ -163,9 +163,8 @@ class ThemeMixin:
         return f"""<div class="theme-switcher">
     <div class="theme-mode-controls">{mode_buttons}
     </div>
-    <select class="theme-preset-select" 
+    <select class="theme-preset-select"
             dj-change="set_theme_preset"
-            data-dj-preset-from="value"
             aria-label="Select theme preset">{preset_options}</select>
 </div>
 <style>
@@ -207,13 +206,15 @@ class ThemeMixin:
     # Event handlers - only define if djust is available
     if DJUST_AVAILABLE:
         @event_handler()
-        def set_theme_mode(self, mode: str = "system", **kwargs):
+        def set_theme_mode(self, mode: str = "", value: str = "", **kwargs):
             """
             Set theme mode to light, dark, or system.
-            
+
             Usage in template:
-                <button dj-click="set_theme_mode" data-dj-mode="dark">Dark Mode</button>
+                <button dj-click="set_theme_mode" data-mode="dark">Dark Mode</button>
             """
+            # Support both data-mode (dj-click) and value (dj-change)
+            mode = mode or value or "system"
             if mode not in ("light", "dark", "system"):
                 return
                 
@@ -226,16 +227,21 @@ class ThemeMixin:
                 self._push_theme_update(mode=mode)
 
         @event_handler()
-        def set_theme_preset(self, preset: str = "default", **kwargs):
+        def set_theme_preset(self, preset: str = "", value: str = "", **kwargs):
             """
             Set theme preset.
-            
-            Usage in template:
-                <select dj-change="set_theme_preset" data-dj-preset-from="value">
+
+            Usage in template (button):
+                <button dj-click="set_theme_preset" data-preset="blue">Blue</button>
+
+            Usage in template (select):
+                <select dj-change="set_theme_preset">
                     <option value="default">Default</option>
                     <option value="blue">Blue</option>
                 </select>
             """
+            # Support both data-preset (dj-click) and value (dj-change)
+            preset = preset or value or "default"
             if preset not in THEME_PRESETS:
                 return
                 
