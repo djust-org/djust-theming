@@ -277,23 +277,28 @@ def get_all_high_contrast_presets() -> Dict[str, ThemePreset]:
 
 
 if __name__ == "__main__":
+    import logging
+
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+    _logger = logging.getLogger(__name__)
+
     # Test high contrast generation
     hc_presets = get_all_high_contrast_presets()
-    
-    print(f"Generated {len(hc_presets)} high contrast presets:")
+
+    _logger.info("Generated %d high contrast presets:", len(hc_presets))
     for name, preset in sorted(hc_presets.items()):
-        print(f"  {name}: {preset.display_name}")
-        
+        _logger.info("  %s: %s", name, preset.display_name)
+
     # Test accessibility of high contrast themes
     from .accessibility import validate_accessibility
-    
-    print("\nTesting accessibility of high contrast themes:")
+
+    _logger.info("\nTesting accessibility of high contrast themes:")
     test_themes = ["default_hc", "monochrome_hc", "yellow_black_hc"]
-    
+
     for theme_name in test_themes:
         if theme_name in hc_presets:
             try:
                 report = validate_accessibility("minimal", theme_name)
-                print(f"  {theme_name}: {report.overall_score:.1f}% (issues: {len(report.issues)})")
+                _logger.info("  %s: %.1f%% (issues: %d)", theme_name, report.overall_score, len(report.issues))
             except Exception as e:
-                print(f"  {theme_name}: Error - {e}")
+                _logger.info("  %s: Error - %s", theme_name, e)

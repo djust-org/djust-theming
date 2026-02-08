@@ -19,6 +19,7 @@ Usage:
 
 from django import template
 from django.urls import reverse, NoReverseMatch
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from ..components import PresetSelector, ThemeModeButton, ThemeSwitcher, ThemeSwitcherConfig
@@ -109,7 +110,12 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
     if include_js:
         js_include = '<script src="/static/djust_theming/js/theme.js?v=2" defer></script>'
 
-    return mark_safe(f"{anti_fouc_script}\n{css_block}\n{js_include}")
+    return format_html(
+        '{}\n{}\n{}',
+        mark_safe(anti_fouc_script),
+        mark_safe(css_block),
+        mark_safe(js_include),
+    )
 
 
 @register.simple_tag(takes_context=True)
@@ -138,7 +144,7 @@ def theme_css(context):
         generator = CompleteThemeCSSGenerator(theme_name=state.theme, color_preset=state.preset)
         css = generator.generate_css()
 
-    return mark_safe(f"<style data-djust-theme>{css}</style>")
+    return format_html('<style data-djust-theme>{}</style>', mark_safe(css))
 
 
 @register.inclusion_tag("djust_theming/theme_switcher.html", takes_context=True)

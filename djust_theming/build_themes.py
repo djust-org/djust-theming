@@ -5,11 +5,14 @@ Generates static CSS files for all theme combinations at build time,
 eliminating runtime CSS generation overhead for production deployments.
 """
 
+import logging
 import os
 import json
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
+
+logger = logging.getLogger(__name__)
 
 from .design_system_css import generate_design_system_css, generate_all_combinations_css
 from .presets import THEME_PRESETS
@@ -111,7 +114,7 @@ class BuildTimeGenerator:
         generated_files = []
         design_systems = get_all_design_systems()
         
-        print(f"Generating {len(design_systems) * len(THEME_PRESETS)} theme combinations...")
+        logger.info("Generating %d theme combinations...", len(design_systems) * len(THEME_PRESETS))
         
         for design_name in design_systems.keys():
             for preset_name in THEME_PRESETS.keys():
@@ -150,7 +153,7 @@ class BuildTimeGenerator:
                         f.write(f"\n/*# sourceMappingURL={filename}.map */")
                 
                 generated_files.append((filename, str(css_path)))
-                print(f"  ✓ Generated {filename}")
+                logger.info("  Generated %s", filename)
         
         return generated_files
         
@@ -161,7 +164,7 @@ class BuildTimeGenerator:
         Returns:
             Path to the generated bundle file
         """
-        print("Generating combined theme bundle...")
+        logger.info("Generating combined theme bundle...")
         
         design_systems = get_all_design_systems()
         css_parts = []
@@ -238,7 +241,7 @@ class BuildTimeGenerator:
         with open(bundle_path, 'w') as f:
             f.write(combined_css)
             
-        print(f"  ✓ Generated combined bundle: {bundle_filename}")
+        logger.info("  Generated combined bundle: %s", bundle_filename)
         return str(bundle_path)
         
     def generate_manifest(self, generated_files: List[Tuple[str, str]]) -> str:
@@ -254,7 +257,7 @@ class BuildTimeGenerator:
         if not self.generate_manifest:
             return ""
             
-        print("Generating theme manifest...")
+        logger.info("Generating theme manifest...")
         
         design_systems = get_all_design_systems()
         
@@ -311,7 +314,7 @@ class BuildTimeGenerator:
         with open(manifest_path, 'w') as f:
             json.dump(manifest, f, indent=2)
             
-        print(f"  ✓ Generated manifest: manifest.json")
+        logger.info("  Generated manifest: manifest.json")
         return str(manifest_path)
         
     def generate_theme_switcher_js(self) -> str:
@@ -487,7 +490,7 @@ if (typeof module !== 'undefined' && module.exports) {
         with open(js_path, 'w') as f:
             f.write(js_content)
             
-        print(f"  ✓ Generated theme switcher: {js_filename}")
+        logger.info("  Generated theme switcher: %s", js_filename)
         return str(js_path)
         
     def build_all(self) -> Dict[str, str]:
@@ -497,8 +500,8 @@ if (typeof module !== 'undefined' && module.exports) {
         Returns:
             Dictionary of artifact types to file paths
         """
-        print("🏗️  Starting djust-theming build process...")
-        print(f"Output directory: {self.output_dir}")
+        logger.info("Starting djust-theming build process...")
+        logger.info("Output directory: %s", self.output_dir)
         
         artifacts = {}
         
@@ -519,7 +522,7 @@ if (typeof module !== 'undefined' && module.exports) {
         js_path = self.generate_theme_switcher_js()
         artifacts["theme_switcher_js"] = js_path
         
-        print(f"✅ Build complete! Generated {len(generated_files)} themes + bundle + utilities")
+        logger.info("Build complete! Generated %d themes + bundle + utilities", len(generated_files))
         return artifacts
 
 

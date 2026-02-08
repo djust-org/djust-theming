@@ -385,35 +385,39 @@ def validate_all_accessibility() -> Dict[str, AccessibilityReport]:
 
 if __name__ == "__main__":
     # CLI usage
+    import logging
     import sys
-    
+
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+    _logger = logging.getLogger(__name__)
+
     if len(sys.argv) == 3:
         # Validate single combination
         design = sys.argv[1]
         color = sys.argv[2]
         report = validate_accessibility(design, color)
-        
-        print(f"Accessibility Report: {design}-{color}")
-        print(f"Overall Score: {report.overall_score:.1f}%")
-        print(f"Issues: {len(report.issues)}")
-        print(f"Recommendations: {len(report.recommendations)}")
-        
+
+        _logger.info("Accessibility Report: %s-%s", design, color)
+        _logger.info("Overall Score: %.1f%%", report.overall_score)
+        _logger.info("Issues: %d", len(report.issues))
+        _logger.info("Recommendations: %d", len(report.recommendations))
+
         for issue in report.issues:
-            print(f"  ❌ {issue}")
-            
+            _logger.info("  %s", issue)
+
         for rec in report.recommendations:
-            print(f"  💡 {rec}")
-            
+            _logger.info("  %s", rec)
+
     else:
         # Validate all combinations
-        print("Validating all theme combinations...")
+        _logger.info("Validating all theme combinations...")
         reports = validate_all_accessibility()
-        
+
         # Generate HTML report
         validator = AccessibilityValidator()
         html_report = validator.generate_accessibility_report_html(reports)
-        
+
         with open("accessibility_report.html", "w") as f:
             f.write(html_report)
-            
-        print(f"Generated accessibility_report.html with {len(reports)} theme reports")
+
+        _logger.info("Generated accessibility_report.html with %d theme reports", len(reports))

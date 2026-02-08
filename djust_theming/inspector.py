@@ -273,7 +273,12 @@ def theme_inspector_view(request):
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
 def theme_inspector_api(request):
-    """API endpoint for theme inspection."""
+    """API endpoint for theme inspection.
+
+    CSRF exempt: This is a read-only/stateless API used by the theme inspector
+    tool. POST requests only accept theme configuration (design system + color
+    preset names) and return generated CSS — no state-changing operations.
+    """
     
     inspector = ThemeInspector()
     
