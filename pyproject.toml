@@ -33,7 +33,7 @@ dependencies = [
 
 [project.optional-dependencies]
 djust = [
-    "djust>=0.3.0rc4",
+    "djust>=0.3.0rc5",
 ]
 dev = [
     "pytest>=7.0",
