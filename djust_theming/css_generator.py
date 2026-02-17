@@ -5,6 +5,7 @@ Generates CSS custom properties from theme tokens, supporting both
 light and dark modes with system preference detection.
 """
 
+from .design_tokens import generate_design_tokens_css
 from .presets import ThemeTokens, get_preset
 
 
@@ -17,6 +18,7 @@ class ThemeCSSGenerator:
         custom_tokens: dict | None = None,
         include_base_styles: bool = True,
         include_utilities: bool = True,
+        include_design_tokens: bool = True,
     ):
         """
         Initialize CSS generator.
@@ -26,11 +28,13 @@ class ThemeCSSGenerator:
             custom_tokens: Optional dict of token overrides
             include_base_styles: Include base body/element styles
             include_utilities: Include utility classes
+            include_design_tokens: Include design system tokens (spacing, typography, etc.)
         """
         self.preset = get_preset(preset_name)
         self.custom_tokens = custom_tokens or {}
         self.include_base_styles = include_base_styles
         self.include_utilities = include_utilities
+        self.include_design_tokens = include_design_tokens
 
     def _tokens_to_css_vars(self, tokens: ThemeTokens, indent: str = "  ") -> str:
         """Convert ThemeTokens to CSS custom property declarations."""
@@ -58,6 +62,14 @@ class ThemeCSSGenerator:
             ("success-foreground", tokens.success_foreground),
             ("warning", tokens.warning),
             ("warning-foreground", tokens.warning_foreground),
+            ("info", tokens.info),
+            ("info-foreground", tokens.info_foreground),
+            ("link", tokens.link),
+            ("link-hover", tokens.link_hover),
+            ("code", tokens.code),
+            ("code-foreground", tokens.code_foreground),
+            ("selection", tokens.selection),
+            ("selection-foreground", tokens.selection_foreground),
             ("border", tokens.border),
             ("input", tokens.input),
             ("ring", tokens.ring),
@@ -81,6 +93,7 @@ class ThemeCSSGenerator:
             ("chart-3", tokens.accent),
             ("chart-4", tokens.success),
             ("chart-5", tokens.warning),
+            ("chart-6", tokens.info),
         ]
 
         for name, color in shadcn_mappings:
@@ -157,6 +170,9 @@ body {
 .bg-destructive { background-color: hsl(var(--destructive)); }
 .bg-success { background-color: hsl(var(--success)); }
 .bg-warning { background-color: hsl(var(--warning)); }
+.bg-info { background-color: hsl(var(--info)); }
+.bg-code { background-color: hsl(var(--code)); }
+.bg-selection { background-color: hsl(var(--selection)); }
 
 /* Text colors */
 .text-foreground { color: hsl(var(--foreground)); }
@@ -173,6 +189,11 @@ body {
 .text-success-foreground { color: hsl(var(--success-foreground)); }
 .text-warning { color: hsl(var(--warning)); }
 .text-warning-foreground { color: hsl(var(--warning-foreground)); }
+.text-info { color: hsl(var(--info)); }
+.text-info-foreground { color: hsl(var(--info-foreground)); }
+.text-link { color: hsl(var(--link)); }
+.text-code-foreground { color: hsl(var(--code-foreground)); }
+.text-selection-foreground { color: hsl(var(--selection-foreground)); }
 
 /* Borders */
 .border-border { border-color: hsl(var(--border)); }
@@ -182,6 +203,7 @@ body {
 .border-destructive { border-color: hsl(var(--destructive)); }
 .border-success { border-color: hsl(var(--success)); }
 .border-warning { border-color: hsl(var(--warning)); }
+.border-info { border-color: hsl(var(--info)); }
 
 /* Ring (focus) */
 .ring-ring { --tw-ring-color: hsl(var(--ring)); }
@@ -265,6 +287,54 @@ body {
 .badge-warning {
   background-color: hsl(var(--warning));
   color: hsl(var(--warning-foreground));
+}
+
+.badge-info {
+  background-color: hsl(var(--info));
+  color: hsl(var(--info-foreground));
+}
+
+/* Link styles */
+a,
+.link {
+  color: hsl(var(--link));
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+a:hover,
+.link:hover {
+  color: hsl(var(--link-hover));
+  text-decoration: underline;
+}
+
+/* Code blocks */
+code,
+.code {
+  background-color: hsl(var(--code));
+  color: hsl(var(--code-foreground));
+  padding: 0.125rem 0.375rem;
+  border-radius: calc(var(--radius) - 0.125rem);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, "Cascadia Mono",
+               "Segoe UI Mono", "Roboto Mono", Menlo, Consolas, "Liberation Mono",
+               monospace;
+  font-size: 0.875em;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+}
+
+/* Selection */
+::selection {
+  background-color: hsl(var(--selection));
+  color: hsl(var(--selection-foreground));
+}
+
+::-moz-selection {
+  background-color: hsl(var(--selection));
+  color: hsl(var(--selection-foreground));
 }"""
 
     def generate_css(self) -> str:
@@ -278,6 +348,9 @@ body {
             "",
             self._generate_system_preference(),
         ]
+
+        if self.include_design_tokens:
+            sections.extend(["", "", generate_design_tokens_css()])
 
         if self.include_base_styles:
             sections.extend(["", self._generate_base_styles()])
@@ -311,6 +384,7 @@ def generate_theme_css(
     preset_name: str = "default",
     include_base_styles: bool = True,
     include_utilities: bool = True,
+    include_design_tokens: bool = True,
 ) -> str:
     """
     Convenience function to generate CSS for a theme.
@@ -319,6 +393,7 @@ def generate_theme_css(
         preset_name: Name of the theme preset
         include_base_styles: Include base body/element styles
         include_utilities: Include utility classes
+        include_design_tokens: Include design system tokens (spacing, typography, etc.)
 
     Returns:
         Complete CSS string
@@ -327,5 +402,6 @@ def generate_theme_css(
         preset_name=preset_name,
         include_base_styles=include_base_styles,
         include_utilities=include_utilities,
+        include_design_tokens=include_design_tokens,
     )
     return generator.generate_css()

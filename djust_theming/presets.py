@@ -6,7 +6,6 @@ Each preset includes both light and dark mode token sets.
 """
 
 from dataclasses import dataclass
-from typing import Dict
 
 
 @dataclass
@@ -15,23 +14,23 @@ class ColorScale:
 
     h: int  # Hue 0-360
     s: int  # Saturation 0-100
-    l: int  # Lightness 0-100
+    lightness: int  # Lightness 0-100
 
     def to_hsl(self) -> str:
         """Return HSL values for CSS variable (without hsl() wrapper)."""
-        return f"{self.h} {self.s}% {self.l}%"
+        return f"{self.h} {self.s}% {self.lightness}%"
 
     def to_hsl_func(self) -> str:
         """Return complete hsl() function."""
-        return f"hsl({self.h}, {self.s}%, {self.l}%)"
+        return f"hsl({self.h}, {self.s}%, {self.lightness}%)"
 
-    def with_lightness(self, l: int) -> "ColorScale":
+    def with_lightness(self, new_lightness: int) -> "ColorScale":
         """Return a new ColorScale with modified lightness."""
-        return ColorScale(self.h, self.s, l)
+        return ColorScale(self.h, self.s, new_lightness)
 
-    def with_saturation(self, s: int) -> "ColorScale":
+    def with_saturation(self, new_saturation: int) -> "ColorScale":
         """Return a new ColorScale with modified saturation."""
-        return ColorScale(self.h, s, self.l)
+        return ColorScale(self.h, new_saturation, self.lightness)
 
 
 @dataclass
@@ -40,7 +39,7 @@ class ThemeTokens:
     Complete token set for a theme mode.
 
     Follows shadcn/ui naming conventions with extensions for
-    success and warning states.
+    success, warning, info, and additional semantic states.
     """
 
     # Backgrounds
@@ -82,6 +81,22 @@ class ThemeTokens:
     # Warning state (extension)
     warning: ColorScale
     warning_foreground: ColorScale
+
+    # Info state (extension)
+    info: ColorScale
+    info_foreground: ColorScale
+
+    # Link color (extension)
+    link: ColorScale
+    link_hover: ColorScale
+
+    # Code/mono background (extension)
+    code: ColorScale
+    code_foreground: ColorScale
+
+    # Selection/highlight (extension)
+    selection: ColorScale
+    selection_foreground: ColorScale
 
     # UI elements
     border: ColorScale
@@ -128,6 +143,14 @@ _DEFAULT_LIGHT = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 50),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 48),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(221, 83, 53),
+    link_hover=ColorScale(221, 83, 45),
+    code=ColorScale(240, 5, 94),
+    code_foreground=ColorScale(240, 10, 20),
+    selection=ColorScale(240, 100, 80),
+    selection_foreground=ColorScale(240, 10, 4),
     border=ColorScale(240, 6, 90),
     input=ColorScale(240, 6, 90),
     ring=ColorScale(240, 6, 10),
@@ -155,6 +178,14 @@ _DEFAULT_DARK = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 40),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 60),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(221, 83, 65),
+    link_hover=ColorScale(221, 83, 75),
+    code=ColorScale(240, 4, 12),
+    code_foreground=ColorScale(240, 5, 80),
+    selection=ColorScale(240, 100, 30),
+    selection_foreground=ColorScale(0, 0, 98),
     border=ColorScale(240, 4, 16),
     input=ColorScale(240, 4, 16),
     ring=ColorScale(240, 5, 84),
@@ -195,6 +226,14 @@ _SHADCN_LIGHT = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 50),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 48),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(221, 83, 53),
+    link_hover=ColorScale(221, 83, 45),
+    code=ColorScale(240, 5, 94),
+    code_foreground=ColorScale(240, 10, 20),
+    selection=ColorScale(240, 100, 80),
+    selection_foreground=ColorScale(240, 10, 4),
     border=ColorScale(240, 6, 90),
     input=ColorScale(240, 6, 90),
     ring=ColorScale(240, 6, 10),
@@ -222,6 +261,14 @@ _SHADCN_DARK = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 40),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 60),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(221, 83, 65),
+    link_hover=ColorScale(221, 83, 75),
+    code=ColorScale(240, 4, 12),
+    code_foreground=ColorScale(240, 5, 80),
+    selection=ColorScale(240, 100, 30),
+    selection_foreground=ColorScale(0, 0, 98),
     border=ColorScale(240, 4, 16),
     input=ColorScale(240, 4, 16),
     ring=ColorScale(240, 5, 84),
@@ -262,6 +309,14 @@ _BLUE_LIGHT = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 50),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 48),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(221, 83, 53),
+    link_hover=ColorScale(221, 83, 45),
+    code=ColorScale(221, 95, 94),
+    code_foreground=ColorScale(240, 10, 20),
+    selection=ColorScale(221, 100, 80),
+    selection_foreground=ColorScale(240, 10, 4),
     border=ColorScale(214, 32, 91),
     input=ColorScale(214, 32, 91),
     ring=ColorScale(221, 83, 53),
@@ -280,7 +335,7 @@ _BLUE_DARK = ThemeTokens(
     secondary=ColorScale(217, 33, 17),
     secondary_foreground=ColorScale(210, 40, 98),
     muted=ColorScale(217, 33, 17),
-    muted_foreground=ColorScale(215, 20, 65),
+    muted_foreground=ColorScale(215, 15, 85),  # Increased from 65% to 85% for better contrast
     accent=ColorScale(217, 33, 17),
     accent_foreground=ColorScale(210, 40, 98),
     destructive=ColorScale(0, 62, 30),
@@ -289,6 +344,14 @@ _BLUE_DARK = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 40),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 60),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(221, 83, 65),
+    link_hover=ColorScale(221, 83, 75),
+    code=ColorScale(221, 30, 12),
+    code_foreground=ColorScale(240, 5, 80),
+    selection=ColorScale(221, 100, 30),
+    selection_foreground=ColorScale(0, 0, 98),
     border=ColorScale(217, 33, 17),
     input=ColorScale(217, 33, 17),
     ring=ColorScale(224, 76, 48),
@@ -329,6 +392,14 @@ _GREEN_LIGHT = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 50),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 48),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(142, 76, 40),
+    link_hover=ColorScale(142, 76, 32),
+    code=ColorScale(142, 20, 94),
+    code_foreground=ColorScale(240, 10, 20),
+    selection=ColorScale(142, 100, 80),
+    selection_foreground=ColorScale(240, 10, 4),
     border=ColorScale(140, 20, 88),
     input=ColorScale(140, 20, 88),
     ring=ColorScale(142, 76, 36),
@@ -347,7 +418,7 @@ _GREEN_DARK = ThemeTokens(
     secondary=ColorScale(140, 30, 16),
     secondary_foreground=ColorScale(138, 76, 97),
     muted=ColorScale(140, 30, 16),
-    muted_foreground=ColorScale(140, 20, 60),
+    muted_foreground=ColorScale(140, 15, 85),  # Increased from 60% to 85% for better contrast
     accent=ColorScale(140, 30, 16),
     accent_foreground=ColorScale(138, 76, 97),
     destructive=ColorScale(0, 62, 30),
@@ -356,6 +427,14 @@ _GREEN_DARK = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 40),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 60),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(142, 69, 45),
+    link_hover=ColorScale(142, 69, 55),
+    code=ColorScale(142, 30, 12),
+    code_foreground=ColorScale(240, 5, 80),
+    selection=ColorScale(142, 100, 30),
+    selection_foreground=ColorScale(0, 0, 98),
     border=ColorScale(140, 30, 16),
     input=ColorScale(140, 30, 16),
     ring=ColorScale(142, 69, 45),
@@ -396,6 +475,14 @@ _PURPLE_LIGHT = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 50),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 48),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(271, 81, 56),
+    link_hover=ColorScale(271, 81, 48),
+    code=ColorScale(271, 20, 94),
+    code_foreground=ColorScale(240, 10, 20),
+    selection=ColorScale(271, 100, 80),
+    selection_foreground=ColorScale(240, 10, 4),
     border=ColorScale(270, 20, 90),
     input=ColorScale(270, 20, 90),
     ring=ColorScale(270, 50, 50),
@@ -414,7 +501,7 @@ _PURPLE_DARK = ThemeTokens(
     secondary=ColorScale(270, 30, 16),
     secondary_foreground=ColorScale(270, 80, 98),
     muted=ColorScale(270, 30, 16),
-    muted_foreground=ColorScale(270, 20, 60),
+    muted_foreground=ColorScale(270, 15, 85),  # Increased from 60% to 85% for better contrast
     accent=ColorScale(270, 30, 16),
     accent_foreground=ColorScale(270, 80, 98),
     destructive=ColorScale(0, 62, 30),
@@ -423,6 +510,14 @@ _PURPLE_DARK = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 40),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 60),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(271, 91, 65),
+    link_hover=ColorScale(271, 91, 75),
+    code=ColorScale(271, 30, 12),
+    code_foreground=ColorScale(240, 5, 80),
+    selection=ColorScale(271, 100, 30),
+    selection_foreground=ColorScale(0, 0, 98),
     border=ColorScale(270, 30, 16),
     input=ColorScale(270, 30, 16),
     ring=ColorScale(270, 60, 60),
@@ -463,6 +558,14 @@ _ORANGE_LIGHT = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 50),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 48),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(25, 95, 53),
+    link_hover=ColorScale(25, 95, 45),
+    code=ColorScale(25, 20, 94),
+    code_foreground=ColorScale(240, 10, 20),
+    selection=ColorScale(25, 100, 80),
+    selection_foreground=ColorScale(240, 10, 4),
     border=ColorScale(24, 25, 88),
     input=ColorScale(24, 25, 88),
     ring=ColorScale(24, 95, 53),
@@ -481,7 +584,7 @@ _ORANGE_DARK = ThemeTokens(
     secondary=ColorScale(20, 30, 16),
     secondary_foreground=ColorScale(24, 100, 98),
     muted=ColorScale(20, 30, 16),
-    muted_foreground=ColorScale(20, 20, 60),
+    muted_foreground=ColorScale(20, 15, 85),  # Increased from 60% to 85% for better contrast
     accent=ColorScale(20, 30, 16),
     accent_foreground=ColorScale(24, 100, 98),
     destructive=ColorScale(0, 62, 30),
@@ -490,6 +593,14 @@ _ORANGE_DARK = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 40),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 60),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(25, 95, 55),
+    link_hover=ColorScale(25, 95, 65),
+    code=ColorScale(25, 30, 12),
+    code_foreground=ColorScale(240, 5, 80),
+    selection=ColorScale(25, 100, 30),
+    selection_foreground=ColorScale(0, 0, 98),
     border=ColorScale(20, 30, 16),
     input=ColorScale(20, 30, 16),
     ring=ColorScale(24, 95, 55),
@@ -530,6 +641,14 @@ _ROSE_LIGHT = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 50),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 48),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(347, 77, 50),
+    link_hover=ColorScale(347, 77, 42),
+    code=ColorScale(347, 20, 94),
+    code_foreground=ColorScale(240, 10, 20),
+    selection=ColorScale(347, 100, 80),
+    selection_foreground=ColorScale(240, 10, 4),
     border=ColorScale(346, 20, 90),
     input=ColorScale(346, 20, 90),
     ring=ColorScale(346, 77, 50),
@@ -548,7 +667,7 @@ _ROSE_DARK = ThemeTokens(
     secondary=ColorScale(346, 30, 16),
     secondary_foreground=ColorScale(346, 100, 98),
     muted=ColorScale(346, 30, 16),
-    muted_foreground=ColorScale(346, 20, 60),
+    muted_foreground=ColorScale(346, 15, 85),  # Increased from 60% to 85% for better contrast
     accent=ColorScale(346, 30, 16),
     accent_foreground=ColorScale(346, 100, 98),
     destructive=ColorScale(0, 62, 30),
@@ -557,6 +676,14 @@ _ROSE_DARK = ThemeTokens(
     success_foreground=ColorScale(0, 0, 98),
     warning=ColorScale(38, 92, 40),
     warning_foreground=ColorScale(0, 0, 98),
+    info=ColorScale(199, 89, 60),
+    info_foreground=ColorScale(0, 0, 98),
+    link=ColorScale(347, 77, 60),
+    link_hover=ColorScale(347, 77, 70),
+    code=ColorScale(347, 30, 12),
+    code_foreground=ColorScale(240, 5, 80),
+    selection=ColorScale(347, 100, 30),
+    selection_foreground=ColorScale(0, 0, 98),
     border=ColorScale(346, 30, 16),
     input=ColorScale(346, 30, 16),
     ring=ColorScale(346, 77, 55),
@@ -573,337 +700,6 @@ ROSE_THEME = ThemePreset(
 
 
 # =============================================================================
-# Cyberpunk Theme (Futuristic Neon)
-# =============================================================================
-
-_CYBERPUNK_LIGHT = ThemeTokens(
-    background=ColorScale(0, 0, 100),
-    foreground=ColorScale(270, 95, 10),
-    card=ColorScale(0, 0, 100),
-    card_foreground=ColorScale(270, 95, 10),
-    popover=ColorScale(0, 0, 100),
-    popover_foreground=ColorScale(270, 95, 10),
-    primary=ColorScale(120, 100, 50),
-    primary_foreground=ColorScale(0, 0, 0),
-    secondary=ColorScale(300, 100, 25),
-    secondary_foreground=ColorScale(0, 0, 100),
-    muted=ColorScale(270, 20, 96),
-    muted_foreground=ColorScale(270, 15, 45),
-    accent=ColorScale(300, 100, 70),
-    accent_foreground=ColorScale(0, 0, 0),
-    destructive=ColorScale(0, 84, 60),
-    destructive_foreground=ColorScale(0, 0, 98),
-    success=ColorScale(120, 100, 40),
-    success_foreground=ColorScale(0, 0, 0),
-    warning=ColorScale(60, 100, 50),
-    warning_foreground=ColorScale(0, 0, 0),
-    border=ColorScale(270, 30, 88),
-    input=ColorScale(270, 30, 88),
-    ring=ColorScale(120, 100, 50),
-    radius=0.5,
-)
-
-_CYBERPUNK_DARK = ThemeTokens(
-    background=ColorScale(270, 95, 5),
-    foreground=ColorScale(120, 100, 80),
-    card=ColorScale(270, 95, 8),
-    card_foreground=ColorScale(120, 100, 80),
-    popover=ColorScale(270, 95, 8),
-    popover_foreground=ColorScale(120, 100, 80),
-    primary=ColorScale(120, 100, 60),
-    primary_foreground=ColorScale(270, 95, 5),
-    secondary=ColorScale(300, 100, 15),
-    secondary_foreground=ColorScale(120, 100, 80),
-    muted=ColorScale(270, 50, 12),
-    muted_foreground=ColorScale(270, 30, 60),
-    accent=ColorScale(300, 100, 60),
-    accent_foreground=ColorScale(270, 95, 5),
-    destructive=ColorScale(0, 84, 50),
-    destructive_foreground=ColorScale(0, 0, 98),
-    success=ColorScale(120, 100, 50),
-    success_foreground=ColorScale(270, 95, 5),
-    warning=ColorScale(60, 100, 60),
-    warning_foreground=ColorScale(270, 95, 5),
-    border=ColorScale(270, 50, 12),
-    input=ColorScale(270, 50, 12),
-    ring=ColorScale(120, 100, 60),
-    radius=0.5,
-)
-
-CYBERPUNK_THEME = ThemePreset(
-    name="cyberpunk",
-    display_name="Cyberpunk",
-    description="A futuristic theme with neon greens and purples",
-    light=_CYBERPUNK_LIGHT,
-    dark=_CYBERPUNK_DARK,
-)
-
-# =============================================================================
-# Sunset Theme (Warm Colors)  
-# =============================================================================
-
-_SUNSET_LIGHT = ThemeTokens(
-    background=ColorScale(0, 0, 100),
-    foreground=ColorScale(15, 80, 15),
-    card=ColorScale(0, 0, 100),
-    card_foreground=ColorScale(15, 80, 15),
-    popover=ColorScale(0, 0, 100),
-    popover_foreground=ColorScale(15, 80, 15),
-    primary=ColorScale(25, 95, 55),
-    primary_foreground=ColorScale(0, 0, 100),
-    secondary=ColorScale(45, 100, 85),
-    secondary_foreground=ColorScale(15, 80, 15),
-    muted=ColorScale(25, 20, 96),
-    muted_foreground=ColorScale(25, 15, 45),
-    accent=ColorScale(15, 100, 70),
-    accent_foreground=ColorScale(0, 0, 100),
-    destructive=ColorScale(0, 84, 60),
-    destructive_foreground=ColorScale(0, 0, 98),
-    success=ColorScale(142, 76, 36),
-    success_foreground=ColorScale(0, 0, 98),
-    warning=ColorScale(38, 92, 50),
-    warning_foreground=ColorScale(0, 0, 98),
-    border=ColorScale(25, 25, 88),
-    input=ColorScale(25, 25, 88),
-    ring=ColorScale(25, 95, 55),
-    radius=0.5,
-)
-
-_SUNSET_DARK = ThemeTokens(
-    background=ColorScale(15, 80, 5),
-    foreground=ColorScale(45, 100, 85),
-    card=ColorScale(15, 80, 8),
-    card_foreground=ColorScale(45, 100, 85),
-    popover=ColorScale(15, 80, 8),
-    popover_foreground=ColorScale(45, 100, 85),
-    primary=ColorScale(25, 95, 65),
-    primary_foreground=ColorScale(15, 80, 5),
-    secondary=ColorScale(15, 50, 16),
-    secondary_foreground=ColorScale(45, 100, 85),
-    muted=ColorScale(15, 50, 16),
-    muted_foreground=ColorScale(25, 30, 60),
-    accent=ColorScale(45, 100, 70),
-    accent_foreground=ColorScale(15, 80, 5),
-    destructive=ColorScale(0, 84, 50),
-    destructive_foreground=ColorScale(0, 0, 98),
-    success=ColorScale(142, 76, 40),
-    success_foreground=ColorScale(0, 0, 98),
-    warning=ColorScale(38, 92, 60),
-    warning_foreground=ColorScale(15, 80, 5),
-    border=ColorScale(15, 50, 16),
-    input=ColorScale(15, 50, 16),
-    ring=ColorScale(25, 95, 65),
-    radius=0.5,
-)
-
-SUNSET_THEME = ThemePreset(
-    name="sunset",
-    display_name="Sunset",
-    description="A warm theme with oranges, reds, and yellows",
-    light=_SUNSET_LIGHT,
-    dark=_SUNSET_DARK,
-)
-
-# =============================================================================
-# Forest Theme (Nature Green)
-# =============================================================================
-
-_FOREST_LIGHT = ThemeTokens(
-    background=ColorScale(0, 0, 100),
-    foreground=ColorScale(130, 60, 15),
-    card=ColorScale(0, 0, 100),
-    card_foreground=ColorScale(130, 60, 15),
-    popover=ColorScale(0, 0, 100),
-    popover_foreground=ColorScale(130, 60, 15),
-    primary=ColorScale(130, 75, 40),
-    primary_foreground=ColorScale(0, 0, 100),
-    secondary=ColorScale(80, 40, 90),
-    secondary_foreground=ColorScale(130, 60, 15),
-    muted=ColorScale(130, 20, 96),
-    muted_foreground=ColorScale(130, 15, 45),
-    accent=ColorScale(100, 60, 60),
-    accent_foreground=ColorScale(0, 0, 100),
-    destructive=ColorScale(0, 84, 60),
-    destructive_foreground=ColorScale(0, 0, 98),
-    success=ColorScale(130, 75, 40),
-    success_foreground=ColorScale(0, 0, 98),
-    warning=ColorScale(38, 92, 50),
-    warning_foreground=ColorScale(0, 0, 98),
-    border=ColorScale(130, 25, 88),
-    input=ColorScale(130, 25, 88),
-    ring=ColorScale(130, 75, 40),
-    radius=0.5,
-)
-
-_FOREST_DARK = ThemeTokens(
-    background=ColorScale(130, 60, 8),
-    foreground=ColorScale(100, 60, 85),
-    card=ColorScale(130, 60, 10),
-    card_foreground=ColorScale(100, 60, 85),
-    popover=ColorScale(130, 60, 10),
-    popover_foreground=ColorScale(100, 60, 85),
-    primary=ColorScale(130, 75, 50),
-    primary_foreground=ColorScale(130, 60, 8),
-    secondary=ColorScale(130, 40, 16),
-    secondary_foreground=ColorScale(100, 60, 85),
-    muted=ColorScale(130, 40, 16),
-    muted_foreground=ColorScale(130, 20, 60),
-    accent=ColorScale(100, 60, 70),
-    accent_foreground=ColorScale(130, 60, 8),
-    destructive=ColorScale(0, 84, 50),
-    destructive_foreground=ColorScale(0, 0, 98),
-    success=ColorScale(130, 75, 45),
-    success_foreground=ColorScale(130, 60, 8),
-    warning=ColorScale(38, 92, 60),
-    warning_foreground=ColorScale(130, 60, 8),
-    border=ColorScale(130, 40, 16),
-    input=ColorScale(130, 40, 16),
-    ring=ColorScale(130, 75, 50),
-    radius=0.5,
-)
-
-FOREST_THEME = ThemePreset(
-    name="forest",
-    display_name="Forest",
-    description="A nature-inspired theme with earth tones and greens",
-    light=_FOREST_LIGHT,
-    dark=_FOREST_DARK,
-)
-
-# =============================================================================
-# Ocean Theme (Blue/Teal)
-# =============================================================================
-
-_OCEAN_LIGHT = ThemeTokens(
-    background=ColorScale(0, 0, 100),
-    foreground=ColorScale(200, 80, 15),
-    card=ColorScale(0, 0, 100),
-    card_foreground=ColorScale(200, 80, 15),
-    popover=ColorScale(0, 0, 100),
-    popover_foreground=ColorScale(200, 80, 15),
-    primary=ColorScale(200, 85, 50),
-    primary_foreground=ColorScale(0, 0, 100),
-    secondary=ColorScale(180, 60, 85),
-    secondary_foreground=ColorScale(200, 80, 15),
-    muted=ColorScale(200, 20, 96),
-    muted_foreground=ColorScale(200, 15, 45),
-    accent=ColorScale(180, 70, 60),
-    accent_foreground=ColorScale(0, 0, 100),
-    destructive=ColorScale(0, 84, 60),
-    destructive_foreground=ColorScale(0, 0, 98),
-    success=ColorScale(142, 76, 36),
-    success_foreground=ColorScale(0, 0, 98),
-    warning=ColorScale(38, 92, 50),
-    warning_foreground=ColorScale(0, 0, 98),
-    border=ColorScale(200, 25, 88),
-    input=ColorScale(200, 25, 88),
-    ring=ColorScale(200, 85, 50),
-    radius=0.5,
-)
-
-_OCEAN_DARK = ThemeTokens(
-    background=ColorScale(200, 80, 8),
-    foreground=ColorScale(180, 70, 85),
-    card=ColorScale(200, 80, 10),
-    card_foreground=ColorScale(180, 70, 85),
-    popover=ColorScale(200, 80, 10),
-    popover_foreground=ColorScale(180, 70, 85),
-    primary=ColorScale(200, 85, 60),
-    primary_foreground=ColorScale(200, 80, 8),
-    secondary=ColorScale(200, 40, 16),
-    secondary_foreground=ColorScale(180, 70, 85),
-    muted=ColorScale(200, 40, 16),
-    muted_foreground=ColorScale(200, 20, 60),
-    accent=ColorScale(180, 70, 70),
-    accent_foreground=ColorScale(200, 80, 8),
-    destructive=ColorScale(0, 84, 50),
-    destructive_foreground=ColorScale(0, 0, 98),
-    success=ColorScale(142, 76, 40),
-    success_foreground=ColorScale(0, 0, 98),
-    warning=ColorScale(38, 92, 60),
-    warning_foreground=ColorScale(200, 80, 8),
-    border=ColorScale(200, 40, 16),
-    input=ColorScale(200, 40, 16),
-    ring=ColorScale(200, 85, 60),
-    radius=0.5,
-)
-
-OCEAN_THEME = ThemePreset(
-    name="ocean",
-    display_name="Ocean",
-    description="A calming theme with blues and teals",
-    light=_OCEAN_LIGHT,
-    dark=_OCEAN_DARK,
-)
-
-# =============================================================================
-# Metallic Theme (Silver/Gray)
-# =============================================================================
-
-_METALLIC_LIGHT = ThemeTokens(
-    background=ColorScale(0, 0, 100),
-    foreground=ColorScale(220, 15, 20),
-    card=ColorScale(0, 0, 100),
-    card_foreground=ColorScale(220, 15, 20),
-    popover=ColorScale(0, 0, 100),
-    popover_foreground=ColorScale(220, 15, 20),
-    primary=ColorScale(220, 25, 45),
-    primary_foreground=ColorScale(0, 0, 100),
-    secondary=ColorScale(220, 10, 90),
-    secondary_foreground=ColorScale(220, 15, 20),
-    muted=ColorScale(220, 10, 96),
-    muted_foreground=ColorScale(220, 8, 45),
-    accent=ColorScale(220, 30, 65),
-    accent_foreground=ColorScale(0, 0, 100),
-    destructive=ColorScale(0, 84, 60),
-    destructive_foreground=ColorScale(0, 0, 98),
-    success=ColorScale(142, 76, 36),
-    success_foreground=ColorScale(0, 0, 98),
-    warning=ColorScale(38, 92, 50),
-    warning_foreground=ColorScale(0, 0, 98),
-    border=ColorScale(220, 15, 85),
-    input=ColorScale(220, 15, 85),
-    ring=ColorScale(220, 25, 45),
-    radius=0.5,
-)
-
-_METALLIC_DARK = ThemeTokens(
-    background=ColorScale(220, 15, 8),
-    foreground=ColorScale(220, 30, 85),
-    card=ColorScale(220, 15, 10),
-    card_foreground=ColorScale(220, 30, 85),
-    popover=ColorScale(220, 15, 10),
-    popover_foreground=ColorScale(220, 30, 85),
-    primary=ColorScale(220, 25, 55),
-    primary_foreground=ColorScale(220, 15, 8),
-    secondary=ColorScale(220, 15, 16),
-    secondary_foreground=ColorScale(220, 30, 85),
-    muted=ColorScale(220, 15, 16),
-    muted_foreground=ColorScale(220, 10, 60),
-    accent=ColorScale(220, 30, 70),
-    accent_foreground=ColorScale(220, 15, 8),
-    destructive=ColorScale(0, 84, 50),
-    destructive_foreground=ColorScale(0, 0, 98),
-    success=ColorScale(142, 76, 40),
-    success_foreground=ColorScale(0, 0, 98),
-    warning=ColorScale(38, 92, 60),
-    warning_foreground=ColorScale(220, 15, 8),
-    border=ColorScale(220, 15, 16),
-    input=ColorScale(220, 15, 16),
-    ring=ColorScale(220, 25, 55),
-    radius=0.5,
-)
-
-METALLIC_THEME = ThemePreset(
-    name="metallic",
-    display_name="Metallic",
-    description="A sleek and modern theme with silver tones",
-    light=_METALLIC_LIGHT,
-    dark=_METALLIC_DARK,
-)
-
-
-# =============================================================================
 # Theme Presets Registry
 # =============================================================================
 
@@ -915,45 +711,12 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "purple": PURPLE_THEME,
     "orange": ORANGE_THEME,
     "rose": ROSE_THEME,
-    "cyberpunk": CYBERPUNK_THEME,
-    "sunset": SUNSET_THEME,
-    "forest": FOREST_THEME,
-    "ocean": OCEAN_THEME,
-    "metallic": METALLIC_THEME,
 }
 
 
 def get_preset(name: str) -> ThemePreset:
-    """Get a theme preset by name (regular + high contrast)."""
-    # Check regular presets first
-    if name in THEME_PRESETS:
-        return THEME_PRESETS[name]
-    
-    # Check high contrast presets
-    try:
-        from .high_contrast import get_all_high_contrast_presets
-        hc_presets = get_all_high_contrast_presets()
-        if name in hc_presets:
-            return hc_presets[name]
-    except ImportError:
-        pass
-    
-    # Fallback to default
-    return THEME_PRESETS.get("default", DEFAULT_THEME)
-
-
-def get_all_presets() -> Dict[str, ThemePreset]:
-    """Get all available theme presets (regular + high contrast)."""
-    all_presets = THEME_PRESETS.copy()
-    
-    try:
-        from .high_contrast import get_all_high_contrast_presets
-        hc_presets = get_all_high_contrast_presets()
-        all_presets.update(hc_presets)
-    except ImportError:
-        pass
-        
-    return all_presets
+    """Get a theme preset by name, with fallback to default."""
+    return THEME_PRESETS.get(name, DEFAULT_THEME)
 
 
 def list_presets() -> list[dict]:

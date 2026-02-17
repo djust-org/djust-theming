@@ -5,6 +5,50 @@ All notable changes to djust-theming will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-02-17
+
+### Added
+- 🎨 **Comprehensive Design System Foundation**
+- Design tokens module with spacing scale, typography hierarchy, and structural utilities
+- 13 spacing tokens from 4px to 96px (`--space-1` to `--space-24`)
+- 28 typography tokens (font sizes, line heights, font weights)
+- Extended border radius tokens (`--radius-sm` to `--radius-full`)
+- Transition timing tokens (durations and easing curves)
+- Theme-aware shadow tokens that adapt to light/dark modes
+- Animation keyframes (fadeIn, slideInFromRight, pulse, spin)
+
+### Added - New Semantic Colors
+- 8 new color tokens added to all theme presets (total: 31 color tokens)
+- `--info` / `--info-foreground` - Informational states (blue)
+- `--link` / `--link-hover` - Hyperlink colors with hover variant
+- `--code` / `--code-foreground` - Code block backgrounds
+- `--selection` / `--selection-foreground` - Text selection highlights
+
+### Added - Utility Classes
+- Typography classes: `.h1`-`.h6`, `.text-body`, `.text-small`, `.text-tiny`
+- Interactive patterns: `.interactive`, `.link`, `.focus-ring`
+- Layout utilities: `.truncate`, `.line-clamp-{2,3,4}`, `.custom-scrollbar`
+- Animation classes: `.fade-in`, `.slide-in-right`, `.pulse`, `.spin`
+- Color utilities: `.bg-info`, `.text-link`, `.border-info`, etc.
+
+### Added - Default Component Styles
+- Links automatically themed with `--link` and `--link-hover` colors
+- Code blocks themed with `--code` background and `--code-foreground` text
+- Text selection themed with `--selection` colors
+
+### Added - Documentation
+- `djust_theming/docs/design-system.md` - Comprehensive design system guide (469 lines)
+- `djust_theming/docs/colors.md` - Complete color reference (425 lines)
+- `djust_theming/docs/PHASE1-SUMMARY.md` - Implementation summary (883 lines)
+
+### Changed
+- ThemeCSSGenerator now includes design tokens by default (`include_design_tokens=True`)
+- All theme presets updated with new semantic color values
+- ColorScale dataclass: renamed `l` parameter to `lightness` for clarity (no breaking change in usage)
+
+### Fixed
+- Code formatting: split long font-family line for linting compliance
+
 ## [1.0.0] - 2026-02-04
 
 ### Added
