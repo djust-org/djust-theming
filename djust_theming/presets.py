@@ -783,6 +783,338 @@ NATURAL20_THEME = ThemePreset(
 
 
 # =============================================================================
+# Catppuccin Mocha Theme (Most Popular Pastel Theme)
+# =============================================================================
+
+_CATPPUCCIN_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 100),
+    foreground=ColorScale(240, 23, 15),
+    card=ColorScale(220, 23, 97),
+    card_foreground=ColorScale(240, 23, 15),
+    popover=ColorScale(220, 23, 97),
+    popover_foreground=ColorScale(240, 23, 15),
+    primary=ColorScale(217, 92, 76),  # Blue
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(220, 17, 93),
+    secondary_foreground=ColorScale(240, 23, 15),
+    muted=ColorScale(220, 17, 93),
+    muted_foreground=ColorScale(233, 16, 49),
+    accent=ColorScale(220, 17, 93),
+    accent_foreground=ColorScale(217, 92, 76),
+    destructive=ColorScale(343, 81, 75),  # Red
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(115, 54, 76),  # Green
+    success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(35, 77, 49),  # Yellow
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(189, 100, 74),  # Sky
+    info_foreground=ColorScale(0, 0, 10),
+    link=ColorScale(267, 84, 81),  # Mauve
+    link_hover=ColorScale(267, 84, 71),
+    code=ColorScale(220, 23, 97),
+    code_foreground=ColorScale(240, 23, 15),
+    selection=ColorScale(217, 92, 86),
+    selection_foreground=ColorScale(240, 23, 15),
+    border=ColorScale(220, 17, 93),
+    input=ColorScale(0, 0, 100),
+    ring=ColorScale(217, 92, 76),
+    radius=0.75,
+)
+
+_CATPPUCCIN_DARK = ThemeTokens(
+    background=ColorScale(240, 21, 15),  # Base #1e1e2e
+    foreground=ColorScale(226, 64, 88),  # Text #cdd6f4
+    card=ColorScale(240, 21, 19),  # Surface0 #313244
+    card_foreground=ColorScale(226, 64, 88),
+    popover=ColorScale(240, 21, 19),
+    popover_foreground=ColorScale(226, 64, 88),
+    primary=ColorScale(217, 92, 76),  # Blue #89b4fa
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(240, 21, 26),  # Surface1
+    secondary_foreground=ColorScale(226, 64, 88),
+    muted=ColorScale(240, 21, 26),
+    muted_foreground=ColorScale(227, 27, 72),  # Overlay0
+    accent=ColorScale(240, 21, 26),
+    accent_foreground=ColorScale(267, 84, 81),  # Mauve
+    destructive=ColorScale(343, 81, 75),  # Red #f38ba8
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(115, 54, 76),  # Green #a6e3a1
+    success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(23, 92, 75),  # Peach #fab387
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(189, 100, 74),  # Sky #89dceb
+    info_foreground=ColorScale(0, 0, 10),
+    link=ColorScale(267, 84, 81),  # Mauve #cba6f7
+    link_hover=ColorScale(267, 84, 71),
+    code=ColorScale(240, 21, 12),  # Mantle
+    code_foreground=ColorScale(226, 64, 88),
+    selection=ColorScale(267, 84, 81),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(240, 21, 26),
+    input=ColorScale(240, 21, 19),
+    ring=ColorScale(217, 92, 76),
+    radius=0.75,
+)
+
+CATPPUCCIN_THEME = ThemePreset(
+    name="catppuccin",
+    display_name="Catppuccin Mocha",
+    description="Soothing pastel theme with warm, muted colors",
+    light=_CATPPUCCIN_LIGHT,
+    dark=_CATPPUCCIN_DARK,
+)
+
+
+# =============================================================================
+# Rosé Pine Theme (Elegant Nature-Inspired Pastels)
+# =============================================================================
+
+_ROSE_PINE_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 100),
+    foreground=ColorScale(248, 25, 18),
+    card=ColorScale(245, 50, 97),
+    card_foreground=ColorScale(248, 25, 18),
+    popover=ColorScale(245, 50, 97),
+    popover_foreground=ColorScale(248, 25, 18),
+    primary=ColorScale(343, 76, 68),  # Love (rose)
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(245, 22, 91),
+    secondary_foreground=ColorScale(248, 25, 18),
+    muted=ColorScale(245, 22, 91),
+    muted_foreground=ColorScale(257, 9, 48),
+    accent=ColorScale(245, 22, 91),
+    accent_foreground=ColorScale(267, 57, 78),  # Iris
+    destructive=ColorScale(343, 76, 68),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(197, 49, 38),  # Pine
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(35, 88, 72),  # Gold
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(189, 43, 73),  # Foam
+    info_foreground=ColorScale(0, 0, 10),
+    link=ColorScale(267, 57, 78),  # Iris
+    link_hover=ColorScale(267, 57, 68),
+    code=ColorScale(245, 50, 97),
+    code_foreground=ColorScale(248, 25, 18),
+    selection=ColorScale(343, 76, 88),
+    selection_foreground=ColorScale(248, 25, 18),
+    border=ColorScale(245, 22, 91),
+    input=ColorScale(0, 0, 100),
+    ring=ColorScale(343, 76, 68),
+    radius=0.5,
+)
+
+_ROSE_PINE_DARK = ThemeTokens(
+    background=ColorScale(249, 22, 12),  # Base #191724
+    foreground=ColorScale(245, 50, 91),  # Text #e0def4
+    card=ColorScale(250, 23, 17),  # Surface #1f1d2e
+    card_foreground=ColorScale(245, 50, 91),
+    popover=ColorScale(250, 23, 17),
+    popover_foreground=ColorScale(245, 50, 91),
+    primary=ColorScale(343, 76, 68),  # Love #eb6f92
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(247, 23, 20),  # Overlay
+    secondary_foreground=ColorScale(245, 50, 91),
+    muted=ColorScale(247, 23, 20),
+    muted_foreground=ColorScale(249, 15, 56),  # Muted
+    accent=ColorScale(247, 23, 20),
+    accent_foreground=ColorScale(267, 57, 78),  # Iris
+    destructive=ColorScale(343, 76, 68),  # Love
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(197, 49, 38),  # Pine #31748f
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(35, 88, 72),  # Gold #f6c177
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(189, 43, 73),  # Foam #9ccfd8
+    info_foreground=ColorScale(0, 0, 10),
+    link=ColorScale(267, 57, 78),  # Iris #c4a7e7
+    link_hover=ColorScale(267, 57, 88),
+    code=ColorScale(248, 24, 10),  # Highlight Low
+    code_foreground=ColorScale(245, 50, 91),
+    selection=ColorScale(267, 57, 78),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(247, 23, 20),
+    input=ColorScale(250, 23, 17),
+    ring=ColorScale(343, 76, 68),
+    radius=0.5,
+)
+
+ROSE_PINE_THEME = ThemePreset(
+    name="rose_pine",
+    display_name="Rosé Pine",
+    description="Elegant, muted pastels inspired by natural pine forests",
+    light=_ROSE_PINE_LIGHT,
+    dark=_ROSE_PINE_DARK,
+)
+
+
+# =============================================================================
+# Tokyo Night Theme (Vibrant Neon Pastels)
+# =============================================================================
+
+_TOKYO_NIGHT_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 100),
+    foreground=ColorScale(224, 18, 20),
+    card=ColorScale(219, 28, 97),
+    card_foreground=ColorScale(224, 18, 20),
+    popover=ColorScale(219, 28, 97),
+    popover_foreground=ColorScale(224, 18, 20),
+    primary=ColorScale(217, 89, 72),  # Blue
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(219, 20, 92),
+    secondary_foreground=ColorScale(224, 18, 20),
+    muted=ColorScale(219, 20, 92),
+    muted_foreground=ColorScale(224, 18, 45),
+    accent=ColorScale(219, 20, 92),
+    accent_foreground=ColorScale(267, 85, 78),  # Magenta
+    destructive=ColorScale(355, 89, 72),  # Red
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(89, 59, 64),  # Green
+    success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(41, 70, 65),  # Yellow
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(189, 100, 74),  # Cyan
+    info_foreground=ColorScale(0, 0, 10),
+    link=ColorScale(267, 85, 78),  # Magenta
+    link_hover=ColorScale(267, 85, 68),
+    code=ColorScale(219, 28, 97),
+    code_foreground=ColorScale(224, 18, 20),
+    selection=ColorScale(217, 89, 82),
+    selection_foreground=ColorScale(224, 18, 20),
+    border=ColorScale(219, 20, 92),
+    input=ColorScale(0, 0, 100),
+    ring=ColorScale(217, 89, 72),
+    radius=0.5,
+)
+
+_TOKYO_NIGHT_DARK = ThemeTokens(
+    background=ColorScale(234, 16, 13),  # Background #1a1b26
+    foreground=ColorScale(219, 72, 85),  # Foreground #c0caf5
+    card=ColorScale(233, 15, 18),  # Slightly lighter
+    card_foreground=ColorScale(219, 72, 85),
+    popover=ColorScale(233, 15, 18),
+    popover_foreground=ColorScale(219, 72, 85),
+    primary=ColorScale(217, 89, 72),  # Blue #7aa2f7
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(234, 13, 20),
+    secondary_foreground=ColorScale(219, 72, 85),
+    muted=ColorScale(234, 13, 20),
+    muted_foreground=ColorScale(225, 12, 68),
+    accent=ColorScale(234, 13, 20),
+    accent_foreground=ColorScale(267, 85, 78),  # Magenta
+    destructive=ColorScale(355, 89, 72),  # Red #f7768e
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(89, 59, 64),  # Green #9ece6a
+    success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(41, 70, 65),  # Yellow #e0af68
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(189, 100, 74),  # Cyan #7dcfff
+    info_foreground=ColorScale(0, 0, 10),
+    link=ColorScale(267, 85, 78),  # Magenta #bb9af7
+    link_hover=ColorScale(267, 85, 88),
+    code=ColorScale(233, 17, 10),
+    code_foreground=ColorScale(219, 72, 85),
+    selection=ColorScale(267, 85, 78),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(234, 13, 20),
+    input=ColorScale(233, 15, 18),
+    ring=ColorScale(217, 89, 72),
+    radius=0.5,
+)
+
+TOKYO_NIGHT_THEME = ThemePreset(
+    name="tokyo_night",
+    display_name="Tokyo Night",
+    description="Vibrant yet soft neon colors inspired by Tokyo at night",
+    light=_TOKYO_NIGHT_LIGHT,
+    dark=_TOKYO_NIGHT_DARK,
+)
+
+
+# =============================================================================
+# Nord Theme (Arctic-Inspired Cool Pastels)
+# =============================================================================
+
+_NORD_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 100),
+    foreground=ColorScale(220, 16, 22),
+    card=ColorScale(219, 28, 97),
+    card_foreground=ColorScale(220, 16, 22),
+    popover=ColorScale(219, 28, 97),
+    popover_foreground=ColorScale(220, 16, 22),
+    primary=ColorScale(193, 43, 67),  # Nord8 frost
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(219, 20, 92),
+    secondary_foreground=ColorScale(220, 16, 22),
+    muted=ColorScale(219, 20, 92),
+    muted_foreground=ColorScale(220, 16, 45),
+    accent=ColorScale(219, 20, 92),
+    accent_foreground=ColorScale(210, 34, 63),  # Nord9
+    destructive=ColorScale(354, 42, 56),  # Nord11 aurora red
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(92, 28, 65),  # Nord14 aurora green
+    success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(40, 71, 73),  # Nord13 aurora yellow
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(210, 34, 63),  # Nord9 frost
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(213, 32, 52),  # Nord10 frost
+    link_hover=ColorScale(213, 32, 42),
+    code=ColorScale(219, 28, 97),
+    code_foreground=ColorScale(220, 16, 22),
+    selection=ColorScale(193, 43, 77),
+    selection_foreground=ColorScale(220, 16, 22),
+    border=ColorScale(219, 20, 92),
+    input=ColorScale(0, 0, 100),
+    ring=ColorScale(193, 43, 67),
+    radius=0.5,
+)
+
+_NORD_DARK = ThemeTokens(
+    background=ColorScale(220, 16, 22),  # Nord0 #2e3440
+    foreground=ColorScale(219, 28, 88),  # Nord4 #d8dee9
+    card=ColorScale(220, 16, 28),  # Nord1 #3b4252
+    card_foreground=ColorScale(219, 28, 88),
+    popover=ColorScale(220, 16, 28),
+    popover_foreground=ColorScale(219, 28, 88),
+    primary=ColorScale(193, 43, 67),  # Nord8 #88c0d0
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(220, 16, 32),  # Nord2
+    secondary_foreground=ColorScale(219, 28, 88),
+    muted=ColorScale(220, 16, 32),
+    muted_foreground=ColorScale(219, 14, 62),
+    accent=ColorScale(220, 16, 32),
+    accent_foreground=ColorScale(210, 34, 63),  # Nord9
+    destructive=ColorScale(354, 42, 56),  # Nord11 #bf616a
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(92, 28, 65),  # Nord14 #a3be8c
+    success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(40, 71, 73),  # Nord13 #ebcb8b
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(210, 34, 63),  # Nord9 #81a1c1
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(213, 32, 52),  # Nord10 #5e81ac
+    link_hover=ColorScale(213, 32, 62),
+    code=ColorScale(220, 17, 18),  # Darker than background
+    code_foreground=ColorScale(219, 28, 88),
+    selection=ColorScale(210, 34, 63),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(220, 16, 32),
+    input=ColorScale(220, 16, 28),
+    ring=ColorScale(193, 43, 67),
+    radius=0.5,
+)
+
+NORD_THEME = ThemePreset(
+    name="nord",
+    display_name="Nord",
+    description="Cool, arctic-inspired blue/gray pastels",
+    light=_NORD_LIGHT,
+    dark=_NORD_DARK,
+)
+
+
+# =============================================================================
 # Theme Presets Registry
 # =============================================================================
 
@@ -795,6 +1127,10 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "orange": ORANGE_THEME,
     "rose": ROSE_THEME,
     "natural20": NATURAL20_THEME,
+    "catppuccin": CATPPUCCIN_THEME,
+    "rose_pine": ROSE_PINE_THEME,
+    "tokyo_night": TOKYO_NIGHT_THEME,
+    "nord": NORD_THEME,
 }
 
 
