@@ -1118,6 +1118,259 @@ NORD_THEME = ThemePreset(
 # Theme Presets Registry
 # =============================================================================
 
+# =============================================================================
+# Synthwave '84 Theme (Most Iconic Neon Theme)
+# =============================================================================
+
+_SYNTHWAVE_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 98),
+    foreground=ColorScale(255, 26, 25),
+    card=ColorScale(255, 26, 95),
+    card_foreground=ColorScale(255, 26, 25),
+    popover=ColorScale(255, 26, 95),
+    popover_foreground=ColorScale(255, 26, 25),
+    primary=ColorScale(320, 100, 74),  # Hot pink
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(255, 26, 88),
+    secondary_foreground=ColorScale(255, 26, 25),
+    muted=ColorScale(255, 26, 88),
+    muted_foreground=ColorScale(255, 26, 45),
+    accent=ColorScale(154, 83, 70),  # Electric cyan
+    accent_foreground=ColorScale(0, 0, 10),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(154, 83, 70),  # Cyan
+    success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(45, 100, 70),  # Sunset orange
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(267, 41, 69),  # Neon purple
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(320, 100, 74),  # Hot pink
+    link_hover=ColorScale(320, 100, 64),
+    code=ColorScale(255, 26, 95),
+    code_foreground=ColorScale(255, 26, 25),
+    selection=ColorScale(320, 100, 84),
+    selection_foreground=ColorScale(255, 26, 25),
+    border=ColorScale(255, 26, 88),
+    input=ColorScale(0, 0, 100),
+    ring=ColorScale(320, 100, 74),
+    radius=0.75,
+)
+
+_SYNTHWAVE_DARK = ThemeTokens(
+    background=ColorScale(255, 26, 17),  # #262335 dark purple-gray
+    foreground=ColorScale(320, 100, 95),  # Light pink-white
+    card=ColorScale(255, 26, 22),  # Slightly lighter
+    card_foreground=ColorScale(320, 100, 95),
+    popover=ColorScale(255, 26, 22),
+    popover_foreground=ColorScale(320, 100, 95),
+    primary=ColorScale(320, 100, 74),  # #ff7edb hot pink
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(255, 26, 30),
+    secondary_foreground=ColorScale(320, 100, 95),
+    muted=ColorScale(255, 26, 30),
+    muted_foreground=ColorScale(267, 41, 69),  # Neon purple
+    accent=ColorScale(154, 83, 70),  # #72f1b8 electric cyan
+    accent_foreground=ColorScale(0, 0, 10),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(154, 83, 70),  # Electric cyan
+    success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(45, 100, 70),  # #ffd866 sunset orange
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(267, 41, 69),  # #b893ce neon purple
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(320, 100, 74),  # Hot pink
+    link_hover=ColorScale(320, 100, 84),
+    code=ColorScale(255, 26, 14),
+    code_foreground=ColorScale(320, 100, 95),
+    selection=ColorScale(320, 100, 74),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(255, 26, 30),
+    input=ColorScale(255, 26, 22),
+    ring=ColorScale(320, 100, 74),
+    radius=0.75,
+)
+
+SYNTHWAVE_THEME = ThemePreset(
+    name="synthwave",
+    display_name="Synthwave '84",
+    description="Iconic 1980s synthwave with glowing neon pink and cyan",
+    light=_SYNTHWAVE_LIGHT,
+    dark=_SYNTHWAVE_DARK,
+)
+
+
+# =============================================================================
+# Cyberpunk Theme (Dystopian Future Neon)
+# =============================================================================
+
+_CYBERPUNK_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 98),
+    foreground=ColorScale(219, 100, 15),
+    card=ColorScale(219, 50, 95),
+    card_foreground=ColorScale(219, 100, 15),
+    popover=ColorScale(219, 50, 95),
+    popover_foreground=ColorScale(219, 100, 15),
+    primary=ColorScale(54, 70, 68),  # Neon yellow
+    primary_foreground=ColorScale(0, 0, 10),
+    secondary=ColorScale(219, 50, 88),
+    secondary_foreground=ColorScale(219, 100, 15),
+    muted=ColorScale(219, 50, 88),
+    muted_foreground=ColorScale(219, 50, 45),
+    accent=ColorScale(330, 100, 50),  # Hot magenta
+    accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(135, 94, 65),  # Neon green
+    success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(54, 70, 68),  # Neon yellow
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(180, 100, 50),  # Electric cyan
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(330, 100, 50),  # Hot magenta
+    link_hover=ColorScale(330, 100, 40),
+    code=ColorScale(219, 50, 95),
+    code_foreground=ColorScale(219, 100, 15),
+    selection=ColorScale(54, 70, 78),
+    selection_foreground=ColorScale(0, 0, 10),
+    border=ColorScale(219, 50, 88),
+    input=ColorScale(0, 0, 100),
+    ring=ColorScale(54, 70, 68),
+    radius=0.5,
+)
+
+_CYBERPUNK_DARK = ThemeTokens(
+    background=ColorScale(219, 100, 6),  # #000b1e near black with blue tint
+    foreground=ColorScale(54, 70, 95),  # Light yellow-white
+    card=ColorScale(219, 100, 10),  # Slightly lighter
+    card_foreground=ColorScale(54, 70, 95),
+    popover=ColorScale(219, 100, 10),
+    popover_foreground=ColorScale(54, 70, 95),
+    primary=ColorScale(54, 70, 68),  # #e6db74 neon yellow
+    primary_foreground=ColorScale(0, 0, 10),
+    secondary=ColorScale(219, 100, 15),
+    secondary_foreground=ColorScale(54, 70, 95),
+    muted=ColorScale(219, 100, 15),
+    muted_foreground=ColorScale(180, 100, 70),  # Cyan
+    accent=ColorScale(330, 100, 50),  # #ff0080 hot magenta
+    accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(135, 94, 65),  # #50fa7b neon green
+    success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(54, 70, 68),  # Neon yellow
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(180, 100, 50),  # #00ffff electric cyan
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(330, 100, 50),  # Hot magenta
+    link_hover=ColorScale(330, 100, 60),
+    code=ColorScale(219, 100, 8),
+    code_foreground=ColorScale(54, 70, 95),
+    selection=ColorScale(330, 100, 50),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(219, 100, 15),
+    input=ColorScale(219, 100, 10),
+    ring=ColorScale(54, 70, 68),
+    radius=0.5,
+)
+
+CYBERPUNK_THEME = ThemePreset(
+    name="cyberpunk",
+    display_name="Cyberpunk",
+    description="Dystopian future with neon yellow, magenta, and cyan",
+    light=_CYBERPUNK_LIGHT,
+    dark=_CYBERPUNK_DARK,
+)
+
+
+# =============================================================================
+# Outrun Theme (80s Retro Racing Aesthetic)
+# =============================================================================
+
+_OUTRUN_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 98),
+    foreground=ColorScale(240, 100, 15),
+    card=ColorScale(240, 50, 95),
+    card_foreground=ColorScale(240, 100, 15),
+    popover=ColorScale(240, 50, 95),
+    popover_foreground=ColorScale(240, 100, 15),
+    primary=ColorScale(329, 100, 71),  # Hot pink
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(240, 50, 88),
+    secondary_foreground=ColorScale(240, 100, 15),
+    muted=ColorScale(240, 50, 88),
+    muted_foreground=ColorScale(240, 50, 45),
+    accent=ColorScale(285, 61, 66),  # Neon purple
+    accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(187, 47, 55),  # Electric cyan
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(48, 100, 50),  # Sunset orange
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(187, 47, 55),  # Electric cyan
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(329, 100, 71),  # Hot pink
+    link_hover=ColorScale(329, 100, 61),
+    code=ColorScale(240, 50, 95),
+    code_foreground=ColorScale(240, 100, 15),
+    selection=ColorScale(329, 100, 81),
+    selection_foreground=ColorScale(240, 100, 15),
+    border=ColorScale(240, 50, 88),
+    input=ColorScale(0, 0, 100),
+    ring=ColorScale(329, 100, 71),
+    radius=0.75,
+)
+
+_OUTRUN_DARK = ThemeTokens(
+    background=ColorScale(240, 100, 8),  # #00002a deep blue-black
+    foreground=ColorScale(329, 100, 95),  # Light pink-white
+    card=ColorScale(240, 100, 12),  # Slightly lighter
+    card_foreground=ColorScale(329, 100, 95),
+    popover=ColorScale(240, 100, 12),
+    popover_foreground=ColorScale(329, 100, 95),
+    primary=ColorScale(329, 100, 71),  # #ff6ac1 hot pink
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(240, 100, 18),
+    secondary_foreground=ColorScale(329, 100, 95),
+    muted=ColorScale(240, 100, 18),
+    muted_foreground=ColorScale(285, 61, 66),  # Neon purple
+    accent=ColorScale(285, 61, 66),  # #c574dd neon purple
+    accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(187, 47, 55),  # #56b6c2 electric cyan
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(48, 100, 50),  # #ffcc00 sunset orange
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(187, 47, 55),  # Electric cyan
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(329, 100, 71),  # Hot pink
+    link_hover=ColorScale(329, 100, 81),
+    code=ColorScale(240, 100, 6),
+    code_foreground=ColorScale(329, 100, 95),
+    selection=ColorScale(329, 100, 71),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(240, 100, 18),
+    input=ColorScale(240, 100, 12),
+    ring=ColorScale(329, 100, 71),
+    radius=0.75,
+)
+
+OUTRUN_THEME = ThemePreset(
+    name="outrun",
+    display_name="Outrun",
+    description="80s retro racing with hot pink, purple, and sunset gradients",
+    light=_OUTRUN_LIGHT,
+    dark=_OUTRUN_DARK,
+)
+
+
+# =============================================================================
+# Theme Presets Registry
+# =============================================================================
+
 THEME_PRESETS: dict[str, ThemePreset] = {
     "default": DEFAULT_THEME,
     "shadcn": SHADCN_THEME,
@@ -1131,6 +1384,9 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "rose_pine": ROSE_PINE_THEME,
     "tokyo_night": TOKYO_NIGHT_THEME,
     "nord": NORD_THEME,
+    "synthwave": SYNTHWAVE_THEME,
+    "cyberpunk": CYBERPUNK_THEME,
+    "outrun": OUTRUN_THEME,
 }
 
 
