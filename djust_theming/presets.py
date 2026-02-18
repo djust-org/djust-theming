@@ -106,6 +106,12 @@ class ThemeTokens:
     # Border radius multiplier
     radius: float = 0.5
 
+    # Animation properties
+    card_lift_distance: float = 1.0  # pixels - how much cards lift on hover
+    card_glow_opacity: float = 0.3  # 0-1 - strength of border glow effect
+    transition_speed: int = 150  # milliseconds - base transition duration
+    animation_intensity: str = "subtle"  # subtle, moderate, dramatic
+
 
 @dataclass
 class ThemePreset:
@@ -854,6 +860,11 @@ _CATPPUCCIN_DARK = ThemeTokens(
     input=ColorScale(240, 21, 19),
     ring=ColorScale(217, 92, 76),
     radius=0.75,
+    # Gentle animations for pastel theme
+    card_lift_distance=1.0,
+    card_glow_opacity=0.2,
+    transition_speed=150,
+    animation_intensity="subtle",
 )
 
 CATPPUCCIN_THEME = ThemePreset(
@@ -937,6 +948,11 @@ _ROSE_PINE_DARK = ThemeTokens(
     input=ColorScale(250, 23, 17),
     ring=ColorScale(343, 76, 68),
     radius=0.5,
+    # Gentle animations for pastel theme
+    card_lift_distance=1.0,
+    card_glow_opacity=0.2,
+    transition_speed=150,
+    animation_intensity="subtle",
 )
 
 ROSE_PINE_THEME = ThemePreset(
@@ -1020,6 +1036,11 @@ _TOKYO_NIGHT_DARK = ThemeTokens(
     input=ColorScale(233, 15, 18),
     ring=ColorScale(217, 89, 72),
     radius=0.5,
+    # Moderate animations for vibrant pastel theme
+    card_lift_distance=2.0,
+    card_glow_opacity=0.35,
+    transition_speed=175,
+    animation_intensity="moderate",
 )
 
 TOKYO_NIGHT_THEME = ThemePreset(
@@ -1103,6 +1124,11 @@ _NORD_DARK = ThemeTokens(
     input=ColorScale(220, 16, 28),
     ring=ColorScale(193, 43, 67),
     radius=0.5,
+    # Gentle animations for pastel theme
+    card_lift_distance=1.0,
+    card_glow_opacity=0.2,
+    transition_speed=150,
+    animation_intensity="subtle",
 )
 
 NORD_THEME = ThemePreset(
@@ -1190,6 +1216,11 @@ _SYNTHWAVE_DARK = ThemeTokens(
     input=ColorScale(255, 26, 22),
     ring=ColorScale(320, 100, 74),
     radius=0.75,
+    # Dramatic animations for neon theme
+    card_lift_distance=3.0,
+    card_glow_opacity=0.5,
+    transition_speed=200,
+    animation_intensity="dramatic",
 )
 
 SYNTHWAVE_THEME = ThemePreset(
@@ -1273,6 +1304,11 @@ _CYBERPUNK_DARK = ThemeTokens(
     input=ColorScale(219, 100, 10),
     ring=ColorScale(54, 70, 68),
     radius=0.5,
+    # Dramatic animations for neon theme
+    card_lift_distance=3.0,
+    card_glow_opacity=0.5,
+    transition_speed=200,
+    animation_intensity="dramatic",
 )
 
 CYBERPUNK_THEME = ThemePreset(
@@ -1356,6 +1392,11 @@ _OUTRUN_DARK = ThemeTokens(
     input=ColorScale(240, 100, 12),
     ring=ColorScale(329, 100, 71),
     radius=0.75,
+    # Dramatic animations for neon theme
+    card_lift_distance=3.0,
+    card_glow_opacity=0.5,
+    transition_speed=200,
+    animation_intensity="dramatic",
 )
 
 OUTRUN_THEME = ThemePreset(
