@@ -1409,6 +1409,358 @@ OUTRUN_THEME = ThemePreset(
 
 
 # =============================================================================
+# Forest Theme (Emerald Green Earth Tones)
+# =============================================================================
+
+_FOREST_LIGHT = ThemeTokens(
+    background=ColorScale(150, 30, 98),  # Very light mint
+    foreground=ColorScale(150, 80, 15),  # Deep forest green
+    card=ColorScale(150, 25, 95),
+    card_foreground=ColorScale(150, 80, 15),
+    popover=ColorScale(150, 25, 95),
+    popover_foreground=ColorScale(150, 80, 15),
+    primary=ColorScale(142, 71, 45),  # #22c55e emerald
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(150, 20, 90),
+    secondary_foreground=ColorScale(150, 80, 20),
+    muted=ColorScale(150, 20, 92),
+    muted_foreground=ColorScale(150, 30, 40),
+    accent=ColorScale(150, 25, 90),
+    accent_foreground=ColorScale(150, 80, 20),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(142, 71, 45),
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(38, 92, 50),
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(158, 64, 52),  # Teal
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(142, 71, 40),
+    link_hover=ColorScale(142, 71, 30),
+    code=ColorScale(150, 30, 94),
+    code_foreground=ColorScale(150, 80, 15),
+    selection=ColorScale(142, 71, 45),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(150, 20, 85),
+    input=ColorScale(0, 0, 100),
+    ring=ColorScale(142, 71, 45),
+    radius=0.75,
+)
+
+_FOREST_DARK = ThemeTokens(
+    background=ColorScale(150, 51, 8),  # #0a1f14 deep forest
+    foreground=ColorScale(150, 50, 95),  # Light mint
+    card=ColorScale(150, 48, 12),  # Slightly lighter
+    card_foreground=ColorScale(150, 50, 95),
+    popover=ColorScale(150, 48, 12),
+    popover_foreground=ColorScale(150, 50, 95),
+    primary=ColorScale(142, 71, 45),  # #22c55e emerald
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(150, 45, 18),
+    secondary_foreground=ColorScale(150, 50, 95),
+    muted=ColorScale(150, 45, 18),
+    muted_foreground=ColorScale(150, 40, 65),
+    accent=ColorScale(150, 45, 18),
+    accent_foreground=ColorScale(142, 65, 75),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(142, 71, 45),  # Emerald
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(38, 92, 50),  # Amber
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(158, 64, 52),  # Teal
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(142, 71, 50),
+    link_hover=ColorScale(142, 71, 60),
+    code=ColorScale(150, 48, 10),
+    code_foreground=ColorScale(150, 50, 95),
+    selection=ColorScale(142, 71, 45),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(150, 45, 18),
+    input=ColorScale(150, 48, 12),
+    ring=ColorScale(142, 71, 45),
+    radius=0.75,
+    # Gentle animations for nature theme
+    card_lift_distance=1.0,
+    card_glow_opacity=0.2,
+    transition_speed=150,
+    animation_intensity="subtle",
+)
+
+FOREST_THEME = ThemePreset(
+    name="forest",
+    display_name="Forest",
+    description="Deep emerald greens with warm earth tones",
+    light=_FOREST_LIGHT,
+    dark=_FOREST_DARK,
+)
+
+
+# =============================================================================
+# Amber Theme (Control Room Gold)
+# =============================================================================
+
+_AMBER_LIGHT = ThemeTokens(
+    background=ColorScale(38, 40, 98),  # Very light cream
+    foreground=ColorScale(34, 100, 15),  # Deep brown
+    card=ColorScale(38, 35, 94),
+    card_foreground=ColorScale(34, 100, 15),
+    popover=ColorScale(38, 35, 94),
+    popover_foreground=ColorScale(34, 100, 15),
+    primary=ColorScale(38, 92, 50),  # #f59e0b amber
+    primary_foreground=ColorScale(0, 0, 10),
+    secondary=ColorScale(38, 30, 88),
+    secondary_foreground=ColorScale(34, 100, 20),
+    muted=ColorScale(38, 30, 90),
+    muted_foreground=ColorScale(34, 50, 40),
+    accent=ColorScale(38, 30, 88),
+    accent_foreground=ColorScale(34, 100, 20),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(142, 71, 45),
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(45, 100, 60),  # Brighter yellow
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(38, 92, 50),
+    info_foreground=ColorScale(0, 0, 10),
+    link=ColorScale(38, 92, 45),
+    link_hover=ColorScale(38, 92, 35),
+    code=ColorScale(38, 35, 92),
+    code_foreground=ColorScale(34, 100, 15),
+    selection=ColorScale(38, 92, 50),
+    selection_foreground=ColorScale(0, 0, 10),
+    border=ColorScale(38, 30, 82),
+    input=ColorScale(0, 0, 100),
+    ring=ColorScale(38, 92, 50),
+    radius=0.75,
+)
+
+_AMBER_DARK = ThemeTokens(
+    background=ColorScale(34, 100, 5),  # #1c1000 deep brown-black
+    foreground=ColorScale(45, 100, 95),  # Light golden
+    card=ColorScale(36, 100, 8),  # Slightly lighter
+    card_foreground=ColorScale(45, 100, 95),
+    popover=ColorScale(36, 100, 8),
+    popover_foreground=ColorScale(45, 100, 95),
+    primary=ColorScale(38, 92, 50),  # #f59e0b amber
+    primary_foreground=ColorScale(0, 0, 10),
+    secondary=ColorScale(34, 100, 10),
+    secondary_foreground=ColorScale(45, 100, 95),
+    muted=ColorScale(34, 100, 10),
+    muted_foreground=ColorScale(45, 80, 65),
+    accent=ColorScale(34, 100, 10),
+    accent_foreground=ColorScale(45, 100, 75),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(142, 71, 45),
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(45, 100, 60),  # Bright yellow
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(38, 92, 50),
+    info_foreground=ColorScale(0, 0, 10),
+    link=ColorScale(38, 92, 50),
+    link_hover=ColorScale(38, 92, 60),
+    code=ColorScale(34, 100, 6),
+    code_foreground=ColorScale(45, 100, 95),
+    selection=ColorScale(38, 92, 50),
+    selection_foreground=ColorScale(0, 0, 10),
+    border=ColorScale(34, 100, 10),
+    input=ColorScale(36, 100, 8),
+    ring=ColorScale(38, 92, 50),
+    radius=0.75,
+    # Gentle animations for warm theme
+    card_lift_distance=1.0,
+    card_glow_opacity=0.25,
+    transition_speed=150,
+    animation_intensity="subtle",
+)
+
+AMBER_THEME = ThemePreset(
+    name="amber",
+    display_name="Amber",
+    description="Warm amber & gold — like a control room at midnight",
+    light=_AMBER_LIGHT,
+    dark=_AMBER_DARK,
+)
+
+
+# =============================================================================
+# Slate Theme (Pure Monochrome)
+# =============================================================================
+
+_SLATE_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 100),  # Pure white
+    foreground=ColorScale(215, 25, 10),  # Deep slate
+    card=ColorScale(0, 0, 98),
+    card_foreground=ColorScale(215, 25, 10),
+    popover=ColorScale(0, 0, 98),
+    popover_foreground=ColorScale(215, 25, 10),
+    primary=ColorScale(214, 16, 46),  # #64748b slate
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(0, 0, 94),
+    secondary_foreground=ColorScale(215, 25, 15),
+    muted=ColorScale(0, 0, 94),
+    muted_foreground=ColorScale(215, 15, 45),
+    accent=ColorScale(0, 0, 94),
+    accent_foreground=ColorScale(215, 25, 15),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(142, 71, 45),
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(38, 92, 50),
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(214, 16, 46),
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(214, 16, 40),
+    link_hover=ColorScale(214, 16, 30),
+    code=ColorScale(0, 0, 96),
+    code_foreground=ColorScale(215, 25, 10),
+    selection=ColorScale(214, 16, 46),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(0, 0, 88),
+    input=ColorScale(0, 0, 100),
+    ring=ColorScale(214, 16, 46),
+    radius=0.75,
+)
+
+_SLATE_DARK = ThemeTokens(
+    background=ColorScale(240, 20, 5),  # #0a0a0f near black
+    foreground=ColorScale(0, 0, 92),  # Light gray
+    card=ColorScale(240, 18, 8),  # Slightly lighter
+    card_foreground=ColorScale(0, 0, 92),
+    popover=ColorScale(240, 18, 8),
+    popover_foreground=ColorScale(0, 0, 92),
+    primary=ColorScale(214, 16, 66),  # #94a3b8 slate
+    primary_foreground=ColorScale(0, 0, 10),
+    secondary=ColorScale(240, 15, 12),
+    secondary_foreground=ColorScale(0, 0, 92),
+    muted=ColorScale(240, 15, 12),
+    muted_foreground=ColorScale(0, 0, 55),
+    accent=ColorScale(240, 15, 12),
+    accent_foreground=ColorScale(214, 16, 80),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(142, 71, 45),
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(38, 92, 50),
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(214, 16, 66),
+    info_foreground=ColorScale(0, 0, 10),
+    link=ColorScale(214, 16, 66),
+    link_hover=ColorScale(214, 16, 76),
+    code=ColorScale(240, 18, 6),
+    code_foreground=ColorScale(0, 0, 92),
+    selection=ColorScale(214, 16, 66),
+    selection_foreground=ColorScale(0, 0, 10),
+    border=ColorScale(240, 15, 12),
+    input=ColorScale(240, 18, 8),
+    ring=ColorScale(214, 16, 66),
+    radius=0.75,
+    # Subtle animations for focus mode
+    card_lift_distance=1.0,
+    card_glow_opacity=0.15,
+    transition_speed=150,
+    animation_intensity="subtle",
+)
+
+SLATE_THEME = ThemePreset(
+    name="slate",
+    display_name="Slate",
+    description="Minimal monochrome — pure focus, no color noise",
+    light=_SLATE_LIGHT,
+    dark=_SLATE_DARK,
+)
+
+
+# =============================================================================
+# Nebula Theme (Deep Space Violet)
+# =============================================================================
+
+_NEBULA_LIGHT = ThemeTokens(
+    background=ColorScale(239, 50, 98),  # Very light lavender
+    foreground=ColorScale(218, 47, 15),  # Deep navy
+    card=ColorScale(239, 45, 95),
+    card_foreground=ColorScale(218, 47, 15),
+    popover=ColorScale(239, 45, 95),
+    popover_foreground=ColorScale(218, 47, 15),
+    primary=ColorScale(239, 84, 67),  # #6366f1 indigo
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(239, 40, 90),
+    secondary_foreground=ColorScale(218, 47, 20),
+    muted=ColorScale(239, 40, 92),
+    muted_foreground=ColorScale(218, 30, 45),
+    accent=ColorScale(239, 40, 90),
+    accent_foreground=ColorScale(218, 47, 20),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(142, 71, 45),
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(38, 92, 50),
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(239, 84, 67),
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(239, 84, 62),
+    link_hover=ColorScale(239, 84, 52),
+    code=ColorScale(239, 45, 93),
+    code_foreground=ColorScale(218, 47, 15),
+    selection=ColorScale(239, 84, 67),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(239, 40, 85),
+    input=ColorScale(0, 0, 100),
+    ring=ColorScale(239, 84, 67),
+    radius=0.75,
+)
+
+_NEBULA_DARK = ThemeTokens(
+    background=ColorScale(218, 47, 11),  # #0f172a deep slate-blue
+    foreground=ColorScale(239, 50, 95),  # Light violet
+    card=ColorScale(220, 45, 15),  # Slightly lighter
+    card_foreground=ColorScale(239, 50, 95),
+    popover=ColorScale(220, 45, 15),
+    popover_foreground=ColorScale(239, 50, 95),
+    primary=ColorScale(239, 84, 67),  # #6366f1 indigo
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(218, 45, 18),
+    secondary_foreground=ColorScale(239, 50, 95),
+    muted=ColorScale(218, 45, 18),
+    muted_foreground=ColorScale(239, 30, 70),
+    accent=ColorScale(218, 45, 18),
+    accent_foreground=ColorScale(239, 84, 80),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(142, 71, 45),
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(38, 92, 50),
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(239, 84, 67),
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(239, 84, 67),
+    link_hover=ColorScale(239, 84, 77),
+    code=ColorScale(218, 45, 9),
+    code_foreground=ColorScale(239, 50, 95),
+    selection=ColorScale(239, 84, 67),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(218, 45, 18),
+    input=ColorScale(220, 45, 15),
+    ring=ColorScale(239, 84, 67),
+    radius=0.75,
+    # Moderate animations for space theme
+    card_lift_distance=2.0,
+    card_glow_opacity=0.3,
+    transition_speed=175,
+    animation_intensity="moderate",
+)
+
+NEBULA_THEME = ThemePreset(
+    name="nebula",
+    display_name="Nebula",
+    description="Deep space — dark slate & violet",
+    light=_NEBULA_LIGHT,
+    dark=_NEBULA_DARK,
+)
+
+
+# =============================================================================
 # Theme Presets Registry
 # =============================================================================
 
@@ -1428,6 +1780,10 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "synthwave": SYNTHWAVE_THEME,
     "cyberpunk": CYBERPUNK_THEME,
     "outrun": OUTRUN_THEME,
+    "forest": FOREST_THEME,
+    "amber": AMBER_THEME,
+    "slate": SLATE_THEME,
+    "nebula": NEBULA_THEME,
 }
 
 
