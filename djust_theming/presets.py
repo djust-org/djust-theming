@@ -700,6 +700,89 @@ ROSE_THEME = ThemePreset(
 
 
 # =============================================================================
+# Natural 20 Theme (Dark-first Bloomberg Terminal style)
+# =============================================================================
+
+_NATURAL20_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 98),
+    foreground=ColorScale(240, 10, 10),
+    card=ColorScale(0, 0, 100),
+    card_foreground=ColorScale(240, 10, 10),
+    popover=ColorScale(0, 0, 100),
+    popover_foreground=ColorScale(240, 10, 10),
+    primary=ColorScale(211, 100, 65),  # Cyan accent
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(240, 5, 96),
+    secondary_foreground=ColorScale(240, 10, 10),
+    muted=ColorScale(240, 5, 96),
+    muted_foreground=ColorScale(0, 0, 53),
+    accent=ColorScale(211, 100, 96),
+    accent_foreground=ColorScale(211, 100, 30),
+    destructive=ColorScale(0, 84, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(142, 76, 36),
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(38, 92, 50),
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(211, 100, 65),
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(211, 100, 55),
+    link_hover=ColorScale(211, 100, 45),
+    code=ColorScale(240, 5, 96),
+    code_foreground=ColorScale(240, 10, 20),
+    selection=ColorScale(211, 100, 85),
+    selection_foreground=ColorScale(240, 10, 10),
+    border=ColorScale(240, 5, 90),
+    input=ColorScale(0, 0, 100),
+    ring=ColorScale(211, 100, 65),
+    radius=0.5,
+)
+
+_NATURAL20_DARK = ThemeTokens(
+    background=ColorScale(240, 13, 3),  # #08080d - deep near-black
+    foreground=ColorScale(0, 0, 100),  # Pure white
+    card=ColorScale(240, 15, 6),  # #0d0d12 - card background
+    card_foreground=ColorScale(0, 0, 100),
+    popover=ColorScale(240, 15, 6),
+    popover_foreground=ColorScale(0, 0, 100),
+    primary=ColorScale(211, 100, 65),  # #4a9eff - cyan accent
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(240, 10, 10),
+    secondary_foreground=ColorScale(0, 0, 88),
+    muted=ColorScale(240, 9, 13),  # #1f1f23 - border color
+    muted_foreground=ColorScale(0, 0, 53),  # #888 - muted text
+    accent=ColorScale(240, 9, 13),
+    accent_foreground=ColorScale(211, 100, 65),
+    destructive=ColorScale(0, 84, 53),  # Red gradient start
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(160, 84, 39),  # Green (#34d399)
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(38, 100, 59),  # Amber/gold (#fbbf24)
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(211, 100, 65),  # Same as primary cyan
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(211, 100, 65),
+    link_hover=ColorScale(211, 100, 75),
+    code=ColorScale(240, 10, 8),  # Slightly lighter than background
+    code_foreground=ColorScale(0, 0, 88),
+    selection=ColorScale(211, 100, 30),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(240, 9, 13),  # #1f1f23
+    input=ColorScale(240, 15, 6),
+    ring=ColorScale(211, 100, 65),
+    radius=0.75,  # Slightly more rounded
+)
+
+NATURAL20_THEME = ThemePreset(
+    name="natural20",
+    display_name="Natural 20",
+    description="Dark-first Bloomberg Terminal-inspired theme with cyan accents",
+    light=_NATURAL20_LIGHT,
+    dark=_NATURAL20_DARK,
+)
+
+
+# =============================================================================
 # Theme Presets Registry
 # =============================================================================
 
@@ -711,6 +794,7 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "purple": PURPLE_THEME,
     "orange": ORANGE_THEME,
     "rose": ROSE_THEME,
+    "natural20": NATURAL20_THEME,
 }
 
 
