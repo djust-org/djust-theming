@@ -42,6 +42,7 @@ dev = [
 
 [project.urls]
 Homepage = "https://djust.org"
+Documentation = "https://djust.org/theming"
 Repository = "https://github.com/djust-org/djust-theming"
 
 [tool.setuptools.packages.find]
