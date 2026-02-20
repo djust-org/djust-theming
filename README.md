@@ -25,8 +25,8 @@ Works standalone with any Django project, or integrates deeply with [djust](http
 
 ### Design Systems & Color Presets
 - 🎨 **11 design systems**: Material, iOS, Fluent, Minimalist, Playful, Corporate, Retro, Elegant, Neo-Brutalist, Organic, Dense
-- 🌈 **12 color presets**: Default, Shadcn, Blue, Green, Purple, Orange, Rose, Cyberpunk, Sunset, Forest, Ocean, Metallic
-- 🔀 **Mix & match**: Combine any design system with any color preset (132 combinations)
+- 🌈 **19 color presets**: Default, Shadcn, Blue, Green, Purple, Orange, Rose, Cyberpunk, Forest, Amber, Slate, Nebula, Natural 20, Catppuccin Mocha, Rosé Pine, Tokyo Night, Nord, Synthwave '84, Outrun
+- 🔀 **Mix & match**: Combine any design system with any color preset (209 combinations)
 - 🎯 **Complete control**: Typography, spacing, shadows, animations, border radius, component styles
 - 🌓 **Light/Dark/System mode** with anti-FOUC (Flash of Unstyled Content) protection
 - 📦 **Context processor** for template variable injection
@@ -91,10 +91,10 @@ Most theming libraries only change colors. djust-theming provides **complete des
 - **Organic** - Soft, rounded design inspired by natural forms
 - **Dense** - Compact, information-dense design for data-heavy interfaces
 
-**12 Color Presets:**
-Default, Shadcn, Blue, Green, Purple, Orange, Rose, Cyberpunk, Sunset, Forest, Ocean, Metallic
+**19 Color Presets:**
+Default, Shadcn, Blue, Green, Purple, Orange, Rose, Cyberpunk, Forest, Amber, Slate, Nebula, Natural 20, Catppuccin Mocha, Rosé Pine, Tokyo Night, Nord, Synthwave '84, Outrun
 
-**= 132 Unique Combinations** out of the box, or create your own!
+**= 209 Unique Combinations** out of the box, or create your own!
 
 ### Example Combinations
 
@@ -237,15 +237,27 @@ LIVEVIEW_CONFIG = {
 
 ## Available Presets
 
-| Preset | Use Case | Primary Color |
-|--------|----------|---------------|
-| `default` | Neutral zinc — professional | Zinc/Gray |
-| `shadcn` | shadcn/ui compatibility | Zinc/Gray |
+| Preset | Use Case | Style |
+|--------|----------|-------|
+| `default` | Neutral zinc — professional | Light/dark zinc |
+| `shadcn` | shadcn/ui compatibility | Light/dark zinc |
 | `blue` | Corporate, business apps | Blue |
 | `green` | Finance, sustainability | Green |
 | `purple` | Creative, premium apps | Purple |
 | `orange` | Energetic, warm interfaces | Orange |
 | `rose` | Modern, approachable | Rose/Pink |
+| `cyberpunk` | High-tech, gaming | Neon cyan/magenta |
+| `forest` | Nature, eco apps | Deep green |
+| `amber` | Dashboards, terminals | Warm amber/gold |
+| `slate` | Minimal, focus-first | Monochrome |
+| `nebula` | Dark data-heavy apps | Deep space violet |
+| `natural20` | Developer tools, terminals | Bloomberg-inspired cyan |
+| `catppuccin` | Developer editors | Soothing pastels (Mocha) |
+| `rose_pine` | Elegant developer tools | Muted pine pastels |
+| `tokyo_night` | Code editors | Vibrant Tokyo neon |
+| `nord` | Arctic-inspired UIs | Cool blue/gray |
+| `synthwave` | Retro, 80s aesthetic | Glowing pink/cyan |
+| `outrun` | Retro racing aesthetic | Hot pink/purple sunset |
 
 ## Custom Presets
 

@@ -5,6 +5,24 @@ All notable changes to djust-theming will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2026-02-19
+
+### Added
+- 4 new presets: **Forest** (deep green), **Amber** (warm amber/gold terminal), **Slate** (minimal monochrome), **Nebula** (deep space violet)
+- `animation_intensity` property on `ThemePreset` (`subtle`, `moderate`, `dramatic`) for per-preset animation tuning
+- Pastel and neon presets use `animation_intensity="subtle"` for a calmer feel
+
+## [1.1.1] - 2026-02-18
+
+### Added
+- **Natural 20** preset — dark-first Bloomberg Terminal-inspired theme with cyan accents
+- **4 pastel presets**: Catppuccin Mocha, Rosé Pine, Tokyo Night, Nord — developer-editor inspired
+- **3 neon presets**: Synthwave '84, Outrun (and additional iconic neon palette)
+
+### Fixed
+- Improved text contrast in `default` and `shadcn` presets for better readability
+- Improved contrast across all original presets (blue, green, purple, orange, rose)
+
 ## [1.1.0] - 2026-02-17
 
 ### Added
@@ -164,6 +182,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ThemeCSSGenerator` for CSS generation
 - Complete design system with components
 
+[1.1.2]: https://github.com/djust-org/djust-theming/compare/v1.1.1...v1.1.2
+[1.1.1]: https://github.com/djust-org/djust-theming/compare/v1.1.0...v1.1.1
+[1.1.0]: https://github.com/djust-org/djust-theming/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/djust-org/djust-theming/compare/v0.6.0...v1.0.0
 [0.6.0]: https://github.com/djust-org/djust-theming/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/djust-org/djust-theming/compare/v0.4.0...v0.5.0
