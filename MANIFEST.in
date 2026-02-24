@@ -1,0 +1,5 @@
+include README.md
+include LICENSE
+include CHANGELOG.md
+recursive-include djust_theming/templates *.html
+recursive-include djust_theming/static *.js *.css

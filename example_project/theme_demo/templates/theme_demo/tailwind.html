@@ -1,0 +1,156 @@
+{% extends "theme_demo/base.html" %}
+{% load theme_components %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-4xl font-bold mb-2">Tailwind CSS Integration</h1>
+    <p class="text-muted-foreground">
+        Use theme colors directly in Tailwind classes or with @apply directives
+    </p>
+</div>
+
+<!-- Generate Config -->
+<div class="bg-card border border-border rounded-lg p-8 mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Generate Configuration</h2>
+    <p class="text-sm text-muted-foreground mb-6">
+        Create a tailwind.config.js file that uses your theme colors
+    </p>
+
+    <div class="code-block mb-4">
+python manage.py djust_theme tailwind-config --preset blue --output tailwind.config.js
+    </div>
+
+    <p class="text-sm text-muted-foreground">
+        This generates a Tailwind config that maps CSS variables to Tailwind utilities
+    </p>
+</div>
+
+<!-- Tailwind Classes -->
+<div class="bg-card border border-border rounded-lg p-8 mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Using Theme Colors in Tailwind</h2>
+    <p class="text-sm text-muted-foreground mb-6">
+        All theme colors are available as Tailwind utilities
+    </p>
+
+    <div class="space-y-6">
+        <!-- Background Colors -->
+        <div>
+            <h3 class="text-sm font-medium mb-3">Background Colors</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="bg-primary text-primary-foreground p-4 rounded-md text-center text-xs font-medium">
+                    bg-primary
+                </div>
+                <div class="bg-secondary text-secondary-foreground p-4 rounded-md text-center text-xs font-medium">
+                    bg-secondary
+                </div>
+                <div class="bg-accent text-accent-foreground p-4 rounded-md text-center text-xs font-medium">
+                    bg-accent
+                </div>
+                <div class="bg-muted text-muted-foreground p-4 rounded-md text-center text-xs font-medium">
+                    bg-muted
+                </div>
+            </div>
+        </div>
+
+        <!-- Borders -->
+        <div>
+            <h3 class="text-sm font-medium mb-3">Borders</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div class="border-2 border-primary p-4 rounded-md text-center text-xs font-medium">
+                    border-primary
+                </div>
+                <div class="border-2 border-border p-4 rounded-md text-center text-xs font-medium">
+                    border-border
+                </div>
+                <div class="border-2 border-input p-4 rounded-md text-center text-xs font-medium">
+                    border-input
+                </div>
+            </div>
+        </div>
+
+        <!-- Text Colors -->
+        <div>
+            <h3 class="text-sm font-medium mb-3">Text Colors</h3>
+            <div class="space-y-2">
+                <p class="text-primary font-medium">text-primary - Primary text color</p>
+                <p class="text-secondary font-medium">text-secondary - Secondary text color</p>
+                <p class="text-muted-foreground">text-muted-foreground - Muted text</p>
+                <p class="text-destructive font-medium">text-destructive - Error text</p>
+            </div>
+        </div>
+
+        <!-- Opacity Modifiers -->
+        <div>
+            <h3 class="text-sm font-medium mb-3">Opacity Modifiers</h3>
+            <div class="space-y-2">
+                <div class="bg-primary/100 text-primary-foreground p-3 rounded-md text-xs">bg-primary/100</div>
+                <div class="bg-primary/75 text-primary-foreground p-3 rounded-md text-xs">bg-primary/75</div>
+                <div class="bg-primary/50 text-primary-foreground p-3 rounded-md text-xs">bg-primary/50</div>
+                <div class="bg-primary/25 text-primary-foreground p-3 rounded-md text-xs">bg-primary/25</div>
+            </div>
+        </div>
+
+        <!-- Code Example -->
+        <div class="code-block text-xs">
+&lt;button class="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md"&gt;
+  Tailwind Button
+&lt;/button&gt;
+
+&lt;div class="bg-card text-card-foreground border border-border rounded-lg p-6"&gt;
+  Tailwind Card
+&lt;/div&gt;
+        </div>
+    </div>
+</div>
+
+<!-- @apply Directive -->
+<div class="bg-card border border-border rounded-lg p-8">
+    <h2 class="text-2xl font-semibold mb-4">Using @apply</h2>
+    <p class="text-sm text-muted-foreground mb-6">
+        Create custom CSS classes using theme colors with @apply
+    </p>
+
+    <div class="space-y-6">
+        <div>
+            <h3 class="text-sm font-medium mb-3">Generate Examples</h3>
+            <div class="code-block">
+python manage.py djust_theme generate-examples --output theme-components.css
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-sm font-medium mb-3">Example CSS</h3>
+            <div class="code-block">
+/* Custom button using @apply */
+.my-button {
+  @apply bg-primary text-primary-foreground px-4 py-2 rounded-md;
+  @apply hover:opacity-90 transition-opacity;
+}
+
+/* Custom card using @apply */
+.my-card {
+  @apply bg-card text-card-foreground rounded-lg border border-border;
+  @apply shadow-sm p-6;
+}
+
+/* Alert variants */
+.alert-success {
+  @apply bg-success/10 text-success border border-success/20 rounded-md p-4;
+}
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-sm font-medium mb-3">Result</h3>
+            <div class="space-y-3">
+                <button class="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:opacity-90 transition-opacity">
+                    Custom Button with @apply
+                </button>
+                <div class="bg-card text-card-foreground rounded-lg border border-border shadow-sm p-6">
+                    Custom card styled with @apply directives
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

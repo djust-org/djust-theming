@@ -1,0 +1,47 @@
+<div class="card {% if attrs.class %}{{ attrs.class }}{% endif %}"
+     {% if attrs.id %}id="{{ attrs.id }}"{% endif %}>
+    {% if title %}
+    <div class="card-header">
+        <h3 class="card-title">{{ title }}</h3>
+    </div>
+    {% endif %}
+    <div class="card-body">
+        {{ content }}
+    </div>
+    {% if footer %}
+    <div class="card-footer">
+        {{ footer }}
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.card {
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border: 1px solid hsl(var(--border));
+    border-radius: calc(var(--radius) + 2px);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid hsl(var(--border));
+}
+
+.card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.75rem;
+    margin: 0;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-footer {
+    padding: 1.5rem;
+    border-top: 1px solid hsl(var(--border));
+}
+</style>
