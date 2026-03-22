@@ -26,7 +26,7 @@ from django.utils.safestring import mark_safe
 from ..components import PresetSelector, ThemeModeButton, ThemeSwitcher, ThemeSwitcherConfig
 from ..theme_css_generator import CompleteThemeCSSGenerator
 from ..pack_css_generator import ThemePackCSSGenerator
-from ..manager import ThemeManager, get_theme_config
+from ..manager import get_theme_config, get_theme_manager
 
 register = template.Library()
 
@@ -55,7 +55,7 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
     request = context.get("request")
 
     # Get current theme state
-    manager = ThemeManager(request=request)
+    manager = get_theme_manager(request)
     state = manager.get_state()
 
     css_block = ""
@@ -111,7 +111,7 @@ def theme_css(context):
         {% theme_css %}
     """
     request = context.get("request")
-    manager = ThemeManager(request=request)
+    manager = get_theme_manager(request)
     state = manager.get_state()
 
     css = ""
@@ -148,7 +148,7 @@ def theme_switcher(
         {% theme_switcher show_labels=False button_class="btn btn-sm" %}
     """
     request = context.get("request")
-    manager = ThemeManager(request=request)
+    manager = get_theme_manager(request)
 
     config = ThemeSwitcherConfig(
         show_presets=show_presets,
@@ -174,7 +174,7 @@ def theme_mode_toggle(context, button_class: str = "", show_label: bool = False)
         {% theme_mode_toggle show_label=True %}
     """
     request = context.get("request")
-    manager = ThemeManager(request=request)
+    manager = get_theme_manager(request)
 
     button = ThemeModeButton(
         theme_manager=manager,
@@ -200,7 +200,7 @@ def theme_preset_selector(
         {% theme_preset_selector layout="list" show_descriptions=True %}
     """
     request = context.get("request")
-    manager = ThemeManager(request=request)
+    manager = get_theme_manager(request)
 
     selector = PresetSelector(
         theme_manager=manager,
@@ -220,7 +220,7 @@ def theme_preset(context):
         <body class="theme-{% theme_preset %}">
     """
     request = context.get("request")
-    manager = ThemeManager(request=request)
+    manager = get_theme_manager(request)
     return manager.get_state().preset
 
 
@@ -235,7 +235,7 @@ def theme_mode(context):
         <body data-theme-setting="{% theme_mode %}">
     """
     request = context.get("request")
-    manager = ThemeManager(request=request)
+    manager = get_theme_manager(request)
     return manager.get_state().mode
 
 
@@ -248,5 +248,5 @@ def theme_resolved_mode(context):
         <body class="{% theme_resolved_mode %}">
     """
     request = context.get("request")
-    manager = ThemeManager(request=request)
+    manager = get_theme_manager(request)
     return manager.get_state().resolved_mode

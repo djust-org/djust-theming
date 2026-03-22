@@ -8,7 +8,7 @@ from django.utils.safestring import mark_safe
 
 from .theme_css_generator import CompleteThemeCSSGenerator
 from .pack_css_generator import ThemePackCSSGenerator
-from .manager import ThemeManager
+from .manager import get_theme_manager
 
 
 def theme_context(request):
@@ -21,7 +21,7 @@ def theme_context(request):
         {{ theme_head }}
         {{ theme_switcher }}
     """
-    manager = ThemeManager(request=request)
+    manager = get_theme_manager(request)
     state = manager.get_state()
 
     # Generate CSS - use pack generator if pack is set, otherwise use theme generator
