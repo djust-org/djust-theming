@@ -213,6 +213,94 @@ THEME_PRESETS["brand"] = MY_PRESET
 
 ---
 
+## Migrating from THEMES to DESIGN_SYSTEMS
+
+The `themes.py` module (`THEMES` dict, `get_theme()`, `list_themes()`) is deprecated. All access now emits `DeprecationWarning`. The replacement is `theme_packs.py`, which provides `DESIGN_SYSTEMS` -- the same 11 design systems (material, ios, fluent, minimalist, playful, corporate, retro, elegant, neo\_brutalist, organic, dense) with a cleaner architecture that separates design dimensions from color presets.
+
+The old module will continue to work throughout the 1.x series but will be removed in 2.0.
+
+### Quick Reference
+
+| Old (deprecated) | New |
+|-------------------|-----|
+| `from djust_theming.themes import THEMES` | `from djust_theming.theme_packs import DESIGN_SYSTEMS` |
+| `from djust_theming.themes import get_theme` | `from djust_theming.theme_packs import get_design_system` |
+| `from djust_theming.themes import list_themes` | `from djust_theming.theme_packs import get_all_design_systems` |
+| `THEMES["material"]` returns a `Theme` | `DESIGN_SYSTEMS["material"]` returns a `DesignSystem` |
+| `get_theme("material")` | `get_design_system("material")` |
+| `list_themes()` | `get_all_design_systems()` |
+
+### Step-by-Step Migration
+
+**1. Update imports**
+
+```python
+# Before
+from djust_theming.themes import THEMES, get_theme, list_themes
+
+# After
+from djust_theming.theme_packs import DESIGN_SYSTEMS, get_design_system, get_all_design_systems
+```
+
+**2. Replace dict lookups**
+
+If you only check whether a theme name is valid (key existence), the change is a direct substitution:
+
+```python
+# Before
+if theme_name in THEMES:
+    ...
+
+# After
+if theme_name in DESIGN_SYSTEMS:
+    ...
+```
+
+**3. Update attribute access**
+
+`Theme` and `DesignSystem` have different structures. If you read attributes from theme objects, map them to the new equivalents:
+
+| `Theme` attribute | `DesignSystem` equivalent | Notes |
+|-------------------|---------------------------|-------|
+| `theme.display_name` | `ds.display_name` | Same |
+| `theme.description` | `ds.description` | Same |
+| `theme.typography.font_sans` | `ds.typography.font_family` | Renamed |
+| `theme.typography.font_mono` | `ds.typography.font_mono` | Same |
+| `theme.typography.text_base` | `ds.typography.base_size` | Renamed |
+| `theme.spacing.base` | `ds.layout.base_spacing` | Moved to `layout` |
+| `theme.border_radius.*` | `ds.surface.border_radius` | Consolidated |
+| `theme.shadows.*` | `ds.surface.shadow_*` | Moved to `surface` |
+| `theme.animations.*` | `ds.animation.*` | Moved |
+| `theme.component_styles.*` | `ds.interaction.*` | Moved |
+
+**4. Iterate over all design systems**
+
+```python
+# Before
+for name, theme in THEMES.items():
+    print(name, theme.display_name)
+
+# After
+for name, ds in DESIGN_SYSTEMS.items():
+    print(name, ds.display_name)
+```
+
+**5. Verify with warnings enabled**
+
+Run your project with deprecation warnings visible to find any remaining references:
+
+```bash
+python -W default::DeprecationWarning manage.py runserver
+```
+
+Any remaining `themes.py` usage will print a warning with the import location, making it straightforward to find and update.
+
+### What About theme_css_generator.py?
+
+`theme_css_generator.py` still imports from `themes.py` internally to generate CSS from `Theme` objects. This is intentional -- it will be migrated to use `DesignSystem` objects in a future release. You do not need to change anything if you use `generate_theme_css()` or `CompleteThemeCSSGenerator` directly; they will continue to work.
+
+---
+
 ## CSS Architecture
 
 djust-theming ships two CSS files with distinct purposes:
