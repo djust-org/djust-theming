@@ -597,7 +597,8 @@ Components work seamlessly with Tailwind classes:
 
 ### Python
 
-- `ThemeManager(request)` — Manage theme state for a session
+- `get_theme_manager(request)` — Get or create a cached `ThemeManager` for the request (preferred)
+- `ThemeManager(request)` — Manage theme state for a session (low-level; prefer `get_theme_manager`)
 - `ThemeCSSGenerator(preset_name)` — Generate CSS from tokens
 - `ThemeSwitcher(theme_manager, config)` — Render switcher component
 - `ThemeModeButton(theme_manager)` — Simple toggle button

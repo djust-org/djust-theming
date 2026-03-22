@@ -53,6 +53,26 @@ class ThemeState:
         }
 
 
+def get_theme_manager(request: HttpRequest | None = None) -> "ThemeManager":
+    """
+    Get or create a cached ThemeManager for the given request.
+
+    Caches the instance on ``request._djust_theme_manager`` so that
+    multiple template tags / context processors within the same
+    request reuse a single ThemeManager (same pattern Django uses
+    for ``request.user``).
+    """
+    if request is not None:
+        manager = getattr(request, "_djust_theme_manager", None)
+        if manager is not None:
+            return manager
+        manager = ThemeManager(request=request)
+        request._djust_theme_manager = manager
+        return manager
+    # No request — cannot cache, return fresh instance
+    return ThemeManager(request=None)
+
+
 class ThemeManager:
     """
     Manages theme state for a session.

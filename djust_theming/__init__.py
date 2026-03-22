@@ -7,7 +7,7 @@ multiple theme presets, and seamless Django/djust integration.
 
 from .components import ThemeSwitcher
 from .css_generator import ThemeCSSGenerator
-from .manager import ThemeManager, ThemeState
+from .manager import ThemeManager, ThemeState, get_theme_manager
 from .mixins import ThemeMixin
 from .presets import (
     BLUE_THEME,
@@ -37,6 +37,7 @@ __all__ = [
     # Core
     "ThemeCSSGenerator",
     "ThemeManager",
+    "get_theme_manager",
     "ThemeState",
     "ThemeMixin",
     "ThemeSwitcher",

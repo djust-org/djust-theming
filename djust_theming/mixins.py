@@ -26,7 +26,7 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
 from .theme_css_generator import CompleteThemeCSSGenerator
-from .manager import ThemeManager
+from .manager import ThemeManager, get_theme_manager
 from .presets import THEME_PRESETS
 
 
@@ -72,7 +72,7 @@ class ThemeMixin:
             super().mount(request, **kwargs)
 
         # Initialize theme manager (underscore prefix to avoid serialization)
-        self._theme_manager = ThemeManager(request=request)
+        self._theme_manager = get_theme_manager(request)
         self._theme_state = self._theme_manager.get_state()
 
         # Add theme context as instance attributes

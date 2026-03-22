@@ -3,14 +3,14 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.http import etag
 from django.utils.cache import patch_vary_headers
 
-from .manager import ThemeManager
+from .manager import get_theme_manager
 from .theme_css_generator import CompleteThemeCSSGenerator
 from .pack_css_generator import ThemePackCSSGenerator
 
 
 def _generate_css_content(request):
     """Generate the CSS content based on the request."""
-    manager = ThemeManager(request=request)
+    manager = get_theme_manager(request)
     state = manager.get_state()
 
     # Generate CSS - use pack generator if pack is set, otherwise use theme generator
@@ -28,7 +28,7 @@ def _generate_css_content(request):
 
 def _css_etag(request, *args, **kwargs):
     """Generate ETag based on theme state."""
-    manager = ThemeManager(request=request)
+    manager = get_theme_manager(request)
     state = manager.get_state()
     return f"{state.theme}-{state.preset}-{state.mode}-{state.pack}"
 
