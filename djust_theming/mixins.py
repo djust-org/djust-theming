@@ -112,7 +112,6 @@ class ThemeMixin:
             "loading_class": False,
             "css_block": css_block,
             "include_js": True,
-            "js_version": "3",
         }))
 
         # Set theme_css - just the CSS (for cases where you want more control)
