@@ -1,0 +1,19 @@
+{# Theme head block: anti-FOUC script, CSS, and optional JS include #}
+{% autoescape off %}
+<script>
+(function() {
+    {% if loading_class %}document.documentElement.classList.add('loading');
+    {% endif %}var storageKey = 'djust-theme-mode';
+    var storedMode = localStorage.getItem(storageKey);
+    var mode = storedMode || 'system';
+    var resolvedMode = mode;
+    if (mode === 'system') {
+        resolvedMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', resolvedMode);
+    document.documentElement.setAttribute('data-theme-mode', mode);
+})();
+</script>
+{{ css_block }}
+{% if include_js %}<script src="/static/djust_theming/js/theme.js?v={{ js_version }}" defer></script>{% endif %}
+{% endautoescape %}
