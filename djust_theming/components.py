@@ -77,7 +77,11 @@ class ThemeSwitcher:
 
 
 class ThemeModeButton:
-    """Simple theme mode toggle button component."""
+    """
+    Simple theme mode toggle button component.
+
+    Renders via the ``djust_theming/components/theme_mode_button.html`` template.
+    """
 
     def __init__(
         self,
@@ -99,38 +103,22 @@ class ThemeModeButton:
         }
 
     def render(self) -> str:
-        """Render the mode toggle button."""
+        """Render the mode toggle button via its Django template."""
         context = self.get_context()
-
-        # Inline template for simple button
-        icon = self._get_mode_icon(context["theme_resolved_mode"])
-        label = f" {context['theme_mode'].title()}" if self.show_label else ""
-        classes = f"theme-mode-toggle {self.button_class}".strip()
-
-        html = f'''
-        <button type="button"
-                class="{classes}"
-                data-djust-event="toggle_theme_mode"
-                aria-label="Toggle theme mode"
-                title="Toggle theme mode">
-            {icon}{label}
-        </button>
-        '''
+        html = render_to_string("djust_theming/components/theme_mode_button.html", context)
         return mark_safe(html)
-
-    def _get_mode_icon(self, mode: str) -> str:
-        """Get SVG icon for mode."""
-        if mode == "dark":
-            return """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>"""
-        else:
-            return """<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>"""
 
     def __str__(self) -> str:
         return self.render()
 
 
 class PresetSelector:
-    """Theme preset selector component."""
+    """
+    Theme preset selector component.
+
+    Supports three layouts (``dropdown``, ``grid``, ``list``), each rendered
+    via its own template under ``djust_theming/components/preset_selector_*.html``.
+    """
 
     def __init__(
         self,
@@ -155,7 +143,7 @@ class PresetSelector:
         }
 
     def render(self) -> str:
-        """Render the preset selector."""
+        """Render the preset selector via the layout-specific Django template."""
         context = self.get_context()
 
         if self.layout == "dropdown":
@@ -166,67 +154,18 @@ class PresetSelector:
             return self._render_list(context)
 
     def _render_dropdown(self, context: dict) -> str:
-        """Render as dropdown select."""
-        options = []
-        for preset in context["presets"]:
-            selected = "selected" if preset["is_active"] else ""
-            options.append(
-                f'<option value="{preset["name"]}" {selected}>{preset["display_name"]}</option>'
-            )
-
-        html = f"""
-        <select class="theme-preset-select {self.dropdown_class}"
-                data-djust-event="set_theme_preset"
-                data-djust-value-key="preset">
-            {"".join(options)}
-        </select>
-        """
+        """Render as dropdown select via ``preset_selector_dropdown.html``."""
+        html = render_to_string("djust_theming/components/preset_selector_dropdown.html", context)
         return mark_safe(html)
 
     def _render_grid(self, context: dict) -> str:
-        """Render as grid of buttons."""
-        buttons = []
-        for preset in context["presets"]:
-            active_class = "active" if preset["is_active"] else ""
-            buttons.append(f'''
-            <button type="button"
-                    class="theme-preset-btn {active_class}"
-                    data-djust-event="set_theme_preset"
-                    data-djust-params='{{"preset": "{preset["name"]}"}}'>
-                {preset["display_name"]}
-            </button>
-            ''')
-
-        html = f"""
-        <div class="theme-preset-grid">
-            {"".join(buttons)}
-        </div>
-        """
+        """Render as grid of buttons via ``preset_selector_grid.html``."""
+        html = render_to_string("djust_theming/components/preset_selector_grid.html", context)
         return mark_safe(html)
 
     def _render_list(self, context: dict) -> str:
-        """Render as list of radio buttons."""
-        items = []
-        for preset in context["presets"]:
-            checked = "checked" if preset["is_active"] else ""
-            description = (
-                f"<small>{preset['description']}</small>" if self.show_descriptions else ""
-            )
-            items.append(f'''
-            <label class="theme-preset-item">
-                <input type="radio" name="theme-preset" value="{preset["name"]}" {checked}
-                       data-djust-event="set_theme_preset"
-                       data-djust-params='{{"preset": "{preset["name"]}"}}'>
-                <span>{preset["display_name"]}</span>
-                {description}
-            </label>
-            ''')
-
-        html = f"""
-        <div class="theme-preset-list">
-            {"".join(items)}
-        </div>
-        """
+        """Render as list of radio buttons via ``preset_selector_list.html``."""
+        html = render_to_string("djust_theming/components/preset_selector_list.html", context)
         return mark_safe(html)
 
     def __str__(self) -> str:

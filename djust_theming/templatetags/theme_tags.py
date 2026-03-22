@@ -18,6 +18,7 @@ Usage:
 """
 
 from django import template
+from django.template.loader import render_to_string
 from django.urls import reverse, NoReverseMatch
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
@@ -40,19 +41,20 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
         {% theme_head include_js=False %}
         {% theme_head link_css=True %}
 
-    This renders:
+    Renders via the shared ``djust_theming/theme_head.html`` template:
+
     - Anti-flash script (runs before page render to set correct theme)
     - Theme CSS (either inline <style> or <link> tag)
     - Optionally, the theme.js script tag
     """
     request = context.get("request")
-    
+
     # Get current theme state
     manager = ThemeManager(request=request)
     state = manager.get_state()
 
     css_block = ""
-    
+
     if link_css:
         try:
             url = reverse("djust_theming:theme_css")
@@ -60,7 +62,7 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
             cache_buster = f"t={state.theme}&p={state.preset}&m={state.mode}"
             if state.pack:
                 cache_buster += f"&pk={state.pack}"
-            
+
             css_block = f'<link rel="stylesheet" href="{url}?{cache_buster}" data-djust-theme>'
         except NoReverseMatch:
             # Fallback to inline if URL not configured
@@ -76,46 +78,21 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
             except ValueError:
                 # Fall back if pack not found
                 pass
-        
+
         if not css:
             generator = CompleteThemeCSSGenerator(theme_name=state.theme, color_preset=state.preset)
             css = generator.generate_css()
-            
+
         css_block = f"<style data-djust-theme>{css}</style>"
 
-    # Anti-FOUC script - runs immediately to set theme before render
-    anti_fouc_script = """
-    <script>
-        (function() {
-            // Set loading class to prevent transitions on page load
-            document.documentElement.classList.add('loading');
-
-            var storageKey = 'djust-theme-mode';
-            var storedMode = localStorage.getItem(storageKey);
-            var mode = storedMode || 'system';
-
-            var resolvedMode = mode;
-            if (mode === 'system') {
-                resolvedMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            }
-
-            document.documentElement.setAttribute('data-theme', resolvedMode);
-            document.documentElement.setAttribute('data-theme-mode', mode);
-        })();
-    </script>
-    """
-
-    # Optional JS include
-    js_include = ""
-    if include_js:
-        js_include = '<script src="/static/djust_theming/js/theme.js?v=2" defer></script>'
-
-    return format_html(
-        '{}\n{}\n{}',
-        mark_safe(anti_fouc_script),
-        mark_safe(css_block),
-        mark_safe(js_include),
-    )
+    # Render via shared template
+    html = render_to_string("djust_theming/theme_head.html", {
+        "loading_class": True,
+        "css_block": css_block,
+        "include_js": include_js,
+        "js_version": "2",
+    })
+    return mark_safe(html)
 
 
 @register.simple_tag(takes_context=True)

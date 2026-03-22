@@ -5,6 +5,17 @@ All notable changes to djust-theming will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- **Decouple inline HTML from Python (I1)** — All UI rendering in `components.py`, `mixins.py`, and `theme_tags.py` now uses Django templates instead of Python f-strings
+  - `ThemeModeButton` renders via `djust_theming/components/theme_mode_button.html`
+  - `PresetSelector` renders via layout-specific templates (`preset_selector_dropdown.html`, `preset_selector_grid.html`, `preset_selector_list.html`)
+  - `ThemeMixin._setup_theme_context()` renders `theme_head` and `theme_switcher` via shared templates (`theme_head.html`, `theme_switcher.html`)
+  - `theme_head` template tag renders via `djust_theming/theme_head.html`
+  - `theme_switcher.html` now supports a `liveview` context variable for `dj-click`/`dj-change` event bindings (LiveView) vs `data-djust-event` (vanilla Django)
+- No changes to public API or rendered HTML output; this is an internal refactor
+
 ## [1.1.2] - 2026-02-19
 
 ### Added

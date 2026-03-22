@@ -22,6 +22,9 @@ except ImportError:
         return decorator
 
 
+from django.template.loader import render_to_string
+from django.utils.safestring import mark_safe
+
 from .theme_css_generator import CompleteThemeCSSGenerator
 from .manager import ThemeManager
 from .presets import THEME_PRESETS
@@ -77,10 +80,15 @@ class ThemeMixin:
         self._setup_theme_context()
 
     def _setup_theme_context(self):
-        """Set up theme context variables as instance attributes."""
+        """Set up theme context variables as instance attributes.
+
+        Renders ``theme_head`` via the shared ``theme_head.html`` template and
+        ``theme_switcher`` via ``theme_switcher.html`` (with ``liveview=True``
+        for ``dj-click``/``dj-change`` event bindings).
+        """
         if not self._theme_manager or not self._theme_state:
             return
-            
+
         state = self._theme_state
         presets = self._theme_manager.get_available_presets()
 
@@ -88,95 +96,48 @@ class ThemeMixin:
         generator = CompleteThemeCSSGenerator(theme_name=state.theme, color_preset=state.preset)
         css = generator.generate_css()
 
-        # Anti-FOUC script - runs before page renders
-        anti_fouc = """<script>
-(function() {
-    var storageKey = 'djust-theme-mode';
-    var storedMode = localStorage.getItem(storageKey);
-    var mode = storedMode || 'system';
-    var resolvedMode = mode;
-    if (mode === 'system') {
-        resolvedMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-    document.documentElement.setAttribute('data-theme', resolvedMode);
-    document.documentElement.setAttribute('data-theme-mode', mode);
-})();
-</script>"""
-
-        # Set theme_head - complete head content for theming
-        # Use link_css=True logic similar to context processor for consistency
+        # Build the CSS block (link or inline style)
         from django.urls import reverse, NoReverseMatch
         try:
             url = reverse("djust_theming:theme_css")
             cache_buster = f"t={state.theme}&p={state.preset}&m={state.mode}"
             if state.pack:
                 cache_buster += f"&pk={state.pack}"
-            css_include = f'<link rel="stylesheet" href="{url}?{cache_buster}" data-djust-theme id="djust-theme-css">'
+            css_block = f'<link rel="stylesheet" href="{url}?{cache_buster}" data-djust-theme id="djust-theme-css">'
         except NoReverseMatch:
-            css_include = f'<style id="djust-theme-css" data-djust-theme>{css}</style>'
+            css_block = f'<style id="djust-theme-css" data-djust-theme>{css}</style>'
 
-        self.theme_head = f"""{anti_fouc}
-{css_include}
-<script src="/static/djust_theming/js/theme.js?v=3" defer></script>"""
+        # Render theme_head via shared template
+        self.theme_head = mark_safe(render_to_string("djust_theming/theme_head.html", {
+            "loading_class": False,
+            "css_block": css_block,
+            "include_js": True,
+            "js_version": "3",
+        }))
 
         # Set theme_css - just the CSS (for cases where you want more control)
-        self.theme_css = css_include
-        
+        self.theme_css = css_block
+
         # Raw CSS content (for push_event updates)
         self._theme_css_raw = css
 
-        # Set theme_switcher - complete UI component
-        self.theme_switcher = self._render_theme_switcher(state, presets)
+        # Set theme_switcher - render via shared template with liveview events
+        self.theme_switcher = mark_safe(render_to_string("djust_theming/theme_switcher.html", {
+            "theme_mode": state.mode,
+            "presets": presets,
+            "show_mode_toggle": True,
+            "show_presets": True,
+            "show_labels": False,
+            "liveview": True,
+            "button_class": "",
+            "dropdown_class": "",
+        }))
 
         # Individual state values (useful for conditional logic in templates)
         self.theme_preset = state.preset
         self.theme_mode = state.mode
         self.theme_resolved_mode = state.resolved_mode
         self.theme_presets = presets
-
-    def _render_theme_switcher(self, state, presets):
-        """Render the theme switcher HTML component."""
-        icons = {
-            "light": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>',
-            "dark": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>',
-            "system": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>',
-        }
-
-        # Build mode buttons with djust event handlers
-        mode_buttons = ""
-        for mode in ["light", "dark", "system"]:
-            active = "active" if state.mode == mode else ""
-            mode_buttons += f'''
-            <button type="button" class="theme-mode-btn {active}"
-                    dj-click="set_theme_mode"
-                    data-dj-mode="{mode}"
-                    title="{mode.title()} mode">{icons[mode]}</button>'''
-
-        # Build preset options
-        preset_options = ""
-        for preset in presets:
-            selected = "selected" if preset["is_active"] else ""
-            preset_options += (
-                f'<option value="{preset["name"]}" {selected}>{preset["display_name"]}</option>'
-            )
-
-        return f"""<div class="theme-switcher">
-    <div class="theme-mode-controls">{mode_buttons}
-    </div>
-    <select class="theme-preset-select"
-            dj-change="set_theme_preset"
-            aria-label="Select theme preset">{preset_options}</select>
-</div>
-<style>
-.theme-switcher {{ display: flex; align-items: center; gap: 0.75rem; }}
-.theme-mode-controls {{ display: flex; background-color: hsl(var(--muted)); border-radius: var(--radius); padding: 0.25rem; gap: 0.125rem; }}
-.theme-mode-btn {{ display: inline-flex; align-items: center; justify-content: center; padding: 0.375rem 0.5rem; border: none; background: transparent; color: hsl(var(--muted-foreground)); border-radius: calc(var(--radius) - 0.125rem); cursor: pointer; transition: all 0.15s ease; }}
-.theme-mode-btn:hover {{ color: hsl(var(--foreground)); background-color: hsl(var(--background)); }}
-.theme-mode-btn.active {{ color: hsl(var(--foreground)); background-color: hsl(var(--background)); box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }}
-.theme-preset-select {{ padding: 0.375rem 2rem 0.375rem 0.75rem; border: 1px solid hsl(var(--border)); border-radius: var(--radius); background-color: hsl(var(--background)); color: hsl(var(--foreground)); font-size: 0.875rem; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.5rem center; }}
-.theme-preset-select:hover {{ border-color: hsl(var(--ring)); }}
-.theme-preset-select:focus {{ outline: none; border-color: hsl(var(--ring)); box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2); }}
-</style>"""
 
     def _push_theme_update(self, mode: str = None, preset: str = None, css: str = None):
         """

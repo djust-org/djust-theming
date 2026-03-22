@@ -137,9 +137,9 @@ djust-theming/
 ├── djust_theming/           # Main package
 │   ├── management/          # CLI commands
 │   ├── static/              # CSS and JS
-│   ├── templates/           # Django templates
+│   ├── templates/           # Django templates (all HTML lives here)
 │   ├── templatetags/        # Template tags
-│   ├── components.py        # UI components
+│   ├── components.py        # UI components (render via templates)
 │   ├── css_generator.py     # CSS generation
 │   ├── manager.py           # Theme management
 │   ├── mixins.py            # LiveView integration
