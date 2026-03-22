@@ -567,9 +567,9 @@ All components use theme CSS variables and automatically adapt to theme changes:
 | `theme_input` | - | Form inputs with labels |
 | `theme_icon` | check, x, alert, info | SVG icons (integrate your own icon library) |
 
-### Styling
+### Styling & Customization
 
-Component CSS is served from `static/djust_theming/css/components.css`, which is automatically included by `{% theme_head %}`. All components are:
+Component CSS is served from `static/djust_theming/css/components.css`, which is automatically included by `{% theme_head %}`. Component HTML is rendered via Django templates that you can override in your project (see [Customization Guide](djust_theming/docs/customization.md)). All components are:
 - ✅ Fully themed with CSS variables
 - ✅ Automatically adapt to light/dark mode
 - ✅ Responsive and accessible
@@ -645,13 +645,18 @@ A complete Django application demonstrating all features is included in the `exa
 
 See [example_project/README.md](example_project/README.md) for setup instructions.
 
+## Documentation
+
+- **[Customization Guide](djust_theming/docs/customization.md)** -- Template overrides, CSS architecture, caching, static file handling
+- **[Design System](djust_theming/docs/design-system.md)** -- Spacing, typography, color tokens
+- **[Color Presets](djust_theming/docs/colors.md)** -- HSL color system and custom presets
+
 ## Contributing
 
 Contributions welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## Support
 
-- 📖 [Documentation](https://djust.org/theming/)
 - 🐛 [Issues](https://github.com/djust-org/djust-theming/issues)
 - 💬 [Discussions](https://github.com/djust-org/djust-theming/discussions)
 
