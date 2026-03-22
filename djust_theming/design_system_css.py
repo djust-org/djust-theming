@@ -5,6 +5,7 @@ This extends the basic CSS generator to support the full flexibility
 of design system + color preset combinations.
 """
 
+from functools import lru_cache
 from typing import Optional, Dict, Any
 from .presets import ThemeTokens, get_preset
 from .theme_packs import (
@@ -343,21 +344,25 @@ h6 { font-size: 1rem; }"""
         return css
 
 
+@lru_cache(maxsize=256)
 def generate_design_system_css(
     design_system_name: str = "minimal",
-    color_preset_name: str = "default", 
+    color_preset_name: str = "default",
     include_base_styles: bool = True,
     include_utilities: bool = True
 ) -> str:
     """
-    Convenience function to generate CSS for design system + color preset.
-    
+    Convenience function to generate CSS for design system + color preset (cached).
+
+    Results are cached by all parameters. Use ``clear_css_cache()``
+    to invalidate during development.
+
     Args:
         design_system_name: Name of the design system
         color_preset_name: Name of the color preset
         include_base_styles: Include base styles
         include_utilities: Include utility classes
-        
+
     Returns:
         Complete CSS string
     """

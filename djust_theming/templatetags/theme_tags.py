@@ -24,8 +24,8 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from ..components import PresetSelector, ThemeModeButton, ThemeSwitcher, ThemeSwitcherConfig
-from ..theme_css_generator import CompleteThemeCSSGenerator
-from ..pack_css_generator import ThemePackCSSGenerator
+from ..theme_css_generator import generate_theme_css
+from ..pack_css_generator import generate_pack_css
 from ..manager import get_theme_config, get_theme_manager
 
 register = template.Library()
@@ -78,15 +78,13 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
         css = ""
         if state.pack:
             try:
-                generator = ThemePackCSSGenerator(pack_name=state.pack)
-                css = generator.generate_css()
+                css = generate_pack_css(pack_name=state.pack)
             except ValueError:
                 # Fall back if pack not found
                 pass
 
         if not css:
-            generator = CompleteThemeCSSGenerator(theme_name=state.theme, color_preset=state.preset)
-            css = generator.generate_css()
+            css = generate_theme_css(theme_name=state.theme, color_preset=state.preset)
 
         css_block = f"<style data-djust-theme>{css}</style>"
 
@@ -116,14 +114,12 @@ def theme_css(context):
     css = ""
     if state.pack:
         try:
-            generator = ThemePackCSSGenerator(pack_name=state.pack)
-            css = generator.generate_css()
+            css = generate_pack_css(pack_name=state.pack)
         except ValueError:
             pass
-            
+
     if not css:
-        generator = CompleteThemeCSSGenerator(theme_name=state.theme, color_preset=state.preset)
-        css = generator.generate_css()
+        css = generate_theme_css(theme_name=state.theme, color_preset=state.preset)
 
     return format_html('<style data-djust-theme>{}</style>', mark_safe(css))
 

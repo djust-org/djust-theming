@@ -5,6 +5,8 @@ Generates complete CSS including icons, animations, patterns, interactions,
 and all other styling dimensions from a ThemePack.
 """
 
+from functools import lru_cache
+
 from .theme_packs import ThemePack, get_theme_pack
 from .theme_css_generator import CompleteThemeCSSGenerator
 
@@ -506,3 +508,21 @@ img, .illustration {{
   /* Style hint for illustration type: {illust.illustration_type} */
 }}
 """
+
+
+@lru_cache(maxsize=64)
+def generate_pack_css(pack_name: str) -> str:
+    """
+    Generate complete CSS for a theme pack (cached).
+
+    Results are cached by pack_name. Use ``clear_css_cache()``
+    to invalidate during development.
+
+    Args:
+        pack_name: Name of the theme pack
+
+    Returns:
+        Complete CSS string for the theme pack
+    """
+    generator = ThemePackCSSGenerator(pack_name)
+    return generator.generate_css()

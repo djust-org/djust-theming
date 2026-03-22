@@ -5,6 +5,8 @@ Generates CSS custom properties from theme tokens, supporting both
 light and dark modes with system preference detection.
 """
 
+from functools import lru_cache
+
 from .design_tokens import generate_design_tokens_css
 from .presets import ThemeTokens, get_preset
 
@@ -386,6 +388,7 @@ pre code {
         return css
 
 
+@lru_cache(maxsize=64)
 def generate_theme_css(
     preset_name: str = "default",
     include_base_styles: bool = True,
@@ -393,7 +396,10 @@ def generate_theme_css(
     include_design_tokens: bool = True,
 ) -> str:
     """
-    Convenience function to generate CSS for a theme.
+    Convenience function to generate CSS for a theme (cached).
+
+    Results are cached by all parameters. Use ``clear_css_cache()``
+    to invalidate during development.
 
     Args:
         preset_name: Name of the theme preset

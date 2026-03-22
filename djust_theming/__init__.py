@@ -5,6 +5,7 @@ Provides CSS custom properties-based theming with light/dark mode support,
 multiple theme presets, and seamless Django/djust integration.
 """
 
+from .cache import clear_css_cache
 from .components import ThemeSwitcher
 from .css_generator import ThemeCSSGenerator
 from .manager import ThemeManager, ThemeState, get_theme_manager
@@ -23,6 +24,8 @@ from .presets import (
 )
 
 __all__ = [
+    # Cache
+    "clear_css_cache",
     # Presets
     "ColorScale",
     "ThemeTokens",
