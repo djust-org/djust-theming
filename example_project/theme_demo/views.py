@@ -3,8 +3,7 @@ Demo views showcasing djust-theming features.
 """
 from django.shortcuts import render
 from djust_theming.presets import THEME_PRESETS
-from djust_theming.themes import THEMES
-from djust_theming.theme_packs import get_all_theme_packs, get_all_design_systems
+from djust_theming.theme_packs import DESIGN_SYSTEMS, get_all_theme_packs, get_all_design_systems
 from djust_theming.manager import ThemeManager
 from djust_theming.inspector import theme_inspector_view, theme_inspector_api, theme_css_api
 
@@ -53,11 +52,11 @@ def themes(request):
     theme_state = manager.get_state()
 
     theme_list = []
-    for name, theme in THEMES.items():
+    for name, design_system in DESIGN_SYSTEMS.items():
         theme_list.append({
             'name': name,
-            'display_name': theme.display_name,
-            'description': theme.description,
+            'display_name': design_system.display_name,
+            'description': design_system.description,
         })
 
     return render(request, 'theme_demo/themes.html', {

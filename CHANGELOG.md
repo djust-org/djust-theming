@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Deprecated
+- **`themes.py` module deprecated in favor of `theme_packs.py` (I8)** — The `THEMES` dict, `get_theme()`, and `list_themes()` in `djust_theming.themes` now emit `DeprecationWarning` on every access. Use `DESIGN_SYSTEMS`, `get_design_system()`, and `get_all_design_systems()` from `djust_theming.theme_packs` instead. The old module still works and will continue to work for the remainder of the 1.x series, but will be removed in 2.0. See the [migration guide](djust_theming/docs/customization.md#migrating-from-themes-to-design_systems) for details.
+
+### Changed
+- **`ThemeManager` validates against `DESIGN_SYSTEMS` (I8)** — `ThemeManager.get_state()` and `ThemeManager.set_theme()` now validate theme names against `DESIGN_SYSTEMS` from `theme_packs.py` instead of the deprecated `THEMES` dict from `themes.py`. Both registries contain the same 11 keys, so this is a non-breaking change.
+
 ### Added
 - **Accessibility contrast validation system check (I6)** — A new Django system check (`djust_theming.W001`) validates all registered `THEME_PRESETS` against WCAG AA contrast ratios (4.5:1) at startup. Checks 12 foreground/background token pairs across both light and dark modes for every preset. Issues are reported as warnings so projects are informed but never blocked. Silence individual warnings with Django's `SILENCED_SYSTEM_CHECKS` setting.
 

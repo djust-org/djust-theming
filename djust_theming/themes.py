@@ -21,8 +21,65 @@ Each theme defines a complete design system including:
 - Component styles
 """
 
+import warnings
 from dataclasses import dataclass
 from typing import Dict, Optional
+
+_DEPRECATION_MSG = (
+    "{name} is deprecated. Use DESIGN_SYSTEMS from djust_theming.theme_packs instead."
+)
+
+
+class _DeprecatedThemesDict(dict):
+    """Dict wrapper that emits DeprecationWarning on access."""
+
+    def __getitem__(self, key):
+        warnings.warn(
+            _DEPRECATION_MSG.format(name="THEMES"),
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return super().__getitem__(key)
+
+    def __contains__(self, key):
+        warnings.warn(
+            _DEPRECATION_MSG.format(name="THEMES"),
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return super().__contains__(key)
+
+    def get(self, key, default=None):
+        warnings.warn(
+            _DEPRECATION_MSG.format(name="THEMES"),
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return super().get(key, default)
+
+    def items(self):
+        warnings.warn(
+            _DEPRECATION_MSG.format(name="THEMES"),
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return super().items()
+
+    def keys(self):
+        warnings.warn(
+            _DEPRECATION_MSG.format(name="THEMES"),
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return super().keys()
+
+    def values(self):
+        warnings.warn(
+            _DEPRECATION_MSG.format(name="THEMES"),
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return super().values()
 
 
 @dataclass
@@ -686,8 +743,8 @@ THEME_DENSE = Theme(
 )
 
 
-# Theme Registry
-THEMES: Dict[str, Theme] = {
+# Theme Registry (deprecated — use DESIGN_SYSTEMS from theme_packs.py)
+THEMES: Dict[str, Theme] = _DeprecatedThemesDict({
     "material": MATERIAL_THEME,
     "ios": IOS_THEME,
     "fluent": FLUENT_THEME,
@@ -699,14 +756,34 @@ THEMES: Dict[str, Theme] = {
     "neo_brutalist": THEME_NEO_BRUTALIST,
     "organic": THEME_ORGANIC,
     "dense": THEME_DENSE,
-}
+})
 
 
 def get_theme(name: str) -> Optional[Theme]:
-    """Get a theme by name."""
-    return THEMES.get(name)
+    """Get a theme by name.
+
+    .. deprecated::
+        Use ``get_design_system`` from ``djust_theming.theme_packs`` instead.
+    """
+    warnings.warn(
+        _DEPRECATION_MSG.format(name="get_theme()"),
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    # Bypass the _DeprecatedThemesDict warning to avoid double-warning
+    return dict.get(THEMES, name)
 
 
 def list_themes() -> Dict[str, Theme]:
-    """Get all available themes."""
-    return THEMES.copy()
+    """Get all available themes.
+
+    .. deprecated::
+        Use ``get_all_design_systems`` from ``djust_theming.theme_packs`` instead.
+    """
+    warnings.warn(
+        _DEPRECATION_MSG.format(name="list_themes()"),
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    # Bypass the _DeprecatedThemesDict warning to avoid double-warning
+    return dict.copy(THEMES)

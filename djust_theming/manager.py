@@ -118,7 +118,7 @@ class ThemeManager:
         Returns:
             ThemeState with current theme, preset and mode
         """
-        from .themes import THEMES
+        from .theme_packs import DESIGN_SYSTEMS
         import logging
         logger = logging.getLogger(__name__)
 
@@ -155,7 +155,7 @@ class ThemeManager:
                 preset = theme_pack.color_preset
 
         # Validate theme
-        if theme not in THEMES:
+        if theme not in DESIGN_SYSTEMS:
             theme = "material"
 
         # Validate preset
@@ -187,9 +187,9 @@ class ThemeManager:
         Returns:
             True if theme was valid and set
         """
-        from .themes import THEMES
+        from .theme_packs import DESIGN_SYSTEMS
 
-        if theme_name not in THEMES:
+        if theme_name not in DESIGN_SYSTEMS:
             return False
 
         session_data = self._get_session_data()
