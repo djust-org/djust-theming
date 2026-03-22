@@ -79,6 +79,140 @@ When overriding `theme_switcher.html`, preserve this conditional if you need to 
 
 ---
 
+## Token Architecture
+
+djust-theming separates concerns into two token layers: **color tokens** (theme-dependent, light/dark aware) and **structural tokens** (theme-agnostic, set once).
+
+### Color Tokens (`ThemeTokens`)
+
+`ThemeTokens` holds HSL color values that change between light and dark mode. Each `ThemePreset` contains two `ThemeTokens` instances (one for light, one for dark). These generate CSS custom properties like `--primary`, `--background`, `--destructive-foreground`, etc.
+
+Color tokens are the values that change when a user switches presets or toggles dark mode.
+
+```python
+from djust_theming.presets import ThemeTokens, ColorScale
+
+light_tokens = ThemeTokens(
+    background=ColorScale(0, 0, 100),     # White
+    foreground=ColorScale(240, 10, 4),     # Near-black
+    primary=ColorScale(220, 70, 50),       # Blue
+    primary_foreground=ColorScale(0, 0, 98),
+    # ... all 29 color fields
+)
+```
+
+The full list of color tokens (29 fields):
+
+| Category | Tokens |
+|----------|--------|
+| **Backgrounds** | `background`, `foreground` |
+| **Card** | `card`, `card_foreground` |
+| **Popover** | `popover`, `popover_foreground` |
+| **Primary** | `primary`, `primary_foreground` |
+| **Secondary** | `secondary`, `secondary_foreground` |
+| **Muted** | `muted`, `muted_foreground` |
+| **Accent** | `accent`, `accent_foreground` |
+| **Destructive** | `destructive`, `destructive_foreground` |
+| **Success** | `success`, `success_foreground` |
+| **Warning** | `warning`, `warning_foreground` |
+| **Info** | `info`, `info_foreground` |
+| **Link** | `link`, `link_hover` |
+| **Code** | `code`, `code_foreground` |
+| **Selection** | `selection`, `selection_foreground` |
+| **UI elements** | `border`, `input`, `ring` |
+
+### Structural Tokens (`ThemePreset` + `design_tokens`)
+
+Structural tokens control layout, spacing, typography, and radius. They do not change between light and dark mode.
+
+**`ThemePreset.radius`** -- a `float` that sets the base border radius for the preset, output as `--radius: {value}rem` in `:root`. Most presets use `0.5` (default); some use `0.75` for a more rounded feel.
+
+```python
+from djust_theming.presets import ThemePreset
+
+preset = ThemePreset(
+    name="brand",
+    display_name="Brand",
+    light=light_tokens,
+    dark=dark_tokens,
+    radius=0.75,  # More rounded corners
+)
+```
+
+**`design_tokens`** -- the `design_tokens.py` module generates theme-agnostic structural CSS custom properties that apply regardless of which preset is active:
+
+| Token group | Examples | Source |
+|-------------|----------|--------|
+| **Spacing** | `--space-1` through `--space-24` (4px to 96px) | `get_spacing_tokens()` |
+| **Typography** | `--font-size-xs` through `--font-size-4xl`, `--line-height-*`, `--font-weight-*` | `get_typography_tokens()` |
+| **Radius scale** | `--radius-sm`, `--radius-md`, `--radius-lg`, `--radius-xl`, `--radius-2xl`, `--radius-full` | `get_radius_extensions()` |
+| **Transitions** | `--duration-fast`, `--duration-normal`, `--duration-slow`, `--ease-in`, `--ease-out` | `get_transition_tokens()` |
+| **Shadows** | `--shadow-sm`, `--shadow-md`, `--shadow-lg` (theme-aware) | `get_shadow_tokens()` |
+
+The radius scale tokens are derived from `--radius` via CSS `calc()`, so changing `ThemePreset.radius` automatically adjusts the entire radius scale.
+
+### Why This Separation Matters
+
+Keeping color tokens separate from structural tokens means:
+
+1. **Presets stay simple** -- A preset defines colors and a radius value. It does not need to redefine spacing, typography, or transitions.
+2. **Light/dark mode is clean** -- Only color values change between modes. Structural values like radius, spacing, and transitions stay constant.
+3. **Custom presets are easy to create** -- Define 29 color fields per mode plus an optional radius. Everything else is inherited from the design system.
+
+### Creating a Custom Preset
+
+```python
+# settings.py or a presets module
+from djust_theming.presets import ThemePreset, ThemeTokens, ColorScale, THEME_PRESETS
+
+MY_PRESET = ThemePreset(
+    name="brand",
+    display_name="Brand Colors",
+    description="Corporate brand theme",
+    radius=0.625,  # Custom border radius (in rem)
+    light=ThemeTokens(
+        background=ColorScale(0, 0, 100),
+        foreground=ColorScale(210, 20, 10),
+        card=ColorScale(0, 0, 99),
+        card_foreground=ColorScale(210, 20, 10),
+        popover=ColorScale(0, 0, 100),
+        popover_foreground=ColorScale(210, 20, 10),
+        primary=ColorScale(210, 80, 45),
+        primary_foreground=ColorScale(0, 0, 98),
+        secondary=ColorScale(210, 10, 95),
+        secondary_foreground=ColorScale(210, 20, 10),
+        muted=ColorScale(210, 10, 95),
+        muted_foreground=ColorScale(210, 10, 40),
+        accent=ColorScale(210, 10, 95),
+        accent_foreground=ColorScale(210, 20, 10),
+        destructive=ColorScale(0, 84, 60),
+        destructive_foreground=ColorScale(0, 0, 98),
+        success=ColorScale(142, 76, 36),
+        success_foreground=ColorScale(0, 0, 98),
+        warning=ColorScale(38, 92, 50),
+        warning_foreground=ColorScale(0, 0, 98),
+        info=ColorScale(199, 89, 48),
+        info_foreground=ColorScale(0, 0, 98),
+        link=ColorScale(210, 80, 45),
+        link_hover=ColorScale(210, 80, 35),
+        code=ColorScale(210, 10, 94),
+        code_foreground=ColorScale(210, 20, 20),
+        selection=ColorScale(210, 100, 80),
+        selection_foreground=ColorScale(210, 20, 10),
+        border=ColorScale(210, 10, 90),
+        input=ColorScale(210, 10, 90),
+        ring=ColorScale(210, 80, 45),
+    ),
+    dark=ThemeTokens(
+        # ... dark mode colors
+    ),
+)
+
+THEME_PRESETS["brand"] = MY_PRESET
+```
+
+---
+
 ## CSS Architecture
 
 djust-theming ships two CSS files with distinct purposes:

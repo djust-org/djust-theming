@@ -41,7 +41,6 @@ export interface ThemeTokens {
   border: ColorScale;
   input: ColorScale;
   ring: ColorScale;
-  radius: number;
 }
 
 export interface ThemePreset {
@@ -50,6 +49,7 @@ export interface ThemePreset {
   description: string;
   light: ThemeTokens;
   dark: ThemeTokens;
+  radius: number;
 }
 
 // =============================================================================

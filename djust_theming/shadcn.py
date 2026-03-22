@@ -60,11 +60,16 @@ def parse_shadcn_theme(theme_json: Dict[str, Any]) -> ThemePreset:
     # Parse dark mode tokens
     dark_tokens = _parse_shadcn_vars(dark_vars)
 
+    # Extract radius from light vars (same for both modes)
+    radius_str = light_vars.get("radius", "0.5rem")
+    radius = float(re.sub(r'[^\d.]', '', radius_str)) if radius_str else 0.5
+
     return ThemePreset(
         name=name,
         display_name=display_name,
         light=light_tokens,
         dark=dark_tokens,
+        radius=radius,
     )
 
 
@@ -125,13 +130,21 @@ def _parse_shadcn_vars(vars_dict: Dict[str, str]) -> ThemeTokens:
     warning = parse_hsl(vars_dict.get("warning", "38 92% 50%"))
     warning_foreground = parse_hsl(vars_dict.get("warning-foreground", "0 0% 100%"))
 
+    info = parse_hsl(vars_dict.get("info", "199 89% 48%"))
+    info_foreground = parse_hsl(vars_dict.get("info-foreground", "0 0% 98%"))
+
+    link = parse_hsl(vars_dict.get("link", vars_dict.get("primary", "221.2 83.2% 53.3%")))
+    link_hover = parse_hsl(vars_dict.get("link-hover", vars_dict.get("primary", "221.2 83.2% 45%")))
+
+    code = parse_hsl(vars_dict.get("code", "240 5% 94%"))
+    code_foreground = parse_hsl(vars_dict.get("code-foreground", "240 10% 20%"))
+
+    selection = parse_hsl(vars_dict.get("selection", "240 100% 80%"))
+    selection_foreground = parse_hsl(vars_dict.get("selection-foreground", "240 10% 4%"))
+
     border = parse_hsl(vars_dict.get("border", "214.3 31.8% 91.4%"))
     input_color = parse_hsl(vars_dict.get("input", "214.3 31.8% 91.4%"))
     ring = parse_hsl(vars_dict.get("ring", "221.2 83.2% 53.3%"))
-
-    # Get radius (default 0.5rem)
-    radius_str = vars_dict.get("radius", "0.5rem")
-    radius = float(re.sub(r'[^\d.]', '', radius_str)) if radius_str else 0.5
 
     return ThemeTokens(
         background=background,
@@ -154,10 +167,17 @@ def _parse_shadcn_vars(vars_dict: Dict[str, str]) -> ThemeTokens:
         success_foreground=success_foreground,
         warning=warning,
         warning_foreground=warning_foreground,
+        info=info,
+        info_foreground=info_foreground,
+        link=link,
+        link_hover=link_hover,
+        code=code,
+        code_foreground=code_foreground,
+        selection=selection,
+        selection_foreground=selection_foreground,
         border=border,
         input=input_color,
         ring=ring,
-        radius=radius,
     )
 
 
@@ -213,7 +233,7 @@ def export_to_shadcn_format(preset_name: str = "default") -> Dict[str, Any]:
                 "border": light.border.to_hsl(),
                 "input": light.input.to_hsl(),
                 "ring": light.ring.to_hsl(),
-                "radius": f"{light.radius}rem",
+                "radius": f"{preset.radius}rem",
             },
             "dark": {
                 "background": dark.background.to_hsl(),
@@ -235,7 +255,7 @@ def export_to_shadcn_format(preset_name: str = "default") -> Dict[str, Any]:
                 "border": dark.border.to_hsl(),
                 "input": dark.input.to_hsl(),
                 "ring": dark.ring.to_hsl(),
-                "radius": f"{dark.radius}rem",
+                "radius": f"{preset.radius}rem",
             },
         },
     }

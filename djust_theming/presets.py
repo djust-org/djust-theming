@@ -103,14 +103,6 @@ class ThemeTokens:
     input: ColorScale
     ring: ColorScale
 
-    # Border radius multiplier
-    radius: float = 0.5
-
-    # Animation properties
-    card_lift_distance: float = 1.0  # pixels - how much cards lift on hover
-    card_glow_opacity: float = 0.3  # 0-1 - strength of border glow effect
-    transition_speed: int = 150  # milliseconds - base transition duration
-    animation_intensity: str = "subtle"  # subtle, moderate, dramatic
 
 
 @dataclass
@@ -122,6 +114,7 @@ class ThemePreset:
     light: ThemeTokens
     dark: ThemeTokens
     description: str = ""
+    radius: float = 0.5  # Border radius multiplier (output as --radius: {val}rem)
 
 
 # =============================================================================
@@ -160,7 +153,6 @@ _DEFAULT_LIGHT = ThemeTokens(
     border=ColorScale(240, 6, 90),
     input=ColorScale(240, 6, 90),
     ring=ColorScale(240, 6, 10),
-    radius=0.5,
 )
 
 _DEFAULT_DARK = ThemeTokens(
@@ -195,7 +187,6 @@ _DEFAULT_DARK = ThemeTokens(
     border=ColorScale(240, 4, 16),
     input=ColorScale(240, 4, 16),
     ring=ColorScale(240, 5, 84),
-    radius=0.5,
 )
 
 DEFAULT_THEME = ThemePreset(
@@ -243,7 +234,6 @@ _SHADCN_LIGHT = ThemeTokens(
     border=ColorScale(240, 6, 90),
     input=ColorScale(240, 6, 90),
     ring=ColorScale(240, 6, 10),
-    radius=0.5,
 )
 
 _SHADCN_DARK = ThemeTokens(
@@ -278,7 +268,6 @@ _SHADCN_DARK = ThemeTokens(
     border=ColorScale(240, 4, 16),
     input=ColorScale(240, 4, 16),
     ring=ColorScale(240, 5, 84),
-    radius=0.5,
 )
 
 SHADCN_THEME = ThemePreset(
@@ -326,7 +315,6 @@ _BLUE_LIGHT = ThemeTokens(
     border=ColorScale(214, 32, 91),
     input=ColorScale(214, 32, 91),
     ring=ColorScale(221, 83, 53),
-    radius=0.5,
 )
 
 _BLUE_DARK = ThemeTokens(
@@ -361,7 +349,6 @@ _BLUE_DARK = ThemeTokens(
     border=ColorScale(217, 33, 17),
     input=ColorScale(217, 33, 17),
     ring=ColorScale(224, 76, 48),
-    radius=0.5,
 )
 
 BLUE_THEME = ThemePreset(
@@ -409,7 +396,6 @@ _GREEN_LIGHT = ThemeTokens(
     border=ColorScale(140, 20, 88),
     input=ColorScale(140, 20, 88),
     ring=ColorScale(142, 76, 36),
-    radius=0.5,
 )
 
 _GREEN_DARK = ThemeTokens(
@@ -444,7 +430,6 @@ _GREEN_DARK = ThemeTokens(
     border=ColorScale(140, 30, 16),
     input=ColorScale(140, 30, 16),
     ring=ColorScale(142, 69, 45),
-    radius=0.5,
 )
 
 GREEN_THEME = ThemePreset(
@@ -492,7 +477,6 @@ _PURPLE_LIGHT = ThemeTokens(
     border=ColorScale(270, 20, 90),
     input=ColorScale(270, 20, 90),
     ring=ColorScale(270, 50, 50),
-    radius=0.5,
 )
 
 _PURPLE_DARK = ThemeTokens(
@@ -527,7 +511,6 @@ _PURPLE_DARK = ThemeTokens(
     border=ColorScale(270, 30, 16),
     input=ColorScale(270, 30, 16),
     ring=ColorScale(270, 60, 60),
-    radius=0.5,
 )
 
 PURPLE_THEME = ThemePreset(
@@ -575,7 +558,6 @@ _ORANGE_LIGHT = ThemeTokens(
     border=ColorScale(24, 25, 88),
     input=ColorScale(24, 25, 88),
     ring=ColorScale(24, 95, 53),
-    radius=0.5,
 )
 
 _ORANGE_DARK = ThemeTokens(
@@ -610,7 +592,6 @@ _ORANGE_DARK = ThemeTokens(
     border=ColorScale(20, 30, 16),
     input=ColorScale(20, 30, 16),
     ring=ColorScale(24, 95, 55),
-    radius=0.5,
 )
 
 ORANGE_THEME = ThemePreset(
@@ -658,7 +639,6 @@ _ROSE_LIGHT = ThemeTokens(
     border=ColorScale(346, 20, 90),
     input=ColorScale(346, 20, 90),
     ring=ColorScale(346, 77, 50),
-    radius=0.5,
 )
 
 _ROSE_DARK = ThemeTokens(
@@ -693,7 +673,6 @@ _ROSE_DARK = ThemeTokens(
     border=ColorScale(346, 30, 16),
     input=ColorScale(346, 30, 16),
     ring=ColorScale(346, 77, 55),
-    radius=0.5,
 )
 
 ROSE_THEME = ThemePreset(
@@ -741,7 +720,6 @@ _NATURAL20_LIGHT = ThemeTokens(
     border=ColorScale(240, 5, 90),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(211, 100, 65),
-    radius=0.5,
 )
 
 _NATURAL20_DARK = ThemeTokens(
@@ -776,7 +754,6 @@ _NATURAL20_DARK = ThemeTokens(
     border=ColorScale(240, 9, 13),  # #1f1f23
     input=ColorScale(240, 15, 6),
     ring=ColorScale(211, 100, 65),
-    radius=0.75,  # Slightly more rounded
 )
 
 NATURAL20_THEME = ThemePreset(
@@ -785,6 +762,7 @@ NATURAL20_THEME = ThemePreset(
     description="Dark-first Bloomberg Terminal-inspired theme with cyan accents",
     light=_NATURAL20_LIGHT,
     dark=_NATURAL20_DARK,
+    radius=0.75,
 )
 
 
@@ -824,7 +802,6 @@ _CATPPUCCIN_LIGHT = ThemeTokens(
     border=ColorScale(220, 17, 93),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(217, 92, 76),
-    radius=0.75,
 )
 
 _CATPPUCCIN_DARK = ThemeTokens(
@@ -859,12 +836,7 @@ _CATPPUCCIN_DARK = ThemeTokens(
     border=ColorScale(240, 21, 26),
     input=ColorScale(240, 21, 19),
     ring=ColorScale(217, 92, 76),
-    radius=0.75,
     # Gentle animations for pastel theme
-    card_lift_distance=1.0,
-    card_glow_opacity=0.2,
-    transition_speed=150,
-    animation_intensity="subtle",
 )
 
 CATPPUCCIN_THEME = ThemePreset(
@@ -873,6 +845,7 @@ CATPPUCCIN_THEME = ThemePreset(
     description="Soothing pastel theme with warm, muted colors",
     light=_CATPPUCCIN_LIGHT,
     dark=_CATPPUCCIN_DARK,
+    radius=0.75,
 )
 
 
@@ -912,7 +885,6 @@ _ROSE_PINE_LIGHT = ThemeTokens(
     border=ColorScale(245, 22, 91),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(343, 76, 68),
-    radius=0.5,
 )
 
 _ROSE_PINE_DARK = ThemeTokens(
@@ -947,12 +919,7 @@ _ROSE_PINE_DARK = ThemeTokens(
     border=ColorScale(247, 23, 20),
     input=ColorScale(250, 23, 17),
     ring=ColorScale(343, 76, 68),
-    radius=0.5,
     # Gentle animations for pastel theme
-    card_lift_distance=1.0,
-    card_glow_opacity=0.2,
-    transition_speed=150,
-    animation_intensity="subtle",
 )
 
 ROSE_PINE_THEME = ThemePreset(
@@ -1000,7 +967,6 @@ _TOKYO_NIGHT_LIGHT = ThemeTokens(
     border=ColorScale(219, 20, 92),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(217, 89, 72),
-    radius=0.5,
 )
 
 _TOKYO_NIGHT_DARK = ThemeTokens(
@@ -1035,12 +1001,7 @@ _TOKYO_NIGHT_DARK = ThemeTokens(
     border=ColorScale(234, 13, 20),
     input=ColorScale(233, 15, 18),
     ring=ColorScale(217, 89, 72),
-    radius=0.5,
     # Moderate animations for vibrant pastel theme
-    card_lift_distance=2.0,
-    card_glow_opacity=0.35,
-    transition_speed=175,
-    animation_intensity="moderate",
 )
 
 TOKYO_NIGHT_THEME = ThemePreset(
@@ -1088,7 +1049,6 @@ _NORD_LIGHT = ThemeTokens(
     border=ColorScale(219, 20, 92),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(193, 43, 67),
-    radius=0.5,
 )
 
 _NORD_DARK = ThemeTokens(
@@ -1123,12 +1083,7 @@ _NORD_DARK = ThemeTokens(
     border=ColorScale(220, 16, 32),
     input=ColorScale(220, 16, 28),
     ring=ColorScale(193, 43, 67),
-    radius=0.5,
     # Gentle animations for pastel theme
-    card_lift_distance=1.0,
-    card_glow_opacity=0.2,
-    transition_speed=150,
-    animation_intensity="subtle",
 )
 
 NORD_THEME = ThemePreset(
@@ -1180,7 +1135,6 @@ _SYNTHWAVE_LIGHT = ThemeTokens(
     border=ColorScale(255, 26, 88),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(320, 100, 74),
-    radius=0.75,
 )
 
 _SYNTHWAVE_DARK = ThemeTokens(
@@ -1215,12 +1169,7 @@ _SYNTHWAVE_DARK = ThemeTokens(
     border=ColorScale(255, 26, 30),
     input=ColorScale(255, 26, 22),
     ring=ColorScale(320, 100, 74),
-    radius=0.75,
     # Dramatic animations for neon theme
-    card_lift_distance=3.0,
-    card_glow_opacity=0.5,
-    transition_speed=200,
-    animation_intensity="dramatic",
 )
 
 SYNTHWAVE_THEME = ThemePreset(
@@ -1229,6 +1178,7 @@ SYNTHWAVE_THEME = ThemePreset(
     description="Iconic 1980s synthwave with glowing neon pink and cyan",
     light=_SYNTHWAVE_LIGHT,
     dark=_SYNTHWAVE_DARK,
+    radius=0.75,
 )
 
 
@@ -1268,7 +1218,6 @@ _CYBERPUNK_LIGHT = ThemeTokens(
     border=ColorScale(219, 50, 88),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(54, 70, 68),
-    radius=0.5,
 )
 
 _CYBERPUNK_DARK = ThemeTokens(
@@ -1303,12 +1252,7 @@ _CYBERPUNK_DARK = ThemeTokens(
     border=ColorScale(219, 100, 15),
     input=ColorScale(219, 100, 10),
     ring=ColorScale(54, 70, 68),
-    radius=0.5,
     # Dramatic animations for neon theme
-    card_lift_distance=3.0,
-    card_glow_opacity=0.5,
-    transition_speed=200,
-    animation_intensity="dramatic",
 )
 
 CYBERPUNK_THEME = ThemePreset(
@@ -1356,7 +1300,6 @@ _OUTRUN_LIGHT = ThemeTokens(
     border=ColorScale(240, 50, 88),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(329, 100, 71),
-    radius=0.75,
 )
 
 _OUTRUN_DARK = ThemeTokens(
@@ -1391,12 +1334,7 @@ _OUTRUN_DARK = ThemeTokens(
     border=ColorScale(240, 100, 18),
     input=ColorScale(240, 100, 12),
     ring=ColorScale(329, 100, 71),
-    radius=0.75,
     # Dramatic animations for neon theme
-    card_lift_distance=3.0,
-    card_glow_opacity=0.5,
-    transition_speed=200,
-    animation_intensity="dramatic",
 )
 
 OUTRUN_THEME = ThemePreset(
@@ -1405,6 +1343,7 @@ OUTRUN_THEME = ThemePreset(
     description="80s retro racing with hot pink, purple, and sunset gradients",
     light=_OUTRUN_LIGHT,
     dark=_OUTRUN_DARK,
+    radius=0.75,
 )
 
 
@@ -1444,7 +1383,6 @@ _FOREST_LIGHT = ThemeTokens(
     border=ColorScale(150, 20, 85),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(142, 71, 45),
-    radius=0.75,
 )
 
 _FOREST_DARK = ThemeTokens(
@@ -1479,12 +1417,7 @@ _FOREST_DARK = ThemeTokens(
     border=ColorScale(150, 45, 18),
     input=ColorScale(150, 48, 12),
     ring=ColorScale(142, 71, 45),
-    radius=0.75,
     # Gentle animations for nature theme
-    card_lift_distance=1.0,
-    card_glow_opacity=0.2,
-    transition_speed=150,
-    animation_intensity="subtle",
 )
 
 FOREST_THEME = ThemePreset(
@@ -1493,6 +1426,7 @@ FOREST_THEME = ThemePreset(
     description="Deep emerald greens with warm earth tones",
     light=_FOREST_LIGHT,
     dark=_FOREST_DARK,
+    radius=0.75,
 )
 
 
@@ -1532,7 +1466,6 @@ _AMBER_LIGHT = ThemeTokens(
     border=ColorScale(38, 30, 82),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(38, 92, 50),
-    radius=0.75,
 )
 
 _AMBER_DARK = ThemeTokens(
@@ -1567,12 +1500,7 @@ _AMBER_DARK = ThemeTokens(
     border=ColorScale(34, 100, 10),
     input=ColorScale(36, 100, 8),
     ring=ColorScale(38, 92, 50),
-    radius=0.75,
     # Gentle animations for warm theme
-    card_lift_distance=1.0,
-    card_glow_opacity=0.25,
-    transition_speed=150,
-    animation_intensity="subtle",
 )
 
 AMBER_THEME = ThemePreset(
@@ -1581,6 +1509,7 @@ AMBER_THEME = ThemePreset(
     description="Warm amber & gold — like a control room at midnight",
     light=_AMBER_LIGHT,
     dark=_AMBER_DARK,
+    radius=0.75,
 )
 
 
@@ -1620,7 +1549,6 @@ _SLATE_LIGHT = ThemeTokens(
     border=ColorScale(0, 0, 88),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(214, 16, 46),
-    radius=0.75,
 )
 
 _SLATE_DARK = ThemeTokens(
@@ -1655,12 +1583,7 @@ _SLATE_DARK = ThemeTokens(
     border=ColorScale(240, 15, 12),
     input=ColorScale(240, 18, 8),
     ring=ColorScale(214, 16, 66),
-    radius=0.75,
     # Subtle animations for focus mode
-    card_lift_distance=1.0,
-    card_glow_opacity=0.15,
-    transition_speed=150,
-    animation_intensity="subtle",
 )
 
 SLATE_THEME = ThemePreset(
@@ -1669,6 +1592,7 @@ SLATE_THEME = ThemePreset(
     description="Minimal monochrome — pure focus, no color noise",
     light=_SLATE_LIGHT,
     dark=_SLATE_DARK,
+    radius=0.75,
 )
 
 
@@ -1708,7 +1632,6 @@ _NEBULA_LIGHT = ThemeTokens(
     border=ColorScale(239, 40, 85),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(239, 84, 67),
-    radius=0.75,
 )
 
 _NEBULA_DARK = ThemeTokens(
@@ -1743,12 +1666,7 @@ _NEBULA_DARK = ThemeTokens(
     border=ColorScale(218, 45, 18),
     input=ColorScale(220, 45, 15),
     ring=ColorScale(239, 84, 67),
-    radius=0.75,
     # Moderate animations for space theme
-    card_lift_distance=2.0,
-    card_glow_opacity=0.3,
-    transition_speed=175,
-    animation_intensity="moderate",
 )
 
 NEBULA_THEME = ThemePreset(
@@ -1757,6 +1675,7 @@ NEBULA_THEME = ThemePreset(
     description="Deep space — dark slate & violet",
     light=_NEBULA_LIGHT,
     dark=_NEBULA_DARK,
+    radius=0.75,
 )
 
 
