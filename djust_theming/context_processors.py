@@ -4,6 +4,7 @@ Context processors for djust_theming.
 Adds theme CSS and state to template context.
 """
 
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.utils.safestring import mark_safe
 
 from .theme_css_generator import CompleteThemeCSSGenerator
@@ -53,9 +54,10 @@ def theme_context(request):
 </script>"""
 
     # Complete theme head HTML
+    js_url = staticfiles_storage.url('djust_theming/js/theme.js')
     theme_head = f"""{anti_fouc_script}
 <style data-djust-theme>{css}</style>
-<script src="/static/djust_theming/js/theme.js?v=2" defer></script>"""
+<script src="{js_url}" defer></script>"""
 
     # Theme switcher HTML
     theme_switcher = _render_theme_switcher(state, manager.get_available_presets())

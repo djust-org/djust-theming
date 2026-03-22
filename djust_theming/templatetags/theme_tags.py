@@ -95,7 +95,6 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
         "loading_class": True,
         "css_block": css_block,
         "include_js": include_js,
-        "js_version": "2",
     })
     return mark_safe(html)
 
