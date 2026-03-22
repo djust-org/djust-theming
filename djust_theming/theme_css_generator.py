@@ -10,6 +10,8 @@ Generates CSS custom properties for all aspects of a theme:
 - Component styles
 """
 
+from functools import lru_cache
+
 from .themes import Theme, get_theme
 from .css_generator import ThemeCSSGenerator as ColorCSSGenerator
 
@@ -316,9 +318,13 @@ body {
         return "\n".join(parts)
 
 
+@lru_cache(maxsize=256)
 def generate_theme_css(theme_name: str, color_preset: str = None) -> str:
     """
-    Generate complete CSS for a theme.
+    Generate complete CSS for a theme (cached).
+
+    Results are cached by (theme_name, color_preset). Use
+    ``clear_css_cache()`` to invalidate during development.
 
     Args:
         theme_name: Name of the theme (material, ios, fluent, etc.)
@@ -327,5 +333,13 @@ def generate_theme_css(theme_name: str, color_preset: str = None) -> str:
     Returns:
         Complete CSS string for the theme
     """
+    # Normalize None preset to the theme's default so that
+    # generate_theme_css("material") and generate_theme_css("material", "default")
+    # share the same cache entry.
+    if color_preset is None:
+        theme = get_theme(theme_name)
+        if theme:
+            color_preset = theme.color_preset
+
     generator = CompleteThemeCSSGenerator(theme_name, color_preset)
     return generator.generate_css()

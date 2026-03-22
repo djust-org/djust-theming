@@ -4,8 +4,8 @@ from django.views.decorators.http import etag
 from django.utils.cache import patch_vary_headers
 
 from .manager import get_theme_manager
-from .theme_css_generator import CompleteThemeCSSGenerator
-from .pack_css_generator import ThemePackCSSGenerator
+from .theme_css_generator import generate_theme_css
+from .pack_css_generator import generate_pack_css
 
 
 def _generate_css_content(request):
@@ -16,14 +16,12 @@ def _generate_css_content(request):
     # Generate CSS - use pack generator if pack is set, otherwise use theme generator
     if state.pack:
         try:
-            generator = ThemePackCSSGenerator(pack_name=state.pack)
-            return generator.generate_css()
+            return generate_pack_css(pack_name=state.pack)
         except ValueError:
             # Fall back to theme generator if pack not found
             pass
-            
-    generator = CompleteThemeCSSGenerator(theme_name=state.theme, color_preset=state.preset)
-    return generator.generate_css()
+
+    return generate_theme_css(theme_name=state.theme, color_preset=state.preset)
 
 
 def _css_etag(request, *args, **kwargs):

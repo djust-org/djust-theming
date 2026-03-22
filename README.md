@@ -600,6 +600,7 @@ Components work seamlessly with Tailwind classes:
 - `get_theme_manager(request)` — Get or create a cached `ThemeManager` for the request (preferred)
 - `ThemeManager(request)` — Manage theme state for a session (low-level; prefer `get_theme_manager`)
 - `ThemeCSSGenerator(preset_name)` — Generate CSS from tokens
+- `clear_css_cache()` — Clear all CSS generation `lru_cache` entries (useful during development after modifying theme definitions)
 - `ThemeSwitcher(theme_manager, config)` — Render switcher component
 - `ThemeModeButton(theme_manager)` — Simple toggle button
 - `PresetSelector(theme_manager, layout)` — Preset selector (dropdown/grid/list)
