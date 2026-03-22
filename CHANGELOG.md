@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **Cache ThemeManager per request (I3)** — New `get_theme_manager(request)` helper caches a single `ThemeManager` instance on `request._djust_theme_manager` so that multiple template tags and context processors within the same request reuse one manager instead of creating separate instances. All internal call sites (`theme_tags`, `context_processors`, `views`, `ThemeMixin`) now use `get_theme_manager()`. `get_theme_manager` is exported from the top-level `djust_theming` package.
 - **Extract component CSS from templates (I2)** — Inline `<style>` blocks removed from all 6 component templates (`alert.html`, `badge.html`, `button.html`, `card.html`, `input.html`, `theme_switcher.html`) and consolidated into a single static file `djust_theming/static/djust_theming/css/components.css`. Component templates are now pure HTML structure. The `{% theme_head %}` tag automatically includes `components.css` via a `<link>` tag.
   - **Migration note for theme authors**: If you have overridden a component template and kept its `<style>` block, you may now get duplicate CSS (your inline styles plus the new `components.css`). Remove the `<style>` block from your overridden template and either rely on `components.css` or provide your own static CSS file.
 - **Decouple inline HTML from Python (I1)** — All UI rendering in `components.py`, `mixins.py`, and `theme_tags.py` now uses Django templates instead of Python f-strings
