@@ -1,4 +1,5 @@
 {# Theme head block: anti-FOUC script, CSS, and optional JS include #}
+{% load static %}
 {% autoescape off %}
 <script>
 (function() {
@@ -15,5 +16,6 @@
 })();
 </script>
 {{ css_block }}
+<link rel="stylesheet" href="{% static 'djust_theming/css/components.css' %}">
 {% if include_js %}<script src="/static/djust_theming/js/theme.js?v={{ js_version }}" defer></script>{% endif %}
 {% endautoescape %}

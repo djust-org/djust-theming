@@ -8,13 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+- **Extract component CSS from templates (I2)** — Inline `<style>` blocks removed from all 6 component templates (`alert.html`, `badge.html`, `button.html`, `card.html`, `input.html`, `theme_switcher.html`) and consolidated into a single static file `djust_theming/static/djust_theming/css/components.css`. Component templates are now pure HTML structure. The `{% theme_head %}` tag automatically includes `components.css` via a `<link>` tag.
+  - **Migration note for theme authors**: If you have overridden a component template and kept its `<style>` block, you may now get duplicate CSS (your inline styles plus the new `components.css`). Remove the `<style>` block from your overridden template and either rely on `components.css` or provide your own static CSS file.
 - **Decouple inline HTML from Python (I1)** — All UI rendering in `components.py`, `mixins.py`, and `theme_tags.py` now uses Django templates instead of Python f-strings
   - `ThemeModeButton` renders via `djust_theming/components/theme_mode_button.html`
   - `PresetSelector` renders via layout-specific templates (`preset_selector_dropdown.html`, `preset_selector_grid.html`, `preset_selector_list.html`)
   - `ThemeMixin._setup_theme_context()` renders `theme_head` and `theme_switcher` via shared templates (`theme_head.html`, `theme_switcher.html`)
   - `theme_head` template tag renders via `djust_theming/theme_head.html`
   - `theme_switcher.html` now supports a `liveview` context variable for `dj-click`/`dj-change` event bindings (LiveView) vs `data-djust-event` (vanilla Django)
-- No changes to public API or rendered HTML output; this is an internal refactor
+- No changes to public API or rendered HTML output; these are internal refactors
 
 ## [1.1.2] - 2026-02-19
 

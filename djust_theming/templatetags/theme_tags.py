@@ -45,7 +45,12 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
 
     - Anti-flash script (runs before page render to set correct theme)
     - Theme CSS (either inline <style> or <link> tag)
+    - Component CSS (``components.css`` via <link> tag)
     - Optionally, the theme.js script tag
+
+    The component CSS file contains styles for all template-tag components
+    (alert, badge, button, card, input, theme-switcher). It is loaded once
+    regardless of how many components are rendered on the page.
     """
     request = context.get("request")
 
