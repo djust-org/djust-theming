@@ -191,3 +191,98 @@ These are bundled with the package and served automatically:
 | `djust_theming/css/base.css` | Manual `<link>` tag | Full design system (optional) |
 
 Run `python manage.py collectstatic` to collect these into your `STATIC_ROOT` for production.
+
+---
+
+## Accessibility Contrast Validation
+
+djust-theming includes a Django system check that validates the contrast ratios of all registered theme presets against WCAG AA standards at startup. This runs automatically when Django starts (e.g., `runserver`, `migrate`, `check`) and requires no configuration.
+
+### What It Checks
+
+The system check validates 12 foreground/background token pairs across both light and dark modes for every preset in `THEME_PRESETS`:
+
+| Foreground Token | Background Token | Description |
+|------------------|------------------|-------------|
+| `foreground` | `background` | Main text on page background |
+| `card_foreground` | `card` | Text on card surfaces |
+| `popover_foreground` | `popover` | Text on popover/tooltip surfaces |
+| `primary_foreground` | `primary` | Text on primary buttons/elements |
+| `secondary_foreground` | `secondary` | Text on secondary elements |
+| `muted_foreground` | `muted` | Subdued text on muted backgrounds |
+| `accent_foreground` | `accent` | Text on accent-colored elements |
+| `destructive_foreground` | `destructive` | Text on destructive/danger elements |
+| `success_foreground` | `success` | Text on success elements |
+| `warning_foreground` | `warning` | Text on warning elements |
+| `info_foreground` | `info` | Text on informational elements |
+| `code_foreground` | `code` | Text on code block backgrounds |
+
+Each pair is tested against the WCAG AA minimum contrast ratio of **4.5:1** for normal text.
+
+### What Warnings Look Like
+
+If a preset fails a contrast check, Django will print a warning during startup:
+
+```
+System check identified some issues:
+
+WARNINGS:
+?: (djust_theming.W001) Preset "synthwave" dark mode: text on muted contrast ratio 3.12:1 < 4.5:1 (WCAG AA)
+    HINT: Adjust muted_foreground or muted to achieve at least 4.5:1 contrast.
+?: (djust_theming.W001) Preset "outrun" light mode: text on warning contrast ratio 2.87:1 < 4.5:1 (WCAG AA)
+    HINT: Adjust warning_foreground or warning to achieve at least 4.5:1 contrast.
+```
+
+These are **warnings, not errors** -- they will not prevent your application from starting. They serve as informational guidance to help you improve the accessibility of your themes.
+
+### Silencing Warnings
+
+If you have reviewed a warning and determined it is acceptable for your use case (e.g., the token pair is used for decorative elements rather than readable text), you can silence it using Django's `SILENCED_SYSTEM_CHECKS` setting:
+
+```python
+# settings.py
+
+# Silence all djust-theming contrast warnings
+SILENCED_SYSTEM_CHECKS = ["djust_theming.W001"]
+```
+
+This is a standard Django mechanism -- see the [Django system checks documentation](https://docs.djangoproject.com/en/stable/ref/checks/) for details.
+
+### Running Checks Manually
+
+You can run the system checks at any time:
+
+```bash
+python manage.py check
+```
+
+Or filter to only compatibility checks (where the contrast check is registered):
+
+```bash
+python manage.py check --tag compatibility
+```
+
+### Custom Presets
+
+If you register custom presets in `THEME_PRESETS`, they are automatically included in the contrast validation. This helps catch accessibility issues early when creating new color schemes:
+
+```python
+from djust_theming.presets import ThemePreset, ThemeTokens, ColorScale, THEME_PRESETS
+
+MY_PRESET = ThemePreset(
+    name="brand",
+    display_name="Brand",
+    description="Corporate brand colors",
+    light=ThemeTokens(
+        background=ColorScale(0, 0, 100),
+        foreground=ColorScale(0, 0, 10),
+        # ... tokens with sufficient contrast
+    ),
+    dark=ThemeTokens(
+        # ... dark mode tokens
+    ),
+)
+
+THEME_PRESETS["brand"] = MY_PRESET
+# The next time Django starts, "brand" will be checked automatically.
+```

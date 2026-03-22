@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Accessibility contrast validation system check (I6)** — A new Django system check (`djust_theming.W001`) validates all registered `THEME_PRESETS` against WCAG AA contrast ratios (4.5:1) at startup. Checks 12 foreground/background token pairs across both light and dark modes for every preset. Issues are reported as warnings so projects are informed but never blocked. Silence individual warnings with Django's `SILENCED_SYSTEM_CHECKS` setting.
+
+### Fixed
+- **Bug fix in `AccessibilityValidator.hsl_to_rgb()`** — Fixed `AttributeError` where the method accessed `color_scale.l` instead of the correct `color_scale.lightness` attribute on `ColorScale` objects.
+
 ### Changed
 - **CSS generation caching with `lru_cache` (I5)** — All four CSS generation convenience functions (`generate_theme_css` in `css_generator.py` and `theme_css_generator.py`, `generate_pack_css` in `pack_css_generator.py`, `generate_design_system_css` in `design_system_css.py`) are now decorated with `@lru_cache`. Every call site (views, context processors, template tags, `ThemeMixin`) has been refactored to use the cached functions instead of instantiating generator classes directly. After the first call for a given `(theme_name, color_preset)` combination, subsequent calls return the cached string in ~0.001ms instead of rebuilding CSS from scratch. A new `clear_css_cache()` utility (exported from the top-level package) calls `.cache_clear()` on all cached functions for development use. Thread-safe, memory-bounded, zero breaking changes.
 - **Static asset versioning via Django staticfiles (I4)** — Replaced manual `?v=N` cache busters on `theme.js` with Django's `{% static %}` tag (in templates) and `staticfiles_storage.url()` (in Python). Fixes version mismatch where `theme_tags.py` used `v=2` and `mixins.py` used `v=3`. Static URLs now respect `STATIC_URL` and work with `ManifestStaticFilesStorage` for automatic content-hashed cache busting. Also resolves I48 (hardcoded `/static/` prefix).

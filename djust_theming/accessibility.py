@@ -53,7 +53,7 @@ class AccessibilityValidator:
         """Convert HSL ColorScale to RGB (0-1 range)."""
         h = color_scale.h / 360.0
         s = color_scale.s / 100.0
-        l = color_scale.l / 100.0
+        l = color_scale.lightness / 100.0
         return colorsys.hls_to_rgb(h, l, s)
         
     def rgb_to_luminance(self, r: float, g: float, b: float) -> float:
