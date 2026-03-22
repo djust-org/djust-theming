@@ -645,9 +645,27 @@ A complete Django application demonstrating all features is included in the `exa
 
 See [example_project/README.md](example_project/README.md) for setup instructions.
 
+## Accessibility
+
+djust-theming validates the contrast ratios of all registered theme presets against WCAG AA standards at startup via a Django system check. If any foreground/background token pair fails the 4.5:1 minimum contrast ratio, a warning is printed during `runserver` or `manage.py check`:
+
+```
+?: (djust_theming.W001) Preset "mytheme" dark mode: text on muted contrast ratio 3.12:1 < 4.5:1 (WCAG AA)
+    HINT: Adjust muted_foreground or muted to achieve at least 4.5:1 contrast.
+```
+
+Warnings are informational and will not block your application. To silence them after review:
+
+```python
+# settings.py
+SILENCED_SYSTEM_CHECKS = ["djust_theming.W001"]
+```
+
+See the [Customization Guide](djust_theming/docs/customization.md#accessibility-contrast-validation) for the full list of validated token pairs and details on custom presets.
+
 ## Documentation
 
-- **[Customization Guide](djust_theming/docs/customization.md)** -- Template overrides, CSS architecture, caching, static file handling
+- **[Customization Guide](djust_theming/docs/customization.md)** -- Template overrides, CSS architecture, caching, static file handling, accessibility validation
 - **[Design System](djust_theming/docs/design-system.md)** -- Spacing, typography, color tokens
 - **[Color Presets](djust_theming/docs/colors.md)** -- HSL color system and custom presets
 

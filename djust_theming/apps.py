@@ -5,3 +5,6 @@ class DjustThemingConfig(AppConfig):
     name = "djust_theming"
     verbose_name = "Djust Theming"
     default_auto_field = "django.db.models.BigAutoField"
+
+    def ready(self):
+        from . import checks  # noqa: F401 -- triggers @register
