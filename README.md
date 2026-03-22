@@ -286,7 +286,12 @@ THEME_PRESETS["custom"] = MY_THEME
 
 ## CSS Design System
 
-The included `base.css` provides a complete design system:
+The included CSS files provide a complete design system:
+
+- **`base.css`** -- Full design system: layout, generic component styles, forms, tables, utilities, and animations
+- **`components.css`** -- Styles for template-tag components (`{% theme_button %}`, `{% theme_card %}`, etc.), automatically included by `{% theme_head %}`
+
+`base.css` classes:
 
 - **Layout**: `.app-layout`, `.navbar`, `.sidebar`, `.content-pane`, `.container`
 - **Components**: `.card`, `.btn`, `.badge`, `.alert`, `.modal`, `.toast`, `.empty-state`, `.stat-card`
@@ -564,7 +569,7 @@ All components use theme CSS variables and automatically adapt to theme changes:
 
 ### Styling
 
-All components are:
+Component CSS is served from `static/djust_theming/css/components.css`, which is automatically included by `{% theme_head %}`. All components are:
 - ✅ Fully themed with CSS variables
 - ✅ Automatically adapt to light/dark mode
 - ✅ Responsive and accessible

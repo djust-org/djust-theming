@@ -137,6 +137,10 @@ djust-theming/
 ├── djust_theming/           # Main package
 │   ├── management/          # CLI commands
 │   ├── static/              # CSS and JS
+│   │   └── djust_theming/css/
+│   │       ├── base.css         # Full design system (layout, utilities, generic components)
+│   │       ├── components.css   # Component styles for template tags (alert, badge, button, card, input, theme-switcher)
+│   │       └── performance.css  # Transition and scroll optimizations
 │   ├── templates/           # Django templates (all HTML lives here)
 │   ├── templatetags/        # Template tags
 │   ├── components.py        # UI components (render via templates)
@@ -164,10 +168,11 @@ djust-theming/
 
 ### Adding a New Component
 
-1. Create template in `djust_theming/templates/djust_theming/components/`
-2. Add template tag in `djust_theming/templatetags/theme_components.py`
-3. Add example in `example_project/theme_demo/templates/theme_demo/components.html`
-4. Update documentation
+1. Create template in `djust_theming/templates/djust_theming/components/` (pure HTML structure, no inline `<style>` blocks)
+2. Add component CSS to `djust_theming/static/djust_theming/css/components.css`
+3. Add template tag in `djust_theming/templatetags/theme_components.py`
+4. Add example in `example_project/theme_demo/templates/theme_demo/components.html`
+5. Update documentation
 
 ### Adding a New CLI Command
 

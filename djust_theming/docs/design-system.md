@@ -228,6 +228,8 @@ Theme-aware shadows that adapt to light/dark modes:
 
 ## Component Patterns
 
+Component styles for template tags (`{% theme_button %}`, `{% theme_card %}`, etc.) live in `static/djust_theming/css/components.css` and are automatically included by `{% theme_head %}`. The examples below show how to build custom components using design tokens.
+
 ### Interactive States
 
 The design system provides a `.interactive` base class for consistent hover/focus/active/disabled states:
