@@ -101,21 +101,13 @@ class ThemeCSSGenerator:
         for name, color in shadcn_mappings:
             lines.append(f"{indent}--{name}: {color.to_hsl()};")
 
-        # Radius
-        lines.append(f"{indent}--radius: {tokens.radius}rem;")
-
-        # Animation properties
-        lines.append(f"{indent}--card-lift-distance: {tokens.card_lift_distance}px;")
-        lines.append(f"{indent}--card-glow-opacity: {tokens.card_glow_opacity};")
-        lines.append(f"{indent}--transition-speed: {tokens.transition_speed}ms;")
-        lines.append(f"{indent}--animation-intensity: {tokens.animation_intensity};")
-
         return "\n".join(lines)
 
     def _generate_light_mode(self) -> str:
         """Generate :root light mode variables."""
         return f""":root {{
 {self._tokens_to_css_vars(self.preset.light)}
+  --radius: {self.preset.radius}rem;
 }}"""
 
     def _generate_dark_mode(self) -> str:

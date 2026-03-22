@@ -58,13 +58,23 @@ class HighContrastPresets:
                 
                 warning=ColorScale(45, 100, 30),      # Dark amber
                 warning_foreground=ColorScale(0, 0, 0),  # Black for better contrast
-                
+
+                info=ColorScale(199, 100, 25),           # Dark blue
+                info_foreground=ColorScale(0, 0, 100),
+
+                link=ColorScale(base_tokens.primary.h, 100, 25),
+                link_hover=ColorScale(base_tokens.primary.h, 100, 15),
+
+                code=ColorScale(0, 0, 90),
+                code_foreground=ColorScale(0, 0, 0),
+
+                selection=ColorScale(base_tokens.primary.h, 100, 80),
+                selection_foreground=ColorScale(0, 0, 0),
+
                 # UI elements with high contrast
                 border=ColorScale(0, 0, 20),          # Very dark borders
                 input=ColorScale(0, 0, 95),           # Light input background
                 ring=ColorScale(base_tokens.primary.h, 100, 30),  # High contrast focus
-                
-                radius=base_tokens.radius
             )
         else:
             # High contrast dark mode - very light text on very dark backgrounds
@@ -101,13 +111,23 @@ class HighContrastPresets:
                 
                 warning=ColorScale(45, 100, 70),     # Bright amber
                 warning_foreground=ColorScale(0, 0, 0),
-                
+
+                info=ColorScale(199, 100, 75),       # Bright blue
+                info_foreground=ColorScale(0, 0, 0),
+
+                link=ColorScale(base_tokens.primary.h, 100, 75),
+                link_hover=ColorScale(base_tokens.primary.h, 100, 85),
+
+                code=ColorScale(0, 0, 10),
+                code_foreground=ColorScale(0, 0, 100),
+
+                selection=ColorScale(base_tokens.primary.h, 100, 30),
+                selection_foreground=ColorScale(0, 0, 100),
+
                 # UI elements with high contrast
                 border=ColorScale(0, 0, 80),         # Very light borders
                 input=ColorScale(0, 0, 5),           # Dark input background
                 ring=ColorScale(base_tokens.primary.h, 100, 70), # High contrast focus
-                
-                radius=base_tokens.radius
             )
 
 
@@ -126,7 +146,8 @@ def generate_high_contrast_presets() -> Dict[str, ThemePreset]:
             display_name=f"{base_preset.display_name} (High Contrast)",
             description=f"High contrast version of {base_preset.display_name} for enhanced accessibility",
             light=HighContrastPresets.create_high_contrast_tokens(base_preset, "light"),
-            dark=HighContrastPresets.create_high_contrast_tokens(base_preset, "dark")
+            dark=HighContrastPresets.create_high_contrast_tokens(base_preset, "dark"),
+            radius=base_preset.radius,
         )
         
     return high_contrast_presets
@@ -175,10 +196,17 @@ HIGH_CONTRAST_PRESETS = {
             success_foreground=ColorScale(0, 0, 100),
             warning=ColorScale(0, 0, 0),
             warning_foreground=ColorScale(0, 0, 100),
+            info=ColorScale(0, 0, 0),
+            info_foreground=ColorScale(0, 0, 100),
+            link=ColorScale(0, 0, 0),
+            link_hover=ColorScale(0, 0, 20),
+            code=ColorScale(0, 0, 95),
+            code_foreground=ColorScale(0, 0, 0),
+            selection=ColorScale(0, 0, 0),
+            selection_foreground=ColorScale(0, 0, 100),
             border=ColorScale(0, 0, 0),            # Black borders
             input=ColorScale(0, 0, 100),           # White inputs
             ring=ColorScale(0, 0, 0),              # Black focus
-            radius=8
         ),
         dark=ThemeTokens(
             background=ColorScale(0, 0, 0),        # Pure black
@@ -201,13 +229,21 @@ HIGH_CONTRAST_PRESETS = {
             success_foreground=ColorScale(0, 0, 0),
             warning=ColorScale(0, 0, 100),
             warning_foreground=ColorScale(0, 0, 0),
+            info=ColorScale(0, 0, 100),
+            info_foreground=ColorScale(0, 0, 0),
+            link=ColorScale(0, 0, 100),
+            link_hover=ColorScale(0, 0, 80),
+            code=ColorScale(0, 0, 5),
+            code_foreground=ColorScale(0, 0, 100),
+            selection=ColorScale(0, 0, 100),
+            selection_foreground=ColorScale(0, 0, 0),
             border=ColorScale(0, 0, 100),          # White borders
             input=ColorScale(0, 0, 0),             # Black inputs
             ring=ColorScale(0, 0, 100),            # White focus
-            radius=8
-        )
+        ),
+        radius=8,
     ),
-    
+
     # Yellow on black (classic high contrast)
     "yellow_black_hc": ThemePreset(
         name="yellow_black_hc",
@@ -234,10 +270,17 @@ HIGH_CONTRAST_PRESETS = {
             success_foreground=ColorScale(0, 0, 0),
             warning=ColorScale(60, 100, 50),
             warning_foreground=ColorScale(0, 0, 0),
+            info=ColorScale(60, 100, 50),
+            info_foreground=ColorScale(0, 0, 0),
+            link=ColorScale(60, 100, 50),
+            link_hover=ColorScale(60, 100, 60),
+            code=ColorScale(0, 0, 5),
+            code_foreground=ColorScale(60, 100, 50),
+            selection=ColorScale(60, 100, 50),
+            selection_foreground=ColorScale(0, 0, 0),
             border=ColorScale(60, 100, 50),
             input=ColorScale(0, 0, 5),
             ring=ColorScale(60, 100, 50),
-            radius=0  # Sharp corners for high contrast
         ),
         dark=ThemeTokens(
             background=ColorScale(0, 0, 0),        # Still black
@@ -260,11 +303,19 @@ HIGH_CONTRAST_PRESETS = {
             success_foreground=ColorScale(0, 0, 0),
             warning=ColorScale(60, 100, 50),
             warning_foreground=ColorScale(0, 0, 0),
+            info=ColorScale(60, 100, 50),
+            info_foreground=ColorScale(0, 0, 0),
+            link=ColorScale(60, 100, 50),
+            link_hover=ColorScale(60, 100, 60),
+            code=ColorScale(0, 0, 5),
+            code_foreground=ColorScale(60, 100, 50),
+            selection=ColorScale(60, 100, 50),
+            selection_foreground=ColorScale(0, 0, 0),
             border=ColorScale(60, 100, 50),
             input=ColorScale(0, 0, 5),
             ring=ColorScale(60, 100, 50),
-            radius=0
-        )
+        ),
+        radius=0,  # Sharp corners for high contrast
     )
 }
 
