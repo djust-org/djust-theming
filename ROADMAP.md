@@ -71,6 +71,19 @@ These are concrete issues found in the current codebase. They should be addresse
 
 The foundation. Without this, themes are just color swaps.
 
+### Execution Groups
+
+Phase 1 and its related improvements are organized into execution groups that should be done together:
+
+| Group | Tasks | Description |
+|-------|-------|-------------|
+| **A: CSS Infrastructure** | I16, I17, I21 | Color format interop, CSS namespace prefixing, brand color auto-palette. Pre-Phase 1 prerequisites. |
+| **B: System Checks** | I23, I24 | AppConfig.ready() checks, dual CSS path consolidation. Standalone, extends existing checks.py. |
+| **C: Template Resolution + CSS Layers** | 1.1, I9 | Template namespace resolution + CSS cascade layers. Both define how theme overrides take priority. |
+| **D: Theme Manifest + Scaffold** | 1.2, 1.3 | Theme manifest spec + scaffold command. Scaffold generates from the manifest. |
+| **E: Registry + Validation + Dynamic API** | 1.4, 1.5, I25 | Theme registry, validation command, dynamic preset registration. Tightly coupled. |
+| **F: Optimization** | I10 | Critical CSS inlining. Standalone, can slot in anytime after Group C. |
+
 ### 1.1 Template Namespace Resolution
 
 **Problem**: All components render from `djust_theming/components/*.html`. A theme author has no way to provide alternative templates.
@@ -1115,7 +1128,7 @@ font-family-body = "'Noto Sans SC', 'PingFang SC', sans-serif"
 | I43 | Component parameter sanitization (XSS) | Low | **Critical** | None — `mark_safe(f'...')` with interpolated params is an active XSS vector |
 | I57 + I132 | Cookie security hardening + stale cookie cleanup | Low | **Critical** | None — cookie values flow to template context without validation; stale cookies persist for 1 year |
 | I58 | localStorage graceful degradation | Low | High | None — crashes theme init in Safari private browsing / sandboxed iframes |
-| I4 + I48 | Static asset versioning + URL resolution | Low | High | None — hardcoded `/static/` paths break all CDN/non-default deployments |
+| ~~I4~~ + I48 | ~~Static asset versioning~~ (DONE #10) + URL resolution | Low | High | I4 done; I48 may be resolved too (verify) |
 | I120 | ThemeManager.toggle_mode() race condition | Low | High | None — TOCTOU race corrupts state in concurrent sessions/tabs |
 | I122 | ThemeMixin._skip_render initialization | Low | High | None — latent `AttributeError` crash if subclass skips `super().mount()` |
 | I121 | Module-level logger setup in manager.py | Low | Low | None — code hygiene, do alongside other Tier 0 fixes |
@@ -1124,13 +1137,13 @@ font-family-body = "'Noto Sans SC', 'PingFang SC', sans-serif"
 
 | # | Item | Effort | Impact | Dependencies |
 |---|------|--------|--------|--------------|
-| I1 + I43 + I123 + I128 | Decouple inline HTML from Python + sanitize + anti-FOUC DRY + ThemeMixin type annotations | Low | High | None — prerequisite for theme overrides; I123 eliminates triple-copy of FOUC script |
-| I2 + I17 + I34 + I50 + I61 + I129 | Extract component CSS + namespace prefix + fallback chain + modern CSS + CSP modes + CSS fallback values | Medium | High | None — do together since all restructure CSS output and delivery |
-| I9 | CSS cascade layers (`@layer`) | Low | High | Do alongside I2 — structures CSS for theme overrides |
+| ~~I1~~ + I43 + I123 + I128 | ~~Decouple inline HTML~~ (DONE #7) + sanitize + anti-FOUC DRY + ThemeMixin type annotations | Low | High | None — I1 done; I43/I123/I128 still needed |
+| ~~I2~~ + I17 + I34 + I50 + I61 + I129 | ~~Extract component CSS~~ (DONE #8) + namespace prefix + fallback chain + modern CSS + CSP modes + CSS fallback values | Medium | High | I2 done; remaining items restructure CSS output and delivery |
+| I9 | CSS cascade layers (`@layer`) | Low | High | Do alongside I17 — structures CSS for theme overrides |
 | I16 + I21 + I30 + I41 + I44 + I49 | Color format interop + auto-palette + W3C tokens + quality + validation + OKLCH | Medium | High | None — unblocks design-tool-to-theme workflow. I49 ensures palette generation is perceptually accurate from day one |
-| I23 + I84 | AppConfig.ready() system checks + zero-config experience | Low | High | None — catches misconfigs at startup AND removes configuration boilerplate |
-| I3 | ThemeManager caching on request | Low | Medium | None |
-| I5 + I24 + I28 + I45 + I124 | CSS caching + path consolidation + state hash + graceful failure + fallback logging | Medium | High | Do together — single generation path, cached, resilient, observable |
+| ~~I23~~ + I84 | ~~AppConfig.ready() system checks~~ (partially DONE in I6 #13) + zero-config experience | Low | High | I6 added checks.py + ready(); I23 extends with config validation; I84 is standalone |
+| ~~I3~~ | ~~ThemeManager caching on request~~ (DONE #9) | Low | Medium | None |
+| ~~I5~~ + I24 + I28 + I45 + I124 | ~~CSS caching~~ (DONE #11) + path consolidation + state hash + graceful failure + fallback logging | Medium | High | I5 done; remaining items consolidate and harden |
 | I27 + I60 + I126 | Component tag test harness + JS test suite + tag param validation | Medium | Medium | None — test harness defines valid param contracts; I126 catches typos at render time |
 | I87 | djust-components integration strategy decision | Low | **Critical** | None — **BLOCKING for Phase 2 scope**. Decide before building any new components |
 | I88 + I125 + I127 + I130 | Theme switching without djust LiveView + event error feedback + preset swatch mode fix + push_event warning | Medium | High | None — makes djust-theming standalone-viable; I125/I127/I130 fix UX gaps in theme switching |
@@ -1173,7 +1186,7 @@ font-family-body = "'Noto Sans SC', 'PingFang SC', sans-serif"
 
 | # | Item | Effort | Impact | Dependencies |
 |---|------|--------|--------|--------------|
-| I6 + I52 | Accessibility contrast validation + color blindness simulation | Low | Medium | None — I52 catches issues contrast checks miss |
+| ~~I6~~ + I52 | ~~Accessibility contrast validation~~ (DONE #13) + color blindness simulation | Low | Medium | I6 done; I52 catches issues contrast checks miss |
 | I12 | Component CSS tree-shaking | Medium | Medium | Phase 2 |
 | I65 | Compound component patterns (form groups, card grids, data tables) | Medium | High | Phase 2 (individual components must exist first) |
 | Phase 4 | Page Templates | Low | Medium | Phase 3 |
@@ -1187,8 +1200,8 @@ font-family-body = "'Noto Sans SC', 'PingFang SC', sans-serif"
 | I91 | Theme versioning and compatibility matrix | Medium | Medium | Phase 5 (pip-installable themes create version risk) |
 | Phase 6 | Form Integration | Medium | Medium | Phase 2 |
 | I31 | Theme-aware Django admin | Medium | Medium | Phase 3 (layouts) |
-| I7 | Token boundary cleanup | Low | Low | Before Phase 5 |
-| I8 | Deprecate themes.py | Low | Low | Before Phase 5 |
+| ~~I7~~ | ~~Token boundary cleanup~~ (DONE #14) | Low | Low | Before Phase 5 |
+| ~~I8~~ | ~~Deprecate themes.py~~ (DONE #15) | Low | Low | Before Phase 5 |
 | I22 + I77 | Theme inheritance validation + chain visualization | Low | Medium | Phase 5 |
 | I131 | localStorage key collision in multi-app contexts | Low | Low | I18 (container-scoped theming handles CSS; I131 handles state) |
 | I133 | Type hints across core modules + py.typed marker | Low | Medium | Incremental — no blocker, improves contributor DX and AI tooling |
@@ -1210,7 +1223,7 @@ font-family-body = "'Noto Sans SC', 'PingFang SC', sans-serif"
 
 ### Critical Path Summary
 
-**Tier 0 first.** I43 + I57 + I58 are security/resilience fixes that should ship in a patch release (v1.1.3) before any feature work. Total effort: ~1 day. I4 + I48 (static URL resolution) should be in the same patch — it's a silent production breakage for any non-default `STATIC_URL`.
+**Tier 0 first.** I43 + I57 + I58 are security/resilience fixes that should ship in a patch release (v1.1.3) before any feature work. Total effort: ~1 day. ~~I4~~ (static URL resolution) is done (#10); verify I48 is also resolved.
 
 **I60 (JS test suite) is the gating item for Phase 2.** Every new JS behavior added without tests is a regression waiting to happen. Build the harness early so Phase 2's `components.js` development is test-driven from day one.
 
