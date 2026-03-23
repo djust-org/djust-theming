@@ -78,6 +78,79 @@ class CompleteThemeCSSGenerator:
 
         return "\n".join(parts)
 
+    def generate_critical_css(self) -> str:
+        """Generate critical CSS for inline delivery.
+
+        Includes color tokens (from ColorCSSGenerator) and theme-specific
+        :root variables (typography, spacing, shadows, etc.). These are
+        needed for first paint to avoid FOUC.
+
+        Returns:
+            CSS string suitable for inlining in a <style> tag.
+        """
+        config = get_theme_config()
+        use_layers = config.get("use_css_layers", True)
+
+        # Get critical color CSS (tokens + layer declaration)
+        color_critical = self.color_generator.generate_critical_css()
+
+        # Theme vars (:root with typography, spacing, shadows, etc.)
+        theme_vars = self._generate_theme_vars()
+
+        parts = [
+            "/* djust-theming - Critical CSS (inline) */",
+            "",
+            color_critical,
+            "",
+        ]
+
+        if use_layers:
+            parts.append(f"@layer tokens {{\n{theme_vars}\n}}")
+        else:
+            parts.append(theme_vars)
+
+        return "\n".join(parts)
+
+    def generate_deferred_css(self) -> str:
+        """Generate deferred CSS for async loading.
+
+        Includes base styles, utility classes, typography classes, and
+        component styles. Not needed for first paint.
+
+        Returns:
+            CSS string suitable for serving from a <link> tag.
+        """
+        config = get_theme_config()
+        use_layers = config.get("use_css_layers", True)
+
+        # Get deferred color CSS (base styles + utilities)
+        color_deferred = self.color_generator.generate_deferred_css()
+
+        typography_css = self._generate_typography_classes()
+        component_css = self._generate_component_styles()
+
+        parts = [
+            "/* djust-theming - Deferred CSS */",
+            "",
+            color_deferred,
+            "",
+        ]
+
+        if use_layers:
+            parts.extend([
+                f"@layer components {{\n{typography_css}\n}}",
+                "",
+                f"@layer components {{\n{component_css}\n}}",
+            ])
+        else:
+            parts.extend([
+                typography_css,
+                "",
+                component_css,
+            ])
+
+        return "\n".join(parts)
+
     def _generate_theme_vars(self) -> str:
         """Generate theme-specific CSS custom properties (typography, spacing, etc.)."""
         theme = self.theme

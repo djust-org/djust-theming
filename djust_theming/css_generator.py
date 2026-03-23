@@ -386,6 +386,83 @@ pre code {
 
         return "\n".join(sections)
 
+    def generate_critical_css(self) -> str:
+        """Generate critical CSS for inline delivery (tokens + layer declaration only).
+
+        Critical CSS contains only the parts needed for first paint:
+        - @layer order declaration
+        - :root CSS custom properties (color tokens, light mode)
+        - Dark mode selectors
+        - System preference media query
+        - Design tokens (spacing, typography scale, etc.)
+
+        Returns:
+            CSS string suitable for inlining in a <style> tag.
+        """
+        config = get_theme_config()
+        use_layers = config.get("use_css_layers", True)
+        layer_order = config.get("css_layer_order", "base, tokens, components, theme")
+
+        tokens_css_parts = [
+            self._generate_light_mode(),
+            "",
+            self._generate_dark_mode(),
+            "",
+            self._generate_system_preference(),
+        ]
+
+        if self.include_design_tokens:
+            tokens_css_parts.extend(["", "", generate_design_tokens_css()])
+
+        tokens_css = "\n".join(tokens_css_parts)
+
+        sections = [
+            "/* djust_theming - Critical CSS (inline) */",
+            "",
+        ]
+
+        if use_layers:
+            sections.append(f"@layer {layer_order};")
+            sections.append("")
+            sections.append(f"@layer tokens {{\n{tokens_css}\n}}")
+        else:
+            sections.append(tokens_css)
+
+        return "\n".join(sections)
+
+    def generate_deferred_css(self) -> str:
+        """Generate deferred CSS for async loading (base styles + utilities).
+
+        Deferred CSS contains parts not needed for first paint:
+        - Base element styles (body resets, transitions)
+        - Utility classes (.bg-*, .text-*, .btn-*, etc.)
+
+        Returns:
+            CSS string suitable for serving from a <link> tag.
+        """
+        config = get_theme_config()
+        use_layers = config.get("use_css_layers", True)
+
+        sections = [
+            "/* djust_theming - Deferred CSS */",
+        ]
+
+        if self.include_base_styles:
+            base_css = self._generate_base_styles()
+            if use_layers:
+                sections.extend(["", f"@layer base {{\n{base_css}\n}}"])
+            else:
+                sections.extend(["", base_css])
+
+        if self.include_utilities:
+            utilities_css = self._generate_utilities()
+            if use_layers:
+                sections.extend(["", f"@layer components {{\n{utilities_css}\n}}"])
+            else:
+                sections.extend(["", utilities_css])
+
+        return "\n".join(sections)
+
     def generate_variables_only(self) -> str:
         """Generate only the CSS custom property declarations."""
         sections = [

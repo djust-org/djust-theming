@@ -25,7 +25,13 @@ from django.utils.safestring import mark_safe
 
 from ..components import PresetSelector, ThemeModeButton, ThemeSwitcher, ThemeSwitcherConfig
 from ..component_css_generator import generate_component_css
-from ..manager import generate_css_for_state, get_css_prefix, get_theme_manager
+from ..manager import (
+    generate_critical_css_for_state,
+    generate_css_for_state,
+    get_css_prefix,
+    get_theme_config,
+    get_theme_manager,
+)
 from ..template_resolver import resolve_theme_template
 
 register = template.Library()
@@ -57,10 +63,38 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
     # Get current theme state
     manager = get_theme_manager(request)
     state = manager.get_state()
+    config = get_theme_config()
+    critical_css_enabled = config.get("critical_css", True)
 
     css_block = ""
+    deferred_css_block = ""
 
-    if link_css:
+    # Get css_prefix — needed for both CSS generation and component CSS
+    css_prefix = get_css_prefix()
+
+    if critical_css_enabled and not link_css:
+        # Critical CSS split: inline critical, async-load deferred
+        critical_css = generate_critical_css_for_state(state, css_prefix=css_prefix)
+        css_block = f"<style data-djust-theme-critical>{critical_css}</style>"
+
+        # Build deferred CSS URL
+        try:
+            deferred_url = reverse("djust_theming:deferred_theme_css")
+            cache_buster = f"t={state.theme}&p={state.preset}&m={state.mode}"
+            if state.pack:
+                cache_buster += f"&pk={state.pack}"
+            deferred_href = f"{deferred_url}?{cache_buster}"
+            deferred_css_block = (
+                f'<link rel="preload" href="{deferred_href}" as="style" '
+                f'onload="this.onload=null;this.rel=\'stylesheet\'" data-djust-theme-deferred>'
+                f'\n<noscript><link rel="stylesheet" href="{deferred_href}"></noscript>'
+            )
+        except NoReverseMatch:
+            # Cannot resolve deferred URL — fall back to inlining everything
+            css = generate_css_for_state(state, css_prefix=css_prefix)
+            css_block = f"<style data-djust-theme>{css}</style>"
+            deferred_css_block = ""
+    elif link_css:
         try:
             url = reverse("djust_theming:theme_css")
             # Add cache buster based on state
@@ -73,11 +107,8 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
             # Fallback to inline if URL not configured
             pass
 
-    # Get css_prefix — needed for both CSS generation and component CSS
-    css_prefix = get_css_prefix()
-
     if not css_block:
-        # Generate CSS inline
+        # Generate CSS inline (legacy behavior or fallback)
         css = generate_css_for_state(state, css_prefix=css_prefix)
         css_block = f"<style data-djust-theme>{css}</style>"
 
@@ -95,6 +126,7 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
     html = render_to_string("djust_theming/theme_head.html", {
         "loading_class": True,
         "css_block": css_block,
+        "deferred_css_block": deferred_css_block,
         "component_css_block": component_css_block,
         "include_component_link": include_component_link,
         "include_js": include_js,

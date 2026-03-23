@@ -912,6 +912,95 @@ def my_view(request):
 
 This returns the same cached instance that template tags use, so there's no extra overhead.
 
+### Critical CSS Inlining
+
+By default, djust-theming splits generated CSS into two parts to improve first-paint performance:
+
+**Critical CSS** (inlined in `<style>`, ~2-4KB) — everything needed for first paint:
+- `@layer` order declaration
+- `:root` CSS custom properties (color tokens, light/dark mode)
+- Dark mode selectors (`.dark`, `[data-theme="dark"]`)
+- `prefers-color-scheme` media query
+- Design tokens (spacing, typography scale, border-radius, shadows, animation vars)
+- Theme-specific `:root` vars (from the active design system theme)
+
+**Deferred CSS** (async-loaded via `<link rel="preload">`, larger) — not needed for first paint:
+- Base element styles (body resets, transition rules)
+- Utility classes (`.bg-*`, `.text-*`, `.border-*`, etc.)
+- Typography utility classes (`.font-sans`, `.text-xs`, etc.)
+- Component styles (`.btn`, `.card`, `.form-input`, etc.)
+
+The deferred CSS is loaded asynchronously using the `preload`/`onload` pattern with a `<noscript>` fallback, so it never blocks rendering.
+
+#### Configuration
+
+Critical CSS splitting is enabled by default. To disable it and restore legacy behavior (all CSS in one `<style>` block):
+
+```python
+LIVEVIEW_CONFIG = {
+    "theme": {
+        "critical_css": False,  # default: True
+    }
+}
+```
+
+When enabled, `{% theme_head %}` outputs:
+
+1. A `<style data-djust-theme-critical>` tag with the critical CSS inlined
+2. A `<link rel="preload" href="..." as="style">` tag that async-loads the deferred CSS
+3. A `<noscript>` fallback for the deferred CSS
+
+When disabled, `{% theme_head %}` outputs a single `<style data-djust-theme>` tag with all CSS (the pre-I10 behavior).
+
+#### Deferred CSS Endpoint
+
+The deferred CSS is served by a dedicated Django view at the `deferred.css` URL within the djust-theming URL namespace. This endpoint:
+
+- Sets `Cache-Control: max-age=3600, private` for efficient caching
+- Uses `ETag` headers for conditional requests (304 Not Modified)
+- Varies by `Cookie` so user-specific theme settings are respected
+
+Make sure your URL configuration includes `djust_theming.urls`:
+
+```python
+urlpatterns = [
+    path("djust-theming/", include("djust_theming.urls")),
+]
+```
+
+#### Programmatic Access
+
+If you need critical or deferred CSS separately (e.g., for a custom rendering pipeline):
+
+```python
+from djust_theming import (
+    generate_critical_css_for_state,
+    generate_deferred_css_for_state,
+    get_theme_manager,
+)
+
+def my_view(request):
+    manager = get_theme_manager(request)
+    state = manager.get_state()
+
+    critical = generate_critical_css_for_state(state)
+    deferred = generate_deferred_css_for_state(state)
+```
+
+You can also use the generator classes directly:
+
+```python
+from djust_theming.css_generator import ThemeCSSGenerator
+
+gen = ThemeCSSGenerator(preset_name="default")
+critical = gen.generate_critical_css()   # tokens + layer declaration
+deferred = gen.generate_deferred_css()   # base styles + utilities
+```
+
+#### Performance Benefits
+
+On a typical page, critical CSS inlining reduces render-blocking CSS from ~15-20KB to ~2-4KB. The deferred CSS loads in parallel without blocking first paint, resulting in faster Largest Contentful Paint (LCP) and reduced Cumulative Layout Shift (CLS) because token variables are available immediately for the initial render.
+
 ---
 
 ## Static File Handling

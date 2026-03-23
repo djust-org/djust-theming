@@ -25,6 +25,7 @@ DEFAULT_CONFIG = {
     "css_prefix": "",  # Namespace prefix for component CSS classes (e.g. "dj-")
     "use_css_layers": True,  # Wrap generated CSS in @layer declarations
     "css_layer_order": "base, tokens, components, theme",  # Layer priority order
+    "critical_css": True,  # Split CSS into critical (inlined) and deferred (async-loaded)
     "themes_dir": "themes/",  # User theme directory, relative to BASE_DIR
 }
 
@@ -92,6 +93,66 @@ def generate_css_for_state(state: "ThemeState", css_prefix: str = "") -> str:
         color_preset=state.preset,
         css_prefix=css_prefix,
     )
+
+
+def generate_critical_css_for_state(state: "ThemeState", css_prefix: str = "") -> str:
+    """
+    Generate critical CSS for a given theme state (for inline delivery).
+
+    Critical CSS contains only tokens, custom properties, and layer declarations
+    needed for first paint. This is the complement of
+    ``generate_deferred_css_for_state()``.
+
+    Args:
+        state: Current ThemeState (from ThemeManager.get_state())
+        css_prefix: Namespace prefix for component CSS classes (e.g. "dj-")
+
+    Returns:
+        Critical CSS string suitable for inlining in a <style> tag.
+    """
+    if state.pack:
+        try:
+            from .pack_css_generator import ThemePackCSSGenerator
+
+            gen = ThemePackCSSGenerator(pack_name=state.pack)
+            return gen.theme_generator.generate_critical_css()
+        except ValueError:
+            pass
+
+    from .theme_css_generator import CompleteThemeCSSGenerator
+
+    gen = CompleteThemeCSSGenerator(state.theme, state.preset, css_prefix=css_prefix)
+    return gen.generate_critical_css()
+
+
+def generate_deferred_css_for_state(state: "ThemeState", css_prefix: str = "") -> str:
+    """
+    Generate deferred CSS for a given theme state (for async loading).
+
+    Deferred CSS contains base styles, utilities, typography classes, and
+    component styles. This is the complement of
+    ``generate_critical_css_for_state()``.
+
+    Args:
+        state: Current ThemeState (from ThemeManager.get_state())
+        css_prefix: Namespace prefix for component CSS classes (e.g. "dj-")
+
+    Returns:
+        Deferred CSS string suitable for serving from a <link> tag.
+    """
+    if state.pack:
+        try:
+            from .pack_css_generator import ThemePackCSSGenerator
+
+            gen = ThemePackCSSGenerator(pack_name=state.pack)
+            return gen.theme_generator.generate_deferred_css()
+        except ValueError:
+            pass
+
+    from .theme_css_generator import CompleteThemeCSSGenerator
+
+    gen = CompleteThemeCSSGenerator(state.theme, state.preset, css_prefix=css_prefix)
+    return gen.generate_deferred_css()
 
 
 def get_theme_manager(request: HttpRequest | None = None) -> "ThemeManager":
