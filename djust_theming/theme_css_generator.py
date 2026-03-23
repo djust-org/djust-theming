@@ -41,35 +41,66 @@ class CompleteThemeCSSGenerator:
         self.color_generator = ColorCSSGenerator(preset_name=self.color_preset)
 
     def generate_css(self) -> str:
-        """Generate complete CSS for the theme."""
+        """Generate complete CSS for the theme.
+
+        Produces a single @layer tokens block containing both color tokens
+        and theme vars, avoiding duplicate layer declarations.
+        """
         config = get_theme_config()
         use_layers = config.get("use_css_layers", True)
+        layer_order = config.get("css_layer_order", "base, tokens, components, theme")
 
-        # Get full color CSS with light/dark modes (already layer-wrapped by ColorCSSGenerator)
-        color_css = self.color_generator.generate_css()
+        # Build raw color token parts (unwrapped — we'll wrap once)
+        color_parts = [
+            self.color_generator._generate_light_mode(),
+            "",
+            self.color_generator._generate_dark_mode(),
+            "",
+            self.color_generator._generate_system_preference(),
+        ]
+
+        if self.color_generator.include_design_tokens:
+            from .design_tokens import generate_design_tokens_css
+            color_parts.extend(["", "", generate_design_tokens_css()])
+
+        color_tokens_css = "\n".join(color_parts)
 
         theme_vars = self._generate_theme_vars()
         typography_css = self._generate_typography_classes()
         component_css = self._generate_component_styles()
 
+        # Combine color tokens + theme vars into one tokens block
+        all_tokens = color_tokens_css + "\n\n" + theme_vars
+
+        base_css = self.color_generator._generate_base_styles() if self.color_generator.include_base_styles else ""
+        utilities_css = self.color_generator._generate_utilities() if self.color_generator.include_utilities else ""
+
         parts = [
             "/* djust-theming - Complete Theme CSS */",
-            "",
-            color_css,  # Full color CSS including light/dark modes (already layered)
             "",
         ]
 
         if use_layers:
+            parts.append(f"@layer {layer_order};")
+            parts.append("")
+            parts.append(f"@layer tokens {{\n{all_tokens}\n}}")
+            if base_css:
+                parts.extend(["", f"@layer base {{\n{base_css}\n}}"])
+            if utilities_css:
+                parts.extend(["", f"@layer components {{\n{utilities_css}\n}}"])
             parts.extend([
-                f"@layer tokens {{\n{theme_vars}\n}}",
                 "",
                 f"@layer components {{\n{typography_css}\n}}",
                 "",
                 f"@layer components {{\n{component_css}\n}}",
             ])
         else:
+            parts.append(all_tokens)
+            if base_css:
+                parts.extend(["", base_css])
+            if utilities_css:
+                parts.extend(["", utilities_css])
             parts.extend([
-                theme_vars,
                 "",
                 typography_css,
                 "",
@@ -85,37 +116,54 @@ class CompleteThemeCSSGenerator:
         :root variables (typography, spacing, shadows, etc.). These are
         needed for first paint to avoid FOUC.
 
+        Produces a single @layer tokens block containing both color tokens
+        and theme vars, avoiding duplicate layer declarations.
+
         Returns:
             CSS string suitable for inlining in a <style> tag.
         """
         config = get_theme_config()
         use_layers = config.get("use_css_layers", True)
+        layer_order = config.get("css_layer_order", "base, tokens, components, theme")
 
-        # Get critical color CSS (tokens + layer declaration)
-        color_critical = self.color_generator.generate_critical_css()
+        # Build raw color token CSS (light/dark/system + design token root vars)
+        color_parts = [
+            self.color_generator._generate_light_mode(),
+            "",
+            self.color_generator._generate_dark_mode(),
+            "",
+            self.color_generator._generate_system_preference(),
+        ]
+
+        if self.color_generator.include_design_tokens:
+            from .design_tokens import generate_design_tokens_root_css
+            color_parts.extend(["", "", generate_design_tokens_root_css()])
 
         # Theme vars (:root with typography, spacing, shadows, etc.)
         theme_vars = self._generate_theme_vars()
 
+        # Combine all token CSS
+        all_tokens = "\n".join(color_parts) + "\n\n" + theme_vars
+
         parts = [
             "/* djust-theming - Critical CSS (inline) */",
-            "",
-            color_critical,
             "",
         ]
 
         if use_layers:
-            parts.append(f"@layer tokens {{\n{theme_vars}\n}}")
+            parts.append(f"@layer {layer_order};")
+            parts.append("")
+            parts.append(f"@layer tokens {{\n{all_tokens}\n}}")
         else:
-            parts.append(theme_vars)
+            parts.append(all_tokens)
 
         return "\n".join(parts)
 
     def generate_deferred_css(self) -> str:
         """Generate deferred CSS for async loading.
 
-        Includes base styles, utility classes, typography classes, and
-        component styles. Not needed for first paint.
+        Includes base styles, utility classes, design token classes,
+        typography classes, and component styles. Not needed for first paint.
 
         Returns:
             CSS string suitable for serving from a <link> tag.
@@ -123,27 +171,45 @@ class CompleteThemeCSSGenerator:
         config = get_theme_config()
         use_layers = config.get("use_css_layers", True)
 
-        # Get deferred color CSS (base styles + utilities)
-        color_deferred = self.color_generator.generate_deferred_css()
+        # Build deferred parts directly (avoiding duplicate comment headers)
+        base_css = self.color_generator._generate_base_styles() if self.color_generator.include_base_styles else ""
+        utilities_css = self.color_generator._generate_utilities() if self.color_generator.include_utilities else ""
+
+        # Design token classes (typography hierarchy, interactive, layout, animations)
+        design_classes = ""
+        if self.color_generator.include_design_tokens:
+            from .design_tokens import generate_design_tokens_classes_css
+            design_classes = generate_design_tokens_classes_css()
 
         typography_css = self._generate_typography_classes()
         component_css = self._generate_component_styles()
 
         parts = [
             "/* djust-theming - Deferred CSS */",
-            "",
-            color_deferred,
-            "",
         ]
 
         if use_layers:
+            if base_css:
+                parts.extend(["", f"@layer base {{\n{base_css}\n}}"])
+            if utilities_css:
+                parts.extend(["", f"@layer components {{\n{utilities_css}\n}}"])
+            if design_classes:
+                parts.extend(["", f"@layer components {{\n{design_classes}\n}}"])
             parts.extend([
+                "",
                 f"@layer components {{\n{typography_css}\n}}",
                 "",
                 f"@layer components {{\n{component_css}\n}}",
             ])
         else:
+            if base_css:
+                parts.extend(["", base_css])
+            if utilities_css:
+                parts.extend(["", utilities_css])
+            if design_classes:
+                parts.extend(["", design_classes])
             parts.extend([
+                "",
                 typography_css,
                 "",
                 component_css,

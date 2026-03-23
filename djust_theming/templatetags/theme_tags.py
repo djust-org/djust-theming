@@ -21,6 +21,7 @@ from django import template
 from django.template.loader import render_to_string
 from django.urls import reverse, NoReverseMatch
 from django.utils.html import format_html
+from django.utils.http import urlencode
 from django.utils.safestring import mark_safe
 
 from ..components import PresetSelector, ThemeModeButton, ThemeSwitcher, ThemeSwitcherConfig
@@ -80,10 +81,10 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
         # Build deferred CSS URL
         try:
             deferred_url = reverse("djust_theming:deferred_theme_css")
-            cache_buster = f"t={state.theme}&p={state.preset}&m={state.mode}"
+            query_params = {"t": state.theme, "p": state.preset, "m": state.mode}
             if state.pack:
-                cache_buster += f"&pk={state.pack}"
-            deferred_href = f"{deferred_url}?{cache_buster}"
+                query_params["pk"] = state.pack
+            deferred_href = f"{deferred_url}?{urlencode(query_params)}"
             deferred_css_block = (
                 f'<link rel="preload" href="{deferred_href}" as="style" '
                 f'onload="this.onload=null;this.rel=\'stylesheet\'" data-djust-theme-deferred>'
@@ -98,11 +99,11 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
         try:
             url = reverse("djust_theming:theme_css")
             # Add cache buster based on state
-            cache_buster = f"t={state.theme}&p={state.preset}&m={state.mode}"
+            query_params = {"t": state.theme, "p": state.preset, "m": state.mode}
             if state.pack:
-                cache_buster += f"&pk={state.pack}"
+                query_params["pk"] = state.pack
 
-            css_block = f'<link rel="stylesheet" href="{url}?{cache_buster}" data-djust-theme>'
+            css_block = f'<link rel="stylesheet" href="{url}?{urlencode(query_params)}" data-djust-theme>'
         except NoReverseMatch:
             # Fallback to inline if URL not configured
             pass

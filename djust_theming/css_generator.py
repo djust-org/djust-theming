@@ -7,7 +7,11 @@ light and dark modes with system preference detection.
 
 from functools import lru_cache
 
-from .design_tokens import generate_design_tokens_css
+from .design_tokens import (
+    generate_design_tokens_classes_css,
+    generate_design_tokens_css,
+    generate_design_tokens_root_css,
+)
 from .manager import get_theme_config
 from .presets import ThemeTokens, get_preset
 
@@ -359,7 +363,7 @@ pre code {
         tokens_css = "\n".join(tokens_css_parts)
 
         sections = [
-            "/* djust_theming - Auto-generated CSS */",
+            "/* djust-theming - Auto-generated CSS */",
             "",
         ]
 
@@ -394,7 +398,10 @@ pre code {
         - :root CSS custom properties (color tokens, light mode)
         - Dark mode selectors
         - System preference media query
-        - Design tokens (spacing, typography scale, etc.)
+        - Design token :root custom properties (spacing, typography scale, etc.)
+
+        Class-based design tokens (typography classes, interactive utilities,
+        layout utilities, animation keyframes) are in deferred CSS.
 
         Returns:
             CSS string suitable for inlining in a <style> tag.
@@ -412,12 +419,12 @@ pre code {
         ]
 
         if self.include_design_tokens:
-            tokens_css_parts.extend(["", "", generate_design_tokens_css()])
+            tokens_css_parts.extend(["", "", generate_design_tokens_root_css()])
 
         tokens_css = "\n".join(tokens_css_parts)
 
         sections = [
-            "/* djust_theming - Critical CSS (inline) */",
+            "/* djust-theming - Critical CSS (inline) */",
             "",
         ]
 
@@ -431,11 +438,13 @@ pre code {
         return "\n".join(sections)
 
     def generate_deferred_css(self) -> str:
-        """Generate deferred CSS for async loading (base styles + utilities).
+        """Generate deferred CSS for async loading (base styles + utilities + design token classes).
 
         Deferred CSS contains parts not needed for first paint:
         - Base element styles (body resets, transitions)
         - Utility classes (.bg-*, .text-*, .btn-*, etc.)
+        - Design token classes (typography hierarchy, interactive utilities,
+          layout utilities, animation keyframes)
 
         Returns:
             CSS string suitable for serving from a <link> tag.
@@ -444,7 +453,7 @@ pre code {
         use_layers = config.get("use_css_layers", True)
 
         sections = [
-            "/* djust_theming - Deferred CSS */",
+            "/* djust-theming - Deferred CSS */",
         ]
 
         if self.include_base_styles:
@@ -460,6 +469,14 @@ pre code {
                 sections.extend(["", f"@layer components {{\n{utilities_css}\n}}"])
             else:
                 sections.extend(["", utilities_css])
+
+        if self.include_design_tokens:
+            design_classes = generate_design_tokens_classes_css()
+            if design_classes:
+                if use_layers:
+                    sections.extend(["", f"@layer components {{\n{design_classes}\n}}"])
+                else:
+                    sections.extend(["", design_classes])
 
         return "\n".join(sections)
 

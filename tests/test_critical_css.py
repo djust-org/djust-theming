@@ -49,10 +49,18 @@ class TestThemeCSSGeneratorCriticalSplit:
         css = self.gen.generate_critical_css()
         assert "prefers-color-scheme: dark" in css
 
-    def test_critical_contains_design_tokens(self):
+    def test_critical_contains_design_token_root_vars(self):
         css = self.gen.generate_critical_css()
-        # Design tokens include spacing, typography scale, etc.
+        # Critical has :root custom properties from design tokens
         assert "--space-" in css or "--font-" in css or "--radius" in css
+
+    def test_critical_does_not_contain_design_token_classes(self):
+        css = self.gen.generate_critical_css()
+        # Class-based design tokens should be in deferred, not critical
+        assert ".h1" not in css
+        assert ".interactive" not in css
+        assert ".truncate" not in css
+        assert "@keyframes fadeIn" not in css
 
     def test_critical_does_not_contain_base_styles(self):
         css = self.gen.generate_critical_css()
@@ -81,6 +89,13 @@ class TestThemeCSSGeneratorCriticalSplit:
     def test_deferred_does_not_contain_dark_mode_vars(self):
         css = self.gen.generate_deferred_css()
         assert "--primary:" not in css
+
+    def test_deferred_contains_design_token_classes(self):
+        css = self.gen.generate_deferred_css()
+        # Class-based design tokens should be in deferred
+        assert ".h1" in css
+        assert ".interactive" in css
+        assert "@keyframes fadeIn" in css
 
     def test_critical_plus_deferred_covers_full(self):
         """Critical + deferred should conceptually cover all the same sections as full CSS."""
@@ -126,6 +141,11 @@ class TestCompleteThemeCSSGeneratorCriticalSplit:
     def test_critical_contains_color_tokens(self):
         css = self.gen.generate_critical_css()
         assert "--primary:" in css
+
+    def test_critical_has_single_layer_tokens_block(self):
+        css = self.gen.generate_critical_css()
+        # Should have exactly one @layer tokens block, not two
+        assert css.count("@layer tokens {") == 1
 
     def test_critical_does_not_contain_component_styles(self):
         css = self.gen.generate_critical_css()
