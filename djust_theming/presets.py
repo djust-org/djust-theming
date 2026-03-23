@@ -6,6 +6,7 @@ Each preset includes both light and dark mode token sets.
 """
 
 from dataclasses import dataclass
+from typing import Tuple
 
 
 @dataclass
@@ -23,6 +24,39 @@ class ColorScale:
     def to_hsl_func(self) -> str:
         """Return complete hsl() function."""
         return f"hsl({self.h}, {self.s}%, {self.lightness}%)"
+
+    def to_hex(self) -> str:
+        """Return hex color string, e.g. '#3b82f6'."""
+        from .colors import hsl_to_hex
+
+        return hsl_to_hex(self.h, self.s, self.lightness)
+
+    def to_rgb(self) -> Tuple[int, int, int]:
+        """Return RGB tuple (0-255 each)."""
+        from .colors import hsl_to_rgb
+
+        return hsl_to_rgb(self.h, self.s, self.lightness)
+
+    def to_rgb_func(self) -> str:
+        """Return complete rgb() CSS function string, e.g. 'rgb(59, 130, 246)'."""
+        r, g, b = self.to_rgb()
+        return f"rgb({r}, {g}, {b})"
+
+    @classmethod
+    def from_hex(cls, hex_str: str) -> "ColorScale":
+        """Create ColorScale from hex string (#RRGGBB or #RGB)."""
+        from .colors import hex_to_hsl
+
+        h, s, l = hex_to_hsl(hex_str)
+        return cls(h, s, l)
+
+    @classmethod
+    def from_rgb(cls, r: int, g: int, b: int) -> "ColorScale":
+        """Create ColorScale from RGB values (0-255 each)."""
+        from .colors import rgb_to_hsl
+
+        h, s, l = rgb_to_hsl(r, g, b)
+        return cls(h, s, l)
 
     def with_lightness(self, new_lightness: int) -> "ColorScale":
         """Return a new ColorScale with modified lightness."""

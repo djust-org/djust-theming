@@ -51,10 +51,10 @@ class AccessibilityValidator:
         
     def hsl_to_rgb(self, color_scale: ColorScale) -> Tuple[float, float, float]:
         """Convert HSL ColorScale to RGB (0-1 range)."""
-        h = color_scale.h / 360.0
-        s = color_scale.s / 100.0
-        l = color_scale.lightness / 100.0
-        return colorsys.hls_to_rgb(h, l, s)
+        from .colors import hsl_to_rgb as _hsl_to_rgb
+
+        r, g, b = _hsl_to_rgb(color_scale.h, color_scale.s, color_scale.lightness)
+        return (r / 255.0, g / 255.0, b / 255.0)
         
     def rgb_to_luminance(self, r: float, g: float, b: float) -> float:
         """Calculate relative luminance according to WCAG formula."""

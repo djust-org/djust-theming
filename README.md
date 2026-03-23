@@ -604,6 +604,9 @@ Components work seamlessly with Tailwind classes:
 - `ThemeSwitcher(theme_manager, config)` — Render switcher component
 - `ThemeModeButton(theme_manager)` — Simple toggle button
 - `PresetSelector(theme_manager, layout)` — Preset selector (dropdown/grid/list)
+- Color utilities: `hsl_to_rgb`, `rgb_to_hsl`, `hex_to_rgb`, `rgb_to_hex`, `hex_to_hsl`, `hsl_to_hex` — Pure color format conversion functions
+- `ColorScale.from_hex(hex_str)` / `ColorScale.from_rgb(r, g, b)` — Construct a `ColorScale` from hex or RGB
+- `ColorScale.to_hex()` / `ColorScale.to_rgb()` / `ColorScale.to_rgb_func()` — Convert a `ColorScale` to hex, RGB tuple, or CSS `rgb()` string
 
 ### Template Tags
 
@@ -665,7 +668,7 @@ See the [Customization Guide](djust_theming/docs/customization.md#accessibility-
 
 ## Documentation
 
-- **[Customization Guide](djust_theming/docs/customization.md)** -- Template overrides, CSS architecture, caching, static file handling, accessibility validation
+- **[Customization Guide](djust_theming/docs/customization.md)** -- Template overrides, color conversions, CSS architecture, caching, static file handling, accessibility validation
 - **[Design System](djust_theming/docs/design-system.md)** -- Spacing, typography, color tokens
 - **[Color Presets](djust_theming/docs/colors.md)** -- HSL color system and custom presets
 
