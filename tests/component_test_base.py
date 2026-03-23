@@ -95,12 +95,16 @@ class ComponentTestCase(unittest.TestCase):
             theme_badge,
             theme_button,
             theme_card,
+            theme_checkbox,
             theme_dropdown,
             theme_input,
             theme_modal,
             theme_pagination,
+            theme_radio,
+            theme_select,
             theme_table,
             theme_tabs,
+            theme_textarea,
         )
 
         tag_map = {
@@ -114,6 +118,10 @@ class ComponentTestCase(unittest.TestCase):
             "tabs": theme_tabs,
             "table": theme_table,
             "pagination": theme_pagination,
+            "select": theme_select,
+            "textarea": theme_textarea,
+            "checkbox": theme_checkbox,
+            "radio": theme_radio,
         }
 
         tag_fn = tag_map[tag_name]

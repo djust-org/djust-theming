@@ -501,6 +501,211 @@ def article_list(request):
 
 ---
 
+## Select
+
+**Template tag:** `{% theme_select name="country" label="Country" %}`
+
+A styled `<select>` dropdown with optional label, placeholder, and option list.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `name` | str | Yes | -- | Select name and id attribute |
+| `label` | str or None | No | `None` | Label text (generates `<label for="name">`) |
+| `options` | list | No | `None` | List of dicts with `value` and `label` keys (optionally `selected: True`) |
+| `placeholder` | str | No | `""` | Disabled placeholder option text |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes (`required`, `disabled`) |
+
+### Required HTML elements
+
+- `<div>` -- the select group wrapper
+- `<select>` -- the select element
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `<label for="...">` | When a label is present, it must use the `for` attribute referencing the select's id |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_label` | Replaces default `<label>` | Custom label with required indicator |
+| `slot_select` | Replaces default `<select>` and its options | Custom select with optgroups |
+| `slot_help_text` | Adds help text below select | "Choose your country of residence." |
+| `slot_error` | Adds error message below select | Validation error message |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_select name="country" label="Country" options=country_list placeholder="Choose one" %}
+```
+
+```python
+# views.py
+def signup(request):
+    country_list = [
+        {"value": "us", "label": "United States"},
+        {"value": "ca", "label": "Canada"},
+        {"value": "gb", "label": "United Kingdom"},
+    ]
+    return render(request, "signup.html", {"country_list": country_list})
+```
+
+---
+
+## Textarea
+
+**Template tag:** `{% theme_textarea name="bio" label="Biography" rows=6 %}`
+
+A multi-line text input with optional label, placeholder, and configurable row height.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `name` | str | Yes | -- | Textarea name and id attribute |
+| `label` | str or None | No | `None` | Label text (generates `<label for="name">`) |
+| `placeholder` | str | No | `""` | Textarea placeholder text |
+| `rows` | int | No | `4` | Number of visible text rows |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes (`required`, `disabled`, `readonly`, `value`) |
+
+### Required HTML elements
+
+- `<div>` -- the textarea group wrapper
+- `<textarea>` -- the textarea element
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `<label for="...">` | When a label is present, it must use the `for` attribute referencing the textarea's id |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_label` | Replaces default `<label>` | Custom label with character count |
+| `slot_textarea` | Replaces default `<textarea>` | Custom textarea with auto-resize |
+| `slot_help_text` | Adds help text below textarea | "Maximum 500 characters." |
+| `slot_error` | Adds error message below textarea | Validation error message |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_textarea name="bio" label="Biography" placeholder="Tell us about yourself..." rows=6 %}
+```
+
+---
+
+## Checkbox
+
+**Template tag:** `{% theme_checkbox name="agree" label="I agree to the terms" %}`
+
+A single checkbox input with optional label and description text.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `name` | str | Yes | -- | Checkbox name and id attribute |
+| `label` | str | No | `""` | Label text next to the checkbox |
+| `description` | str or None | No | `None` | Help text shown below the label |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes (`checked`, `required`, `disabled`, `value`) |
+
+### Required HTML elements
+
+- `<div>` -- the checkbox group wrapper
+- `<input type="checkbox">` -- the checkbox input
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `<label for="...">` | When a label is present, it must use the `for` attribute referencing the checkbox's id |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_label` | Replaces default `<label>` | Custom label with link to terms |
+| `slot_description` | Replaces default description text | Rich description with formatting |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_checkbox name="agree" label="I agree to the terms" description="Please read the terms before continuing." %}
+```
+
+---
+
+## Radio
+
+**Template tag:** `{% theme_radio name="size" label="Size" options=size_options %}`
+
+A radio button group rendered as a `<fieldset>` with `<legend>`, containing one radio input per option.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `name` | str | Yes | -- | Shared name attribute for all radio inputs |
+| `label` | str or None | No | `None` | Group label (renders as `<legend>`) |
+| `options` | list | No | `None` | List of dicts with `value` and `label` keys |
+| `selected` | str | No | `""` | Value of the pre-selected option |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes (`required`, `disabled`) |
+
+### Required HTML elements
+
+- `<fieldset role="radiogroup">` -- the radio group container
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `role="radiogroup"` | The fieldset must have `role="radiogroup"` for screen readers |
+| `<label for="...">` | Each radio input has an associated label via the `for` attribute (id format: `{name}_{value}`) |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_label` | Replaces default `<legend>` | Custom legend with icon |
+| `slot_options` | Replaces all generated radio inputs and labels | Custom layout (e.g. card-style options) |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_radio name="size" label="Size" options=size_options selected="md" %}
+```
+
+```python
+# views.py
+def product_detail(request):
+    size_options = [
+        {"value": "sm", "label": "Small"},
+        {"value": "md", "label": "Medium"},
+        {"value": "lg", "label": "Large"},
+    ]
+    return render(request, "product.html", {"size_options": size_options})
+```
+
+---
+
 ## Using contracts programmatically
 
 You can access contracts in Python for validation or tooling:

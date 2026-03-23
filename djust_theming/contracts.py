@@ -326,6 +326,122 @@ PAGINATION_CONTRACT = ComponentContract(
 )
 
 
+SELECT_CONTRACT = ComponentContract(
+    name="select",
+    required_context=(
+        ContextVar(name="name", type="str", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="label", type="Optional[str]", default=None),
+        ContextVar(name="options", type="list", default=None),
+        ContextVar(name="placeholder", type="str", default=""),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_label", type="str", default=None),
+        ContextVar(name="slot_select", type="str", default=None),
+        ContextVar(name="slot_help_text", type="str", default=None),
+        ContextVar(name="slot_error", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="div"),
+        RequiredElement(tag="select"),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Label must reference select via for attribute",
+            selector_hint="label",
+            attr="for",
+        ),
+    ),
+    available_slots=("slot_label", "slot_select", "slot_help_text", "slot_error"),
+)
+
+TEXTAREA_CONTRACT = ComponentContract(
+    name="textarea",
+    required_context=(
+        ContextVar(name="name", type="str", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="label", type="Optional[str]", default=None),
+        ContextVar(name="placeholder", type="str", default=""),
+        ContextVar(name="rows", type="int", default=4),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_label", type="str", default=None),
+        ContextVar(name="slot_textarea", type="str", default=None),
+        ContextVar(name="slot_help_text", type="str", default=None),
+        ContextVar(name="slot_error", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="div"),
+        RequiredElement(tag="textarea"),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Label must reference textarea via for attribute",
+            selector_hint="label",
+            attr="for",
+        ),
+    ),
+    available_slots=("slot_label", "slot_textarea", "slot_help_text", "slot_error"),
+)
+
+CHECKBOX_CONTRACT = ComponentContract(
+    name="checkbox",
+    required_context=(
+        ContextVar(name="name", type="str", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="label", type="str", default=""),
+        ContextVar(name="description", type="Optional[str]", default=None),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_label", type="str", default=None),
+        ContextVar(name="slot_description", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="div"),
+        RequiredElement(tag="input", attrs={"type": "checkbox"}),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Label must reference checkbox via for attribute",
+            selector_hint="label",
+            attr="for",
+        ),
+    ),
+    available_slots=("slot_label", "slot_description"),
+)
+
+RADIO_CONTRACT = ComponentContract(
+    name="radio",
+    required_context=(
+        ContextVar(name="name", type="str", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="label", type="Optional[str]", default=None),
+        ContextVar(name="options", type="list", default=None),
+        ContextVar(name="selected", type="str", default=""),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_label", type="str", default=None),
+        ContextVar(name="slot_options", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="fieldset", attrs={"role": "radiogroup"}),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Radio group must have role=radiogroup",
+            selector_hint="fieldset",
+            attr="role",
+            value="radiogroup",
+        ),
+    ),
+    available_slots=("slot_label", "slot_options"),
+)
+
+
 COMPONENT_CONTRACTS: dict[str, ComponentContract] = {
     "button": BUTTON_CONTRACT,
     "card": CARD_CONTRACT,
@@ -337,6 +453,10 @@ COMPONENT_CONTRACTS: dict[str, ComponentContract] = {
     "tabs": TABS_CONTRACT,
     "table": TABLE_CONTRACT,
     "pagination": PAGINATION_CONTRACT,
+    "select": SELECT_CONTRACT,
+    "textarea": TEXTAREA_CONTRACT,
+    "checkbox": CHECKBOX_CONTRACT,
+    "radio": RADIO_CONTRACT,
 }
 
 

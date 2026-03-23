@@ -26,6 +26,22 @@ def _css_prefix() -> str:
     return get_theme_config().get("css_prefix", "")
 
 
+def _extract_slots(attrs: dict) -> tuple[dict, dict]:
+    """Separate slot_* keys from regular attrs.
+
+    Returns:
+        (slots_dict, remaining_attrs_dict)
+    """
+    slots = {}
+    remaining = {}
+    for k, v in attrs.items():
+        if k.startswith("slot_"):
+            slots[k] = v
+        else:
+            remaining[k] = v
+    return slots, remaining
+
+
 @register.simple_tag(takes_context=True)
 def theme_button(context, text: str, variant: str = 'primary', size: str = 'md', **attrs):
     """
@@ -323,6 +339,125 @@ def theme_pagination(context, current_page: int = 1, total_pages: int = 1, url_p
         'next_url': next_url,
         'attrs': attrs,
         'css_prefix': _css_prefix(),
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_select(context, name: str, label: Optional[str] = None, options: Any = None, placeholder: str = '', **attrs):
+    """
+    Render a themed select dropdown.
+
+    Args:
+        name: Select name attribute
+        label: Optional label text
+        options: List of dicts with 'value' and 'label' keys
+        placeholder: Placeholder option text
+        **attrs: Additional HTML attributes (required, disabled, etc.)
+
+    Usage:
+        {% theme_select "country" label="Country" options=countries placeholder="Choose..." %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "select")
+    ctx = {
+        'name': name,
+        'label': label,
+        'options': options or [],
+        'placeholder': placeholder,
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_textarea(context, name: str, label: Optional[str] = None, placeholder: str = '', rows: int = 4, **attrs):
+    """
+    Render a themed textarea.
+
+    Args:
+        name: Textarea name attribute
+        label: Optional label text
+        placeholder: Placeholder text
+        rows: Number of visible text rows
+        **attrs: Additional HTML attributes (required, disabled, readonly, etc.)
+
+    Usage:
+        {% theme_textarea "bio" label="Biography" placeholder="Tell us about yourself..." rows=6 %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "textarea")
+    ctx = {
+        'name': name,
+        'label': label,
+        'placeholder': placeholder,
+        'rows': rows,
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_checkbox(context, name: str, label: str = '', description: Optional[str] = None, **attrs):
+    """
+    Render a themed checkbox.
+
+    Args:
+        name: Checkbox name attribute
+        label: Label text displayed next to the checkbox
+        description: Optional descriptive text below the label
+        **attrs: Additional HTML attributes (checked, required, disabled, value, etc.)
+
+    Usage:
+        {% theme_checkbox "agree" label="I agree to terms" required=True %}
+        {% theme_checkbox "newsletter" label="Subscribe" description="Get weekly updates" %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "checkbox")
+    ctx = {
+        'name': name,
+        'label': label,
+        'description': description,
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_radio(context, name: str, label: Optional[str] = None, options: Any = None, selected: str = '', **attrs):
+    """
+    Render a themed radio button group.
+
+    Args:
+        name: Radio group name attribute
+        label: Optional group label (rendered as fieldset legend)
+        options: List of dicts with 'value' and 'label' keys
+        selected: Value of the initially selected option
+        **attrs: Additional HTML attributes (required, disabled, etc.)
+
+    Usage:
+        {% theme_radio "size" label="Size" options=sizes selected="md" %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "radio")
+    ctx = {
+        'name': name,
+        'label': label,
+        'options': options or [],
+        'selected': selected,
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
     }
     return mark_safe(tmpl.render(ctx))
 
