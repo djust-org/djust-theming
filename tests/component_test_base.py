@@ -83,7 +83,8 @@ class ComponentTestCase(unittest.TestCase):
         """Render a component template tag and return the HTML string.
 
         Args:
-            tag_name: One of ``button``, ``card``, ``badge``, ``alert``, ``input``.
+            tag_name: One of ``button``, ``card``, ``badge``, ``alert``, ``input``,
+                ``modal``, ``dropdown``, ``tabs``, ``table``, ``pagination``.
             **kwargs: Keyword arguments forwarded to the tag function.
 
         Returns:
@@ -94,7 +95,12 @@ class ComponentTestCase(unittest.TestCase):
             theme_badge,
             theme_button,
             theme_card,
+            theme_dropdown,
             theme_input,
+            theme_modal,
+            theme_pagination,
+            theme_table,
+            theme_tabs,
         )
 
         tag_map = {
@@ -103,6 +109,11 @@ class ComponentTestCase(unittest.TestCase):
             "badge": theme_badge,
             "alert": theme_alert,
             "input": theme_input,
+            "modal": theme_modal,
+            "dropdown": theme_dropdown,
+            "tabs": theme_tabs,
+            "table": theme_table,
+            "pagination": theme_pagination,
         }
 
         tag_fn = tag_map[tag_name]

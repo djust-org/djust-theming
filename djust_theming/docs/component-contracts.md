@@ -173,6 +173,334 @@ No additional ARIA requirements.
 
 ---
 
+## Modal
+
+**Template tag:** `{% theme_modal id="confirm" title="Confirm Action" %}`
+
+Opens a dialog overlay. Trigger it with `<button data-theme-modal-open="confirm">Open</button>`.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `id` | str | Yes | -- | Unique modal identifier (used by JS open/close triggers) |
+| `title` | str or None | No | `None` | Modal title (renders in header, sets `aria-labelledby`) |
+| `size` | str | No | `"md"` | Size class (`sm`, `md`, `lg`) |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<div role="dialog">` -- the dialog container with `aria-modal="true"`
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `role="dialog"` | The dialog container must have `role="dialog"` |
+| `aria-modal="true"` | Marks the dialog as modal (traps focus semantically) |
+| `aria-labelledby` | References the title element when a title is provided |
+| `aria-label="Close"` | Close button must have an accessible label |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_header` | Replaces `<h2>{{ title }}</h2>` header | Custom header with icon + title |
+| `slot_body` | Replaces modal body content | Rich body with form fields |
+| `slot_footer` | Adds footer area (hidden by default) | Confirm/cancel action buttons |
+| `slot_close` | Replaces default close button (X icon) | Custom close button |
+
+### JavaScript behavior
+
+Included automatically via `components.js` (loaded by `{% theme_head %}`):
+
+- **Open:** Click any element with `data-theme-modal-open="{id}"` attribute
+- **Close:** Click the close button (`data-theme-modal-close`), press Escape, or click the backdrop
+- **Focus management:** Focus moves to the dialog on open
+- **Scroll lock:** `body` overflow is hidden while modal is open
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+<!-- Trigger button (place anywhere on the page) -->
+<button data-theme-modal-open="confirm-delete">Delete Item</button>
+
+<!-- Modal definition -->
+{% theme_modal id="confirm-delete" title="Confirm Deletion" size="sm" %}
+```
+
+To add a footer with action buttons, render the template directly with `slot_footer`:
+
+```python
+# In your view or custom tag
+tmpl = resolve_component_template(request, "modal")
+html = tmpl.render({
+    "id": "confirm-delete",
+    "title": "Confirm Deletion",
+    "size": "sm",
+    "css_prefix": "",
+    "attrs": {},
+    "slot_footer": '<button data-theme-modal-close>Cancel</button>'
+                   '<button class="btn-destructive">Delete</button>',
+})
+```
+
+---
+
+## Dropdown
+
+**Template tag:** `{% theme_dropdown id="actions" label="Actions" %}`
+
+A trigger button that opens a menu of items below it.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `id` | str | Yes | -- | Unique dropdown identifier |
+| `label` | str | Yes | -- | Text shown on the trigger button |
+| `align` | str | No | `"left"` | Menu alignment (`left` or `right`) |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<div>` -- the dropdown wrapper
+- `<button aria-haspopup="true">` -- the trigger button
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `aria-haspopup="true"` | Trigger button announces it opens a menu |
+| `aria-expanded` | Reflects open/closed state (`"true"` or `"false"`) |
+| `role="menu"` | The dropdown menu container |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_trigger` | Replaces entire trigger button | Custom button with icon |
+| `slot_menu` | Fills the menu content area | List of `<a role="menuitem">` links |
+
+### JavaScript behavior
+
+- **Toggle:** Click trigger to open/close
+- **Click outside:** Closes the menu
+- **Keyboard:** ArrowDown/ArrowUp navigate items, Escape closes and returns focus to trigger
+- **Focus:** First menu item receives focus on open
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_dropdown id="user-menu" label="Account" align="right" %}
+```
+
+Populate the menu via `slot_menu`:
+
+```python
+tmpl = resolve_component_template(request, "dropdown")
+html = tmpl.render({
+    "id": "user-menu",
+    "label": "Account",
+    "align": "right",
+    "css_prefix": "",
+    "attrs": {},
+    "slot_menu": '<a href="/profile" role="menuitem">Profile</a>'
+                 '<a href="/settings" role="menuitem">Settings</a>'
+                 '<a href="/logout" role="menuitem">Sign Out</a>',
+})
+```
+
+---
+
+## Tabs
+
+**Template tag:** `{% theme_tabs id="settings" tabs=tab_list active=0 %}`
+
+A tabbed interface where each tab shows a content panel.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `id` | str | Yes | -- | Unique tabs identifier |
+| `tabs` | list | Yes | -- | List of dicts, each with `"label"` and `"content"` keys |
+| `active` | int | No | `0` | Zero-based index of the initially active tab |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<div>` -- the tabs wrapper
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `role="tablist"` | Container for tab buttons |
+| `role="tab"` | Each tab button, with `aria-selected` and `aria-controls` |
+| `role="tabpanel"` | Each content panel, with `aria-labelledby` referencing its tab |
+| `tabindex="-1"` | Inactive tabs are removed from the tab order |
+
+### Slots
+
+No slots -- tabs are data-driven via the `tabs` list.
+
+### JavaScript behavior
+
+- **Click:** Activates the clicked tab and shows its panel
+- **Keyboard:** ArrowLeft/ArrowRight cycle tabs, Home/End jump to first/last
+- **ARIA:** `aria-selected`, `tabindex`, and `hidden` attributes update automatically
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_tabs id="settings" tabs=tab_list active=0 %}
+```
+
+Where `tab_list` is provided from your view context:
+
+```python
+# views.py
+def settings_view(request):
+    tab_list = [
+        {"label": "General", "content": "<p>General settings here.</p>"},
+        {"label": "Security", "content": "<p>Security settings here.</p>"},
+        {"label": "Notifications", "content": "<p>Notification preferences.</p>"},
+    ]
+    return render(request, "settings.html", {"tab_list": tab_list})
+```
+
+---
+
+## Table
+
+**Template tag:** `{% theme_table headers=headers rows=rows variant="striped" %}`
+
+A responsive data table with a scrollable wrapper.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `headers` | list | Yes | -- | List of column header strings |
+| `rows` | list | Yes | -- | List of row lists (each row is a list of cell values) |
+| `variant` | str | No | `"default"` | Visual variant (`default`, `striped`, `hover`) |
+| `caption` | str or None | No | `None` | Optional table caption for accessibility |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<div>` -- responsive wrapper container
+- `<table>` -- the data table
+
+### Accessibility
+
+No additional ARIA requirements beyond semantic `<table>`, `<thead>`, `<tbody>`, and optional `<caption>`.
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_caption` | Replaces `<caption>{{ caption }}</caption>` | Rich caption with count |
+| `slot_header` | Replaces entire `<thead>` content | Custom header with sorting icons |
+| `slot_body` | Replaces entire `<tbody>` content | Custom rows with action buttons |
+| `slot_footer` | Adds a `<tfoot>` section (hidden by default) | Summary row with totals |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_table headers=headers rows=rows variant="striped" caption="User Directory" %}
+```
+
+```python
+# views.py
+def user_list(request):
+    headers = ["Name", "Email", "Role"]
+    rows = [
+        ["Alice", "alice@example.com", "Admin"],
+        ["Bob", "bob@example.com", "Editor"],
+        ["Carol", "carol@example.com", "Viewer"],
+    ]
+    return render(request, "users.html", {"headers": headers, "rows": rows})
+```
+
+---
+
+## Pagination
+
+**Template tag:** `{% theme_pagination current_page=page total_pages=total url_pattern="/items/?page={}" %}`
+
+Page navigation controls with previous/next links and page numbers.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `current_page` | int | Yes | -- | Current page number (1-based) |
+| `total_pages` | int | Yes | -- | Total number of pages |
+| `url_pattern` | str | Yes | -- | URL pattern with `{}` placeholder for page number |
+| `show_edges` | bool | No | `True` | Whether to show first/last page links with ellipsis |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<nav aria-label="Pagination">` -- the navigation landmark
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `aria-label="Pagination"` | The nav element is labelled for screen readers |
+| `aria-current="page"` | The active page number is marked as current |
+| `aria-disabled="true"` | Disabled prev/next links are marked for assistive technology |
+| `aria-label="Previous page"` / `"Next page"` | Prev/next links have accessible labels |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_prev` | Replaces the "Prev" link/span | Custom previous button with icon |
+| `slot_next` | Replaces the "Next" link/span | Custom next button with icon |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_pagination current_page=page total_pages=total_pages url_pattern="/articles/?page={}" %}
+```
+
+```python
+# views.py
+from django.core.paginator import Paginator
+
+def article_list(request):
+    articles = Article.objects.all()
+    paginator = Paginator(articles, 25)
+    page_number = request.GET.get("page", 1)
+    page_obj = paginator.get_page(page_number)
+    return render(request, "articles.html", {
+        "articles": page_obj,
+        "page": page_obj.number,
+        "total_pages": paginator.num_pages,
+    })
+```
+
+---
+
 ## Using contracts programmatically
 
 You can access contracts in Python for validation or tooling:

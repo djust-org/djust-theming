@@ -180,12 +180,163 @@ INPUT_CONTRACT = ComponentContract(
 )
 
 
+MODAL_CONTRACT = ComponentContract(
+    name="modal",
+    required_context=(
+        ContextVar(name="id", type="str", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="title", type="Optional[str]", default=None),
+        ContextVar(name="size", type="str", default="md"),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_header", type="str", default=None),
+        ContextVar(name="slot_body", type="str", default=None),
+        ContextVar(name="slot_footer", type="str", default=None),
+        ContextVar(name="slot_close", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="div", attrs={"role": "dialog"}),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Modal must have role=dialog",
+            selector_hint="div",
+            attr="role",
+            value="dialog",
+        ),
+        AccessibilityRequirement(
+            description="Modal must have aria-modal=true",
+            selector_hint="div",
+            attr="aria-modal",
+            value="true",
+        ),
+    ),
+    available_slots=("slot_header", "slot_body", "slot_footer", "slot_close"),
+)
+
+DROPDOWN_CONTRACT = ComponentContract(
+    name="dropdown",
+    required_context=(
+        ContextVar(name="id", type="str", required=True),
+        ContextVar(name="label", type="str", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="align", type="str", default="left"),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_trigger", type="str", default=None),
+        ContextVar(name="slot_menu", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="div"),
+        RequiredElement(tag="button", attrs={"aria-haspopup": "true"}),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Trigger must have aria-haspopup=true",
+            selector_hint="button",
+            attr="aria-haspopup",
+            value="true",
+        ),
+        AccessibilityRequirement(
+            description="Trigger must have aria-expanded",
+            selector_hint="button",
+            attr="aria-expanded",
+        ),
+    ),
+    available_slots=("slot_trigger", "slot_menu"),
+)
+
+TABS_CONTRACT = ComponentContract(
+    name="tabs",
+    required_context=(
+        ContextVar(name="id", type="str", required=True),
+        ContextVar(name="tabs", type="list", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="active", type="int", default=0),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="div"),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Tab list must have role=tablist",
+            selector_hint="div",
+            attr="role",
+            value="tablist",
+        ),
+    ),
+    available_slots=(),
+)
+
+TABLE_CONTRACT = ComponentContract(
+    name="table",
+    required_context=(
+        ContextVar(name="headers", type="list", required=True),
+        ContextVar(name="rows", type="list", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="variant", type="str", default="default"),
+        ContextVar(name="caption", type="Optional[str]", default=None),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_caption", type="str", default=None),
+        ContextVar(name="slot_header", type="str", default=None),
+        ContextVar(name="slot_body", type="str", default=None),
+        ContextVar(name="slot_footer", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="div"),
+        RequiredElement(tag="table"),
+    ),
+    accessibility=(),
+    available_slots=("slot_caption", "slot_header", "slot_body", "slot_footer"),
+)
+
+PAGINATION_CONTRACT = ComponentContract(
+    name="pagination",
+    required_context=(
+        ContextVar(name="current_page", type="int", required=True),
+        ContextVar(name="total_pages", type="int", required=True),
+        ContextVar(name="url_pattern", type="str", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="show_edges", type="bool", default=True),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_prev", type="str", default=None),
+        ContextVar(name="slot_next", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="nav", attrs={"aria-label": "Pagination"}),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Pagination nav must have aria-label",
+            selector_hint="nav",
+            attr="aria-label",
+            value="Pagination",
+        ),
+    ),
+    available_slots=("slot_prev", "slot_next"),
+)
+
+
 COMPONENT_CONTRACTS: dict[str, ComponentContract] = {
     "button": BUTTON_CONTRACT,
     "card": CARD_CONTRACT,
     "alert": ALERT_CONTRACT,
     "badge": BADGE_CONTRACT,
     "input": INPUT_CONTRACT,
+    "modal": MODAL_CONTRACT,
+    "dropdown": DROPDOWN_CONTRACT,
+    "tabs": TABS_CONTRACT,
+    "table": TABLE_CONTRACT,
+    "pagination": PAGINATION_CONTRACT,
 }
 
 
