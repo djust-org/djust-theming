@@ -226,6 +226,24 @@ class TestContrastAutofix:
             )
 
 
+    def test_contrast_autofix_mid_lightness_bg(self):
+        """A fg color near bg lightness ~50 should still get fixed via fallback direction."""
+        # Mid-gray bg with mid-gray fg — preferred direction may not work,
+        # fallback to opposite direction should succeed
+        preset = PaletteGenerator.from_brand_colors("#808080")
+        validator = AccessibilityValidator()
+        for name, fg, bg in _all_fg_bg_pairs(preset.light):
+            ratio = validator.calculate_contrast_ratio(fg, bg)
+            assert ratio >= 4.5, (
+                f"Light {name}: contrast {ratio:.2f} < 4.5:1 after autofix"
+            )
+        for name, fg, bg in _all_fg_bg_pairs(preset.dark):
+            ratio = validator.calculate_contrast_ratio(fg, bg)
+            assert ratio >= 4.5, (
+                f"Dark {name}: contrast {ratio:.2f} < 4.5:1 after autofix"
+            )
+
+
 class TestKnownBrandColors:
     """Smoke tests with recognizable brand colors."""
 

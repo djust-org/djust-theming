@@ -78,38 +78,56 @@ def _contrast_ratio(c1: ColorScale, c2: ColorScale) -> float:
     return (lighter + 0.05) / (darker + 0.05)
 
 
-def _ensure_contrast(
-    fg: ColorScale, bg: ColorScale, min_ratio: float = 4.5
-) -> ColorScale:
-    """Adjust *fg* lightness until contrast against *bg* meets *min_ratio*."""
-    if _contrast_ratio(fg, bg) >= min_ratio:
-        return fg
-
-    bg_l = bg.lightness
-    # Direction: darken fg on light bg, lighten fg on dark bg
-    if bg_l > 50:
-        low, high = 0, fg.lightness
-    else:
-        low, high = fg.lightness, 100
-
-    best = fg
+def _binary_search_lightness(
+    fg: ColorScale, bg: ColorScale, low: float, high: float, min_ratio: float
+) -> ColorScale | None:
+    """Binary search for fg lightness in [low, high] that meets min_ratio against bg."""
+    best = None
     for _ in range(25):
         mid = (low + high) / 2.0
         candidate = ColorScale(fg.h, fg.s, round(mid))
         ratio = _contrast_ratio(candidate, bg)
         if ratio >= min_ratio:
             best = candidate
-            # Try to stay closer to original (less extreme)
-            if bg_l > 50:
-                low = mid
+            # Try to stay closer to original (narrower range)
+            if mid < fg.lightness:
+                low = mid  # found a dark-enough value, try lighter
             else:
-                high = mid
+                high = mid  # found a light-enough value, try darker
         else:
-            if bg_l > 50:
-                high = mid
+            if mid < fg.lightness:
+                high = mid  # too light, go darker
             else:
-                low = mid
+                low = mid  # too dark, go lighter
     return best
+
+
+def _ensure_contrast(
+    fg: ColorScale, bg: ColorScale, min_ratio: float = 4.5
+) -> ColorScale:
+    """Adjust *fg* lightness until contrast against *bg* meets *min_ratio*.
+
+    Tries the preferred direction first (darken on light bg, lighten on dark bg).
+    Falls back to the opposite direction if the preferred one can't reach the target.
+    """
+    if _contrast_ratio(fg, bg) >= min_ratio:
+        return fg
+
+    bg_l = bg.lightness
+
+    # Preferred direction: darken fg on light bg, lighten fg on dark bg
+    if bg_l > 50:
+        result = _binary_search_lightness(fg, bg, 0, fg.lightness, min_ratio)
+        if result is None:
+            # Fallback: try lightening instead
+            result = _binary_search_lightness(fg, bg, fg.lightness, 100, min_ratio)
+    else:
+        result = _binary_search_lightness(fg, bg, fg.lightness, 100, min_ratio)
+        if result is None:
+            # Fallback: try darkening instead
+            result = _binary_search_lightness(fg, bg, 0, fg.lightness, min_ratio)
+
+    return result if result is not None else fg
 
 
 def _clamp(val: float, lo: float, hi: float) -> int:
