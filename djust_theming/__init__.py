@@ -11,6 +11,7 @@ from .components import ThemeSwitcher
 from .css_generator import ThemeCSSGenerator
 from .manifest import ThemeManifest
 from .manager import ThemeManager, ThemeState, generate_css_for_state, get_css_prefix, get_theme_manager
+from .registry import ThemeRegistry, get_registry
 from .mixins import ThemeMixin
 from .palette import PaletteGenerator
 from .presets import (
@@ -49,6 +50,9 @@ __all__ = [
     "ROSE_THEME",
     # Manifest
     "ThemeManifest",
+    # Registry
+    "ThemeRegistry",
+    "get_registry",
     # Core
     "ThemeCSSGenerator",
     "ThemeManager",

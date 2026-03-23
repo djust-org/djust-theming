@@ -450,6 +450,127 @@ MY_PRESET = ThemePreset(
 THEME_PRESETS["brand"] = MY_PRESET
 ```
 
+## Registering Presets and Themes at Runtime (Third-Party Apps)
+
+If you are building a reusable Django app that ships its own presets or design systems, use the **Theme Registry API** to register them dynamically. This is the recommended approach for pip-installable theme packages.
+
+### register_preset / register_theme
+
+Call these in your app's `AppConfig.ready()` method, which runs after `djust_theming` has initialized the registry:
+
+```python
+# my_theme_app/apps.py
+from django.apps import AppConfig
+
+
+class MyThemeAppConfig(AppConfig):
+    name = "my_theme_app"
+
+    def ready(self):
+        from djust_theming.registry import get_registry
+        from .presets import NORD_PRESET, CATPPUCCIN_PRESET
+        from .design_systems import CUSTOM_DS
+
+        registry = get_registry()
+
+        # Register custom color presets
+        registry.register_preset("nord", NORD_PRESET)
+        registry.register_preset("catppuccin", CATPPUCCIN_PRESET)
+
+        # Register a custom design system
+        registry.register_theme("my-design-system", CUSTOM_DS)
+```
+
+**Important**: Ensure your app appears *after* `djust_theming` in `INSTALLED_APPS` so that the registry is already populated when your `ready()` runs:
+
+```python
+INSTALLED_APPS = [
+    # ...
+    "djust_theming",
+    "my_theme_app",  # After djust_theming
+]
+```
+
+### register_manifest
+
+To register a `ThemeManifest` (parsed from a `theme.toml`) programmatically:
+
+```python
+from djust_theming.registry import get_registry
+from djust_theming.manifest import ThemeManifest
+
+manifest = ThemeManifest(
+    name="my-packaged-theme",
+    version="1.0.0",
+    description="A theme distributed as a pip package",
+    preset="blue",
+    design_system="material",
+)
+
+get_registry().register_manifest("my-packaged-theme", manifest)
+```
+
+### Package Convention for DJUST_THEMES
+
+If your theme package is listed in the `DJUST_THEMES` setting, the registry will auto-import it and look for these module-level attributes:
+
+```python
+# my_theme_package/__init__.py
+
+from djust_theming.manifest import ThemeManifest
+from djust_theming.presets import ThemePreset, ThemeTokens, ColorScale
+
+
+def get_theme_manifest():
+    """Return a ThemeManifest for this package."""
+    return ThemeManifest(
+        name="my-theme",
+        version="1.0.0",
+        preset="custom-preset",
+        design_system="material",
+    )
+
+
+# Optional: export presets
+PRESETS = {
+    "custom-preset": ThemePreset(
+        name="custom-preset",
+        display_name="Custom Preset",
+        light=ThemeTokens(...),
+        dark=ThemeTokens(...),
+    ),
+}
+
+# Optional: export design systems
+DESIGN_SYSTEMS = {
+    "custom-ds": ...,
+}
+```
+
+Then in Django settings:
+
+```python
+DJUST_THEMES = ["my_theme_package"]
+```
+
+### Thread Safety
+
+The registry is a thread-safe singleton. All `register_*` methods acquire a lock internally, so you can safely call them from multiple app `ready()` methods without coordination. Read-only methods (`get_preset`, `has_theme`, `list_presets`, etc.) are safe to call from any thread at any time.
+
+### Validating After Registration
+
+After registering custom presets or themes, you can validate them with the management command:
+
+```bash
+python manage.py djust_theme validate-theme my-packaged-theme
+```
+
+Or run Django's system checks, which will verify that configured presets and design systems exist in the registry:
+
+```bash
+python manage.py check --tag compatibility
+```
+
 ---
 
 ## Migrating from THEMES to DESIGN_SYSTEMS

@@ -9,7 +9,7 @@ Usage:
 """
 
 from django.core.management.base import BaseCommand, CommandError
-from djust_theming.presets import THEME_PRESETS
+from djust_theming.registry import get_registry
 from djust_theming.tailwind import (
     generate_tailwind_config,
     export_preset_as_tailwind_colors,
@@ -202,6 +202,24 @@ class Command(BaseCommand):
             help='Overwrite existing theme directory'
         )
 
+        # validate-theme subcommand
+        validate_parser = subparsers.add_parser(
+            'validate-theme',
+            help='Validate a theme manifest and its referenced files'
+        )
+        validate_parser.add_argument(
+            'theme_name', nargs='?',
+            help='Theme name to validate'
+        )
+        validate_parser.add_argument(
+            '--all', action='store_true', dest='validate_all',
+            help='Validate all themes in the themes directory'
+        )
+        validate_parser.add_argument(
+            '--dir', type=str, dest='validate_dir',
+            help='Override themes directory'
+        )
+
     def handle(self, *args, **options):
         subcommand = options.get('subcommand')
 
@@ -225,6 +243,8 @@ class Command(BaseCommand):
             self.handle_init(options)
         elif subcommand == 'create-theme':
             self.handle_create_theme(options)
+        elif subcommand == 'validate-theme':
+            self.handle_validate_theme(options)
         else:
             raise CommandError(f"Unknown subcommand: {subcommand}")
 
@@ -235,10 +255,11 @@ class Command(BaseCommand):
         extend = options['extend']
         all_presets = options['all_presets']
 
-        if preset not in THEME_PRESETS:
+        registry = get_registry()
+        if not registry.has_preset(preset):
             raise CommandError(
                 f"Unknown preset: {preset}. "
-                f"Available: {', '.join(THEME_PRESETS.keys())}"
+                f"Available: {', '.join(sorted(registry.list_presets().keys()))}"
             )
 
         self.stdout.write(f"Generating Tailwind config for preset '{preset}'...")
@@ -279,10 +300,11 @@ class Command(BaseCommand):
         format_type = options['format']
         output = options.get('output')
 
-        if preset not in THEME_PRESETS:
+        registry = get_registry()
+        if not registry.has_preset(preset):
             raise CommandError(
                 f"Unknown preset: {preset}. "
-                f"Available: {', '.join(THEME_PRESETS.keys())}"
+                f"Available: {', '.join(sorted(registry.list_presets().keys()))}"
             )
 
         try:
@@ -315,7 +337,8 @@ class Command(BaseCommand):
         """List all available presets."""
         self.stdout.write(self.style.SUCCESS("Available theme presets:\n"))
 
-        for name, preset in THEME_PRESETS.items():
+        presets = get_registry().list_presets()
+        for name, preset in presets.items():
             self.stdout.write(
                 f"  • {name:12} - {preset.display_name}"
             )
@@ -323,7 +346,7 @@ class Command(BaseCommand):
                 self.stdout.write(f"               {preset.description}")
 
         self.stdout.write(
-            f"\nTotal: {len(THEME_PRESETS)} presets"
+            f"\nTotal: {len(presets)} presets"
         )
 
     def handle_generate_examples(self, options):
@@ -359,10 +382,10 @@ class Command(BaseCommand):
             self.stdout.write(f"  Display name: {preset.display_name}")
 
             if register:
-                THEME_PRESETS[preset.name] = preset
+                get_registry().register_preset(preset.name, preset)
                 self.stdout.write(
                     self.style.SUCCESS(
-                        f"\n✓ Registered '{preset.name}' in THEME_PRESETS"
+                        f"\n✓ Registered '{preset.name}' in theme registry"
                     )
                 )
                 self.stdout.write(
@@ -386,10 +409,11 @@ class Command(BaseCommand):
         preset = options['preset']
         output = options['output']
 
-        if preset not in THEME_PRESETS:
+        registry = get_registry()
+        if not registry.has_preset(preset):
             raise CommandError(
                 f"Unknown preset: {preset}. "
-                f"Available: {', '.join(THEME_PRESETS.keys())}"
+                f"Available: {', '.join(sorted(registry.list_presets().keys()))}"
             )
 
         try:
@@ -412,10 +436,11 @@ class Command(BaseCommand):
         with_tailwind = options['with_tailwind']
         with_examples = options['with_examples']
 
-        if preset not in THEME_PRESETS:
+        registry = get_registry()
+        if not registry.has_preset(preset):
             raise CommandError(
                 f"Unknown preset: {preset}. "
-                f"Available: {', '.join(THEME_PRESETS.keys())}"
+                f"Available: {', '.join(sorted(registry.list_presets().keys()))}"
             )
 
         self.stdout.write(self.style.SUCCESS("\n🎨 Initializing djust-theming...\n"))
@@ -530,9 +555,8 @@ class Command(BaseCommand):
 
         from djust_theming.manifest import ThemeManifest
         from djust_theming.manager import get_theme_config
-        from djust_theming.presets import THEME_PRESETS
-        from djust_theming.theme_packs import DESIGN_SYSTEMS
 
+        registry = get_registry()
         theme_name = options['theme_name']
         base = options.get('base')
         preset = options['preset']
@@ -548,17 +572,17 @@ class Command(BaseCommand):
             )
 
         # Validate preset
-        if preset not in THEME_PRESETS:
+        if not registry.has_preset(preset):
             raise CommandError(
                 f"Unknown preset '{preset}'. "
-                f"Available: {', '.join(sorted(THEME_PRESETS.keys()))}"
+                f"Available: {', '.join(sorted(registry.list_presets().keys()))}"
             )
 
         # Validate design system
-        if design_system not in DESIGN_SYSTEMS:
+        if not registry.has_theme(design_system):
             raise CommandError(
                 f"Unknown design system '{design_system}'. "
-                f"Available: {', '.join(sorted(DESIGN_SYSTEMS.keys()))}"
+                f"Available: {', '.join(sorted(registry.list_themes().keys()))}"
             )
 
         # Resolve themes directory
@@ -637,3 +661,125 @@ class Command(BaseCommand):
         self.stdout.write(f"  pages/         — page template overrides")
         self.stdout.write(f"  static/css/    — additional stylesheets")
         self.stdout.write(f"  static/fonts/  — custom web fonts\n")
+
+    def handle_validate_theme(self, options):
+        """Validate a theme manifest and its referenced files."""
+        from pathlib import Path
+
+        from django.conf import settings as django_settings
+
+        from djust_theming.manifest import ThemeManifest
+        from djust_theming.manager import get_theme_config
+        from djust_theming.presets import ThemeTokens
+
+        registry = get_registry()
+        validate_all = options.get('validate_all', False)
+        validate_dir = options.get('validate_dir')
+        theme_name = options.get('theme_name')
+
+        # Resolve themes directory
+        if validate_dir:
+            themes_dir = Path(validate_dir)
+        else:
+            config = get_theme_config()
+            themes_dir_rel = config.get('themes_dir', 'themes/')
+            base_dir = getattr(django_settings, 'BASE_DIR', Path.cwd())
+            themes_dir = Path(base_dir) / themes_dir_rel
+
+        if validate_all:
+            # Validate all themes in the directory
+            if not themes_dir.is_dir():
+                raise CommandError(
+                    f"Themes directory not found: {themes_dir}"
+                )
+            found = False
+            for child in sorted(themes_dir.iterdir()):
+                if child.is_dir() and (child / "theme.toml").exists():
+                    found = True
+                    self._validate_single_theme(child, registry, ThemeTokens)
+            if not found:
+                self.stdout.write(
+                    self.style.WARNING("No themes found in: " + str(themes_dir))
+                )
+            return
+
+        if not theme_name:
+            raise CommandError(
+                "Provide a theme name or use --all to validate all themes."
+            )
+
+        theme_dir = themes_dir / theme_name
+        if not theme_dir.is_dir():
+            raise CommandError(
+                f"Theme directory not found: {theme_dir}"
+            )
+
+        toml_path = theme_dir / "theme.toml"
+        if not toml_path.is_file():
+            raise CommandError(
+                f"theme.toml not found in: {theme_dir}"
+            )
+
+        self._validate_single_theme(theme_dir, registry, ThemeTokens)
+
+    def _validate_single_theme(self, theme_dir, registry, ThemeTokens):
+        """Run all validation checks on a single theme directory."""
+        from djust_theming.manifest import ThemeManifest
+
+        toml_path = theme_dir / "theme.toml"
+        theme_name = theme_dir.name
+        errors = []
+        warnings = []
+
+        self.stdout.write(f"\nValidating theme: {theme_name}")
+        self.stdout.write("-" * 40)
+
+        # 1. Parse TOML
+        try:
+            manifest = ThemeManifest.from_toml(toml_path)
+        except (ValueError, FileNotFoundError) as e:
+            raise CommandError(f"Failed to parse theme.toml for '{theme_name}': {e}")
+
+        # 2. Run manifest.validate() (name, preset, design system)
+        manifest_errors = manifest.validate()
+        for err in manifest_errors:
+            errors.append(err)
+
+        # 3. Validate static file references
+        for css_file in manifest.css:
+            css_path = theme_dir / css_file
+            if not css_path.is_file():
+                warnings.append(
+                    f"Static CSS file not found: {css_file}"
+                )
+
+        for font_file in manifest.fonts:
+            font_path = theme_dir / font_file
+            if not font_path.is_file():
+                warnings.append(
+                    f"Static font file not found: {font_file}"
+                )
+
+        # 4. Validate token override keys against ThemeTokens fields
+        valid_token_names = set(ThemeTokens.__dataclass_fields__.keys())
+        for key in manifest.overrides:
+            if key not in valid_token_names:
+                warnings.append(
+                    f"Unknown override key '{key}' — not a ThemeTokens field. "
+                    f"Valid keys include: {', '.join(sorted(list(valid_token_names)[:10]))}..."
+                )
+
+        # Print results
+        if errors:
+            for err in errors:
+                self.stdout.write(self.style.ERROR(f"  ERROR: {err}"))
+        if warnings:
+            for warn in warnings:
+                self.stdout.write(self.style.WARNING(f"  WARNING: {warn}"))
+
+        if not errors and not warnings:
+            self.stdout.write(self.style.SUCCESS(f"  PASS: All checks passed."))
+        elif not errors:
+            self.stdout.write(self.style.SUCCESS(
+                f"  PASS: Valid (with {len(warnings)} warning(s))."
+            ))

@@ -4,9 +4,8 @@ from django.conf import settings
 from django.core.checks import Error, Warning, register, Tags
 
 from .manager import get_theme_config
-from .presets import THEME_PRESETS
 from .accessibility import AccessibilityValidator
-from .theme_packs import DESIGN_SYSTEMS
+from .registry import get_registry
 
 
 # Foreground/background pairs to check (attr_fg, attr_bg, label)
@@ -32,7 +31,7 @@ def check_preset_contrast(app_configs, **kwargs):
     warnings = []
     validator = AccessibilityValidator()
 
-    for preset_name, preset in THEME_PRESETS.items():
+    for preset_name, preset in get_registry().list_presets().items():
         for mode_name in ("light", "dark"):
             tokens = getattr(preset, mode_name)
             for fg_attr, bg_attr, label in CONTRAST_PAIRS:
@@ -128,8 +127,9 @@ def check_preset_valid(app_configs, **kwargs):
     config = get_theme_config()
     preset = config.get("preset", "default")
 
-    if preset not in THEME_PRESETS:
-        valid_names = ", ".join(sorted(THEME_PRESETS.keys()))
+    registry = get_registry()
+    if not registry.has_preset(preset):
+        valid_names = ", ".join(sorted(registry.list_presets().keys()))
         errors.append(
             Error(
                 f'LIVEVIEW_CONFIG["theme"]["preset"] is set to "{preset}", '
@@ -149,8 +149,9 @@ def check_design_system_valid(app_configs, **kwargs):
     config = get_theme_config()
     theme = config.get("theme", "material")
 
-    if theme not in DESIGN_SYSTEMS:
-        valid_names = ", ".join(sorted(DESIGN_SYSTEMS.keys()))
+    registry = get_registry()
+    if not registry.has_theme(theme):
+        valid_names = ", ".join(sorted(registry.list_themes().keys()))
         errors.append(
             Error(
                 f'LIVEVIEW_CONFIG["theme"]["theme"] is set to "{theme}", '
