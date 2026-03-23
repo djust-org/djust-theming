@@ -1,13 +1,13 @@
-<div class="input-group {% if attrs.class %}{{ attrs.class }}{% endif %}">
+<div class="{{ css_prefix }}input-group {% if attrs.class %}{{ attrs.class }}{% endif %}">
     {% if label %}
-    <label for="{{ name }}" class="input-label">{{ label }}</label>
+    <label for="{{ name }}" class="{{ css_prefix }}input-label">{{ label }}</label>
     {% endif %}
     <input
         type="{{ type }}"
         name="{{ name }}"
         id="{{ name }}"
         placeholder="{{ placeholder }}"
-        class="input"
+        class="{{ css_prefix }}input"
         {% if attrs.value %}value="{{ attrs.value }}"{% endif %}
         {% if attrs.required %}required{% endif %}
         {% if attrs.disabled %}disabled{% endif %}

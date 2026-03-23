@@ -1,14 +1,14 @@
-<div class="alert alert-{{ variant }} {% if attrs.class %}{{ attrs.class }}{% endif %}"
+<div class="{{ css_prefix }}alert {{ css_prefix }}alert-{{ variant }} {% if attrs.class %}{{ attrs.class }}{% endif %}"
      role="alert"
      {% if attrs.id %}id="{{ attrs.id }}"{% endif %}>
-    <div class="alert-content">
+    <div class="{{ css_prefix }}alert-content">
         {% if title %}
-        <div class="alert-title">{{ title }}</div>
+        <div class="{{ css_prefix }}alert-title">{{ title }}</div>
         {% endif %}
-        <div class="alert-message">{{ message }}</div>
+        <div class="{{ css_prefix }}alert-message">{{ message }}</div>
     </div>
     {% if dismissible %}
-    <button class="alert-dismiss" onclick="this.parentElement.remove()" aria-label="Dismiss">
+    <button class="{{ css_prefix }}alert-dismiss" onclick="this.parentElement.remove()" aria-label="Dismiss">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>

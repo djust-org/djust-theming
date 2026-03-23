@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **CSS namespace prefixing (I17)** — New `css_prefix` option in `LIVEVIEW_CONFIG["theme"]` allows prefixing all component CSS class names (e.g. `.btn` becomes `.dj-btn`) to avoid collisions with Bootstrap, Bulma, or other CSS frameworks. Default is `""` (empty string) for full backward compatibility. When a prefix is set, `{% theme_head %}` renders component CSS inline with prefixed selectors instead of linking the static `components.css` file. All component templates (`button.html`, `card.html`, `alert.html`, `badge.html`, `input.html`, `theme_switcher.html`) use `{{ css_prefix }}` for class names. A new system check (`djust_theming.W002`) warns if the prefix does not end with `-`.
 - **Color format interoperability (I16)** — New `djust_theming.colors` module with 6 pure conversion functions: `hsl_to_rgb`, `rgb_to_hsl`, `hex_to_rgb`, `rgb_to_hex`, `hex_to_hsl`, `hsl_to_hex`. All functions are exported from the top-level package. `ColorScale` gains 5 new methods: `to_hex()`, `to_rgb()`, `to_rgb_func()` for output, and `from_hex()`, `from_rgb()` class methods for construction from hex/RGB values. The existing `hsl_to_rgb` in `AccessibilityValidator` now delegates to the shared `colors` module, eliminating duplicated color math.
 
 ### Deprecated

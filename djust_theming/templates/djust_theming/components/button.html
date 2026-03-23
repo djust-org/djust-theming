@@ -1,4 +1,4 @@
-<button class="btn btn-{{ variant }} btn-{{ size }} {% if attrs.class %}{{ attrs.class }}{% endif %}"
+<button class="{{ css_prefix }}btn {{ css_prefix }}btn-{{ variant }} {{ css_prefix }}btn-{{ size }} {% if attrs.class %}{{ attrs.class }}{% endif %}"
         {% if attrs.id %}id="{{ attrs.id }}"{% endif %}
         {% if attrs.onclick %}onclick="{{ attrs.onclick }}"{% endif %}
         {% if attrs.type %}type="{{ attrs.type }}"{% endif %}>

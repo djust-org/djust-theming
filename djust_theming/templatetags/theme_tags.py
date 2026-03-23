@@ -24,6 +24,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from ..components import PresetSelector, ThemeModeButton, ThemeSwitcher, ThemeSwitcherConfig
+from ..component_css_generator import generate_component_css
 from ..theme_css_generator import generate_theme_css
 from ..pack_css_generator import generate_pack_css
 from ..manager import get_theme_config, get_theme_manager
@@ -88,10 +89,24 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
 
         css_block = f"<style data-djust-theme>{css}</style>"
 
+    # Component CSS: inline when prefix is set, static link otherwise
+    config = get_theme_config()
+    css_prefix = config.get("css_prefix", "")
+    component_css_block = ""
+    include_component_link = True
+
+    if css_prefix:
+        # Generate prefixed component CSS inline
+        component_css = generate_component_css(css_prefix)
+        component_css_block = f"<style data-djust-components>{component_css}</style>"
+        include_component_link = False
+
     # Render via shared template
     html = render_to_string("djust_theming/theme_head.html", {
         "loading_class": True,
         "css_block": css_block,
+        "component_css_block": component_css_block,
+        "include_component_link": include_component_link,
         "include_js": include_js,
     })
     return mark_safe(html)

@@ -22,6 +22,7 @@ DEFAULT_CONFIG = {
     "persist_in_session": True,
     "session_key": "djust_theme",
     "enable_dark_mode": True,
+    "css_prefix": "",  # Namespace prefix for component CSS classes (e.g. "dj-")
 }
 
 

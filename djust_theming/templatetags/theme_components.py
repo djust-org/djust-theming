@@ -8,7 +8,14 @@ from django import template
 from django.utils.safestring import mark_safe
 from typing import Optional, List
 
+from ..manager import get_theme_config
+
 register = template.Library()
+
+
+def _css_prefix() -> str:
+    """Return the current css_prefix from theme config."""
+    return get_theme_config().get("css_prefix", "")
 
 
 @register.inclusion_tag('djust_theming/components/button.html')
@@ -31,6 +38,7 @@ def theme_button(text: str, variant: str = 'primary', size: str = 'md', **attrs)
         'variant': variant,
         'size': size,
         'attrs': attrs,
+        'css_prefix': _css_prefix(),
     }
 
 
@@ -53,6 +61,7 @@ def theme_card(title: Optional[str] = None, footer: Optional[str] = None, **attr
         'title': title,
         'footer': footer,
         'attrs': attrs,
+        'css_prefix': _css_prefix(),
     }
 
 
@@ -74,6 +83,7 @@ def theme_badge(text: str, variant: str = 'default', **attrs):
         'text': text,
         'variant': variant,
         'attrs': attrs,
+        'css_prefix': _css_prefix(),
     }
 
 
@@ -99,6 +109,7 @@ def theme_alert(message: str, title: Optional[str] = None, variant: str = 'defau
         'variant': variant,
         'dismissible': dismissible,
         'attrs': attrs,
+        'css_prefix': _css_prefix(),
     }
 
 
@@ -123,6 +134,7 @@ def theme_input(name: str, label: Optional[str] = None, placeholder: str = '', t
         'placeholder': placeholder,
         'type': type,
         'attrs': attrs,
+        'css_prefix': _css_prefix(),
     }
 
 

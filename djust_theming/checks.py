@@ -2,6 +2,7 @@
 
 from django.core.checks import Warning, register, Tags
 
+from .manager import get_theme_config
 from .presets import THEME_PRESETS
 from .accessibility import AccessibilityValidator
 
@@ -46,5 +47,26 @@ def check_preset_contrast(app_configs, **kwargs):
                             id="djust_theming.W001",
                         )
                     )
+
+    return warnings
+
+
+@register(Tags.compatibility)
+def check_css_prefix(app_configs, **kwargs):
+    """Warn if css_prefix is set but does not end with a dash."""
+    warnings = []
+    config = get_theme_config()
+    prefix = config.get("css_prefix", "")
+
+    if prefix and not prefix.endswith("-"):
+        warnings.append(
+            Warning(
+                f'css_prefix "{prefix}" does not end with "-". '
+                f'Component classes will render as ".{prefix}btn" instead of ".{prefix}-btn". '
+                f'Consider using "{prefix}-" for cleaner class names.',
+                hint='Add a trailing "-" to css_prefix, e.g. "dj-" instead of "dj".',
+                id="djust_theming.W002",
+            )
+        )
 
     return warnings
