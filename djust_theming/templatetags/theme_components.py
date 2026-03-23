@@ -13,7 +13,7 @@ Falling back to:
 
 from django import template
 from django.utils.safestring import mark_safe
-from typing import Optional, List
+from typing import Any, Optional, List
 
 from ..manager import get_theme_config
 from ..template_resolver import resolve_component_template
@@ -155,6 +155,172 @@ def theme_input(context, name: str, label: Optional[str] = None, placeholder: st
         'label': label,
         'placeholder': placeholder,
         'type': type,
+        'attrs': attrs,
+        'css_prefix': _css_prefix(),
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_modal(context, id: str, title: Optional[str] = None, size: str = 'md', **attrs):
+    """
+    Render a themed modal dialog.
+
+    Args:
+        id: Unique modal identifier (used for data-theme-modal-open triggers)
+        title: Optional modal title
+        size: 'sm', 'md', 'lg'
+        **attrs: Additional HTML attributes
+
+    Usage:
+        {% theme_modal id="confirm" title="Confirm Action" size="md" %}
+        <!-- Trigger: <button data-theme-modal-open="confirm">Open</button> -->
+    """
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "modal")
+    ctx = {
+        'id': id,
+        'title': title,
+        'size': size,
+        'attrs': attrs,
+        'css_prefix': _css_prefix(),
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_dropdown(context, id: str, label: str, align: str = 'left', **attrs):
+    """
+    Render a themed dropdown menu.
+
+    Args:
+        id: Unique dropdown identifier
+        label: Trigger button text
+        align: Menu alignment ('left' or 'right')
+        **attrs: Additional HTML attributes
+
+    Usage:
+        {% theme_dropdown id="actions" label="Actions" align="right" %}
+    """
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "dropdown")
+    ctx = {
+        'id': id,
+        'label': label,
+        'align': align,
+        'attrs': attrs,
+        'css_prefix': _css_prefix(),
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_tabs(context, id: str, tabs: Any = None, active: int = 0, **attrs):
+    """
+    Render themed tabs with panels.
+
+    Args:
+        id: Unique tabs identifier
+        tabs: List of dicts with 'label' and 'content' keys
+        active: Zero-based index of the initially active tab
+        **attrs: Additional HTML attributes
+
+    Usage:
+        {% theme_tabs id="settings" tabs=tab_list active=0 %}
+    """
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "tabs")
+    ctx = {
+        'id': id,
+        'tabs': tabs or [],
+        'active': active,
+        'attrs': attrs,
+        'css_prefix': _css_prefix(),
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_table(context, headers: Any = None, rows: Any = None, variant: str = 'default', caption: Optional[str] = None, **attrs):
+    """
+    Render a themed responsive table.
+
+    Args:
+        headers: List of column header strings
+        rows: List of row lists (each row is a list of cell values)
+        variant: 'default', 'striped', 'hover'
+        caption: Optional table caption
+        **attrs: Additional HTML attributes
+
+    Usage:
+        {% theme_table headers=headers rows=rows variant="striped" caption="Users" %}
+    """
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "table")
+    ctx = {
+        'headers': headers or [],
+        'rows': rows or [],
+        'variant': variant,
+        'caption': caption,
+        'attrs': attrs,
+        'css_prefix': _css_prefix(),
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_pagination(context, current_page: int = 1, total_pages: int = 1, url_pattern: str = '?page={}', show_edges: bool = True, **attrs):
+    """
+    Render themed pagination controls.
+
+    Args:
+        current_page: Current page number (1-based)
+        total_pages: Total number of pages
+        url_pattern: URL pattern with {} placeholder for page number
+        show_edges: Whether to show first/last page links
+        **attrs: Additional HTML attributes
+
+    Usage:
+        {% theme_pagination current_page=page total_pages=total url_pattern="/items/?page={}" %}
+    """
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "pagination")
+
+    # Build page range (show up to 5 pages around current)
+    window = 2
+    range_start = max(1, current_page - window)
+    range_end = min(total_pages, current_page + window)
+
+    page_range = []
+    for p in range(range_start, range_end + 1):
+        page_range.append({'number': p, 'url': url_pattern.format(p)})
+
+    # Edge detection
+    first_page = 1 if show_edges and range_start > 1 else None
+    first_url = url_pattern.format(1) if first_page else None
+    first_ellipsis = range_start > 2
+
+    last_page = total_pages if show_edges and range_end < total_pages else None
+    last_url = url_pattern.format(total_pages) if last_page else None
+    last_ellipsis = range_end < total_pages - 1
+
+    prev_url = url_pattern.format(current_page - 1) if current_page > 1 else None
+    next_url = url_pattern.format(current_page + 1) if current_page < total_pages else None
+
+    ctx = {
+        'current_page': current_page,
+        'total_pages': total_pages,
+        'url_pattern': url_pattern,
+        'show_edges': show_edges,
+        'page_range': page_range,
+        'first_page': first_page,
+        'first_url': first_url,
+        'first_ellipsis': first_ellipsis,
+        'last_page': last_page,
+        'last_url': last_url,
+        'last_ellipsis': last_ellipsis,
+        'prev_url': prev_url,
+        'next_url': next_url,
         'attrs': attrs,
         'css_prefix': _css_prefix(),
     }

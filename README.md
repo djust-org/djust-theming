@@ -51,11 +51,13 @@ Works standalone with any Django project, or integrates deeply with [djust](http
 - 📦 **Round-trip** import/export without data loss
 - 🎨 **Share themes** with the shadcn community
 
-### Component Library (v0.5.0)
-- 🧩 **Ready-to-use components**: Button, Card, Badge, Alert, Input
+### Component Library (v0.5.0+)
+- 🧩 **10 ready-to-use components**: Button, Card, Badge, Alert, Input, Modal, Dropdown, Tabs, Table, Pagination
 - 🎨 **Automatically themed** - adapt to your preset and mode
-- ♿ **Accessible** and responsive
+- ♿ **Accessible** - ARIA roles, keyboard navigation, screen reader support
 - 🔌 **Template tags** for easy integration
+- 🔧 **Slot system** for composable customization
+- ⚡ **Interactive components** - Modal, Dropdown, and Tabs include a zero-dependency JS behavior layer
 
 ### Theme Template Overrides (v1.1.0)
 - 🎭 **Per-theme template overrides** - provide different HTML for each design system
@@ -532,9 +534,7 @@ This means you can:
 
 ## Component Library
 
-**NEW in v0.5.0:** Pre-built theme-aware components! 🧩
-
-djust-theming includes a library of ready-to-use components that automatically adapt to your theme and light/dark mode.
+**10 pre-built theme-aware components** that automatically adapt to your theme and light/dark mode.
 
 ### Quick Start
 
@@ -560,20 +560,49 @@ djust-theming includes a library of ready-to-use components that automatically a
 
 <!-- Inputs -->
 {% theme_input "email" label="Email Address" placeholder="you@example.com" type="email" %}
+
+<!-- Modal (open with data-theme-modal-open="myModal") -->
+{% theme_modal id="myModal" title="Confirm" size="md" %}
+
+<!-- Dropdown -->
+{% theme_dropdown id="actions" label="Actions" align="right" %}
+
+<!-- Tabs -->
+{% theme_tabs id="settings" tabs=tab_list active=0 %}
+
+<!-- Table -->
+{% theme_table headers=headers rows=rows variant="striped" caption="Users" %}
+
+<!-- Pagination -->
+{% theme_pagination current_page=page total_pages=total url_pattern="/items/?page={}" %}
 ```
 
 ### Available Components
 
 All components use theme CSS variables and automatically adapt to theme changes:
 
-| Component | Variants | Usage |
-|-----------|----------|-------|
-| `theme_button` | primary, secondary, destructive, ghost, link | Buttons with consistent styling |
-| `theme_card` | - | Card containers with header/body/footer |
-| `theme_badge` | default, secondary, success, warning, destructive, outline | Small status indicators |
-| `theme_alert` | default, success, warning, destructive | Alert messages with optional dismissal |
-| `theme_input` | - | Form inputs with labels |
-| `theme_icon` | check, x, alert, info | SVG icons (integrate your own icon library) |
+| Component | Variants | Slots | Usage |
+|-----------|----------|-------|-------|
+| `theme_button` | primary, secondary, destructive, ghost, link | icon, content, loading | Buttons with consistent styling |
+| `theme_card` | - | header, body, footer | Card containers with header/body/footer |
+| `theme_badge` | default, secondary, success, warning, destructive, outline | content | Small status indicators |
+| `theme_alert` | default, success, warning, destructive | icon, message, actions, dismiss | Alert messages with optional dismissal |
+| `theme_input` | - | label, input, help_text, error | Form inputs with labels |
+| `theme_modal` | sm, md, lg | header, body, footer, close | Dialog overlays with backdrop and ESC-to-close |
+| `theme_dropdown` | left, right (alignment) | trigger, menu | Dropdown menus with keyboard navigation |
+| `theme_tabs` | - | (data-driven) | Tabbed interfaces with ARIA and keyboard support |
+| `theme_table` | default, striped, hover | caption, header, body, footer | Responsive data tables |
+| `theme_pagination` | - | prev, next | Page navigation with ellipsis and edge links |
+| `theme_icon` | check, x, alert, info | - | SVG icons (integrate your own icon library) |
+
+### Interactive Components
+
+Modal, Dropdown, and Tabs include a zero-dependency JavaScript behavior layer (`components.js`, ~4KB) that is automatically loaded by `{% theme_head %}`. It provides:
+
+- **Modals:** Open/close via data attributes, ESC key, backdrop click, scroll lock
+- **Dropdowns:** Toggle on click, close on click-outside, ArrowUp/Down keyboard navigation
+- **Tabs:** Click to switch, ArrowLeft/Right keyboard navigation, Home/End shortcuts
+- **LiveView compatible:** Auto-reinitializes on `djust:dom-update` events
 
 ### Styling & Customization
 
@@ -581,8 +610,8 @@ Component CSS is served from `static/djust_theming/css/components.css`, which is
 - ✅ Fully themed with CSS variables
 - ✅ Automatically adapt to light/dark mode
 - ✅ Responsive and accessible
-- ✅ Customizable via additional classes
-- ✅ No JavaScript required (except dismissible alerts)
+- ✅ Customizable via slot overrides and additional classes
+- ✅ Backed by machine-readable [component contracts](djust_theming/docs/component-contracts.md)
 
 ### Custom Styling
 

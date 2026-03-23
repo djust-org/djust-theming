@@ -19,5 +19,6 @@
 {{ deferred_css_block }}
 {% if include_component_link %}<link rel="stylesheet" href="{% static 'djust_theming/css/components.css' %}">{% endif %}
 {{ component_css_block }}
-{% if include_js %}<script src="{% static 'djust_theming/js/theme.js' %}" defer></script>{% endif %}
+{% if include_js %}<script src="{% static 'djust_theming/js/theme.js' %}" defer></script>
+<script src="{% static 'djust_theming/js/components.js' %}" defer></script>{% endif %}
 {% endautoescape %}
