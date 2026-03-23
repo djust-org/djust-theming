@@ -79,6 +79,109 @@ When overriding `theme_switcher.html`, preserve this conditional if you need to 
 
 ---
 
+## Color Conversions
+
+djust-theming provides a set of pure color conversion functions in `djust_theming.colors`, plus convenience methods on `ColorScale` for converting between HSL, RGB, and hex formats.
+
+### Standalone Functions
+
+All six functions are exported from the top-level package:
+
+```python
+from djust_theming import hsl_to_rgb, rgb_to_hsl, hex_to_rgb, rgb_to_hex, hex_to_hsl, hsl_to_hex
+```
+
+**HSL to RGB and back:**
+
+```python
+# HSL values: h (0-360), s (0-100), l (0-100)
+# RGB values: r, g, b each 0-255
+
+hsl_to_rgb(0, 100, 50)      # (255, 0, 0)  — pure red
+hsl_to_rgb(120, 100, 50)    # (0, 255, 0)  — pure green
+hsl_to_rgb(240, 100, 50)    # (0, 0, 255)  — pure blue
+
+rgb_to_hsl(255, 0, 0)       # (0, 100, 50) — pure red
+rgb_to_hsl(59, 130, 246)    # (217, 91, 60) — approximately
+```
+
+**Hex to RGB and back:**
+
+```python
+hex_to_rgb("#ff0000")        # (255, 0, 0)
+hex_to_rgb("#fff")           # (255, 255, 255)  — 3-digit shorthand
+hex_to_rgb("3b82f6")         # (59, 130, 246)   — # prefix is optional
+
+rgb_to_hex(255, 0, 0)        # "#ff0000"
+rgb_to_hex(59, 130, 246)     # "#3b82f6"
+```
+
+**Hex to HSL and back (composed from the above):**
+
+```python
+hex_to_hsl("#ff0000")        # (0, 100, 50)
+hsl_to_hex(0, 100, 50)      # "#ff0000"
+hsl_to_hex(0, 0, 100)       # "#ffffff"
+```
+
+### ColorScale Methods
+
+`ColorScale` has instance methods for output and class methods for construction:
+
+**Output methods (instance):**
+
+```python
+from djust_theming.presets import ColorScale
+
+color = ColorScale(221, 83, 53)
+
+color.to_hsl()       # "221 83% 53%"         — CSS variable value
+color.to_hsl_func()  # "hsl(221, 83%, 53%)"  — CSS function
+color.to_hex()       # "#3b82f6"             — hex string
+color.to_rgb()       # (59, 130, 246)        — RGB tuple
+color.to_rgb_func()  # "rgb(59, 130, 246)"   — CSS function
+```
+
+**Factory methods (class):**
+
+```python
+# Create a ColorScale from a hex color (e.g., from a design tool)
+color = ColorScale.from_hex("#3b82f6")
+# color.h, color.s, color.lightness are set to the HSL equivalent
+
+# Create a ColorScale from RGB values
+color = ColorScale.from_rgb(59, 130, 246)
+```
+
+This is useful when importing colors from design tools that export hex or RGB values. For example, to build a custom preset from Figma hex colors:
+
+```python
+from djust_theming.presets import ThemePreset, ThemeTokens, ColorScale, THEME_PRESETS
+
+MY_PRESET = ThemePreset(
+    name="figma-export",
+    display_name="Figma Export",
+    light=ThemeTokens(
+        background=ColorScale.from_hex("#ffffff"),
+        foreground=ColorScale.from_hex("#0f172a"),
+        primary=ColorScale.from_hex("#3b82f6"),
+        primary_foreground=ColorScale.from_hex("#f8fafc"),
+        # ... remaining tokens
+    ),
+    dark=ThemeTokens(
+        # ... dark mode tokens
+    ),
+)
+
+THEME_PRESETS["figma-export"] = MY_PRESET
+```
+
+### Rounding Behavior
+
+`ColorScale` stores HSL values as integers (h, s, lightness). When converting from hex or RGB to HSL, values are rounded to the nearest integer. This means a hex-to-HSL-to-hex round trip may differ by up to 1-2 per RGB channel. Hex-to-RGB-to-hex round trips are lossless.
+
+---
+
 ## Token Architecture
 
 djust-theming separates concerns into two token layers: **color tokens** (theme-dependent, light/dark aware) and **structural tokens** (theme-agnostic, set once).

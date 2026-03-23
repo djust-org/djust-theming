@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Color format interoperability (I16)** — New `djust_theming.colors` module with 6 pure conversion functions: `hsl_to_rgb`, `rgb_to_hsl`, `hex_to_rgb`, `rgb_to_hex`, `hex_to_hsl`, `hsl_to_hex`. All functions are exported from the top-level package. `ColorScale` gains 5 new methods: `to_hex()`, `to_rgb()`, `to_rgb_func()` for output, and `from_hex()`, `from_rgb()` class methods for construction from hex/RGB values. The existing `hsl_to_rgb` in `AccessibilityValidator` now delegates to the shared `colors` module, eliminating duplicated color math.
+
 ### Deprecated
 - **`themes.py` module deprecated in favor of `theme_packs.py` (I8)** — The `THEMES` dict, `get_theme()`, and `list_themes()` in `djust_theming.themes` now emit `DeprecationWarning` on every access. Use `DESIGN_SYSTEMS`, `get_design_system()`, and `get_all_design_systems()` from `djust_theming.theme_packs` instead. The old module still works and will continue to work for the remainder of the 1.x series, but will be removed in 2.0. See the [migration guide](djust_theming/docs/customization.md#migrating-from-themes-to-design_systems) for details.
 

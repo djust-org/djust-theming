@@ -6,6 +6,7 @@ multiple theme presets, and seamless Django/djust integration.
 """
 
 from .cache import clear_css_cache
+from .colors import hex_to_hsl, hex_to_rgb, hsl_to_hex, hsl_to_rgb, rgb_to_hex, rgb_to_hsl
 from .components import ThemeSwitcher
 from .css_generator import ThemeCSSGenerator
 from .manager import ThemeManager, ThemeState, get_theme_manager
@@ -26,6 +27,13 @@ from .presets import (
 __all__ = [
     # Cache
     "clear_css_cache",
+    # Color utilities
+    "hsl_to_rgb",
+    "rgb_to_hsl",
+    "hex_to_rgb",
+    "rgb_to_hex",
+    "hex_to_hsl",
+    "hsl_to_hex",
     # Presets
     "ColorScale",
     "ThemeTokens",
