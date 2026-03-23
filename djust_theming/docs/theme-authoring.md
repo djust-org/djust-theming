@@ -242,3 +242,115 @@ A theme is a self-contained directory. To share it:
 3. Package the entire theme directory
 
 Recipients can drop the directory into their `themes/` folder and it will be discovered automatically by `load_theme_manifests()`.
+
+## Theme Registry
+
+All presets, design systems, and manifests are managed through the **Theme Registry** -- a thread-safe singleton that acts as the single source of truth at runtime. The registry is populated automatically during Django startup (`AppConfig.ready()`).
+
+### How Discovery Works
+
+When your Django app starts, the registry loads data from four sources in order:
+
+1. **Built-in presets** -- All 19 presets from `THEME_PRESETS` (default, blue, green, purple, etc.)
+2. **Built-in design systems** -- All 11 design systems from `DESIGN_SYSTEMS` (material, ios, fluent, etc.)
+3. **`DJUST_THEMES` setting** -- pip-installed theme packages listed in your Django settings
+4. **`themes/` directory** -- `theme.toml` manifests discovered by scanning the configured themes directory
+
+You do not need to call any registration functions for built-in themes or themes in your `themes/` directory. They are registered automatically.
+
+### Querying the Registry
+
+```python
+from djust_theming.registry import get_registry
+
+registry = get_registry()
+
+# Check if a preset exists
+registry.has_preset("blue")        # True
+registry.has_preset("nonexistent") # False
+
+# Get a preset (returns None if missing)
+preset = registry.get_preset("blue")
+
+# List all registered presets
+for name, preset in registry.list_presets().items():
+    print(f"{name}: {preset.display_name}")
+
+# Same API for design systems
+registry.has_theme("material")
+registry.get_theme("ios")
+registry.list_themes()
+
+# Theme manifests (from theme.toml files)
+registry.get_manifest("my-brand")
+registry.list_manifests()
+```
+
+### Installing Third-Party Theme Packages
+
+Add pip-installed theme packages to the `DJUST_THEMES` setting:
+
+```python
+# settings.py
+DJUST_THEMES = [
+    "djust_theme_nord",      # hypothetical pip package
+    "djust_theme_catppuccin",
+]
+```
+
+Each package should expose one or more of these by convention:
+
+- `get_theme_manifest()` -- returns a `ThemeManifest` instance
+- `PRESETS` -- dict of `{name: ThemePreset}`
+- `DESIGN_SYSTEMS` -- dict of `{name: DesignSystem}`
+
+## Validating Themes
+
+Use the `validate-theme` management command to check a theme manifest for errors and warnings before deploying.
+
+### Usage
+
+```bash
+# Validate a single theme
+python manage.py djust_theme validate-theme my-brand
+
+# Validate all themes in the themes directory
+python manage.py djust_theme validate-theme --all
+
+# Validate themes in a custom directory
+python manage.py djust_theme validate-theme my-brand --dir=/path/to/themes
+python manage.py djust_theme validate-theme --all --dir=/path/to/themes
+```
+
+### What Gets Checked
+
+The validator runs these checks:
+
+| Check | Severity | Description |
+|-------|----------|-------------|
+| TOML parse | Error | `theme.toml` must be valid TOML |
+| `[theme].name` | Error | Must be present |
+| `[theme].version` | Error | Must be present |
+| Name format | Error | Must match `[a-z0-9][a-z0-9-]*` |
+| Preset exists | Error | `[tokens].preset` must be a registered preset |
+| Design system exists | Error | `[tokens].design_system` must be a registered design system |
+| Static CSS files | Warning | Referenced CSS files in `[static].css` must exist on disk |
+| Static font files | Warning | Referenced font files in `[static].fonts` must exist on disk |
+| Override keys | Warning | Keys in `[tokens.overrides]` must match `ThemeTokens` field names |
+
+### Example Output
+
+```
+Validating theme: my-brand
+----------------------------------------
+  PASS: All checks passed.
+```
+
+```
+Validating theme: broken-theme
+----------------------------------------
+  ERROR: Unknown preset 'nonexistent'. Valid presets: blue, default, ...
+  WARNING: Static CSS file not found: static/css/missing.css
+  WARNING: Unknown override key 'nonexistent_token' -- not a ThemeTokens field.
+  PASS: Valid (with 2 warning(s)).
+```

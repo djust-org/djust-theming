@@ -159,10 +159,11 @@ class ThemeManager:
         Returns:
             ThemeState with current theme, preset and mode
         """
-        from .theme_packs import DESIGN_SYSTEMS
+        from .registry import get_registry
         import logging
         logger = logging.getLogger(__name__)
 
+        registry = get_registry()
         session_data = self._get_session_data()
 
         # Check cookies for theme, preset, and pack (set by JavaScript)
@@ -196,11 +197,11 @@ class ThemeManager:
                 preset = theme_pack.color_preset
 
         # Validate theme
-        if theme not in DESIGN_SYSTEMS:
+        if not registry.has_theme(theme):
             theme = "material"
 
         # Validate preset
-        if preset not in THEME_PRESETS:
+        if not registry.has_preset(preset):
             preset = "default"
 
         # Validate mode
@@ -228,9 +229,9 @@ class ThemeManager:
         Returns:
             True if theme was valid and set
         """
-        from .theme_packs import DESIGN_SYSTEMS
+        from .registry import get_registry
 
-        if theme_name not in DESIGN_SYSTEMS:
+        if not get_registry().has_theme(theme_name):
             return False
 
         session_data = self._get_session_data()
@@ -248,7 +249,9 @@ class ThemeManager:
         Returns:
             True if preset was valid and set
         """
-        if preset_name not in THEME_PRESETS:
+        from .registry import get_registry
+
+        if not get_registry().has_preset(preset_name):
             return False
 
         session_data = self._get_session_data()
@@ -300,6 +303,8 @@ class ThemeManager:
 
     def get_available_presets(self) -> list[dict]:
         """Get list of available preset metadata."""
+        from .registry import get_registry
+
         return [
             {
                 "name": preset.name,
@@ -309,7 +314,7 @@ class ThemeManager:
                 "primary_hsl": preset.dark.primary.to_hsl(),
                 "primary_hsl_light": preset.light.primary.to_hsl(),
             }
-            for preset in THEME_PRESETS.values()
+            for preset in get_registry().list_presets().values()
         ]
 
     def get_context(self) -> dict:

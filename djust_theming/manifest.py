@@ -138,9 +138,9 @@ class ThemeManifest:
 
     def validate(self) -> list[str]:
         """Return a list of validation error messages. Empty list means valid."""
-        from .presets import THEME_PRESETS
-        from .theme_packs import DESIGN_SYSTEMS
+        from .registry import get_registry
 
+        registry = get_registry()
         errors: list[str] = []
 
         # Name validation: only [a-z0-9-], must start with alphanumeric
@@ -151,15 +151,15 @@ class ThemeManifest:
             )
 
         # Preset validation
-        if self.preset not in THEME_PRESETS:
-            valid = ", ".join(sorted(THEME_PRESETS.keys()))
+        if not registry.has_preset(self.preset):
+            valid = ", ".join(sorted(registry.list_presets().keys()))
             errors.append(
                 f"Unknown preset '{self.preset}'. Valid presets: {valid}"
             )
 
         # Design system validation
-        if self.design_system not in DESIGN_SYSTEMS:
-            valid = ", ".join(sorted(DESIGN_SYSTEMS.keys()))
+        if not registry.has_theme(self.design_system):
+            valid = ", ".join(sorted(registry.list_themes().keys()))
             errors.append(
                 f"Unknown design_system '{self.design_system}'. "
                 f"Valid design systems: {valid}"

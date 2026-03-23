@@ -112,7 +112,8 @@ class TestCheckPresetContrast:
         )
 
         patched_presets = {"bad": bad_preset}
-        with patch("djust_theming.checks.THEME_PRESETS", patched_presets):
+        with patch("djust_theming.checks.get_registry") as mock_reg:
+            mock_reg.return_value.list_presets.return_value = patched_presets
             warnings = check_preset_contrast(app_configs=None)
 
         # 12 pairs x 2 modes = 24 warnings expected
@@ -167,14 +168,16 @@ class TestCheckPresetContrast:
         )
 
         patched_presets = {"good": good_preset}
-        with patch("djust_theming.checks.THEME_PRESETS", patched_presets):
+        with patch("djust_theming.checks.get_registry") as mock_reg:
+            mock_reg.return_value.list_presets.return_value = patched_presets
             warnings = check_preset_contrast(app_configs=None)
 
         assert len(warnings) == 0
 
     def test_empty_presets_no_warnings(self):
-        """When THEME_PRESETS is empty, no warnings are produced."""
-        with patch("djust_theming.checks.THEME_PRESETS", {}):
+        """When the registry has no presets, no warnings are produced."""
+        with patch("djust_theming.checks.get_registry") as mock_reg:
+            mock_reg.return_value.list_presets.return_value = {}
             warnings = check_preset_contrast(app_configs=None)
 
         assert warnings == []

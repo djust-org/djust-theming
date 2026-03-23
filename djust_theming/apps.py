@@ -8,3 +8,6 @@ class DjustThemingConfig(AppConfig):
 
     def ready(self):
         from . import checks  # noqa: F401 -- triggers @register
+        from .registry import get_registry
+
+        get_registry().discover()
