@@ -1,7 +1,12 @@
 <div class="{{ css_prefix }}input-group {% if attrs.class %}{{ attrs.class }}{% endif %}">
-    {% if label %}
+    {% if slot_label %}
+    {{ slot_label|safe }}
+    {% elif label %}
     <label for="{{ name }}" class="{{ css_prefix }}input-label">{{ label }}</label>
     {% endif %}
+    {% if slot_input %}
+    {{ slot_input|safe }}
+    {% else %}
     <input
         type="{{ type }}"
         name="{{ name }}"
@@ -13,4 +18,11 @@
         {% if attrs.disabled %}disabled{% endif %}
         {% if attrs.readonly %}readonly{% endif %}
     />
+    {% endif %}
+    {% if slot_help_text %}
+    <div class="{{ css_prefix }}input-help">{{ slot_help_text|safe }}</div>
+    {% endif %}
+    {% if slot_error %}
+    <div class="{{ css_prefix }}input-error" role="alert">{{ slot_error|safe }}</div>
+    {% endif %}
 </div>
