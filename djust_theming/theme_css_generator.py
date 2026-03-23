@@ -12,6 +12,7 @@ Generates CSS custom properties for all aspects of a theme:
 
 from functools import lru_cache
 
+from .manager import get_theme_config
 from .themes import Theme, get_theme
 from .css_generator import ThemeCSSGenerator as ColorCSSGenerator
 
@@ -41,20 +42,40 @@ class CompleteThemeCSSGenerator:
 
     def generate_css(self) -> str:
         """Generate complete CSS for the theme."""
-        # Get full color CSS with light/dark modes
+        config = get_theme_config()
+        use_layers = config.get("use_css_layers", True)
+
+        # Get full color CSS with light/dark modes (already layer-wrapped by ColorCSSGenerator)
         color_css = self.color_generator.generate_css()
+
+        theme_vars = self._generate_theme_vars()
+        typography_css = self._generate_typography_classes()
+        component_css = self._generate_component_styles()
 
         parts = [
             "/* djust-theming - Complete Theme CSS */",
             "",
-            color_css,  # Full color CSS including light/dark modes
+            color_css,  # Full color CSS including light/dark modes (already layered)
             "",
-            self._generate_theme_vars(),  # Theme-specific vars (typography, spacing, etc.)
-            "",
-            self._generate_typography_classes(),
-            "",
-            self._generate_component_styles(),
         ]
+
+        if use_layers:
+            parts.extend([
+                f"@layer tokens {{\n{theme_vars}\n}}",
+                "",
+                f"@layer components {{\n{typography_css}\n}}",
+                "",
+                f"@layer components {{\n{component_css}\n}}",
+            ])
+        else:
+            parts.extend([
+                theme_vars,
+                "",
+                typography_css,
+                "",
+                component_css,
+            ])
+
         return "\n".join(parts)
 
     def _generate_theme_vars(self) -> str:

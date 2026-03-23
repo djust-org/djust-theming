@@ -1,3 +1,4 @@
+@layer components {
 /*
  * djust-theming component styles
  *
@@ -371,4 +372,5 @@
 
 [data-theme="dark"] .theme-mode-btn.active {
     background-color: hsl(var(--accent));
+}
 }

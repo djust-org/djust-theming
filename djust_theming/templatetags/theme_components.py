@@ -2,6 +2,13 @@
 Theme-aware component template tags.
 
 All components automatically use theme CSS variables and adapt to light/dark mode.
+Template resolution supports theme-specific overrides via:
+
+    djust_theming/themes/{theme_name}/components/{component}.html
+
+Falling back to:
+
+    djust_theming/components/{component}.html
 """
 
 from django import template
@@ -9,6 +16,7 @@ from django.utils.safestring import mark_safe
 from typing import Optional, List
 
 from ..manager import get_theme_config
+from ..template_resolver import resolve_component_template
 
 register = template.Library()
 
@@ -18,8 +26,8 @@ def _css_prefix() -> str:
     return get_theme_config().get("css_prefix", "")
 
 
-@register.inclusion_tag('djust_theming/components/button.html')
-def theme_button(text: str, variant: str = 'primary', size: str = 'md', **attrs):
+@register.simple_tag(takes_context=True)
+def theme_button(context, text: str, variant: str = 'primary', size: str = 'md', **attrs):
     """
     Render a themed button.
 
@@ -33,17 +41,20 @@ def theme_button(text: str, variant: str = 'primary', size: str = 'md', **attrs)
         {% theme_button "Click me" variant="primary" size="md" %}
         {% theme_button "Delete" variant="destructive" onclick="confirmDelete()" %}
     """
-    return {
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "button")
+    ctx = {
         'text': text,
         'variant': variant,
         'size': size,
         'attrs': attrs,
         'css_prefix': _css_prefix(),
     }
+    return mark_safe(tmpl.render(ctx))
 
 
-@register.inclusion_tag('djust_theming/components/card.html')
-def theme_card(title: Optional[str] = None, footer: Optional[str] = None, **attrs):
+@register.simple_tag(takes_context=True)
+def theme_card(context, title: Optional[str] = None, footer: Optional[str] = None, **attrs):
     """
     Render a themed card container.
 
@@ -57,16 +68,19 @@ def theme_card(title: Optional[str] = None, footer: Optional[str] = None, **attr
             <p>Card content goes here</p>
         {% end_theme_card %}
     """
-    return {
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "card")
+    ctx = {
         'title': title,
         'footer': footer,
         'attrs': attrs,
         'css_prefix': _css_prefix(),
     }
+    return mark_safe(tmpl.render(ctx))
 
 
-@register.inclusion_tag('djust_theming/components/badge.html')
-def theme_badge(text: str, variant: str = 'default', **attrs):
+@register.simple_tag(takes_context=True)
+def theme_badge(context, text: str, variant: str = 'default', **attrs):
     """
     Render a themed badge.
 
@@ -79,16 +93,19 @@ def theme_badge(text: str, variant: str = 'default', **attrs):
         {% theme_badge "New" variant="success" %}
         {% theme_badge "Beta" variant="secondary" %}
     """
-    return {
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "badge")
+    ctx = {
         'text': text,
         'variant': variant,
         'attrs': attrs,
         'css_prefix': _css_prefix(),
     }
+    return mark_safe(tmpl.render(ctx))
 
 
-@register.inclusion_tag('djust_theming/components/alert.html')
-def theme_alert(message: str, title: Optional[str] = None, variant: str = 'default', dismissible: bool = False, **attrs):
+@register.simple_tag(takes_context=True)
+def theme_alert(context, message: str, title: Optional[str] = None, variant: str = 'default', dismissible: bool = False, **attrs):
     """
     Render a themed alert.
 
@@ -103,7 +120,9 @@ def theme_alert(message: str, title: Optional[str] = None, variant: str = 'defau
         {% theme_alert "Operation successful!" variant="success" dismissible=True %}
         {% theme_alert "Error occurred" title="Error" variant="destructive" %}
     """
-    return {
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "alert")
+    ctx = {
         'message': message,
         'title': title,
         'variant': variant,
@@ -111,10 +130,11 @@ def theme_alert(message: str, title: Optional[str] = None, variant: str = 'defau
         'attrs': attrs,
         'css_prefix': _css_prefix(),
     }
+    return mark_safe(tmpl.render(ctx))
 
 
-@register.inclusion_tag('djust_theming/components/input.html')
-def theme_input(name: str, label: Optional[str] = None, placeholder: str = '', type: str = 'text', **attrs):
+@register.simple_tag(takes_context=True)
+def theme_input(context, name: str, label: Optional[str] = None, placeholder: str = '', type: str = 'text', **attrs):
     """
     Render a themed input field.
 
@@ -128,7 +148,9 @@ def theme_input(name: str, label: Optional[str] = None, placeholder: str = '', t
     Usage:
         {% theme_input "email" label="Email Address" placeholder="you@example.com" type="email" %}
     """
-    return {
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "input")
+    ctx = {
         'name': name,
         'label': label,
         'placeholder': placeholder,
@@ -136,6 +158,7 @@ def theme_input(name: str, label: Optional[str] = None, placeholder: str = '', t
         'attrs': attrs,
         'css_prefix': _css_prefix(),
     }
+    return mark_safe(tmpl.render(ctx))
 
 
 @register.simple_tag
