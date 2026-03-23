@@ -54,6 +54,43 @@ class ThemeState:
         }
 
 
+def get_css_prefix() -> str:
+    """Get the configured CSS namespace prefix."""
+    return get_theme_config().get("css_prefix", "")
+
+
+def generate_css_for_state(state: "ThemeState", css_prefix: str = "") -> str:
+    """
+    Generate CSS for a given theme state, handling pack-vs-theme selection.
+
+    Central function that consolidates the pack-or-theme CSS generation logic
+    previously duplicated across theme_tags, views, context_processors, and mixins.
+
+    Args:
+        state: Current ThemeState (from ThemeManager.get_state())
+        css_prefix: Namespace prefix for component CSS classes (e.g. "dj-")
+
+    Returns:
+        Generated CSS string
+    """
+    if state.pack:
+        try:
+            from .pack_css_generator import generate_pack_css
+
+            return generate_pack_css(pack_name=state.pack)
+        except ValueError:
+            # Fall back to theme generator if pack not found
+            pass
+
+    from .theme_css_generator import generate_theme_css
+
+    return generate_theme_css(
+        theme_name=state.theme,
+        color_preset=state.preset,
+        css_prefix=css_prefix,
+    )
+
+
 def get_theme_manager(request: HttpRequest | None = None) -> "ThemeManager":
     """
     Get or create a cached ThemeManager for the given request.

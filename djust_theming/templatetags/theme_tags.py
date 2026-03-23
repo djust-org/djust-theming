@@ -25,9 +25,7 @@ from django.utils.safestring import mark_safe
 
 from ..components import PresetSelector, ThemeModeButton, ThemeSwitcher, ThemeSwitcherConfig
 from ..component_css_generator import generate_component_css
-from ..theme_css_generator import generate_theme_css
-from ..pack_css_generator import generate_pack_css
-from ..manager import get_theme_config, get_theme_manager
+from ..manager import generate_css_for_state, get_css_prefix, get_theme_manager
 
 register = template.Library()
 
@@ -74,23 +72,12 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
             # Fallback to inline if URL not configured
             pass
 
-    # Get config early — needed for css_prefix in both CSS generation and component CSS
-    config = get_theme_config()
-    css_prefix = config.get("css_prefix", "")
+    # Get css_prefix — needed for both CSS generation and component CSS
+    css_prefix = get_css_prefix()
 
     if not css_block:
         # Generate CSS inline
-        css = ""
-        if state.pack:
-            try:
-                css = generate_pack_css(pack_name=state.pack)
-            except ValueError:
-                # Fall back if pack not found
-                pass
-
-        if not css:
-            css = generate_theme_css(theme_name=state.theme, color_preset=state.preset, css_prefix=css_prefix)
-
+        css = generate_css_for_state(state, css_prefix=css_prefix)
         css_block = f"<style data-djust-theme>{css}</style>"
 
     # Component CSS: inline when prefix is set, static link otherwise
@@ -128,17 +115,7 @@ def theme_css(context):
     manager = get_theme_manager(request)
     state = manager.get_state()
 
-    css = ""
-    if state.pack:
-        try:
-            css = generate_pack_css(pack_name=state.pack)
-        except ValueError:
-            pass
-
-    if not css:
-        config = get_theme_config()
-        prefix = config.get("css_prefix", "")
-        css = generate_theme_css(theme_name=state.theme, color_preset=state.preset, css_prefix=prefix)
+    css = generate_css_for_state(state, css_prefix=get_css_prefix())
 
     return format_html('<style data-djust-theme>{}</style>', mark_safe(css))
 
