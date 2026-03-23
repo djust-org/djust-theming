@@ -105,7 +105,87 @@ Each template receives context variables you can use in your overrides:
 
 **Component templates (button, card, alert, badge, input):**
 - Each receives its own set of context variables (variant, size, title, message, etc.)
-- Check the default template source for the full list
+- See [Component Contracts Reference](component-contracts.md) for the full list per component
+
+### Component Slots
+
+Every component template supports **slot variables** -- optional context variables that let you inject custom HTML into specific sections of a component without overriding the entire template. Slots are the recommended approach when you need to customize part of a component (e.g., add an icon to a button) while keeping the rest of the default structure.
+
+#### How slots work
+
+When you pass a slot variable to a component tag, it replaces the corresponding default content. If no slot is provided, the component renders its default output -- so existing code is unaffected.
+
+#### Slot examples
+
+**Button with icon:**
+
+```html
+{% theme_button text="Save" slot_icon='<svg class="icon-save" width="16" height="16"><use href="#save"/></svg>' %}
+```
+
+This renders the SVG before the button text. Without `slot_icon`, just the text appears.
+
+**Button with loading spinner:**
+
+```html
+{% theme_button text="Submit" slot_loading='<span class="spinner"></span> Saving...' %}
+```
+
+`slot_loading` replaces all button content (both icon and text), useful for async states.
+
+**Card with custom header and footer:**
+
+```html
+{% theme_card slot_header='<div class="flex items-center"><img src="avatar.png" class="avatar"/> <h3>User Profile</h3></div>' slot_footer='<button class="btn btn-primary">Edit</button>' %}
+```
+
+**Alert with actions:**
+
+```html
+{% theme_alert message="Delete this item?" variant="warning" slot_actions='<button class="btn btn-destructive">Delete</button> <button class="btn btn-secondary">Cancel</button>' %}
+```
+
+**Input with help text and error:**
+
+```html
+{% theme_input name="email" label="Email" slot_help_text="We will never share your email." slot_error="Please enter a valid email address." %}
+```
+
+**Input with custom element (textarea instead of input):**
+
+```html
+{% theme_input name="bio" label="Biography" slot_input='<textarea name="bio" id="bio" rows="4" class="input"></textarea>' %}
+```
+
+#### Available slots per component
+
+| Component | Slots |
+|-----------|-------|
+| Button | `slot_icon`, `slot_content`, `slot_loading` |
+| Card | `slot_header`, `slot_body`, `slot_footer` |
+| Alert | `slot_icon`, `slot_message`, `slot_actions`, `slot_dismiss` |
+| Badge | `slot_content` |
+| Input | `slot_label`, `slot_input`, `slot_help_text`, `slot_error` |
+
+For full details on each slot (what it overrides, priority rules, accessibility requirements), see the [Component Contracts Reference](component-contracts.md).
+
+#### Slots in template overrides
+
+If you are writing a theme-specific template override (see Template Overrides above), you can reference slot variables in your custom template. The slot values are passed through the template context:
+
+```html
+{# templates/djust_theming/themes/corporate/components/button.html #}
+<button class="corporate-btn corporate-btn-{{ variant }}">
+    {% if slot_loading %}
+        {{ slot_loading|safe }}
+    {% else %}
+        {% if slot_icon %}<span class="corporate-icon">{{ slot_icon|safe }}</span>{% endif %}
+        {% if slot_content %}{{ slot_content|safe }}{% else %}{{ text }}{% endif %}
+    {% endif %}
+</button>
+```
+
+**Important:** Slot variables contain trusted developer-supplied HTML and use the `|safe` filter. Never pass user input directly into slot variables.
 
 ### LiveView vs Vanilla Event Bindings
 
