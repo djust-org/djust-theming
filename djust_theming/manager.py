@@ -25,6 +25,7 @@ DEFAULT_CONFIG = {
     "css_prefix": "",  # Namespace prefix for component CSS classes (e.g. "dj-")
     "use_css_layers": True,  # Wrap generated CSS in @layer declarations
     "css_layer_order": "base, tokens, components, theme",  # Layer priority order
+    "themes_dir": "themes/",  # User theme directory, relative to BASE_DIR
 }
 
 

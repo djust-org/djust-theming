@@ -9,6 +9,7 @@ from .cache import clear_css_cache
 from .colors import hex_to_hsl, hex_to_rgb, hsl_to_hex, hsl_to_rgb, rgb_to_hex, rgb_to_hsl
 from .components import ThemeSwitcher
 from .css_generator import ThemeCSSGenerator
+from .manifest import ThemeManifest
 from .manager import ThemeManager, ThemeState, generate_css_for_state, get_css_prefix, get_theme_manager
 from .mixins import ThemeMixin
 from .palette import PaletteGenerator
@@ -46,6 +47,8 @@ __all__ = [
     "PURPLE_THEME",
     "ORANGE_THEME",
     "ROSE_THEME",
+    # Manifest
+    "ThemeManifest",
     # Core
     "ThemeCSSGenerator",
     "ThemeManager",
