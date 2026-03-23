@@ -92,7 +92,9 @@ class ComponentTestCase(unittest.TestCase):
         """
         from djust_theming.templatetags.theme_components import (
             theme_alert,
+            theme_avatar,
             theme_badge,
+            theme_breadcrumb,
             theme_button,
             theme_card,
             theme_checkbox,
@@ -100,11 +102,15 @@ class ComponentTestCase(unittest.TestCase):
             theme_input,
             theme_modal,
             theme_pagination,
+            theme_progress,
             theme_radio,
             theme_select,
+            theme_skeleton,
             theme_table,
             theme_tabs,
             theme_textarea,
+            theme_toast,
+            theme_tooltip,
         )
 
         tag_map = {
@@ -122,6 +128,12 @@ class ComponentTestCase(unittest.TestCase):
             "textarea": theme_textarea,
             "checkbox": theme_checkbox,
             "radio": theme_radio,
+            "breadcrumb": theme_breadcrumb,
+            "avatar": theme_avatar,
+            "toast": theme_toast,
+            "progress": theme_progress,
+            "skeleton": theme_skeleton,
+            "tooltip": theme_tooltip,
         }
 
         tag_fn = tag_map[tag_name]

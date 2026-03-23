@@ -462,6 +462,195 @@ def theme_radio(context, name: str, label: Optional[str] = None, options: Any = 
     return mark_safe(tmpl.render(ctx))
 
 
+@register.simple_tag(takes_context=True)
+def theme_breadcrumb(context, items: Any = None, separator: str = '/', **attrs):
+    """
+    Render a themed breadcrumb navigation.
+
+    Args:
+        items: List of dicts with 'label' and 'url' keys
+        separator: Separator character between items
+        **attrs: Additional HTML attributes
+
+    Usage:
+        {% theme_breadcrumb items=breadcrumbs separator=">" %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "breadcrumb")
+    ctx = {
+        'items': items or [],
+        'separator': separator,
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_avatar(context, src: Optional[str] = None, alt: str = '', name: str = '', size: str = 'md', **attrs):
+    """
+    Render a themed avatar with image or initials fallback.
+
+    Args:
+        src: Image URL
+        alt: Alt text for the image
+        name: Full name (used for initials fallback)
+        size: 'sm', 'md', 'lg'
+        **attrs: Additional HTML attributes
+
+    Usage:
+        {% theme_avatar src="/img/user.jpg" alt="John Doe" size="lg" %}
+        {% theme_avatar name="John Doe" size="md" %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "avatar")
+
+    # Generate initials from name
+    initials = ''
+    if name:
+        parts = name.strip().split()
+        if len(parts) >= 2:
+            initials = parts[0][0].upper() + parts[-1][0].upper()
+        elif parts:
+            initials = parts[0][0].upper()
+
+    ctx = {
+        'src': src,
+        'alt': alt,
+        'name': name,
+        'initials': initials,
+        'size': size,
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_toast(context, message: str, variant: str = 'info', position: str = 'top-right', duration: int = 5000, **attrs):
+    """
+    Render a themed toast notification.
+
+    Args:
+        message: Toast message
+        variant: 'success', 'warning', 'error', 'info'
+        position: 'top-right', 'top-left', 'bottom-right', 'bottom-left'
+        duration: Auto-dismiss duration in milliseconds
+        **attrs: Additional HTML attributes
+
+    Usage:
+        {% theme_toast "Saved!" variant="success" %}
+        {% theme_toast "Error occurred" variant="error" position="bottom-right" %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "toast")
+    ctx = {
+        'message': message,
+        'variant': variant,
+        'position': position,
+        'duration': duration,
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_progress(context, value: Any = None, max: int = 100, label: str = '', **attrs):
+    """
+    Render a themed progress bar.
+
+    Args:
+        value: Current value (None for indeterminate)
+        max: Maximum value
+        label: Accessible label text
+        **attrs: Additional HTML attributes
+
+    Usage:
+        {% theme_progress value=75 max=100 label="Upload progress" %}
+        {% theme_progress label="Loading..." %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "progress")
+
+    is_indeterminate = value is None
+    percentage = 0
+    if not is_indeterminate and max > 0:
+        percentage = min(100, (int(value) / int(max)) * 100)
+
+    ctx = {
+        'value': value,
+        'max': max,
+        'label': label,
+        'is_indeterminate': is_indeterminate,
+        'percentage': percentage,
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_skeleton(context, variant: str = 'text', width: str = '100%', height: str = '1rem', **attrs):
+    """
+    Render a themed skeleton loading placeholder.
+
+    Args:
+        variant: 'text', 'circle', 'rect'
+        width: CSS width value
+        height: CSS height value
+        **attrs: Additional HTML attributes
+
+    Usage:
+        {% theme_skeleton variant="text" width="200px" %}
+        {% theme_skeleton variant="circle" width="3rem" height="3rem" %}
+    """
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "skeleton")
+    ctx = {
+        'variant': variant,
+        'width': width,
+        'height': height,
+        'attrs': attrs,
+        'css_prefix': _css_prefix(),
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_tooltip(context, text: str, position: str = 'top', **attrs):
+    """
+    Render a CSS-only tooltip.
+
+    Args:
+        text: Tooltip text shown on hover
+        position: 'top', 'bottom', 'left', 'right'
+        **attrs: Additional HTML attributes (slot_content for wrapped content)
+
+    Usage:
+        {% theme_tooltip "Help text" position="top" slot_content="<button>Hover me</button>" %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "tooltip")
+    ctx = {
+        'text': text,
+        'position': position,
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
 @register.simple_tag
 def theme_icon(name: str, size: int = 20):
     """

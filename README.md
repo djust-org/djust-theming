@@ -52,7 +52,7 @@ Works standalone with any Django project, or integrates deeply with [djust](http
 - 🎨 **Share themes** with the shadcn community
 
 ### Component Library (v0.5.0+)
-- 🧩 **10 ready-to-use components**: Button, Card, Badge, Alert, Input, Modal, Dropdown, Tabs, Table, Pagination
+- 🧩 **20 ready-to-use components**: Button, Card, Badge, Alert, Input, Modal, Dropdown, Tabs, Table, Pagination, Select, Textarea, Checkbox, Radio, Breadcrumb, Avatar, Toast, Progress, Skeleton, Tooltip
 - 🎨 **Automatically themed** - adapt to your preset and mode
 - ♿ **Accessible** - ARIA roles, keyboard navigation, screen reader support
 - 🔌 **Template tags** for easy integration
@@ -534,7 +534,7 @@ This means you can:
 
 ## Component Library
 
-**10 pre-built theme-aware components** that automatically adapt to your theme and light/dark mode.
+**20 pre-built theme-aware components** that automatically adapt to your theme and light/dark mode.
 
 ### Quick Start
 
@@ -575,6 +575,20 @@ This means you can:
 
 <!-- Pagination -->
 {% theme_pagination current_page=page total_pages=total url_pattern="/items/?page={}" %}
+
+<!-- Form components -->
+{% theme_select "country" label="Country" options=countries placeholder="Choose..." %}
+{% theme_textarea "bio" label="Biography" rows=6 %}
+{% theme_checkbox "agree" label="I agree to terms" %}
+{% theme_radio "size" label="Size" options=sizes selected="md" %}
+
+<!-- Utility components -->
+{% theme_breadcrumb items=breadcrumbs separator=">" %}
+{% theme_avatar name="John Doe" size="md" %}
+{% theme_toast "Saved!" variant="success" %}
+{% theme_progress value=75 max=100 label="Upload" %}
+{% theme_skeleton variant="text" width="200px" %}
+{% theme_tooltip "Help text" position="top" %}
 ```
 
 ### Available Components
@@ -593,6 +607,16 @@ All components use theme CSS variables and automatically adapt to theme changes:
 | `theme_tabs` | - | (data-driven) | Tabbed interfaces with ARIA and keyboard support |
 | `theme_table` | default, striped, hover | caption, header, body, footer | Responsive data tables |
 | `theme_pagination` | - | prev, next | Page navigation with ellipsis and edge links |
+| `theme_select` | - | label, select, help_text, error | Styled select dropdowns with options |
+| `theme_textarea` | - | label, textarea, help_text, error | Multi-line text inputs |
+| `theme_checkbox` | - | label, description | Single checkboxes with label and description |
+| `theme_radio` | - | label, options | Radio button groups as fieldsets |
+| `theme_breadcrumb` | - | separator | Navigation breadcrumb trails |
+| `theme_avatar` | sm, md, lg | image, fallback | User avatars with image or initials fallback |
+| `theme_toast` | success, warning, error, info | message, actions | Notification toasts with auto-dismiss |
+| `theme_progress` | determinate, indeterminate | label | Progress bars with ARIA support |
+| `theme_skeleton` | text, circle, rect | - | Loading placeholders with shimmer animation |
+| `theme_tooltip` | top, bottom, left, right | content | CSS-only tooltips on hover |
 | `theme_icon` | check, x, alert, info | - | SVG icons (integrate your own icon library) |
 
 ### Interactive Components
