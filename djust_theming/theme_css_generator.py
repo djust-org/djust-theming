@@ -322,16 +322,17 @@ body {
 
 
 @lru_cache(maxsize=256)
-def generate_theme_css(theme_name: str, color_preset: str = None) -> str:
+def generate_theme_css(theme_name: str, color_preset: str = None, css_prefix: str = "") -> str:
     """
     Generate complete CSS for a theme (cached).
 
-    Results are cached by (theme_name, color_preset). Use
+    Results are cached by (theme_name, color_preset, css_prefix). Use
     ``clear_css_cache()`` to invalidate during development.
 
     Args:
         theme_name: Name of the theme (material, ios, fluent, etc.)
         color_preset: Optional color preset override
+        css_prefix: CSS class prefix for component styles (e.g. "dj-")
 
     Returns:
         Complete CSS string for the theme
@@ -344,5 +345,5 @@ def generate_theme_css(theme_name: str, color_preset: str = None) -> str:
         if theme:
             color_preset = theme.color_preset
 
-    generator = CompleteThemeCSSGenerator(theme_name, color_preset)
+    generator = CompleteThemeCSSGenerator(theme_name, color_preset, css_prefix=css_prefix)
     return generator.generate_css()

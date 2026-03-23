@@ -26,7 +26,7 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
 from .theme_css_generator import generate_theme_css
-from .manager import ThemeManager, get_theme_manager
+from .manager import ThemeManager, get_theme_config, get_theme_manager
 from .presets import THEME_PRESETS
 
 
@@ -93,7 +93,9 @@ class ThemeMixin:
         presets = self._theme_manager.get_available_presets()
 
         # Generate CSS using the cached convenience function
-        css = generate_theme_css(theme_name=state.theme, color_preset=state.preset)
+        config = get_theme_config()
+        prefix = config.get("css_prefix", "")
+        css = generate_theme_css(theme_name=state.theme, color_preset=state.preset, css_prefix=prefix)
 
         # Build the CSS block (link or inline style)
         from django.urls import reverse, NoReverseMatch

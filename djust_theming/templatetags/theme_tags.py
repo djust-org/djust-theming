@@ -74,6 +74,10 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
             # Fallback to inline if URL not configured
             pass
 
+    # Get config early — needed for css_prefix in both CSS generation and component CSS
+    config = get_theme_config()
+    css_prefix = config.get("css_prefix", "")
+
     if not css_block:
         # Generate CSS inline
         css = ""
@@ -85,13 +89,11 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
                 pass
 
         if not css:
-            css = generate_theme_css(theme_name=state.theme, color_preset=state.preset)
+            css = generate_theme_css(theme_name=state.theme, color_preset=state.preset, css_prefix=css_prefix)
 
         css_block = f"<style data-djust-theme>{css}</style>"
 
     # Component CSS: inline when prefix is set, static link otherwise
-    config = get_theme_config()
-    css_prefix = config.get("css_prefix", "")
     component_css_block = ""
     include_component_link = True
 
@@ -134,7 +136,9 @@ def theme_css(context):
             pass
 
     if not css:
-        css = generate_theme_css(theme_name=state.theme, color_preset=state.preset)
+        config = get_theme_config()
+        prefix = config.get("css_prefix", "")
+        css = generate_theme_css(theme_name=state.theme, color_preset=state.preset, css_prefix=prefix)
 
     return format_html('<style data-djust-theme>{}</style>', mark_safe(css))
 
