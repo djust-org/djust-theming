@@ -8,6 +8,7 @@ light and dark modes with system preference detection.
 from functools import lru_cache
 
 from .design_tokens import generate_design_tokens_css
+from .manager import get_theme_config
 from .presets import ThemeTokens, get_preset
 
 
@@ -339,9 +340,12 @@ pre code {
 
     def generate_css(self) -> str:
         """Generate complete CSS for the theme."""
-        sections = [
-            "/* djust_theming - Auto-generated CSS */",
-            "",
+        config = get_theme_config()
+        use_layers = config.get("use_css_layers", True)
+        layer_order = config.get("css_layer_order", "base, tokens, components, theme")
+
+        # Token CSS: :root vars, dark mode, system preference, design tokens
+        tokens_css_parts = [
             self._generate_light_mode(),
             "",
             self._generate_dark_mode(),
@@ -350,13 +354,35 @@ pre code {
         ]
 
         if self.include_design_tokens:
-            sections.extend(["", "", generate_design_tokens_css()])
+            tokens_css_parts.extend(["", "", generate_design_tokens_css()])
+
+        tokens_css = "\n".join(tokens_css_parts)
+
+        sections = [
+            "/* djust_theming - Auto-generated CSS */",
+            "",
+        ]
+
+        if use_layers:
+            sections.append(f"@layer {layer_order};")
+            sections.append("")
+            sections.append(f"@layer tokens {{\n{tokens_css}\n}}")
+        else:
+            sections.append(tokens_css)
 
         if self.include_base_styles:
-            sections.extend(["", self._generate_base_styles()])
+            base_css = self._generate_base_styles()
+            if use_layers:
+                sections.extend(["", f"@layer base {{\n{base_css}\n}}"])
+            else:
+                sections.extend(["", base_css])
 
         if self.include_utilities:
-            sections.extend(["", self._generate_utilities()])
+            utilities_css = self._generate_utilities()
+            if use_layers:
+                sections.extend(["", f"@layer components {{\n{utilities_css}\n}}"])
+            else:
+                sections.extend(["", utilities_css])
 
         return "\n".join(sections)
 

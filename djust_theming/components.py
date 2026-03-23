@@ -6,10 +6,11 @@ Provides reusable components for theme switching.
 
 from dataclasses import dataclass
 
-from django.template.loader import render_to_string
+from django.template.loader import render_to_string, select_template
 from django.utils.safestring import mark_safe
 
 from .manager import ThemeManager, get_theme_config
+from .template_resolver import _get_component_candidates, _get_theme_template_candidates
 
 
 @dataclass
@@ -69,7 +70,10 @@ class ThemeSwitcher:
     def render(self) -> str:
         """Render the theme switcher component."""
         context = self.get_context()
-        html = render_to_string("djust_theming/theme_switcher.html", context)
+        state = self.manager.get_state()
+        candidates = _get_theme_template_candidates(state.theme, "theme_switcher")
+        tmpl = select_template(candidates)
+        html = tmpl.render(context)
         return mark_safe(html)
 
     def __str__(self) -> str:
@@ -107,7 +111,10 @@ class ThemeModeButton:
     def render(self) -> str:
         """Render the mode toggle button via its Django template."""
         context = self.get_context()
-        html = render_to_string("djust_theming/components/theme_mode_button.html", context)
+        state = self.manager.get_state()
+        candidates = _get_component_candidates(state.theme, "theme_mode_button")
+        tmpl = select_template(candidates)
+        html = tmpl.render(context)
         return mark_safe(html)
 
     def __str__(self) -> str:
@@ -157,17 +164,26 @@ class PresetSelector:
 
     def _render_dropdown(self, context: dict) -> str:
         """Render as dropdown select via ``preset_selector_dropdown.html``."""
-        html = render_to_string("djust_theming/components/preset_selector_dropdown.html", context)
+        state = self.manager.get_state()
+        candidates = _get_component_candidates(state.theme, "preset_selector_dropdown")
+        tmpl = select_template(candidates)
+        html = tmpl.render(context)
         return mark_safe(html)
 
     def _render_grid(self, context: dict) -> str:
         """Render as grid of buttons via ``preset_selector_grid.html``."""
-        html = render_to_string("djust_theming/components/preset_selector_grid.html", context)
+        state = self.manager.get_state()
+        candidates = _get_component_candidates(state.theme, "preset_selector_grid")
+        tmpl = select_template(candidates)
+        html = tmpl.render(context)
         return mark_safe(html)
 
     def _render_list(self, context: dict) -> str:
         """Render as list of radio buttons via ``preset_selector_list.html``."""
-        html = render_to_string("djust_theming/components/preset_selector_list.html", context)
+        state = self.manager.get_state()
+        candidates = _get_component_candidates(state.theme, "preset_selector_list")
+        tmpl = select_template(candidates)
+        html = tmpl.render(context)
         return mark_safe(html)
 
     def __str__(self) -> str:

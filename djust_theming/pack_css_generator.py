@@ -7,6 +7,7 @@ and all other styling dimensions from a ThemePack.
 
 from functools import lru_cache
 
+from .manager import get_theme_config
 from .theme_packs import ThemePack, get_theme_pack
 from .theme_css_generator import CompleteThemeCSSGenerator
 
@@ -28,13 +29,14 @@ class ThemePackCSSGenerator:
 
     def generate_css(self) -> str:
         """Generate complete CSS for the theme pack."""
-        parts = [
-            f"/* Theme Pack: {self.pack.display_name} */",
-            f"/* {self.pack.description} */",
-            "",
-            "/* Base Theme CSS */",
-            self.theme_generator.generate_css(),
-            "",
+        config = get_theme_config()
+        use_layers = config.get("use_css_layers", True)
+
+        # Base theme CSS (already layer-wrapped by CompleteThemeCSSGenerator)
+        base_css = self.theme_generator.generate_css()
+
+        # Pack-specific additions
+        pack_parts = [
             "/* Icon Styles */",
             self._generate_icon_css(),
             "",
@@ -50,6 +52,22 @@ class ThemePackCSSGenerator:
             "/* Illustration Styles */",
             self._generate_illustration_css(),
         ]
+        pack_css = "\n".join(pack_parts)
+
+        parts = [
+            f"/* Theme Pack: {self.pack.display_name} */",
+            f"/* {self.pack.description} */",
+            "",
+            "/* Base Theme CSS */",
+            base_css,
+            "",
+        ]
+
+        if use_layers:
+            parts.append(f"@layer theme {{\n{pack_css}\n}}")
+        else:
+            parts.append(pack_css)
+
         return "\n".join(parts)
 
     def _generate_icon_css(self) -> str:

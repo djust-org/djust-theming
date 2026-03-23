@@ -66,7 +66,12 @@ _COMPONENT_CLASSES = sorted(
 
 
 def _read_static_css() -> str:
-    """Read the canonical static components.css file."""
+    """Read the canonical static components.css file.
+
+    If the file is wrapped in ``@layer components { ... }`` (for direct
+    ``<link>`` tag use), the wrapper is stripped so that callers can
+    re-wrap or prefix the raw content.
+    """
     css_path = (
         Path(__file__).resolve().parent
         / "static"
@@ -74,7 +79,16 @@ def _read_static_css() -> str:
         / "css"
         / "components.css"
     )
-    return css_path.read_text()
+    css = css_path.read_text()
+
+    # Strip outer @layer wrapper if present
+    stripped = css.strip()
+    if stripped.startswith("@layer components {") and stripped.endswith("}"):
+        # Remove the opening "@layer components {" and closing "}"
+        inner = stripped[len("@layer components {"):-1]
+        return inner.strip()
+
+    return css
 
 
 def _apply_prefix(css: str, prefix: str) -> str:
@@ -110,6 +124,9 @@ def _apply_prefix(css: str, prefix: str) -> str:
 def generate_component_css(prefix: str = "") -> str:
     """Return the component CSS with all class selectors prefixed.
 
+    When ``use_css_layers`` is enabled (default), the output is wrapped
+    in ``@layer components { ... }``.
+
     Args:
         prefix: Namespace prefix to prepend to every component class.
                 An empty string returns the original CSS unchanged.
@@ -117,5 +134,13 @@ def generate_component_css(prefix: str = "") -> str:
     Returns:
         Complete component CSS string.
     """
+    from .manager import get_theme_config
+
     css = _read_static_css()
-    return _apply_prefix(css, prefix)
+    css = _apply_prefix(css, prefix)
+
+    config = get_theme_config()
+    if config.get("use_css_layers", True):
+        css = f"@layer components {{\n{css}\n}}"
+
+    return css

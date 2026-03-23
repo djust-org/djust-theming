@@ -26,6 +26,7 @@ from django.utils.safestring import mark_safe
 from ..components import PresetSelector, ThemeModeButton, ThemeSwitcher, ThemeSwitcherConfig
 from ..component_css_generator import generate_component_css
 from ..manager import generate_css_for_state, get_css_prefix, get_theme_manager
+from ..template_resolver import resolve_theme_template
 
 register = template.Library()
 
@@ -120,7 +121,7 @@ def theme_css(context):
     return format_html('<style data-djust-theme>{}</style>', mark_safe(css))
 
 
-@register.inclusion_tag("djust_theming/theme_switcher.html", takes_context=True)
+@register.simple_tag(takes_context=True)
 def theme_switcher(
     context,
     show_presets: bool = True,
@@ -151,7 +152,9 @@ def theme_switcher(
     )
 
     switcher = ThemeSwitcher(theme_manager=manager, config=config)
-    return switcher.get_context()
+    tmpl = resolve_theme_template(request, "theme_switcher")
+    html = tmpl.render(switcher.get_context())
+    return mark_safe(html)
 
 
 @register.simple_tag(takes_context=True)

@@ -4,13 +4,20 @@ This guide covers how to customize djust-theming's templates, CSS, and behavior 
 
 ## Template Overrides
 
-All djust-theming components render through Django templates, which means you can override any component's HTML by providing your own template with the same path.
+All djust-theming components render through Django templates, which means you can override any component's HTML. There are two levels of template override: **global overrides** that apply regardless of theme, and **theme-specific overrides** that only activate when a particular design system theme is active.
 
 ### How It Works
 
-djust-theming looks for templates under `djust_theming/` in your template directories. Django's template resolution order means your project's templates take priority over the package defaults.
+When a component tag renders (e.g., `{% theme_button %}`), djust-theming resolves the template using a two-step fallback chain:
 
-To override a component template, create a file at the same path in your project's `templates/` directory:
+1. **Theme-specific override**: `djust_theming/themes/{theme_name}/components/{component}.html`
+2. **Default template**: `djust_theming/components/{component}.html`
+
+The first template found wins. If no theme-specific override exists, the default template (shipped with the package) is used. This resolution uses Django's `select_template()`, so templates can live in any configured template directory.
+
+### Global Overrides
+
+To override a component template for all themes, create a file at the default path in your project's `templates/` directory:
 
 ```
 your_project/
@@ -25,6 +32,45 @@ your_project/
         badge.html                 # Override badge rendering
         input.html                 # Override input rendering
 ```
+
+### Theme-Specific Overrides
+
+To override a template only when a specific design system theme is active (e.g., "corporate"), place the template under `themes/{theme_name}/`:
+
+```
+your_project/
+  templates/
+    djust_theming/
+      themes/
+        corporate/
+          theme_switcher.html                   # Corporate-specific switcher
+          components/
+            button.html                         # Corporate-specific button
+            card.html                           # Corporate-specific card
+        ios/
+          components/
+            button.html                         # iOS-specific button
+```
+
+When the active theme is `corporate`, `{% theme_button %}` renders `djust_theming/themes/corporate/components/button.html`. When the theme switches to `material` (which has no override), it falls back to `djust_theming/components/button.html`.
+
+This is useful when different design systems need fundamentally different HTML structures -- for example, a Material Design button with a ripple effect container versus a Minimalist button with no wrapper elements.
+
+### Resolution Order Summary
+
+For `{% theme_button %}` with the active theme set to `corporate`:
+
+| Priority | Template path | Source |
+|----------|---------------|--------|
+| 1 | `djust_theming/themes/corporate/components/button.html` | Your project (theme-specific) |
+| 2 | `djust_theming/components/button.html` | Your project (global override) or package default |
+
+For `{% theme_switcher %}` with the active theme set to `ios`:
+
+| Priority | Template path | Source |
+|----------|---------------|--------|
+| 1 | `djust_theming/themes/ios/theme_switcher.html` | Your project (theme-specific) |
+| 2 | `djust_theming/theme_switcher.html` | Your project (global override) or package default |
 
 ### Available Templates
 
@@ -76,6 +122,96 @@ The `theme_switcher.html` template uses a `liveview` context variable to switch 
 ```
 
 When overriding `theme_switcher.html`, preserve this conditional if you need to support both djust LiveView and vanilla Django usage.
+
+---
+
+## CSS Cascade Layers
+
+djust-theming wraps all generated CSS in [CSS cascade layers](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer) to give you predictable control over specificity. This means you can override any framework style without resorting to `!important` or fighting selector specificity.
+
+### Layer Order
+
+All generated CSS begins with a layer order declaration:
+
+```css
+@layer base, tokens, components, theme;
+```
+
+This establishes a priority hierarchy (lowest to highest):
+
+| Layer | Priority | Contents |
+|-------|----------|----------|
+| `base` | Lowest | Reset styles, body defaults, transition rules, reduced-motion media query |
+| `tokens` | Low | CSS custom properties (`:root` vars, dark mode vars, system preference, design tokens) |
+| `components` | Medium | Utility classes, component styles (`.btn`, `.card`, `.form-input`), typography classes |
+| `theme` | Highest | Reserved for theme author overrides -- empty by default |
+
+### How to Use the `theme` Layer
+
+The `theme` layer is declared in the layer order but left empty by the framework. To override any framework style, wrap your CSS in `@layer theme { ... }`:
+
+```css
+/* your-custom.css */
+@layer theme {
+  .btn {
+    border-radius: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .card {
+    border: 2px solid hsl(var(--border));
+    box-shadow: none;
+  }
+}
+```
+
+Because `theme` is declared after `components` in the layer order, your styles automatically win over the framework's component styles -- no `!important` needed, regardless of selector specificity.
+
+### Where Layers Are Applied
+
+The framework applies layers automatically across all CSS output paths:
+
+| CSS Source | Layer | Notes |
+|-----------|-------|-------|
+| `:root` vars, dark mode, design tokens | `tokens` | Generated by `{% theme_head %}` |
+| Base element styles (body, transitions) | `base` | Generated by `{% theme_head %}` |
+| Utility classes (`.bg-primary`, `.text-*`, `.btn-*`) | `components` | Generated by `{% theme_head %}` |
+| `components.css` (static file) | `components` | Loaded via `<link>` or inlined with prefix |
+| Typography classes (`.text-xs`, `.font-bold`) | `components` | Generated for design system themes |
+| Theme component styles (`.btn`, `.card`, `.form-input`) | `components` | Generated for design system themes |
+| Theme pack additions (icons, animations, patterns) | `theme` | Generated for theme packs |
+
+### Disabling CSS Layers
+
+If you need the pre-1.1 behavior (flat CSS with no `@layer` wrapping), set `use_css_layers` to `False` in your settings:
+
+```python
+# settings.py
+LIVEVIEW_CONFIG = {
+    'theme': {
+        'use_css_layers': False,  # Disable @layer wrapping
+    }
+}
+```
+
+When disabled, all CSS is output without any `@layer` wrappers, behaving identically to versions before 1.1.
+
+### Customizing Layer Order
+
+You can also change the layer order string (advanced usage):
+
+```python
+LIVEVIEW_CONFIG = {
+    'theme': {
+        'css_layer_order': 'base, tokens, components, utilities, theme',
+    }
+}
+```
+
+### Browser Support
+
+CSS cascade layers are supported in all modern browsers (Chrome 99+, Firefox 97+, Safari 15.4+, Edge 99+). For older browsers, layers are ignored and styles fall back to standard cascade behavior, which matches the pre-1.1 output.
 
 ---
 

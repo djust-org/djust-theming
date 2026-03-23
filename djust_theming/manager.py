@@ -23,6 +23,8 @@ DEFAULT_CONFIG = {
     "session_key": "djust_theme",
     "enable_dark_mode": True,
     "css_prefix": "",  # Namespace prefix for component CSS classes (e.g. "dj-")
+    "use_css_layers": True,  # Wrap generated CSS in @layer declarations
+    "css_layer_order": "base, tokens, components, theme",  # Layer priority order
 }
 
 

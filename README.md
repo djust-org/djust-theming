@@ -57,6 +57,13 @@ Works standalone with any Django project, or integrates deeply with [djust](http
 - ♿ **Accessible** and responsive
 - 🔌 **Template tags** for easy integration
 
+### Theme Template Overrides (v1.1.0)
+- 🎭 **Per-theme template overrides** - provide different HTML for each design system
+- 📂 **Convention-based resolution** - `themes/{theme_name}/components/{component}.html`
+- 🔄 **Automatic fallback** - falls back to default template when no override exists
+- 🏗️ **CSS cascade layers** - predictable `@layer` ordering (base, tokens, components, theme)
+- 🎯 **Override without `!important`** - use the `theme` layer for guaranteed specificity
+
 ### Powerful CLI (v0.6.0)
 - 🚀 **Quick setup** with `djust-theme init`
 - 🎨 **Generate configs** for Tailwind, shadcn, examples
@@ -670,7 +677,7 @@ See the [Customization Guide](djust_theming/docs/customization.md#accessibility-
 
 ## Documentation
 
-- **[Customization Guide](djust_theming/docs/customization.md)** -- Template overrides, color conversions, CSS architecture, caching, static file handling, accessibility validation
+- **[Customization Guide](djust_theming/docs/customization.md)** -- Template overrides, theme-specific templates, CSS cascade layers, color conversions, CSS architecture, caching, static file handling, accessibility validation
 - **[Design System](djust_theming/docs/design-system.md)** -- Spacing, typography, color tokens
 - **[Color Presets](djust_theming/docs/colors.md)** -- HSL color system and custom presets
 

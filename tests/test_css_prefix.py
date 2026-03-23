@@ -173,66 +173,81 @@ class TestThemeCSSGeneratorPrefix:
 # ---------------------------------------------------------------------------
 
 class TestComponentTemplateContextHasPrefix:
-    """Each inclusion tag returns css_prefix in context."""
+    """Each simple_tag renders HTML with prefixed class names."""
+
+    def _make_context(self):
+        """Create a minimal template context with a mock request."""
+        from unittest.mock import MagicMock
+        request = MagicMock()
+        request.COOKIES = {}
+        request.session = {}
+        request._djust_theme_manager = None
+        return {"request": request}
 
     def test_theme_button_context(self):
-        """theme_button returns css_prefix in its context."""
+        """theme_button renders HTML with dj- prefix on class names."""
         from djust_theming.templatetags.theme_components import theme_button
 
+        ctx = self._make_context()
         with patch.object(
             settings, "LIVEVIEW_CONFIG",
             {"theme": {"css_prefix": "dj-"}}, create=True,
         ):
-            ctx = theme_button("Click me")
-        assert ctx["css_prefix"] == "dj-"
+            html = theme_button(ctx, "Click me")
+        assert "dj-btn" in html
 
     def test_theme_card_context(self):
         from djust_theming.templatetags.theme_components import theme_card
 
+        ctx = self._make_context()
         with patch.object(
             settings, "LIVEVIEW_CONFIG",
             {"theme": {"css_prefix": "dj-"}}, create=True,
         ):
-            ctx = theme_card(title="Test")
-        assert ctx["css_prefix"] == "dj-"
+            html = theme_card(ctx, title="Test")
+        assert "dj-card" in html
 
     def test_theme_badge_context(self):
         from djust_theming.templatetags.theme_components import theme_badge
 
+        ctx = self._make_context()
         with patch.object(
             settings, "LIVEVIEW_CONFIG",
             {"theme": {"css_prefix": "dj-"}}, create=True,
         ):
-            ctx = theme_badge("New")
-        assert ctx["css_prefix"] == "dj-"
+            html = theme_badge(ctx, "New")
+        assert "dj-badge" in html
 
     def test_theme_alert_context(self):
         from djust_theming.templatetags.theme_components import theme_alert
 
+        ctx = self._make_context()
         with patch.object(
             settings, "LIVEVIEW_CONFIG",
             {"theme": {"css_prefix": "dj-"}}, create=True,
         ):
-            ctx = theme_alert("Error occurred")
-        assert ctx["css_prefix"] == "dj-"
+            html = theme_alert(ctx, "Error occurred")
+        assert "dj-alert" in html
 
     def test_theme_input_context(self):
         from djust_theming.templatetags.theme_components import theme_input
 
+        ctx = self._make_context()
         with patch.object(
             settings, "LIVEVIEW_CONFIG",
             {"theme": {"css_prefix": "dj-"}}, create=True,
         ):
-            ctx = theme_input("email")
-        assert ctx["css_prefix"] == "dj-"
+            html = theme_input(ctx, "email")
+        assert "dj-input" in html
 
     def test_empty_prefix_by_default(self):
-        """Without config, css_prefix is empty string."""
+        """Without config, class names have no prefix."""
         from djust_theming.templatetags.theme_components import theme_button
 
+        ctx = self._make_context()
         with patch.object(settings, "LIVEVIEW_CONFIG", {}, create=True):
-            ctx = theme_button("Click me")
-        assert ctx["css_prefix"] == ""
+            html = theme_button(ctx, "Click me")
+        assert "btn " in html or "btn-" in html
 
 
 # ---------------------------------------------------------------------------
