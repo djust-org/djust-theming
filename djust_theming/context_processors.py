@@ -9,7 +9,7 @@ from django.utils.safestring import mark_safe
 
 from .theme_css_generator import generate_theme_css
 from .pack_css_generator import generate_pack_css
-from .manager import get_theme_manager
+from .manager import get_theme_config, get_theme_manager
 
 
 def theme_context(request):
@@ -26,14 +26,16 @@ def theme_context(request):
     state = manager.get_state()
 
     # Generate CSS - use pack generator if pack is set, otherwise use theme generator
+    config = get_theme_config()
+    prefix = config.get("css_prefix", "")
     if state.pack:
         try:
             css = generate_pack_css(pack_name=state.pack)
         except ValueError:
             # Fall back to theme generator if pack not found
-            css = generate_theme_css(theme_name=state.theme, color_preset=state.preset)
+            css = generate_theme_css(theme_name=state.theme, color_preset=state.preset, css_prefix=prefix)
     else:
-        css = generate_theme_css(theme_name=state.theme, color_preset=state.preset)
+        css = generate_theme_css(theme_name=state.theme, color_preset=state.preset, css_prefix=prefix)
 
     # Anti-FOUC script
     anti_fouc_script = """<script>

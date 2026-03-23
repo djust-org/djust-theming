@@ -177,9 +177,10 @@ LIVEVIEW_CONFIG = {
     'theme': {
         'theme': 'material',        # Design system (material, ios, fluent, etc.)
         'preset': 'blue',           # Color preset
-        'default_mode': 'system',    # light, dark, or system
+        'default_mode': 'system',   # light, dark, or system
         'persist_in_session': True,
         'enable_dark_mode': True,
+        'css_prefix': '',           # Namespace prefix for component classes (e.g. 'dj-')
     }
 }
 ```

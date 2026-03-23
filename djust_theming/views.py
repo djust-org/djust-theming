@@ -3,7 +3,7 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.http import etag
 from django.utils.cache import patch_vary_headers
 
-from .manager import get_theme_manager
+from .manager import get_theme_config, get_theme_manager
 from .theme_css_generator import generate_theme_css
 from .pack_css_generator import generate_pack_css
 
@@ -21,7 +21,9 @@ def _generate_css_content(request):
             # Fall back to theme generator if pack not found
             pass
 
-    return generate_theme_css(theme_name=state.theme, color_preset=state.preset)
+    config = get_theme_config()
+    prefix = config.get("css_prefix", "")
+    return generate_theme_css(theme_name=state.theme, color_preset=state.preset, css_prefix=prefix)
 
 
 def _css_etag(request, *args, **kwargs):

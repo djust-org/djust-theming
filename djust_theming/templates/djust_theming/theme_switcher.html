@@ -1,9 +1,9 @@
 {# Theme switcher component template #}
-<div class="theme-switcher {{ dropdown_class }}" data-theme-switcher>
+<div class="{{ css_prefix }}theme-switcher {{ dropdown_class }}" data-theme-switcher>
     {% if show_mode_toggle %}
-    <div class="theme-mode-controls">
+    <div class="{{ css_prefix }}theme-mode-controls">
         <button type="button"
-                class="theme-mode-btn {{ button_class }}{% if theme_mode == 'light' %} active{% endif %}"
+                class="{{ css_prefix }}theme-mode-btn {{ button_class }}{% if theme_mode == 'light' %} active{% endif %}"
                 {% if liveview %}dj-click="set_theme_mode" data-dj-mode="light"{% else %}data-djust-event="set_theme_mode" data-djust-params='{"mode": "light"}'{% endif %}
                 aria-label="Light mode"
                 title="Light mode">
@@ -23,7 +23,7 @@
         </button>
 
         <button type="button"
-                class="theme-mode-btn {{ button_class }}{% if theme_mode == 'dark' %} active{% endif %}"
+                class="{{ css_prefix }}theme-mode-btn {{ button_class }}{% if theme_mode == 'dark' %} active{% endif %}"
                 {% if liveview %}dj-click="set_theme_mode" data-dj-mode="dark"{% else %}data-djust-event="set_theme_mode" data-djust-params='{"mode": "dark"}'{% endif %}
                 aria-label="Dark mode"
                 title="Dark mode">
@@ -35,7 +35,7 @@
         </button>
 
         <button type="button"
-                class="theme-mode-btn {{ button_class }}{% if theme_mode == 'system' %} active{% endif %}"
+                class="{{ css_prefix }}theme-mode-btn {{ button_class }}{% if theme_mode == 'system' %} active{% endif %}"
                 {% if liveview %}dj-click="set_theme_mode" data-dj-mode="system"{% else %}data-djust-event="set_theme_mode" data-djust-params='{"mode": "system"}'{% endif %}
                 aria-label="System preference"
                 title="Follow system preference">
@@ -51,8 +51,8 @@
     {% endif %}
 
     {% if show_presets and presets %}
-    <div class="theme-preset-controls">
-        <select class="theme-preset-select {{ dropdown_class }}"
+    <div class="{{ css_prefix }}theme-preset-controls">
+        <select class="{{ css_prefix }}theme-preset-select {{ dropdown_class }}"
                 {% if liveview %}dj-change="set_theme_preset"{% else %}data-djust-event="set_theme_preset" data-djust-value-key="preset"{% endif %}
                 aria-label="Select theme">
             {% for preset in presets %}

@@ -1,15 +1,15 @@
-<div class="card {% if attrs.class %}{{ attrs.class }}{% endif %}"
+<div class="{{ css_prefix }}card {% if attrs.class %}{{ attrs.class }}{% endif %}"
      {% if attrs.id %}id="{{ attrs.id }}"{% endif %}>
     {% if title %}
-    <div class="card-header">
-        <h3 class="card-title">{{ title }}</h3>
+    <div class="{{ css_prefix }}card-header">
+        <h3 class="{{ css_prefix }}card-title">{{ title }}</h3>
     </div>
     {% endif %}
-    <div class="card-body">
+    <div class="{{ css_prefix }}card-body">
         {{ content }}
     </div>
     {% if footer %}
-    <div class="card-footer">
+    <div class="{{ css_prefix }}card-footer">
         {{ footer }}
     </div>
     {% endif %}

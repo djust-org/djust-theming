@@ -16,6 +16,7 @@
 })();
 </script>
 {{ css_block }}
-<link rel="stylesheet" href="{% static 'djust_theming/css/components.css' %}">
+{% if include_component_link %}<link rel="stylesheet" href="{% static 'djust_theming/css/components.css' %}">{% endif %}
+{{ component_css_block }}
 {% if include_js %}<script src="{% static 'djust_theming/js/theme.js' %}" defer></script>{% endif %}
 {% endautoescape %}

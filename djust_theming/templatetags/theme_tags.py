@@ -24,6 +24,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 from ..components import PresetSelector, ThemeModeButton, ThemeSwitcher, ThemeSwitcherConfig
+from ..component_css_generator import generate_component_css
 from ..theme_css_generator import generate_theme_css
 from ..pack_css_generator import generate_pack_css
 from ..manager import get_theme_config, get_theme_manager
@@ -73,6 +74,10 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
             # Fallback to inline if URL not configured
             pass
 
+    # Get config early — needed for css_prefix in both CSS generation and component CSS
+    config = get_theme_config()
+    css_prefix = config.get("css_prefix", "")
+
     if not css_block:
         # Generate CSS inline
         css = ""
@@ -84,14 +89,26 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
                 pass
 
         if not css:
-            css = generate_theme_css(theme_name=state.theme, color_preset=state.preset)
+            css = generate_theme_css(theme_name=state.theme, color_preset=state.preset, css_prefix=css_prefix)
 
         css_block = f"<style data-djust-theme>{css}</style>"
+
+    # Component CSS: inline when prefix is set, static link otherwise
+    component_css_block = ""
+    include_component_link = True
+
+    if css_prefix:
+        # Generate prefixed component CSS inline
+        component_css = generate_component_css(css_prefix)
+        component_css_block = f"<style data-djust-components>{component_css}</style>"
+        include_component_link = False
 
     # Render via shared template
     html = render_to_string("djust_theming/theme_head.html", {
         "loading_class": True,
         "css_block": css_block,
+        "component_css_block": component_css_block,
+        "include_component_link": include_component_link,
         "include_js": include_js,
     })
     return mark_safe(html)
@@ -119,7 +136,9 @@ def theme_css(context):
             pass
 
     if not css:
-        css = generate_theme_css(theme_name=state.theme, color_preset=state.preset)
+        config = get_theme_config()
+        prefix = config.get("css_prefix", "")
+        css = generate_theme_css(theme_name=state.theme, color_preset=state.preset, css_prefix=prefix)
 
     return format_html('<style data-djust-theme>{}</style>', mark_safe(css))
 

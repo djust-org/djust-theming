@@ -404,6 +404,128 @@ Any remaining `themes.py` usage will print a warning with the import location, m
 
 ---
 
+## CSS Namespace Prefixing
+
+djust-theming uses generic CSS class names like `.btn`, `.card`, `.alert`, and `.badge` for its component templates. If your project also includes Bootstrap, Bulma, or another CSS framework that uses these same class names, the styles will collide.
+
+To avoid collisions, you can configure a **CSS namespace prefix** that is prepended to every component class name.
+
+### Configuration
+
+Add `css_prefix` to your `LIVEVIEW_CONFIG["theme"]` settings:
+
+```python
+# settings.py
+LIVEVIEW_CONFIG = {
+    "theme": {
+        "css_prefix": "dj-",   # All component classes become .dj-btn, .dj-card, etc.
+    }
+}
+```
+
+- **Default:** `""` (empty string) -- no prefix, full backward compatibility.
+- **Convention:** The prefix should end with `-` for readable class names (e.g., `"dj-"` produces `.dj-btn`). If you omit the trailing dash, a Django system check (`djust_theming.W002`) will warn you.
+
+### What Gets Prefixed
+
+Component CSS classes used by `{% theme_button %}`, `{% theme_card %}`, `{% theme_alert %}`, `{% theme_badge %}`, `{% theme_input %}`, and `{% theme_switcher %}` are all prefixed:
+
+| Original class | Prefixed (with `"dj-"`) |
+|----------------|-------------------------|
+| `.btn` | `.dj-btn` |
+| `.btn-primary` | `.dj-btn-primary` |
+| `.card` | `.dj-card` |
+| `.card-header` | `.dj-card-header` |
+| `.alert` | `.dj-alert` |
+| `.badge` | `.dj-badge` |
+| `.input` | `.dj-input` |
+| `.input-group` | `.dj-input-group` |
+| `.theme-switcher` | `.dj-theme-switcher` |
+| `.theme-mode-btn` | `.dj-theme-mode-btn` |
+
+### What Does NOT Get Prefixed
+
+- **`base.css` utility classes** (`.mt-2`, `.flex`, `.gap-4`, `.font-sans`, etc.) -- these are opt-in via a manual `<link>` tag and are not changed by the prefix setting.
+- **CSS custom properties** (`--primary`, `--background`, `--radius`, etc.) -- these are variables, not class names.
+- **Typography classes** in theme CSS (`.font-sans`, `.text-xs`, etc.) -- these are utilities, not component selectors.
+
+### How It Works
+
+When `css_prefix` is empty (the default), `{% theme_head %}` includes the static `components.css` file via a `<link>` tag, exactly as before.
+
+When `css_prefix` is set to a non-empty value:
+
+1. `{% theme_head %}` generates the component CSS inline (in a `<style>` tag) with all class selectors rewritten to include the prefix.
+2. All component templates (`button.html`, `card.html`, etc.) render class names with the prefix: `class="{{ css_prefix }}btn"` becomes `class="dj-btn"`.
+3. The `CompleteThemeCSSGenerator` also applies the prefix to component selectors it generates (`.btn`, `.card`, `.form-input`).
+
+### Using Prefixed Classes in Your Own Templates
+
+If you write HTML manually (instead of using template tags), use the prefixed class names:
+
+```html
+<!-- Without prefix (default) -->
+<button class="btn btn-primary">Click</button>
+
+<!-- With css_prefix="dj-" -->
+<button class="dj-btn dj-btn-primary">Click</button>
+```
+
+If you override component templates, your templates receive `{{ css_prefix }}` in their context:
+
+```html
+<!-- your_project/templates/djust_theming/components/button.html -->
+<button class="{{ css_prefix }}btn {{ css_prefix }}btn-{{ variant }}">
+    {{ text }}
+</button>
+```
+
+### Combining with Bootstrap or Other Frameworks
+
+A typical setup for using djust-theming alongside Bootstrap:
+
+```python
+# settings.py
+LIVEVIEW_CONFIG = {
+    "theme": {
+        "css_prefix": "dj-",
+        "preset": "blue",
+    }
+}
+```
+
+```html
+{% load theme_tags theme_components static %}
+<head>
+    {% theme_head %}
+    <link href="bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Bootstrap button (uses .btn) -->
+    <button class="btn btn-primary">Bootstrap Button</button>
+
+    <!-- djust-theming button (uses .dj-btn via template tag) -->
+    {% theme_button "Themed Button" variant="primary" %}
+</body>
+```
+
+Both sets of classes coexist without collision.
+
+### System Check
+
+If you set `css_prefix` without a trailing `-`, Django will emit a warning at startup:
+
+```
+?: (djust_theming.W002) css_prefix "dj" does not end with "-". Component classes
+   will render as ".djbtn" instead of ".dj-btn". Consider using "dj-" for cleaner
+   class names.
+    HINT: Add a trailing "-" to css_prefix, e.g. "dj-" instead of "dj".
+```
+
+Silence this warning with `SILENCED_SYSTEM_CHECKS = ["djust_theming.W002"]` if the behavior is intentional.
+
+---
+
 ## CSS Architecture
 
 djust-theming ships two CSS files with distinct purposes:

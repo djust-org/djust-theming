@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
-from .manager import ThemeManager
+from .manager import ThemeManager, get_theme_config
 
 
 @dataclass
@@ -63,6 +63,7 @@ class ThemeSwitcher:
             "dropdown_position": self.config.dropdown_position,
             "button_class": self.config.button_class,
             "dropdown_class": self.config.dropdown_class,
+            "css_prefix": get_theme_config().get("css_prefix", ""),
         }
 
     def render(self) -> str:
@@ -100,6 +101,7 @@ class ThemeModeButton:
             "theme_resolved_mode": state.resolved_mode,
             "button_class": self.button_class,
             "show_label": self.show_label,
+            "css_prefix": get_theme_config().get("css_prefix", ""),
         }
 
     def render(self) -> str:

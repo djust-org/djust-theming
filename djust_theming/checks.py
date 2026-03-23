@@ -1,7 +1,8 @@
 """Django system checks for djust-theming accessibility validation."""
 
-from django.core.checks import Warning, register, Tags
+from django.core.checks import Error, Warning, register, Tags
 
+from .manager import get_theme_config
 from .presets import THEME_PRESETS
 from .accessibility import AccessibilityValidator
 
@@ -48,3 +49,40 @@ def check_preset_contrast(app_configs, **kwargs):
                     )
 
     return warnings
+
+
+@register(Tags.compatibility)
+def check_css_prefix(app_configs, **kwargs):
+    """Validate css_prefix is safe and well-formed."""
+    import re
+    errors = []
+    config = get_theme_config()
+    prefix = config.get("css_prefix", "")
+
+    if not prefix:
+        return errors
+
+    # Security: reject characters that could break CSS selectors or inject HTML
+    if not re.match(r'^[a-zA-Z][a-zA-Z0-9-]*$', prefix):
+        errors.append(
+            Error(
+                f'css_prefix "{prefix}" contains invalid characters. '
+                f'Only letters, digits, and hyphens are allowed, and it must start with a letter.',
+                hint='Use a prefix like "djt-" or "myapp-" (letters, digits, hyphens only).',
+                id="djust_theming.E004",
+            )
+        )
+        return errors
+
+    if not prefix.endswith("-"):
+        errors.append(
+            Warning(
+                f'css_prefix "{prefix}" does not end with "-". '
+                f'Component classes will render as ".{prefix}btn" instead of ".{prefix}-btn". '
+                f'Consider using "{prefix}-" for cleaner class names.',
+                hint='Add a trailing "-" to css_prefix, e.g. "dj-" instead of "dj".',
+                id="djust_theming.W002",
+            )
+        )
+
+    return errors

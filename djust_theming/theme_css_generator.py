@@ -19,13 +19,14 @@ from .css_generator import ThemeCSSGenerator as ColorCSSGenerator
 class CompleteThemeCSSGenerator:
     """Generate complete theme CSS including colors, typography, spacing, etc."""
 
-    def __init__(self, theme_name: str = "material", color_preset: str = None):
+    def __init__(self, theme_name: str = "material", color_preset: str = None, css_prefix: str = ""):
         """
         Initialize complete theme CSS generator.
 
         Args:
             theme_name: Name of the theme (material, ios, fluent, etc.)
             color_preset: Override color preset (default uses theme's preset)
+            css_prefix: Namespace prefix for component CSS classes (e.g. "dj-")
         """
         self.theme = get_theme(theme_name)
         if not self.theme:
@@ -33,6 +34,7 @@ class CompleteThemeCSSGenerator:
 
         # Use provided color preset or theme's default
         self.color_preset = color_preset or self.theme.color_preset
+        self.css_prefix = css_prefix
 
         # Initialize color generator
         self.color_generator = ColorCSSGenerator(preset_name=self.color_preset)
@@ -209,126 +211,128 @@ body {
         """Generate component styles based on theme."""
         theme = self.theme
         styles = theme.component_styles
+        p = self.css_prefix  # shorthand for prefix
 
         parts = ["/* Component Styles */"]
 
         # Button styles based on theme
         if styles.button_style == "solid":
-            parts.append("""
-.btn {
+            parts.append(f"""
+.{p}btn {{
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   transition: all var(--duration-normal) var(--ease-out);
-}
-.btn:hover {
+}}
+.{p}btn:hover {{
   box-shadow: var(--shadow);
   transform: translateY(-1px);
-}""")
+}}""")
         elif styles.button_style == "outlined":
-            parts.append("""
-.btn {
+            parts.append(f"""
+.{p}btn {{
   border-radius: var(--radius);
   border: 2px solid currentColor;
   background: transparent;
   transition: all var(--duration-fast) var(--ease-out);
-}
-.btn:hover {
+}}
+.{p}btn:hover {{
   background: currentColor;
   color: var(--background);
-}""")
+}}""")
         elif styles.button_style == "ghost":
-            parts.append("""
-.btn {
+            parts.append(f"""
+.{p}btn {{
   border-radius: var(--radius);
   background: transparent;
   transition: background var(--duration-fast) var(--ease-out);
-}
-.btn:hover {
+}}
+.{p}btn:hover {{
   background: hsl(var(--accent) / 0.1);
-}""")
+}}""")
 
         # Card styles
         if styles.card_style == "elevated":
-            parts.append("""
-.card {
+            parts.append(f"""
+.{p}card {{
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   transition: box-shadow var(--duration-normal) var(--ease-out);
-}
-.card:hover {
+}}
+.{p}card:hover {{
   box-shadow: var(--shadow-lg);
-}""")
+}}""")
         elif styles.card_style == "outlined":
-            parts.append("""
-.card {
+            parts.append(f"""
+.{p}card {{
   border-radius: var(--radius-md);
   border: 1px solid hsl(var(--border));
   box-shadow: none;
-}""")
+}}""")
         elif styles.card_style == "flat":
-            parts.append("""
-.card {
+            parts.append(f"""
+.{p}card {{
   border-radius: var(--radius-sm);
   background: hsl(var(--muted) / 0.3);
   box-shadow: none;
-}""")
+}}""")
 
         # Input styles
         if styles.input_style == "outlined":
-            parts.append("""
-.form-input {
+            parts.append(f"""
+.{p}form-input {{
   border-radius: var(--radius);
   border: 2px solid hsl(var(--input));
   background: transparent;
   transition: border-color var(--duration-fast) var(--ease-out);
-}
-.form-input:focus {
+}}
+.{p}form-input:focus {{
   border-color: hsl(var(--ring));
   outline: none;
-}""")
+}}""")
         elif styles.input_style == "filled":
-            parts.append("""
-.form-input {
+            parts.append(f"""
+.{p}form-input {{
   border-radius: var(--radius) var(--radius) 0 0;
   border: none;
   border-bottom: 2px solid hsl(var(--input));
   background: hsl(var(--muted) / 0.5);
   transition: all var(--duration-fast) var(--ease-out);
-}
-.form-input:focus {
+}}
+.{p}form-input:focus {{
   border-bottom-color: hsl(var(--ring));
   background: hsl(var(--muted) / 0.7);
   outline: none;
-}""")
+}}""")
         elif styles.input_style == "underlined":
-            parts.append("""
-.form-input {
+            parts.append(f"""
+.{p}form-input {{
   border-radius: 0;
   border: none;
   border-bottom: 1px solid hsl(var(--input));
   background: transparent;
   transition: border-color var(--duration-fast) var(--ease-out);
-}
-.form-input:focus {
+}}
+.{p}form-input:focus {{
   border-bottom-width: 2px;
   border-bottom-color: hsl(var(--ring));
   outline: none;
-}""")
+}}""")
 
         return "\n".join(parts)
 
 
 @lru_cache(maxsize=256)
-def generate_theme_css(theme_name: str, color_preset: str = None) -> str:
+def generate_theme_css(theme_name: str, color_preset: str = None, css_prefix: str = "") -> str:
     """
     Generate complete CSS for a theme (cached).
 
-    Results are cached by (theme_name, color_preset). Use
+    Results are cached by (theme_name, color_preset, css_prefix). Use
     ``clear_css_cache()`` to invalidate during development.
 
     Args:
         theme_name: Name of the theme (material, ios, fluent, etc.)
         color_preset: Optional color preset override
+        css_prefix: CSS class prefix for component styles (e.g. "dj-")
 
     Returns:
         Complete CSS string for the theme
@@ -341,5 +345,5 @@ def generate_theme_css(theme_name: str, color_preset: str = None) -> str:
         if theme:
             color_preset = theme.color_preset
 
-    generator = CompleteThemeCSSGenerator(theme_name, color_preset)
+    generator = CompleteThemeCSSGenerator(theme_name, color_preset, css_prefix=css_prefix)
     return generator.generate_css()
