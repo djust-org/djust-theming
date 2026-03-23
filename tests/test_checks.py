@@ -212,5 +212,166 @@ class TestContrastPairsCompleteness:
         assert actual_fg_attrs == expected_pairs
 
 
+class TestCheckContextProcessor:
+    """Tests for E001: missing context_processor check."""
+
+    def test_e001_fires_when_context_processor_missing(self):
+        """E001 fires when no TEMPLATES backend has theme_context."""
+        from djust_theming.checks import check_context_processor
+
+        templates = [{
+            "BACKEND": "django.template.backends.django.DjangoTemplates",
+            "OPTIONS": {"context_processors": ["django.template.context_processors.request"]},
+        }]
+        with patch.object(settings, "TEMPLATES", templates):
+            errors = check_context_processor(app_configs=None)
+        assert len(errors) == 1
+        assert errors[0].id == "djust_theming.E001"
+
+    def test_e001_passes_when_context_processor_present(self):
+        """E001 passes when theme_context is in context_processors."""
+        from djust_theming.checks import check_context_processor
+
+        templates = [{
+            "BACKEND": "django.template.backends.django.DjangoTemplates",
+            "OPTIONS": {
+                "context_processors": [
+                    "django.template.context_processors.request",
+                    "djust_theming.context_processors.theme_context",
+                ],
+            },
+        }]
+        with patch.object(settings, "TEMPLATES", templates):
+            errors = check_context_processor(app_configs=None)
+        assert len(errors) == 0
+
+    def test_e001_passes_with_multiple_backends(self):
+        """E001 passes if at least one backend has theme_context."""
+        from djust_theming.checks import check_context_processor
+
+        templates = [
+            {
+                "BACKEND": "django.template.backends.jinja2.Jinja2",
+                "OPTIONS": {"context_processors": []},
+            },
+            {
+                "BACKEND": "django.template.backends.django.DjangoTemplates",
+                "OPTIONS": {
+                    "context_processors": [
+                        "djust_theming.context_processors.theme_context",
+                    ],
+                },
+            },
+        ]
+        with patch.object(settings, "TEMPLATES", templates):
+            errors = check_context_processor(app_configs=None)
+        assert len(errors) == 0
+
+    def test_e001_fires_when_templates_empty(self):
+        """E001 fires when TEMPLATES is an empty list."""
+        from djust_theming.checks import check_context_processor
+
+        with patch.object(settings, "TEMPLATES", []):
+            errors = check_context_processor(app_configs=None)
+        assert len(errors) == 1
+        assert errors[0].id == "djust_theming.E001"
+
+
+class TestCheckPresetValid:
+    """Tests for E002: invalid preset name check."""
+
+    def test_e002_fires_on_invalid_preset(self):
+        """E002 fires when preset is not in THEME_PRESETS."""
+        from djust_theming.checks import check_preset_valid
+
+        with patch.object(
+            settings, "LIVEVIEW_CONFIG",
+            {"theme": {"preset": "nonexistent"}}, create=True,
+        ):
+            errors = check_preset_valid(app_configs=None)
+        assert len(errors) == 1
+        assert errors[0].id == "djust_theming.E002"
+        assert "nonexistent" in errors[0].msg
+
+    def test_e002_passes_on_valid_preset(self):
+        """E002 passes when preset is a valid THEME_PRESETS key."""
+        from djust_theming.checks import check_preset_valid
+
+        with patch.object(
+            settings, "LIVEVIEW_CONFIG",
+            {"theme": {"preset": "default"}}, create=True,
+        ):
+            errors = check_preset_valid(app_configs=None)
+        assert len(errors) == 0
+
+    def test_e002_passes_on_default_config(self):
+        """E002 passes when no LIVEVIEW_CONFIG is set (defaults are valid)."""
+        from djust_theming.checks import check_preset_valid
+
+        with patch.object(settings, "LIVEVIEW_CONFIG", {}, create=True):
+            errors = check_preset_valid(app_configs=None)
+        assert len(errors) == 0
+
+    def test_e002_message_lists_valid_presets(self):
+        """E002 hint lists some valid preset names."""
+        from djust_theming.checks import check_preset_valid
+
+        with patch.object(
+            settings, "LIVEVIEW_CONFIG",
+            {"theme": {"preset": "bogus"}}, create=True,
+        ):
+            errors = check_preset_valid(app_configs=None)
+        assert len(errors) == 1
+        assert "default" in errors[0].hint
+
+
+class TestCheckDesignSystemValid:
+    """Tests for E003: invalid design system (theme) name check."""
+
+    def test_e003_fires_on_invalid_design_system(self):
+        """E003 fires when theme is not in DESIGN_SYSTEMS."""
+        from djust_theming.checks import check_design_system_valid
+
+        with patch.object(
+            settings, "LIVEVIEW_CONFIG",
+            {"theme": {"theme": "nonexistent"}}, create=True,
+        ):
+            errors = check_design_system_valid(app_configs=None)
+        assert len(errors) == 1
+        assert errors[0].id == "djust_theming.E003"
+        assert "nonexistent" in errors[0].msg
+
+    def test_e003_passes_on_valid_design_system(self):
+        """E003 passes when theme is a valid DESIGN_SYSTEMS key."""
+        from djust_theming.checks import check_design_system_valid
+
+        with patch.object(
+            settings, "LIVEVIEW_CONFIG",
+            {"theme": {"theme": "material"}}, create=True,
+        ):
+            errors = check_design_system_valid(app_configs=None)
+        assert len(errors) == 0
+
+    def test_e003_passes_on_default_config(self):
+        """E003 passes when no LIVEVIEW_CONFIG is set (defaults are valid)."""
+        from djust_theming.checks import check_design_system_valid
+
+        with patch.object(settings, "LIVEVIEW_CONFIG", {}, create=True):
+            errors = check_design_system_valid(app_configs=None)
+        assert len(errors) == 0
+
+    def test_e003_message_lists_valid_systems(self):
+        """E003 hint lists some valid design system names."""
+        from djust_theming.checks import check_design_system_valid
+
+        with patch.object(
+            settings, "LIVEVIEW_CONFIG",
+            {"theme": {"theme": "bogus"}}, create=True,
+        ):
+            errors = check_design_system_valid(app_configs=None)
+        assert len(errors) == 1
+        assert "material" in errors[0].hint
+
+
 if __name__ == "__main__":
     pytest.main([__file__])

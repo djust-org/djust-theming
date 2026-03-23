@@ -850,3 +850,44 @@ MY_PRESET = ThemePreset(
 THEME_PRESETS["brand"] = MY_PRESET
 # The next time Django starts, "brand" will be checked automatically.
 ```
+
+## System Checks Reference
+
+djust-theming registers several Django system checks that run automatically at startup (`runserver`, `migrate`, `check`). These catch common misconfigurations before they cause runtime errors.
+
+### All Checks
+
+| ID | Level | What it catches | How to fix |
+|----|-------|-----------------|------------|
+| `W001` | Warning | A theme preset has a foreground/background pair with contrast ratio below WCAG AA (4.5:1). Checks 12 token pairs across light and dark modes for every preset in `THEME_PRESETS`. | Adjust the foreground or background `ColorScale` lightness values until the pair achieves at least 4.5:1 contrast. |
+| `W002` | Warning | `css_prefix` does not end with `-`. Classes will render as `.prefixbtn` instead of `.prefix-btn`. | Add a trailing hyphen to your prefix, e.g. `"dj-"` instead of `"dj"`. |
+| `E001` | Error | `djust_theming.context_processors.theme_context` is missing from all TEMPLATES backends' `context_processors` lists. Template variables like `theme_head`, `theme_switcher`, etc. will not be available. | Add `"djust_theming.context_processors.theme_context"` to `TEMPLATES[0]['OPTIONS']['context_processors']` in your settings. |
+| `E002` | Error | `LIVEVIEW_CONFIG['theme']['preset']` is set to a name that does not exist in `THEME_PRESETS`. | Change the preset value to one of the registered preset names (e.g. `"default"`, `"shadcn"`, `"nord"`). Run `python -c "from djust_theming.presets import THEME_PRESETS; print(sorted(THEME_PRESETS))"` to see all valid names. |
+| `E003` | Error | `LIVEVIEW_CONFIG['theme']['theme']` is set to a name that does not exist in `DESIGN_SYSTEMS`. | Change the theme value to one of the registered design system names (e.g. `"material"`, `"ios"`, `"fluent"`). Run `python -c "from djust_theming.theme_packs import DESIGN_SYSTEMS; print(sorted(DESIGN_SYSTEMS))"` to see all valid names. |
+| `E004` | Error | `css_prefix` contains invalid characters (anything other than letters, digits, and hyphens) or does not start with a letter. This prevents CSS injection and malformed selectors. | Use a prefix containing only ASCII letters, digits, and hyphens, starting with a letter. Example: `"dj-"`, `"myapp-"`. |
+
+### Running Checks
+
+All checks are registered under the `compatibility` tag:
+
+```bash
+# Run all system checks
+python manage.py check
+
+# Run only djust-theming checks (compatibility tag)
+python manage.py check --tag compatibility
+```
+
+### Silencing Checks
+
+Use Django's `SILENCED_SYSTEM_CHECKS` setting to suppress specific checks you have reviewed and accepted:
+
+```python
+# settings.py
+SILENCED_SYSTEM_CHECKS = [
+    "djust_theming.W001",  # Silence contrast ratio warnings
+    "djust_theming.W002",  # Silence css_prefix hyphen warning
+]
+```
+
+Errors (`E001`-`E004`) indicate broken configuration that will cause runtime failures. Silence them only if you are certain the check does not apply to your setup.
