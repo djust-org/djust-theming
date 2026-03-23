@@ -404,6 +404,46 @@ Any remaining `themes.py` usage will print a warning with the import location, m
 
 ---
 
+## Programmatic CSS Generation
+
+If you need to generate theme CSS outside of templates (e.g., in a management command, an API endpoint, or a background task), use `generate_css_for_state()`:
+
+```python
+from djust_theming import generate_css_for_state, get_css_prefix, get_theme_manager
+
+# From a request (uses session/cookie state)
+manager = get_theme_manager(request)
+state = manager.get_state()
+css = generate_css_for_state(state, css_prefix=get_css_prefix())
+
+# Or build a ThemeState manually
+from djust_theming import ThemeState
+
+state = ThemeState(
+    theme="material",
+    preset="blue",
+    mode="dark",
+    resolved_mode="dark",
+    pack=None,
+)
+css = generate_css_for_state(state)
+```
+
+### How it works
+
+`generate_css_for_state(state, css_prefix="")` is the single entry point for CSS generation:
+
+1. If `state.pack` is set, it tries `generate_pack_css(pack_name=state.pack)`.
+2. If the pack is not found (or no pack is set), it falls back to `generate_theme_css(theme_name=state.theme, color_preset=state.preset, css_prefix=css_prefix)`.
+
+This is the same logic used internally by `{% theme_head %}`, `{% theme_css %}`, the linked-CSS view, the context processor, and `ThemeMixin`. You do not need to call `generate_theme_css()` or `generate_pack_css()` directly unless you need lower-level control.
+
+### `get_css_prefix()`
+
+Returns the `css_prefix` string from `LIVEVIEW_CONFIG["theme"]["css_prefix"]`, defaulting to `""`. Pass this to `generate_css_for_state()` when you want component class names to be prefixed.
+
+---
+
 ## CSS Namespace Prefixing
 
 djust-theming uses generic CSS class names like `.btn`, `.card`, `.alert`, and `.badge` for its component templates. If your project also includes Bootstrap, Bulma, or another CSS framework that uses these same class names, the styles will collide.
