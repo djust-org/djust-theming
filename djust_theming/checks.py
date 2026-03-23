@@ -1,10 +1,12 @@
-"""Django system checks for djust-theming accessibility validation."""
+"""Django system checks for djust-theming configuration validation."""
 
+from django.conf import settings
 from django.core.checks import Error, Warning, register, Tags
 
 from .manager import get_theme_config
 from .presets import THEME_PRESETS
 from .accessibility import AccessibilityValidator
+from .theme_packs import DESIGN_SYSTEMS
 
 
 # Foreground/background pairs to check (attr_fg, attr_bg, label)
@@ -82,6 +84,79 @@ def check_css_prefix(app_configs, **kwargs):
                 f'Consider using "{prefix}-" for cleaner class names.',
                 hint='Add a trailing "-" to css_prefix, e.g. "dj-" instead of "dj".',
                 id="djust_theming.W002",
+            )
+        )
+
+    return errors
+
+
+@register(Tags.compatibility)
+def check_context_processor(app_configs, **kwargs):
+    """Validate that theme_context is in TEMPLATES context_processors."""
+    errors = []
+    context_processor_path = "djust_theming.context_processors.theme_context"
+
+    templates = getattr(settings, "TEMPLATES", [])
+    found = False
+    for template_config in templates:
+        processors = template_config.get("OPTIONS", {}).get("context_processors", [])
+        if context_processor_path in processors:
+            found = True
+            break
+
+    if not found:
+        errors.append(
+            Error(
+                "djust_theming.context_processors.theme_context is not in any "
+                "TEMPLATES backend's context_processors list. Theme template "
+                "variables (theme_head, theme_switcher, etc.) will not be available.",
+                hint=(
+                    'Add "djust_theming.context_processors.theme_context" to '
+                    "TEMPLATES[0]['OPTIONS']['context_processors'] in your settings."
+                ),
+                id="djust_theming.E001",
+            )
+        )
+
+    return errors
+
+
+@register(Tags.compatibility)
+def check_preset_valid(app_configs, **kwargs):
+    """Validate that the configured preset name exists in THEME_PRESETS."""
+    errors = []
+    config = get_theme_config()
+    preset = config.get("preset", "default")
+
+    if preset not in THEME_PRESETS:
+        valid_names = ", ".join(sorted(THEME_PRESETS.keys()))
+        errors.append(
+            Error(
+                f'LIVEVIEW_CONFIG["theme"]["preset"] is set to "{preset}", '
+                f"which is not a registered theme preset.",
+                hint=f"Valid preset names are: {valid_names}",
+                id="djust_theming.E002",
+            )
+        )
+
+    return errors
+
+
+@register(Tags.compatibility)
+def check_design_system_valid(app_configs, **kwargs):
+    """Validate that the configured design system (theme) name exists in DESIGN_SYSTEMS."""
+    errors = []
+    config = get_theme_config()
+    theme = config.get("theme", "material")
+
+    if theme not in DESIGN_SYSTEMS:
+        valid_names = ", ".join(sorted(DESIGN_SYSTEMS.keys()))
+        errors.append(
+            Error(
+                f'LIVEVIEW_CONFIG["theme"]["theme"] is set to "{theme}", '
+                f"which is not a registered design system.",
+                hint=f"Valid design system names are: {valid_names}",
+                id="djust_theming.E003",
             )
         )
 
