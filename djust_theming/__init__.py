@@ -11,6 +11,7 @@ from .components import ThemeSwitcher
 from .css_generator import ThemeCSSGenerator
 from .manager import ThemeManager, ThemeState, get_theme_manager
 from .mixins import ThemeMixin
+from .palette import PaletteGenerator
 from .presets import (
     BLUE_THEME,
     DEFAULT_THEME,
@@ -52,6 +53,8 @@ __all__ = [
     "ThemeState",
     "ThemeMixin",
     "ThemeSwitcher",
+    # Palette generator
+    "PaletteGenerator",
 ]
 
 __version__ = "0.1.0"

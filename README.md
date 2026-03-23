@@ -605,6 +605,7 @@ Components work seamlessly with Tailwind classes:
 - `ThemeSwitcher(theme_manager, config)` — Render switcher component
 - `ThemeModeButton(theme_manager)` — Simple toggle button
 - `PresetSelector(theme_manager, layout)` — Preset selector (dropdown/grid/list)
+- `PaletteGenerator.from_brand_colors(primary, secondary=None, accent=None, mode="professional")` — Generate a complete `ThemePreset` (light + dark, all 31 tokens) from 1-3 hex brand colors. Modes: `professional`, `playful`, `muted`, `vibrant`. All output pairs are WCAG AA compliant.
 - Color utilities: `hsl_to_rgb`, `rgb_to_hsl`, `hex_to_rgb`, `rgb_to_hex`, `hex_to_hsl`, `hsl_to_hex` — Pure color format conversion functions
 - `ColorScale.from_hex(hex_str)` / `ColorScale.from_rgb(r, g, b)` — Construct a `ColorScale` from hex or RGB
 - `ColorScale.to_hex()` / `ColorScale.to_rgb()` / `ColorScale.to_rgb_func()` — Convert a `ColorScale` to hex, RGB tuple, or CSS `rgb()` string

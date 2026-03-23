@@ -641,6 +641,123 @@ Run `python manage.py collectstatic` to collect these into your `STATIC_ROOT` fo
 
 ---
 
+## Brand Color Auto-Palette Generator
+
+Instead of manually defining all 31 color tokens for light and dark modes, you can generate a complete `ThemePreset` from just your brand color(s) using `PaletteGenerator`.
+
+### Basic Usage
+
+```python
+from djust_theming import PaletteGenerator
+from djust_theming.presets import THEME_PRESETS
+
+# Generate from a single brand color
+preset = PaletteGenerator.from_brand_colors("#3b82f6")
+
+# Register it for use in your app
+THEME_PRESETS[preset.name] = preset
+```
+
+This produces a full `ThemePreset` with:
+- Light mode: all 31 `ThemeTokens` fields as `ColorScale` instances
+- Dark mode: all 31 `ThemeTokens` fields as `ColorScale` instances
+- A generated `name`, `display_name`, and `description`
+- A `radius` value appropriate for the chosen mode
+
+### Providing Secondary and Accent Colors
+
+You can supply up to three brand colors. Colors you omit are derived automatically:
+
+```python
+# Primary only -- secondary (complementary, 180 deg) and accent (analogous, 30 deg) are derived
+preset = PaletteGenerator.from_brand_colors("#3b82f6")
+
+# Primary + secondary -- accent is derived
+preset = PaletteGenerator.from_brand_colors("#3b82f6", secondary="#10b981")
+
+# All three -- no derivation needed
+preset = PaletteGenerator.from_brand_colors(
+    "#3b82f6", secondary="#10b981", accent="#f59e0b"
+)
+```
+
+Both 6-digit (`#3b82f6`) and 3-digit (`#f00`) hex formats are accepted, with or without the `#` prefix. Invalid hex strings raise `ValueError`.
+
+### Generation Modes
+
+The `mode` parameter controls how the palette feels. Each mode adjusts saturation scaling, hue offsets for derived colors, background tinting, and border radius:
+
+```python
+preset = PaletteGenerator.from_brand_colors("#3b82f6", mode="vibrant")
+```
+
+| Mode | Saturation | Hue Spread | Radius | Best For |
+|------|-----------|------------|--------|----------|
+| `professional` (default) | 0.85x | Narrow | 0.5 rem | Business apps, corporate sites |
+| `playful` | 1.15x | Wide | 0.75 rem | Consumer apps, marketing pages |
+| `muted` | 0.55x | Narrow | 0.375 rem | Content-focused, editorial |
+| `vibrant` | 1.30x | Wide | 0.5 rem | Creative tools, dashboards |
+
+An invalid mode raises `ValueError`:
+
+```python
+PaletteGenerator.from_brand_colors("#3b82f6", mode="neon")
+# ValueError: Invalid mode 'neon'. Choose from: professional, playful, muted, vibrant
+```
+
+### WCAG Contrast Validation
+
+Every generated palette is automatically validated against WCAG AA contrast requirements. For each foreground/background pair (13 text pairs at 4.5:1, plus borders at 3:1), the generator:
+
+1. Calculates the contrast ratio using the WCAG relative luminance formula
+2. If the ratio is below the minimum, adjusts the foreground lightness via binary search until it passes
+3. Applies this fix to both light and dark mode tokens independently
+
+This means **every palette passes WCAG AA** out of the box, regardless of the input color. Even problematic inputs like very light colors (`#eeeeee`) produce accessible output.
+
+The validated pairs include:
+- `foreground` / `background`, `card_foreground` / `card`, `popover_foreground` / `popover`
+- `primary_foreground` / `primary`, `secondary_foreground` / `secondary`, `accent_foreground` / `accent`
+- `muted_foreground` / `muted`
+- `destructive_foreground` / `destructive`, `success_foreground` / `success`, `warning_foreground` / `warning`, `info_foreground` / `info`
+- `code_foreground` / `code`, `selection_foreground` / `selection`
+- `link` / `background` (links must be readable on the page)
+- `border` / `background` (minimum 3:1 for UI components)
+
+### Complete Example
+
+```python
+# settings.py or a presets module loaded at startup
+from djust_theming import PaletteGenerator
+from djust_theming.presets import THEME_PRESETS
+
+# Generate a vibrant palette from Spotify's brand green
+spotify_preset = PaletteGenerator.from_brand_colors(
+    primary="#1DB954",
+    mode="vibrant",
+)
+
+# Register it so it appears in the theme switcher and system checks
+THEME_PRESETS[spotify_preset.name] = spotify_preset
+
+# You can also inspect the generated tokens
+print(spotify_preset.light.primary.to_hex())   # hex value close to #1DB954
+print(spotify_preset.dark.primary.to_hex())     # lighter variant for dark mode
+print(spotify_preset.radius)                    # 0.5 (vibrant mode default)
+```
+
+### How Colors Are Derived
+
+When secondary or accent colors are not provided, the generator derives them from the primary color's hue:
+
+- **Secondary**: Rotated by the mode's `secondary_hue_offset` (e.g., 180 degrees for professional/muted, 150 for playful, 120 for vibrant)
+- **Accent**: Rotated by the mode's `accent_hue_offset` (e.g., 30 degrees for professional, 60 for playful)
+- Derived colors have their saturation scaled by the mode's `sat_scale` factor
+
+Semantic colors (destructive, success, warning, info) use fixed hues (red, green, amber, blue) with saturation adjusted by the mode, ensuring they are always recognizable.
+
+---
+
 ## Accessibility Contrast Validation
 
 djust-theming includes a Django system check that validates the contrast ratios of all registered theme presets against WCAG AA standards at startup. This runs automatically when Django starts (e.g., `runserver`, `migrate`, `check`) and requires no configuration.
