@@ -162,6 +162,46 @@ class Command(BaseCommand):
             help='Generate example templates'
         )
 
+        # create-theme subcommand
+        create_parser = subparsers.add_parser(
+            'create-theme',
+            help='Scaffold a new user theme directory with theme.toml'
+        )
+        create_parser.add_argument(
+            'theme_name',
+            type=str,
+            help='Theme directory name (lowercase letters, digits, hyphens only)'
+        )
+        create_parser.add_argument(
+            '--base',
+            type=str,
+            default=None,
+            help='Base theme to extend (another theme directory name)'
+        )
+        create_parser.add_argument(
+            '--preset',
+            type=str,
+            default='default',
+            help='Color preset from THEME_PRESETS (default: default)'
+        )
+        create_parser.add_argument(
+            '--design-system',
+            type=str,
+            default='material',
+            help='Design system from DESIGN_SYSTEMS (default: material)'
+        )
+        create_parser.add_argument(
+            '--dir',
+            type=str,
+            default=None,
+            help='Override themes directory (default: from config or BASE_DIR/themes/)'
+        )
+        create_parser.add_argument(
+            '--force',
+            action='store_true',
+            help='Overwrite existing theme directory'
+        )
+
     def handle(self, *args, **options):
         subcommand = options.get('subcommand')
 
@@ -183,6 +223,8 @@ class Command(BaseCommand):
             self.handle_shadcn_export(options)
         elif subcommand == 'init':
             self.handle_init(options)
+        elif subcommand == 'create-theme':
+            self.handle_create_theme(options)
         else:
             raise CommandError(f"Unknown subcommand: {subcommand}")
 
@@ -479,3 +521,119 @@ class Command(BaseCommand):
         self.stdout.write(f"\n📚 Preset: {preset}")
         self.stdout.write(f"🎨 Theme switcher: {{ theme_switcher }}")
         self.stdout.write(f"🌓 Mode toggle: {{ theme_mode_toggle }}\n")
+
+    def handle_create_theme(self, options):
+        """Scaffold a new user theme directory."""
+        from pathlib import Path
+
+        from django.conf import settings as django_settings
+
+        from djust_theming.manifest import ThemeManifest
+        from djust_theming.manager import get_theme_config
+        from djust_theming.presets import THEME_PRESETS
+        from djust_theming.theme_packs import DESIGN_SYSTEMS
+
+        theme_name = options['theme_name']
+        base = options.get('base')
+        preset = options['preset']
+        design_system = options['design_system']
+        force = options.get('force', False)
+
+        # Validate theme name
+        import re
+        if not re.match(r'^[a-z0-9][a-z0-9-]*$', theme_name):
+            raise CommandError(
+                f"Invalid theme name '{theme_name}': must contain only "
+                f"lowercase letters, digits, and hyphens (pattern: [a-z0-9-])."
+            )
+
+        # Validate preset
+        if preset not in THEME_PRESETS:
+            raise CommandError(
+                f"Unknown preset '{preset}'. "
+                f"Available: {', '.join(sorted(THEME_PRESETS.keys()))}"
+            )
+
+        # Validate design system
+        if design_system not in DESIGN_SYSTEMS:
+            raise CommandError(
+                f"Unknown design system '{design_system}'. "
+                f"Available: {', '.join(sorted(DESIGN_SYSTEMS.keys()))}"
+            )
+
+        # Resolve themes directory
+        dir_override = options.get('dir')
+        if dir_override:
+            themes_dir = Path(dir_override)
+        else:
+            config = get_theme_config()
+            themes_dir_rel = config.get('themes_dir', 'themes/')
+            base_dir = getattr(django_settings, 'BASE_DIR', Path.cwd())
+            themes_dir = Path(base_dir) / themes_dir_rel
+
+        theme_dir = themes_dir / theme_name
+
+        # Check for existing theme
+        if theme_dir.exists() and not force:
+            raise CommandError(
+                f"Theme directory already exists: {theme_dir}\n"
+                f"Use --force to overwrite."
+            )
+
+        # Build manifest
+        manifest = ThemeManifest(
+            name=theme_name,
+            version="0.1.0",
+            description=f"Custom theme: {theme_name}",
+            base=base,
+            preset=preset,
+            design_system=design_system,
+        )
+
+        # Create directory structure
+        theme_dir.mkdir(parents=True, exist_ok=True)
+
+        subdirs = [
+            "components",
+            "layouts",
+            "pages",
+            "static/css",
+            "static/fonts",
+        ]
+        for subdir in subdirs:
+            d = theme_dir / subdir
+            d.mkdir(parents=True, exist_ok=True)
+            gitkeep = d / ".gitkeep"
+            gitkeep.touch()
+
+        # Write theme.toml
+        toml_path = theme_dir / "theme.toml"
+        toml_path.write_text(manifest.to_toml())
+
+        # Write tokens.css template
+        tokens_css = theme_dir / "tokens.css"
+        tokens_css.write_text(
+            f"/* Theme: {theme_name}\n"
+            f" * Preset: {preset} | Design System: {design_system}\n"
+            f" *\n"
+            f" * Override CSS custom properties here.\n"
+            f" * These are applied AFTER the preset tokens.\n"
+            f" *\n"
+            f" * Example:\n"
+            f" *   :root {{\n"
+            f" *     --primary: 220 90% 56%;\n"
+            f" *     --radius: 0.75rem;\n"
+            f" *   }}\n"
+            f" */\n"
+        )
+
+        self.stdout.write(
+            self.style.SUCCESS(f"\nCreated theme '{theme_name}' at {theme_dir}\n")
+        )
+        self.stdout.write(f"  theme.toml     — manifest (preset: {preset}, design system: {design_system})")
+        self.stdout.write(f"  tokens.css     — CSS custom property overrides")
+        self.stdout.write(f"  components/    — component template overrides")
+        self.stdout.write(f"  layouts/       — layout template overrides")
+        self.stdout.write(f"  pages/         — page template overrides")
+        self.stdout.write(f"  static/css/    — additional stylesheets")
+        self.stdout.write(f"  static/fonts/  — custom web fonts\n")
