@@ -706,6 +706,293 @@ def product_detail(request):
 
 ---
 
+## Breadcrumb
+
+**Template tag:** `{% theme_breadcrumb items=breadcrumbs separator=">" %}`
+
+A navigation breadcrumb trail showing the user's location in a page hierarchy.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `items` | list | Yes | -- | List of dicts with `label` and `url` keys |
+| `separator` | str | No | `"/"` | Separator character between breadcrumb items |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<nav aria-label="Breadcrumb">` -- the navigation landmark
+- `<ol>` -- ordered list of breadcrumb items
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `aria-label="Breadcrumb"` | The nav element is labelled for screen readers |
+| `aria-current="page"` | The last item is marked as the current page |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_separator` | Replaces the default separator character | Custom arrow icon between items |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_breadcrumb items=breadcrumbs separator=">" %}
+```
+
+```python
+# views.py
+def product_detail(request):
+    breadcrumbs = [
+        {"label": "Home", "url": "/"},
+        {"label": "Products", "url": "/products/"},
+        {"label": "Widget", "url": "/products/widget/"},
+    ]
+    return render(request, "product.html", {"breadcrumbs": breadcrumbs})
+```
+
+---
+
+## Avatar
+
+**Template tag:** `{% theme_avatar src="/img/user.jpg" alt="John Doe" size="lg" %}`
+
+A user avatar displaying an image or initials fallback derived from the user's name.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `src` | str or None | No | `None` | Image URL |
+| `alt` | str | No | `""` | Alt text for the image |
+| `name` | str | No | `""` | Full name (used for initials fallback when no image) |
+| `size` | str | No | `"md"` | Size class (`sm`, `md`, `lg`) |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<div>` -- the avatar container
+
+### Accessibility
+
+No additional ARIA requirements. When an image is shown, the `alt` attribute provides accessible text.
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_image` | Replaces default `<img>` element | Custom image with status indicator overlay |
+| `slot_fallback` | Replaces initials fallback | Custom icon or SVG placeholder |
+
+**Slot priority:** `slot_image` > `src` image > `slot_fallback` > initials from `name`.
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+<!-- With image -->
+{% theme_avatar src="/img/user.jpg" alt="John Doe" size="lg" %}
+
+<!-- With initials fallback -->
+{% theme_avatar name="John Doe" size="md" %}
+```
+
+---
+
+## Toast
+
+**Template tag:** `{% theme_toast "Saved!" variant="success" %}`
+
+A notification message that appears temporarily to inform the user of an action result.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `message` | str | Yes | -- | Toast message text |
+| `variant` | str | No | `"info"` | Visual variant (`success`, `warning`, `error`, `info`) |
+| `position` | str | No | `"top-right"` | Screen position (`top-right`, `top-left`, `bottom-right`, `bottom-left`) |
+| `duration` | int | No | `5000` | Auto-dismiss duration in milliseconds |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<div role="status">` -- the toast container with ARIA live region
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `role="status"` | The toast is announced by screen readers as a status update |
+| `aria-live="polite"` | Screen readers announce the toast without interrupting current speech |
+| `aria-label="Dismiss"` | The close button has an accessible label |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_message` | Replaces default `{{ message }}` text | Rich message with icon and formatting |
+| `slot_actions` | Adds action buttons area | Undo button |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_toast "File saved successfully!" variant="success" %}
+{% theme_toast "Network error" variant="error" position="bottom-right" duration=8000 %}
+```
+
+---
+
+## Progress
+
+**Template tag:** `{% theme_progress value=75 max=100 label="Upload" %}`
+
+A progress bar showing completion state. Supports both determinate (with value) and indeterminate (without value) modes.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `value` | int or None | No | `None` | Current value (`None` for indeterminate/loading state) |
+| `max` | int | No | `100` | Maximum value |
+| `label` | str | No | `""` | Accessible label text |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<div role="progressbar">` -- the progress container with ARIA role
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `role="progressbar"` | The element is identified as a progress indicator |
+| `aria-valuemin="0"` | Minimum value is always 0 |
+| `aria-valuemax` | Set to the `max` value |
+| `aria-valuenow` | Set to the current `value` (omitted when indeterminate) |
+| `aria-label` | Set to the `label` text when provided |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_label` | Replaces the default label div | Custom label with percentage text |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+<!-- Determinate progress -->
+{% theme_progress value=75 max=100 label="Upload progress" %}
+
+<!-- Indeterminate loading -->
+{% theme_progress label="Loading..." %}
+```
+
+---
+
+## Skeleton
+
+**Template tag:** `{% theme_skeleton variant="text" width="200px" %}`
+
+A loading placeholder with a shimmer animation. Used as a content placeholder while data is being fetched.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `variant` | str | No | `"text"` | Shape variant (`text`, `circle`, `rect`) |
+| `width` | str | No | `"100%"` | CSS width value |
+| `height` | str | No | `"1rem"` | CSS height value |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<div aria-hidden="true">` -- the skeleton element (hidden from assistive technology)
+
+### Accessibility
+
+The skeleton is purely decorative and is hidden from screen readers via `aria-hidden="true"`.
+
+### Slots
+
+No slots -- skeleton is a simple decorative element.
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+<!-- Text placeholder -->
+{% theme_skeleton variant="text" width="200px" %}
+
+<!-- Circle placeholder (avatar) -->
+{% theme_skeleton variant="circle" width="3rem" height="3rem" %}
+
+<!-- Rectangle placeholder (image) -->
+{% theme_skeleton variant="rect" width="100%" height="200px" %}
+```
+
+---
+
+## Tooltip
+
+**Template tag:** `{% theme_tooltip "Help text" position="top" %}`
+
+A CSS-only tooltip that appears on hover. Uses `data-tooltip` and `::after` pseudo-element for zero-JavaScript rendering.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `text` | str | Yes | -- | Tooltip text shown on hover |
+| `position` | str | No | `"top"` | Tooltip position (`top`, `bottom`, `left`, `right`) |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<span data-tooltip="...">` -- the tooltip wrapper with tooltip text in a data attribute
+
+### Accessibility
+
+The tooltip text is conveyed via `data-tooltip` and rendered as a CSS `::after` pseudo-element on hover. For full screen reader support, consider adding `aria-describedby` or `title` in your theme override.
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_content` | Replaces the inline text display (tooltip text remains in `data-tooltip`) | Wrap a button or icon with a tooltip |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+<!-- Simple text tooltip -->
+{% theme_tooltip "Click to save your changes" position="top" %}
+
+<!-- Tooltip wrapping a button -->
+{% theme_tooltip "Delete this item permanently" slot_content="<button>Delete</button>" %}
+```
+
+---
+
 ## Using contracts programmatically
 
 You can access contracts in Python for validation or tooling:

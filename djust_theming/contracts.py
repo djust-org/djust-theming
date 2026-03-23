@@ -442,6 +442,147 @@ RADIO_CONTRACT = ComponentContract(
 )
 
 
+BREADCRUMB_CONTRACT = ComponentContract(
+    name="breadcrumb",
+    required_context=(
+        ContextVar(name="items", type="list", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="separator", type="str", default="/"),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_separator", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="nav", attrs={"aria-label": "Breadcrumb"}),
+        RequiredElement(tag="ol"),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Breadcrumb nav must have aria-label=Breadcrumb",
+            selector_hint="nav",
+            attr="aria-label",
+            value="Breadcrumb",
+        ),
+    ),
+    available_slots=("slot_separator",),
+)
+
+AVATAR_CONTRACT = ComponentContract(
+    name="avatar",
+    required_context=(),
+    optional_context=(
+        ContextVar(name="src", type="Optional[str]", default=None),
+        ContextVar(name="alt", type="str", default=""),
+        ContextVar(name="name", type="str", default=""),
+        ContextVar(name="size", type="str", default="md"),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_image", type="str", default=None),
+        ContextVar(name="slot_fallback", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="div"),
+    ),
+    accessibility=(),
+    available_slots=("slot_image", "slot_fallback"),
+)
+
+TOAST_CONTRACT = ComponentContract(
+    name="toast",
+    required_context=(
+        ContextVar(name="message", type="str", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="variant", type="str", default="info"),
+        ContextVar(name="position", type="str", default="top-right"),
+        ContextVar(name="duration", type="int", default=5000),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_message", type="str", default=None),
+        ContextVar(name="slot_actions", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="div", attrs={"role": "status"}),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Toast must have role=status",
+            selector_hint="div",
+            attr="role",
+            value="status",
+        ),
+        AccessibilityRequirement(
+            description="Toast must have aria-live=polite",
+            selector_hint="div",
+            attr="aria-live",
+            value="polite",
+        ),
+    ),
+    available_slots=("slot_message", "slot_actions"),
+)
+
+PROGRESS_CONTRACT = ComponentContract(
+    name="progress",
+    required_context=(),
+    optional_context=(
+        ContextVar(name="value", type="Optional[int]", default=None),
+        ContextVar(name="max", type="int", default=100),
+        ContextVar(name="label", type="str", default=""),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_label", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="div", attrs={"role": "progressbar"}),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Progress must have role=progressbar",
+            selector_hint="div",
+            attr="role",
+            value="progressbar",
+        ),
+    ),
+    available_slots=("slot_label",),
+)
+
+SKELETON_CONTRACT = ComponentContract(
+    name="skeleton",
+    required_context=(),
+    optional_context=(
+        ContextVar(name="variant", type="str", default="text"),
+        ContextVar(name="width", type="str", default="100%"),
+        ContextVar(name="height", type="str", default="1rem"),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="div", attrs={"aria-hidden": "true"}),
+    ),
+    accessibility=(),
+    available_slots=(),
+)
+
+TOOLTIP_CONTRACT = ComponentContract(
+    name="tooltip",
+    required_context=(
+        ContextVar(name="text", type="str", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="position", type="str", default="top"),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_content", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="span", attrs={"data-tooltip": None}),
+    ),
+    accessibility=(),
+    available_slots=("slot_content",),
+)
+
+
 COMPONENT_CONTRACTS: dict[str, ComponentContract] = {
     "button": BUTTON_CONTRACT,
     "card": CARD_CONTRACT,
@@ -457,6 +598,12 @@ COMPONENT_CONTRACTS: dict[str, ComponentContract] = {
     "textarea": TEXTAREA_CONTRACT,
     "checkbox": CHECKBOX_CONTRACT,
     "radio": RADIO_CONTRACT,
+    "breadcrumb": BREADCRUMB_CONTRACT,
+    "avatar": AVATAR_CONTRACT,
+    "toast": TOAST_CONTRACT,
+    "progress": PROGRESS_CONTRACT,
+    "skeleton": SKELETON_CONTRACT,
+    "tooltip": TOOLTIP_CONTRACT,
 }
 
 

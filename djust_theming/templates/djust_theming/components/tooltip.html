@@ -1,0 +1,4 @@
+<span class="{{ css_prefix }}tooltip {% if attrs.class %}{{ attrs.class }}{% endif %}"
+      data-tooltip="{{ text }}"
+      data-tooltip-position="{{ position }}"
+      {% if attrs.id %}id="{{ attrs.id }}"{% endif %}>{% if slot_content %}{{ slot_content|safe }}{% else %}{{ text }}{% endif %}</span>
