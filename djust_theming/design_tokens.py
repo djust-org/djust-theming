@@ -439,6 +439,81 @@ def get_animation_keyframes() -> str:
 }"""
 
 
+def generate_design_tokens_root_css() -> str:
+    """
+    Generate only the :root custom property declarations for design tokens.
+
+    This includes spacing, typography scale, radius extensions, transitions,
+    and shadow tokens — all the CSS custom properties that other rules depend on.
+    Suitable for critical CSS (needed for first paint).
+
+    Returns:
+        CSS string with :root block and shadow definitions only.
+    """
+    sections = [
+        "/* djust-theming - Design Tokens */",
+        "",
+        ":root {",
+        get_spacing_tokens(),
+        "",
+        get_typography_tokens(),
+        "",
+        get_radius_extensions(),
+        "",
+        get_transition_tokens(),
+        "}",
+        "",
+        get_shadow_tokens(),
+    ]
+
+    return "\n".join(sections)
+
+
+def generate_design_tokens_classes_css(
+    include_typography: bool = True,
+    include_interactive: bool = True,
+    include_layout: bool = True,
+    include_animations: bool = True,
+) -> str:
+    """
+    Generate design token class-based CSS (typography, interactive, layout, animations).
+
+    These are utility classes that depend on the :root custom properties from
+    ``generate_design_tokens_root_css()``. Suitable for deferred CSS (not needed
+    for first paint).
+
+    Args:
+        include_typography: Include typography classes (.h1-.h6, etc.)
+        include_interactive: Include interactive state patterns
+        include_layout: Include layout utilities (truncate, line-clamp, etc.)
+        include_animations: Include animation keyframes and utilities
+
+    Returns:
+        CSS string with class-based design token utilities.
+    """
+    sections = []
+
+    if include_typography:
+        sections.extend([get_typography_classes()])
+
+    if include_interactive:
+        if sections:
+            sections.append("")
+        sections.extend([get_interactive_utilities()])
+
+    if include_layout:
+        if sections:
+            sections.append("")
+        sections.extend([get_layout_utilities()])
+
+    if include_animations:
+        if sections:
+            sections.append("")
+        sections.extend([get_animation_keyframes()])
+
+    return "\n".join(sections)
+
+
 def generate_design_tokens_css(
     include_typography: bool = True,
     include_interactive: bool = True,
@@ -457,32 +532,14 @@ def generate_design_tokens_css(
     Returns:
         Complete CSS string with all requested design tokens
     """
-    sections = [
-        "/* djust_theming - Design Tokens */",
-        "",
-        ":root {",
-        get_spacing_tokens(),
-        "",
-        get_typography_tokens(),
-        "",
-        get_radius_extensions(),
-        "",
-        get_transition_tokens(),
-        "}",
-        "",
-        get_shadow_tokens(),
-    ]
+    root_css = generate_design_tokens_root_css()
+    classes_css = generate_design_tokens_classes_css(
+        include_typography=include_typography,
+        include_interactive=include_interactive,
+        include_layout=include_layout,
+        include_animations=include_animations,
+    )
 
-    if include_typography:
-        sections.extend(["", get_typography_classes()])
-
-    if include_interactive:
-        sections.extend(["", get_interactive_utilities()])
-
-    if include_layout:
-        sections.extend(["", get_layout_utilities()])
-
-    if include_animations:
-        sections.extend(["", get_animation_keyframes()])
-
-    return "\n".join(sections)
+    if classes_css:
+        return root_css + "\n\n" + classes_css
+    return root_css
