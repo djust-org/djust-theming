@@ -347,6 +347,28 @@ def get_layout_utilities() -> str:
 }"""
 
 
+def get_layout_tokens() -> str:
+    """
+    Generate responsive layout CSS custom properties.
+
+    Includes breakpoints for responsive design and structural dimensions for
+    common layout patterns (sidebar, topbar, etc.).
+
+    Returns:
+        CSS string with layout/responsive variables
+    """
+    return """  /* Responsive breakpoints */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  /* Layout dimensions */
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 64px;
+  --topbar-height: 56px;"""
+
+
 def get_animation_keyframes() -> str:
     """
     Generate common animation keyframes.
@@ -461,6 +483,8 @@ def generate_design_tokens_root_css() -> str:
         get_radius_extensions(),
         "",
         get_transition_tokens(),
+        "",
+        get_layout_tokens(),
         "}",
         "",
         get_shadow_tokens(),

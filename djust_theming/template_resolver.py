@@ -67,6 +67,40 @@ def resolve_component_template(request, component_name: str):
     return select_template(candidates)
 
 
+def _get_layout_candidates(theme_name: str, layout_name: str) -> list[str]:
+    """
+    Build the ordered list of template candidates for a layout.
+
+    Args:
+        theme_name: Active design system theme (e.g. "material")
+        layout_name: Layout name (e.g. "base", "sidebar", "dashboard")
+
+    Returns:
+        List of template paths, theme-specific first.
+    """
+    return [
+        f"djust_theming/themes/{theme_name}/layouts/{layout_name}.html",
+        f"djust_theming/layouts/{layout_name}.html",
+    ]
+
+
+def resolve_layout_template(request, layout_name: str):
+    """
+    Resolve the template for a layout, checking theme-specific override first.
+
+    Args:
+        request: Django HttpRequest (for theme state)
+        layout_name: e.g. "base", "sidebar", "dashboard"
+
+    Returns:
+        Template object from ``select_template()``.
+    """
+    manager = get_theme_manager(request)
+    state = manager.get_state()
+    candidates = _get_layout_candidates(state.theme, layout_name)
+    return select_template(candidates)
+
+
 def resolve_theme_template(request, template_name: str):
     """
     Resolve a top-level theme template, checking theme-specific override first.

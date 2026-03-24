@@ -87,6 +87,15 @@ For `{% theme_switcher %}` with the active theme set to `ios`:
 | `djust_theming/components/preset_selector_dropdown.html` | `{% theme_preset_selector layout="dropdown" %}` | Preset dropdown |
 | `djust_theming/components/preset_selector_grid.html` | `{% theme_preset_selector layout="grid" %}` | Preset button grid |
 | `djust_theming/components/preset_selector_list.html` | `{% theme_preset_selector layout="list" %}` | Preset radio list |
+| `djust_theming/layouts/base.html` | `{% extends %}` | Root layout with theme integration |
+| `djust_theming/layouts/sidebar.html` | `{% extends %}` | Sidebar + main content |
+| `djust_theming/layouts/topbar.html` | `{% extends %}` | Sticky topbar + content |
+| `djust_theming/layouts/sidebar_topbar.html` | `{% extends %}` | Sidebar + topbar combined |
+| `djust_theming/layouts/centered.html` | `{% extends %}` | Centered max-width container |
+| `djust_theming/layouts/dashboard.html` | `{% extends %}` | Sidebar + topbar + responsive grid |
+| `djust_theming/layouts/split.html` | `{% extends %}` | Two-panel list/detail view |
+
+For full layout documentation including blocks, responsive behavior, and examples, see the [Layout Templates Guide](layouts.md).
 
 ### Template Context Variables
 
