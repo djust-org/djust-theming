@@ -583,6 +583,121 @@ TOOLTIP_CONTRACT = ComponentContract(
 )
 
 
+NAV_ITEM_CONTRACT = ComponentContract(
+    name="nav_item",
+    required_context=(
+        ContextVar(name="label", type="str", required=True),
+        ContextVar(name="url", type="str", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="icon", type="Optional[str]", default=None),
+        ContextVar(name="active", type="Optional[bool]", default=None),
+        ContextVar(name="badge", type="Optional[str]", default=None),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_icon", type="str", default=None),
+        ContextVar(name="slot_badge", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="a"),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Active nav item must have aria-current=page",
+            selector_hint="a",
+            attr="aria-current",
+            value="page",
+        ),
+    ),
+    available_slots=("slot_icon", "slot_badge"),
+)
+
+NAV_GROUP_CONTRACT = ComponentContract(
+    name="nav_group",
+    required_context=(
+        ContextVar(name="label", type="str", required=True),
+    ),
+    optional_context=(
+        ContextVar(name="items", type="list", default=None),
+        ContextVar(name="icon", type="Optional[str]", default=None),
+        ContextVar(name="expanded", type="bool", default=True),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_label", type="str", default=None),
+        ContextVar(name="slot_items", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="details"),
+        RequiredElement(tag="summary"),
+    ),
+    accessibility=(),
+    available_slots=("slot_label", "slot_items"),
+)
+
+NAV_CONTRACT = ComponentContract(
+    name="nav",
+    required_context=(),
+    optional_context=(
+        ContextVar(name="brand", type="Optional[str]", default=None),
+        ContextVar(name="items", type="list", default=None),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_brand", type="str", default=None),
+        ContextVar(name="slot_items", type="str", default=None),
+        ContextVar(name="slot_actions", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="nav", attrs={"role": "navigation"}),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Nav must have role=navigation",
+            selector_hint="nav",
+            attr="role",
+            value="navigation",
+        ),
+        AccessibilityRequirement(
+            description="Nav must have aria-label",
+            selector_hint="nav",
+            attr="aria-label",
+            value="Main",
+        ),
+    ),
+    available_slots=("slot_brand", "slot_items", "slot_actions"),
+)
+
+SIDEBAR_NAV_CONTRACT = ComponentContract(
+    name="sidebar_nav",
+    required_context=(),
+    optional_context=(
+        ContextVar(name="sections", type="list", default=None),
+        ContextVar(name="css_prefix", type="str", default=""),
+        ContextVar(name="attrs", type="dict", default=None),
+        ContextVar(name="slot_header", type="str", default=None),
+        ContextVar(name="slot_sections", type="str", default=None),
+        ContextVar(name="slot_footer", type="str", default=None),
+    ),
+    required_elements=(
+        RequiredElement(tag="nav", attrs={"role": "navigation", "aria-label": "Sidebar"}),
+    ),
+    accessibility=(
+        AccessibilityRequirement(
+            description="Sidebar nav must have role=navigation",
+            selector_hint="nav",
+            attr="role",
+            value="navigation",
+        ),
+        AccessibilityRequirement(
+            description="Sidebar nav must have aria-label=Sidebar",
+            selector_hint="nav",
+            attr="aria-label",
+            value="Sidebar",
+        ),
+    ),
+    available_slots=("slot_header", "slot_sections", "slot_footer"),
+)
+
+
 COMPONENT_CONTRACTS: dict[str, ComponentContract] = {
     "button": BUTTON_CONTRACT,
     "card": CARD_CONTRACT,
@@ -604,6 +719,10 @@ COMPONENT_CONTRACTS: dict[str, ComponentContract] = {
     "progress": PROGRESS_CONTRACT,
     "skeleton": SKELETON_CONTRACT,
     "tooltip": TOOLTIP_CONTRACT,
+    "nav_item": NAV_ITEM_CONTRACT,
+    "nav_group": NAV_GROUP_CONTRACT,
+    "nav": NAV_CONTRACT,
+    "sidebar_nav": SIDEBAR_NAV_CONTRACT,
 }
 
 

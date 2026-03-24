@@ -101,10 +101,14 @@ class ComponentTestCase(unittest.TestCase):
             theme_dropdown,
             theme_input,
             theme_modal,
+            theme_nav,
+            theme_nav_group,
+            theme_nav_item,
             theme_pagination,
             theme_progress,
             theme_radio,
             theme_select,
+            theme_sidebar_nav,
             theme_skeleton,
             theme_table,
             theme_tabs,
@@ -134,10 +138,20 @@ class ComponentTestCase(unittest.TestCase):
             "progress": theme_progress,
             "skeleton": theme_skeleton,
             "tooltip": theme_tooltip,
+            "nav_item": theme_nav_item,
+            "nav_group": theme_nav_group,
+            "nav": theme_nav,
+            "sidebar_nav": theme_sidebar_nav,
         }
 
         tag_fn = tag_map[tag_name]
-        ctx = {"request": self._make_mock_request()}
+
+        # Allow tests to set request.path for auto-active detection
+        request_path = kwargs.pop("request_path", None)
+        request = self._make_mock_request()
+        if request_path is not None:
+            request.path = request_path
+        ctx = {"request": request}
 
         with patch.object(settings, "LIVEVIEW_CONFIG", {}, create=True):
             result = tag_fn(ctx, **kwargs)

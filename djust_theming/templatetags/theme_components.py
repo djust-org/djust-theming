@@ -671,3 +671,131 @@ def theme_icon(name: str, size: int = 20):
         'info': f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>',
     }
     return mark_safe(icons.get(name, ''))
+
+
+@register.simple_tag(takes_context=True)
+def theme_nav_item(context, label: str, url: str, icon: Optional[str] = None, active: Optional[bool] = None, badge: Optional[str] = None, **attrs):
+    """
+    Render a themed navigation link with active state detection.
+
+    Args:
+        label: Link text
+        url: Link URL
+        icon: Optional icon name/text
+        active: Explicit active state; if None, auto-detects from request.path
+        badge: Optional badge text (e.g. count)
+        **attrs: Additional HTML attributes (slot_icon, slot_badge, class, id, etc.)
+
+    Usage:
+        {% theme_nav_item "Home" "/" %}
+        {% theme_nav_item "Inbox" "/inbox/" badge="5" %}
+        {% theme_nav_item "Dashboard" "/dash/" active=True %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "nav_item")
+
+    # Auto-detect active state from request.path
+    is_active = active
+    if is_active is None and request is not None:
+        request_path = getattr(request, "path", None)
+        if request_path is not None:
+            if url == "/":
+                is_active = request_path == "/"
+            else:
+                is_active = request_path.startswith(url)
+
+    ctx = {
+        'label': label,
+        'url': url,
+        'icon': icon,
+        'is_active': bool(is_active),
+        'badge': badge,
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_nav_group(context, label: str, items: Any = None, icon: Optional[str] = None, expanded: bool = True, **attrs):
+    """
+    Render a collapsible navigation group with a heading and child items.
+
+    Args:
+        label: Group heading text
+        items: List of dicts with 'label', 'url', and optional 'icon', 'badge' keys
+        icon: Optional icon name/text for the group heading
+        expanded: Whether the group is expanded by default
+        **attrs: Additional HTML attributes (slot_label, slot_items, class, id, etc.)
+
+    Usage:
+        {% theme_nav_group "Admin" items=admin_links %}
+        {% theme_nav_group "Settings" items=settings_links expanded=False %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "nav_group")
+    ctx = {
+        'label': label,
+        'items': items or [],
+        'icon': icon,
+        'expanded': expanded,
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_nav(context, brand: Optional[str] = None, items: Any = None, **attrs):
+    """
+    Render a themed horizontal navigation bar.
+
+    Args:
+        brand: Brand text or name
+        items: List of dicts with 'label', 'url', and optional 'icon', 'active', 'badge' keys
+        **attrs: Additional HTML attributes (slot_brand, slot_items, slot_actions, class, id, etc.)
+
+    Usage:
+        {% theme_nav brand="MyApp" items=nav_items %}
+        {% theme_nav brand="MyApp" slot_actions="<button>Login</button>" %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "nav")
+    ctx = {
+        'brand': brand,
+        'items': items or [],
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
+    }
+    return mark_safe(tmpl.render(ctx))
+
+
+@register.simple_tag(takes_context=True)
+def theme_sidebar_nav(context, sections: Any = None, **attrs):
+    """
+    Render a themed vertical sidebar navigation with sections.
+
+    Args:
+        sections: List of dicts with 'title' and 'items' keys.
+                  Each item dict has 'label', 'url', and optional 'icon', 'active', 'badge'.
+        **attrs: Additional HTML attributes (slot_header, slot_sections, slot_footer, class, id, etc.)
+
+    Usage:
+        {% theme_sidebar_nav sections=sidebar_sections %}
+    """
+    slots, remaining_attrs = _extract_slots(attrs)
+    request = context.get("request")
+    tmpl = resolve_component_template(request, "sidebar_nav")
+    ctx = {
+        'sections': sections or [],
+        'attrs': remaining_attrs,
+        'css_prefix': _css_prefix(),
+        **slots,
+    }
+    return mark_safe(tmpl.render(ctx))

@@ -993,6 +993,226 @@ The tooltip text is conveyed via `data-tooltip` and rendered as a CSS `::after` 
 
 ---
 
+## Nav Item
+
+**Template tag:** `{% theme_nav_item "Home" "/" %}`
+
+A single navigation link with automatic active state detection from `request.path`.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `label` | str | Yes | -- | Link text |
+| `url` | str | Yes | -- | Link URL |
+| `icon` | str or None | No | `None` | Optional icon name/text |
+| `active` | bool or None | No | `None` | Explicit active state; auto-detects from `request.path` when `None` |
+| `badge` | str or None | No | `None` | Optional badge text (e.g. notification count) |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<a>` -- the navigation link
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `aria-current="page"` | Active nav item must have `aria-current="page"` for screen readers |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_icon` | Replaces default icon `<span>` | Custom SVG icon |
+| `slot_badge` | Replaces default badge `<span>` | Custom badge with styling |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_nav_item "Home" "/" %}
+{% theme_nav_item "Inbox" "/inbox/" badge="5" %}
+{% theme_nav_item "Dashboard" "/dash/" active=True %}
+```
+
+---
+
+## Nav Group
+
+**Template tag:** `{% theme_nav_group "Admin" items=admin_links %}`
+
+A collapsible group of navigation items using native `<details>/<summary>` for expand/collapse behavior.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `label` | str | Yes | -- | Group heading text |
+| `items` | list | No | `None` | List of dicts with `label`, `url`, and optional `icon`, `badge` keys |
+| `icon` | str or None | No | `None` | Optional icon for the group heading |
+| `expanded` | bool | No | `True` | Whether the group is expanded by default |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<details>` -- the collapsible container
+- `<summary>` -- the clickable heading
+
+### Accessibility
+
+Native `<details>/<summary>` provides built-in expand/collapse semantics.
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_label` | Replaces the `{{ label }}` text inside `<summary>` | Custom heading with icon + text |
+| `slot_items` | Replaces the rendered item links | Custom navigation items layout |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_nav_group "Admin" items=admin_links %}
+{% theme_nav_group "Settings" items=settings_links expanded=False %}
+```
+
+```python
+# views.py
+admin_links = [
+    {"label": "Users", "url": "/admin/users/"},
+    {"label": "Roles", "url": "/admin/roles/", "badge": "3"},
+]
+```
+
+---
+
+## Nav
+
+**Template tag:** `{% theme_nav brand="MyApp" items=nav_items %}`
+
+A horizontal navigation bar with brand area, navigation links, and an actions slot.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `brand` | str or None | No | `None` | Brand text or name |
+| `items` | list | No | `None` | List of dicts with `label`, `url`, and optional `icon`, `active`, `badge` keys |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<nav role="navigation">` -- the navigation landmark
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `role="navigation"` | The nav element identifies as a navigation landmark |
+| `aria-label="Main"` | Labels the nav for screen readers |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_brand` | Replaces default brand text | Logo image or rich brand markup |
+| `slot_items` | Replaces the rendered item links | Custom nav items with dropdowns |
+| `slot_actions` | Adds an actions area (login button, theme switcher, etc.) | `<button>Login</button>` |
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_nav brand="MyApp" items=nav_items %}
+{% theme_nav brand="MyApp" slot_actions="<button>Login</button>" %}
+```
+
+```python
+# views.py
+nav_items = [
+    {"label": "Home", "url": "/", "active": True},
+    {"label": "About", "url": "/about/"},
+    {"label": "Contact", "url": "/contact/"},
+]
+```
+
+---
+
+## Sidebar Nav
+
+**Template tag:** `{% theme_sidebar_nav sections=sidebar_sections %}`
+
+A vertical sidebar navigation with titled sections. Designed for sidebar and dashboard layouts.
+
+### Context variables
+
+| Variable | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `sections` | list | No | `None` | List of dicts with `title` and `items` keys. Each item has `label`, `url`, and optional `icon`, `active`, `badge`. |
+| `css_prefix` | str | No | `""` | CSS class prefix |
+| `attrs` | dict | No | `{}` | Extra HTML attributes |
+
+### Required HTML elements
+
+- `<nav role="navigation" aria-label="Sidebar">` -- the sidebar navigation landmark
+
+### Accessibility
+
+| Requirement | Details |
+|-------------|---------|
+| `role="navigation"` | The nav element identifies as a navigation landmark |
+| `aria-label="Sidebar"` | Distinguishes sidebar nav from main nav for screen readers |
+
+### Slots
+
+| Slot variable | What it overrides | Example use |
+|---------------|-------------------|-------------|
+| `slot_header` | Adds a header area above sections | Brand logo, user name |
+| `slot_sections` | Replaces all rendered sections | Fully custom section layout |
+| `slot_footer` | Adds a footer area below sections | Logout button, version info |
+
+### JavaScript behavior
+
+The `data-theme-sidebar-collapse` attribute on the `<nav>` element enables JavaScript-driven sidebar collapse (implemented by the application or a future djust-theming JS module).
+
+### Usage example
+
+```html
+{% load theme_components %}
+
+{% theme_sidebar_nav sections=sidebar_sections %}
+```
+
+```python
+# views.py
+sidebar_sections = [
+    {
+        "title": "Main",
+        "items": [
+            {"label": "Dashboard", "url": "/dashboard/", "active": True},
+            {"label": "Reports", "url": "/reports/"},
+        ],
+    },
+    {
+        "title": "Settings",
+        "items": [
+            {"label": "Profile", "url": "/settings/profile/"},
+            {"label": "Billing", "url": "/settings/billing/", "badge": "!"},
+        ],
+    },
+]
+```
+
+---
+
 ## Using contracts programmatically
 
 You can access contracts in Python for validation or tooling:
