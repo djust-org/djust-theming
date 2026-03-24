@@ -350,6 +350,116 @@ Two-panel layout for list/detail views (e.g., email client, file browser). Left 
 {% endblock %}
 ```
 
+## Navigation Components
+
+djust-theming includes 4 navigation components designed to work seamlessly with layout templates. Use these to build consistent, accessible navigation across your application.
+
+### theme_nav_item
+
+A single navigation link with automatic active state detection.
+
+```html
+{% load theme_components %}
+
+{% theme_nav_item "Home" "/" %}
+{% theme_nav_item "Inbox" "/inbox/" badge="5" %}
+{% theme_nav_item "Dashboard" "/dash/" active=True %}
+```
+
+Active state is auto-detected from `request.path` when `active` is not explicitly set. For root URLs (`/`), an exact match is required; for other URLs, prefix matching is used.
+
+The active link receives the `active` CSS class and `aria-current="page"` for screen readers.
+
+### theme_nav_group
+
+A collapsible group of navigation items using native `<details>/<summary>` elements.
+
+```html
+{% load theme_components %}
+
+{% theme_nav_group "Admin" items=admin_links %}
+{% theme_nav_group "Settings" items=settings_links expanded=False %}
+```
+
+Where `admin_links` is a list of dicts:
+
+```python
+admin_links = [
+    {"label": "Users", "url": "/admin/users/"},
+    {"label": "Roles", "url": "/admin/roles/", "badge": "3"},
+]
+```
+
+### theme_nav
+
+A horizontal navigation bar with brand, item links, and an actions area.
+
+```html
+{% load theme_components %}
+
+{% theme_nav brand="MyApp" items=nav_items %}
+{% theme_nav brand="MyApp" slot_actions="<button>Login</button>" %}
+```
+
+The nav bar renders a `<nav role="navigation" aria-label="Main">` element with `.navbar` CSS class. Combine with the `topbar` layout:
+
+```html
+{% extends "djust_theming/layouts/topbar.html" %}
+
+{% load theme_components %}
+
+{% block topbar %}
+  {% theme_nav brand="MyApp" items=nav_items %}
+{% endblock %}
+```
+
+### theme_sidebar_nav
+
+A vertical sidebar navigation with titled sections. Designed for the `sidebar` and `sidebar_topbar` layouts.
+
+```html
+{% load theme_components %}
+
+{% theme_sidebar_nav sections=sidebar_sections %}
+```
+
+Where `sidebar_sections` is:
+
+```python
+sidebar_sections = [
+    {
+        "title": "Main",
+        "items": [
+            {"label": "Dashboard", "url": "/dashboard/", "active": True},
+            {"label": "Reports", "url": "/reports/"},
+        ],
+    },
+    {
+        "title": "Settings",
+        "items": [
+            {"label": "Profile", "url": "/settings/profile/"},
+            {"label": "Billing", "url": "/settings/billing/", "badge": "!"},
+        ],
+    },
+]
+```
+
+Combine with the sidebar layout:
+
+```html
+{% extends "djust_theming/layouts/sidebar.html" %}
+
+{% load theme_components %}
+
+{% block sidebar %}
+  {% theme_sidebar_nav sections=sidebar_sections %}
+{% endblock %}
+```
+
+The sidebar nav supports `slot_header` and `slot_footer` for branding and user info. It also includes a `data-theme-sidebar-collapse` attribute for JavaScript-driven collapse behavior.
+
+---
+
 ## Responsive Behavior
 
 All layouts use CSS design tokens for responsive breakpoints and structural dimensions:
