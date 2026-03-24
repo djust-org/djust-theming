@@ -56,6 +56,22 @@ When the active theme is `corporate`, `{% theme_button %}` renders `djust_themin
 
 This is useful when different design systems need fundamentally different HTML structures -- for example, a Material Design button with a ripple effect container versus a Minimalist button with no wrapper elements.
 
+### Built-in Design System Variants
+
+Five design systems ship with HTML-different template variants for `button` and `card` components. These variants use design-system-specific markup that goes beyond CSS-only differences:
+
+| Design System | Button Variant | Card Variant | Extra |
+|---------------|---------------|--------------|-------|
+| **material** | Ripple effect container (`btn-ripple`) | Elevated surface (`card-elevated`) | -- |
+| **ios** | SF-style button (`btn-sf`) | Grouped inset card (`card-grouped`) | Segmented control tabs (`segmented-control`) |
+| **fluent** | Reveal highlight (`btn-reveal`) | Acrylic background (`card-acrylic`) | -- |
+| **neo_brutalist** | Offset shadow (`btn-offset`) | Thick border (`card-border-thick`) | -- |
+| **playful** | Bounce animation (`btn-bounce`) | Decorated container (`card-decorated`) | -- |
+
+The remaining design systems (minimalist, corporate, retro, elegant, organic, dense) are **CSS-only** -- they use the default component templates and achieve their visual identity entirely through CSS custom properties and token values.
+
+When a variant system is active, the template resolver automatically selects the design-system-specific template. For components that don't have a variant override (e.g., `alert` under material), the default template is used.
+
 ### Resolution Order Summary
 
 For `{% theme_button %}` with the active theme set to `corporate`:

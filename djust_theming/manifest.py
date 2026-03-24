@@ -54,6 +54,7 @@ class ThemeManifest:
 
     # Internal (not from TOML)
     path: Optional[Path] = None
+    templates_dir: Optional[Path] = None
 
     # ------------------------------------------------------------------
     # Parsing

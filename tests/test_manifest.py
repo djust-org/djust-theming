@@ -7,9 +7,23 @@ from pathlib import Path
 
 import pytest
 
+from unittest.mock import patch
+from django.conf import settings
+
 from tests.conftest import *  # noqa: F401,F403  — ensure Django is configured
 
 from djust_theming.manifest import ThemeManifest, load_theme_manifests
+from djust_theming.registry import get_registry
+
+
+@pytest.fixture(autouse=True)
+def ensure_registry_populated():
+    """Ensure the registry has built-in presets/themes for validate() tests."""
+    registry = get_registry()
+    if not registry._discovered:
+        with patch.object(settings, "LIVEVIEW_CONFIG", {}, create=True):
+            registry.discover()
+    yield
 
 
 # ---------------------------------------------------------------------------

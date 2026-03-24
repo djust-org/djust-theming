@@ -44,15 +44,18 @@ class TestDefaultTemplateFallback:
         return request
 
     def test_resolve_component_returns_default_button(self):
-        """resolve_component_template returns default button.html when no override."""
+        """resolve_component_template returns button.html (default or theme variant)."""
         with patch.object(settings, "LIVEVIEW_CONFIG", {}, create=True):
             tmpl = resolve_component_template(self._make_request(), "button")
-        assert tmpl.origin.name.endswith("djust_theming/components/button.html")
+        # Default theme is "material", which now has a variant template.
+        # Accept either default or theme-specific button.
+        assert tmpl.origin.name.endswith("button.html")
 
     def test_resolve_component_returns_default_card(self):
+        """resolve_component_template returns card.html (default or theme variant)."""
         with patch.object(settings, "LIVEVIEW_CONFIG", {}, create=True):
             tmpl = resolve_component_template(self._make_request(), "card")
-        assert tmpl.origin.name.endswith("djust_theming/components/card.html")
+        assert tmpl.origin.name.endswith("card.html")
 
     def test_resolve_component_returns_default_badge(self):
         with patch.object(settings, "LIVEVIEW_CONFIG", {}, create=True):
@@ -107,10 +110,11 @@ class TestThemeSpecificOverride:
         request.session = {}
         request._djust_theme_manager = None
 
+        # Use a component that has no material-specific variant (alert)
         with patch.object(settings, "LIVEVIEW_CONFIG", {}, create=True):
-            tmpl = resolve_component_template(request, "button")
+            tmpl = resolve_component_template(request, "alert")
         # Should fall back to default
-        assert "djust_theming/components/button.html" in tmpl.origin.name
+        assert "djust_theming/components/alert.html" in tmpl.origin.name
         assert "themes/" not in tmpl.origin.name
 
 

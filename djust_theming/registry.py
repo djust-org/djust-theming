@@ -143,6 +143,8 @@ class ThemeRegistry:
         # Convention: package exposes get_theme_manifest() -> ThemeManifest
         if hasattr(mod, "get_theme_manifest"):
             manifest = mod.get_theme_manifest()
+            # Detect templates directory in the package
+            self._detect_package_templates(mod, manifest)
             self._manifests[manifest.name] = manifest
         # Convention: package exposes PRESETS dict
         if hasattr(mod, "PRESETS"):
@@ -152,6 +154,19 @@ class ThemeRegistry:
         if hasattr(mod, "DESIGN_SYSTEMS"):
             for name, ds in mod.DESIGN_SYSTEMS.items():
                 self._themes[name] = ds
+
+    @staticmethod
+    def _detect_package_templates(mod, manifest):
+        """Detect templates/ dir in a package and set manifest.templates_dir."""
+        if manifest.templates_dir is not None:
+            return  # Already set by the package itself
+        mod_file = getattr(mod, "__file__", None)
+        if not mod_file:
+            return
+        pkg_dir = Path(mod_file).parent
+        templates_dir = pkg_dir / "templates"
+        if templates_dir.is_dir():
+            manifest.templates_dir = templates_dir
 
     def _discover_from_themes_dir(self):
         """Load theme.toml manifests from configured themes_dir."""
