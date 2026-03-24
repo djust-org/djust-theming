@@ -220,6 +220,47 @@ class Command(BaseCommand):
             help='Override themes directory'
         )
 
+        # create-package subcommand
+        pkg_parser = subparsers.add_parser(
+            'create-package',
+            help='Generate a pip-installable theme package scaffold'
+        )
+        pkg_parser.add_argument(
+            'package_name',
+            type=str,
+            help='Package name (lowercase letters, digits, hyphens only)'
+        )
+        pkg_parser.add_argument(
+            '--author',
+            type=str,
+            default='',
+            help='Package author name'
+        )
+        pkg_parser.add_argument(
+            '--preset',
+            type=str,
+            default='default',
+            help='Color preset from THEME_PRESETS (default: default)'
+        )
+        pkg_parser.add_argument(
+            '--design-system',
+            type=str,
+            default='material',
+            help='Design system from DESIGN_SYSTEMS (default: material)'
+        )
+        pkg_parser.add_argument(
+            '--dir',
+            type=str,
+            default=None,
+            dest='pkg_dir',
+            help='Output directory (default: current working directory)'
+        )
+        pkg_parser.add_argument(
+            '--force',
+            action='store_true',
+            help='Overwrite existing package directory'
+        )
+
     def handle(self, *args, **options):
         subcommand = options.get('subcommand')
 
@@ -245,6 +286,8 @@ class Command(BaseCommand):
             self.handle_create_theme(options)
         elif subcommand == 'validate-theme':
             self.handle_validate_theme(options)
+        elif subcommand == 'create-package':
+            self.handle_create_package(options)
         else:
             raise CommandError(f"Unknown subcommand: {subcommand}")
 
@@ -783,3 +826,222 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(
                 f"  PASS: Valid (with {len(warnings)} warning(s))."
             ))
+
+    def handle_create_package(self, options):
+        """Generate a pip-installable theme package scaffold."""
+        import re
+        from pathlib import Path
+
+        from djust_theming.manifest import ThemeManifest
+
+        registry = get_registry()
+        name = options['package_name']
+        author = options.get('author', '')
+        preset = options['preset']
+        design_system = options['design_system']
+        force = options.get('force', False)
+        output_dir = options.get('pkg_dir')
+
+        # Validate package name
+        if not re.match(r'^[a-z0-9][a-z0-9-]*$', name):
+            raise CommandError(
+                f"Invalid package name '{name}': must contain only "
+                f"lowercase letters, digits, and hyphens (pattern: [a-z0-9-])."
+            )
+
+        # Validate preset
+        if not registry.has_preset(preset):
+            raise CommandError(
+                f"Unknown preset '{preset}'. "
+                f"Available: {', '.join(sorted(registry.list_presets().keys()))}"
+            )
+
+        # Validate design system
+        if not registry.has_theme(design_system):
+            raise CommandError(
+                f"Unknown design system '{design_system}'. "
+                f"Available: {', '.join(sorted(registry.list_themes().keys()))}"
+            )
+
+        # Resolve output directory
+        if output_dir:
+            base_dir = Path(output_dir)
+        else:
+            base_dir = Path.cwd()
+
+        # Naming conventions
+        py_name = name.replace("-", "_")
+        dist_name = f"djust-theme-{name}"
+        py_pkg_name = f"djust_theme_{py_name}"
+        pkg_root = base_dir / dist_name
+
+        # Check for existing package
+        if pkg_root.exists() and not force:
+            raise CommandError(
+                f"Package directory already exists: {pkg_root}\n"
+                f"Use --force to overwrite."
+            )
+
+        # --- Create directory structure ---
+        pkg_root.mkdir(parents=True, exist_ok=True)
+        py_pkg_dir = pkg_root / py_pkg_name
+        py_pkg_dir.mkdir(parents=True, exist_ok=True)
+
+        # Template directories
+        templates_dir = (
+            py_pkg_dir / "templates" / "djust_theming" / "themes"
+            / name / "components"
+        )
+        templates_dir.mkdir(parents=True, exist_ok=True)
+        (templates_dir / ".gitkeep").touch()
+
+        # Static directories
+        for subdir in ["css", "fonts"]:
+            d = py_pkg_dir / "static" / py_pkg_name / subdir
+            d.mkdir(parents=True, exist_ok=True)
+            (d / ".gitkeep").touch()
+
+        # --- Write __init__.py ---
+        (py_pkg_dir / "__init__.py").write_text("")
+
+        # --- Write theme.toml ---
+        manifest = ThemeManifest(
+            name=name,
+            version="0.1.0",
+            description=f"Theme package: {name}",
+            author=author,
+            preset=preset,
+            design_system=design_system,
+        )
+        (py_pkg_dir / "theme.toml").write_text(manifest.to_toml())
+
+        # --- Write tokens.css ---
+        (py_pkg_dir / "tokens.css").write_text(
+            f"/* Theme: {name}\n"
+            f" * Preset: {preset} | Design System: {design_system}\n"
+            f" *\n"
+            f" * Override CSS custom properties here.\n"
+            f" * These are applied AFTER the preset tokens.\n"
+            f" *\n"
+            f" * Example:\n"
+            f" *   :root {{\n"
+            f" *     --primary: 220 90% 56%;\n"
+            f" *     --radius: 0.75rem;\n"
+            f" *   }}\n"
+            f" */\n"
+        )
+
+        # --- Write pyproject.toml ---
+        author_line = ""
+        if author:
+            author_line = f'authors = [{{name = "{author}"}}]'
+        else:
+            author_line = 'authors = [{name = "Theme Author"}]'
+
+        pyproject_content = f'''[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "{dist_name}"
+version = "0.1.0"
+description = "djust-theming theme package: {name}"
+{author_line}
+requires-python = ">=3.10"
+license = {{text = "MIT"}}
+
+dependencies = [
+    "djust-theming>=0.3.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["{py_pkg_name}*"]
+
+[tool.setuptools.package-data]
+{py_pkg_name} = [
+    "theme.toml",
+    "tokens.css",
+    "templates/**/*.html",
+    "static/**/*",
+]
+'''
+        (pkg_root / "pyproject.toml").write_text(pyproject_content)
+
+        # --- Write README.md ---
+        readme_content = f"""# {dist_name}
+
+A theme package for [djust-theming](https://djust.org/theming).
+
+## Installation
+
+```bash
+pip install {dist_name}
+```
+
+## Usage
+
+Add the package to your Django `INSTALLED_APPS`:
+
+```python
+INSTALLED_APPS = [
+    ...
+    "djust_theming",
+    "{py_pkg_name}",
+]
+```
+
+Then configure it in your djust-theming settings:
+
+```python
+LIVEVIEW_CONFIG = {{
+    "theme": {{
+        "packages": ["{dist_name}"],
+    }}
+}}
+```
+"""
+        (pkg_root / "README.md").write_text(readme_content)
+
+        # --- Write LICENSE ---
+        license_content = """MIT License
+
+Copyright (c) 2024
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+        (pkg_root / "LICENSE").write_text(license_content)
+
+        # --- Print summary ---
+        self.stdout.write(
+            self.style.SUCCESS(f"\nCreated theme package '{dist_name}' at {pkg_root}\n")
+        )
+        self.stdout.write(f"  pyproject.toml           -- build metadata")
+        self.stdout.write(f"  README.md                -- installation instructions")
+        self.stdout.write(f"  LICENSE                  -- MIT license")
+        self.stdout.write(f"  {py_pkg_name}/")
+        self.stdout.write(f"    __init__.py            -- package marker")
+        self.stdout.write(f"    theme.toml             -- theme manifest (preset: {preset})")
+        self.stdout.write(f"    tokens.css             -- CSS custom property overrides")
+        self.stdout.write(f"    templates/             -- component template overrides")
+        self.stdout.write(f"    static/                -- CSS and font assets")
+        self.stdout.write(f"\nNext steps:")
+        self.stdout.write(f"  1. Edit tokens.css to customize your theme")
+        self.stdout.write(f"  2. Add component templates to templates/")
+        self.stdout.write(f"  3. Build: pip install -e {pkg_root}")
+        self.stdout.write(f"  4. Publish: python -m build && twine upload dist/*\n")
