@@ -243,6 +243,131 @@ A theme is a self-contained directory. To share it:
 
 Recipients can drop the directory into their `themes/` folder and it will be discovered automatically by `load_theme_manifests()`.
 
+## Creating Installable Theme Packages
+
+You can distribute themes as pip-installable Python packages. This is the recommended approach for sharing themes with the community or across multiple projects.
+
+### Package Structure
+
+```
+djust-theme-nord/
+  pyproject.toml
+  djust_theme_nord/
+    __init__.py            # Exposes get_theme_manifest(), PRESETS, DESIGN_SYSTEMS
+    templates/
+      djust_theming/
+        themes/
+          nord/
+            components/
+              button.html  # Theme-specific component templates
+              card.html
+    static/
+      djust_theming/
+        themes/
+          nord/
+            tokens.css     # Custom token overrides
+```
+
+### `__init__.py` Conventions
+
+Your package must expose one or more of these module-level attributes:
+
+```python
+# djust_theme_nord/__init__.py
+from pathlib import Path
+from djust_theming.manifest import ThemeManifest
+
+def get_theme_manifest():
+    """Return the theme manifest for this package."""
+    return ThemeManifest(
+        name="nord",
+        version="1.0.0",
+        description="Nord color palette theme for djust-theming",
+        author="Your Name",
+        license="MIT",
+        preset="default",
+        design_system="material",
+        path=Path(__file__).parent,
+    )
+
+# Optional: export custom presets
+PRESETS = {
+    "nord-frost": ThemePreset(...),
+    "nord-aurora": ThemePreset(...),
+}
+
+# Optional: export custom design systems
+DESIGN_SYSTEMS = {
+    "nord-ds": DesignSystem(...),
+}
+```
+
+The registry calls `get_theme_manifest()` and automatically detects the `templates/` directory inside your package. You do not need to set `templates_dir` manually -- the registry detects it by looking for a `templates/` subdirectory next to your `__init__.py`.
+
+### `pyproject.toml`
+
+```toml
+[project]
+name = "djust-theme-nord"
+version = "1.0.0"
+description = "Nord theme for djust-theming"
+dependencies = ["djust-theming>=0.3.0"]
+
+[tool.setuptools.packages.find]
+include = ["djust_theme_nord*"]
+
+[tool.setuptools.package-data]
+djust_theme_nord = [
+    "templates/**/*.html",
+    "static/**/*.css",
+    "static/**/*.woff2",
+]
+```
+
+### Installing a Theme Package
+
+```bash
+pip install djust-theme-nord
+```
+
+Then add it to your Django settings:
+
+```python
+# settings.py
+DJUST_THEMES = [
+    "djust_theme_nord",
+]
+```
+
+The registry discovers the package at startup and registers its manifest, presets, and design systems. Templates from the package are available through `ThemePackageLoader`.
+
+### Template Loading for Packages
+
+To use templates from installed theme packages, add `ThemePackageLoader` to your template loaders:
+
+```python
+# settings.py
+TEMPLATES = [{
+    "BACKEND": "django.template.backends.django.DjangoTemplates",
+    "DIRS": [],
+    "OPTIONS": {
+        "loaders": [
+            "djust_theming.loaders.ThemePackageLoader",
+            "django.template.loaders.filesystem.Loader",
+            "django.template.loaders.app_directories.Loader",
+        ],
+    },
+}]
+```
+
+`ThemePackageLoader` queries the registry for all manifests that have a `templates_dir` and makes those directories available to Django's template engine. This means `{% theme_button %}` can resolve to a template shipped inside a pip package.
+
+### Publishing
+
+1. Build the package: `python -m build`
+2. Upload to PyPI: `twine upload dist/*`
+3. Users install with `pip install djust-theme-nord` and add the package name to `DJUST_THEMES`
+
 ## Theme Registry
 
 All presets, design systems, and manifests are managed through the **Theme Registry** -- a thread-safe singleton that acts as the single source of truth at runtime. The registry is populated automatically during Django startup (`AppConfig.ready()`).
