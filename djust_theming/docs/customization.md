@@ -1382,3 +1382,54 @@ SILENCED_SYSTEM_CHECKS = [
 ```
 
 Errors (`E001`-`E004`) indicate broken configuration that will cause runtime failures. Silence them only if you are certain the check does not apply to your setup.
+
+## Theme Gallery
+
+The theme gallery is a built-in developer tool that renders every component in every variant on a single page. It helps you visually verify your theme customizations, compare presets, and check component rendering across all 24 components.
+
+### Setup
+
+Include the djust-theming URLs in your project's `urls.py`:
+
+```python
+# urls.py
+from django.urls import include, path
+
+urlpatterns = [
+    path("theming/", include("djust_theming.urls")),
+    # ...
+]
+```
+
+The gallery is then available at `/theming/gallery/`.
+
+### Access Control
+
+The gallery is gated for production safety:
+
+- **`DEBUG=True`**: The gallery is accessible to all users without authentication.
+- **`DEBUG=False`**: Only users with `request.user.is_staff == True` can access the gallery. All other requests receive a `403 Forbidden` response.
+
+This means the gallery is always available during local development but locked down in production. Staff users (Django admin users) can still access it in production for theme verification.
+
+### Preset Switcher
+
+The gallery includes a preset dropdown at the top of the page. Use the `?preset=<name>` query parameter to switch between color presets (e.g., `/theming/gallery/?preset=nord`). The dropdown submits automatically on change, re-rendering all components with the selected preset's color tokens.
+
+### What the Gallery Shows
+
+The gallery renders every registered component with representative examples:
+
+- **Buttons**: All 5 variants (primary, secondary, destructive, ghost, link) and 3 sizes (sm, md, lg)
+- **Alerts**: All 4 variants (default, success, warning, destructive) plus dismissible
+- **Badges**: All 5 variants (default, secondary, success, warning, destructive)
+- **Tables**: 3 variants (default, striped, hover)
+- **Modals**: 3 sizes (sm, md, lg) with trigger buttons
+- **Toasts**: 4 variants (success, warning, error, info)
+- **Progress bars**: 25%, 50%, 75%, 100%, and indeterminate
+- **Skeletons**: 3 shapes (text, circle, rect)
+- **Tooltips**: 4 positions (top, bottom, left, right)
+- **Avatars**: 3 sizes (sm, md, lg)
+- **Forms**: Input, select, textarea, checkbox, radio with sample data
+- **Navigation**: Nav, sidebar nav, nav items, nav groups, breadcrumbs
+- **Cards, Dropdowns, Tabs, Pagination**: With representative configurations
