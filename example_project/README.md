@@ -1,15 +1,24 @@
 # djust-theming Example Project
 
-A complete Django application demonstrating all features of djust-theming.
+A complete Django application demonstrating all features of djust-theming (Phases 1-9).
 
 ## Features Demonstrated
 
-- ✅ All 7 theme presets (Default, Shadcn, Blue, Green, Purple, Orange, Rose)
-- ✅ Light/Dark/System mode switching
-- ✅ Component library (Buttons, Cards, Badges, Alerts, Inputs)
-- ✅ Tailwind CSS integration
-- ✅ shadcn/ui compatibility
-- ✅ Reactive theme switching (with djust LiveView - optional)
+- 24 theme-aware components (button, card, badge, alert, input, select, textarea, checkbox, radio, modal, dropdown, tabs, table, pagination, breadcrumb, avatar, toast, progress, skeleton, tooltip, nav, sidebar nav, nav item, nav group)
+- 19 color presets (Default, Shadcn, Blue, Green, Purple, Orange, Rose, Natural20, Catppuccin, Rose Pine, Tokyo Night, Nord, Synthwave, Cyberpunk, Outrun, Forest, Amber, Slate, Nebula)
+- 11 design systems (Material, iOS, Fluent, Minimalist, Playful, Corporate, Retro, Elegant, Neo-Brutalist, Organic, Dense)
+- 6 layout templates (Topbar, Sidebar, Sidebar+Topbar, Centered, Dashboard, Split)
+- 8+ page templates (Login, Register, Password Reset, Password Confirm, 404, 403, 500, Maintenance, Empty State)
+- Django form integration (stacked, horizontal, inline layouts with themed error display)
+- Theme packs (bundled design system + color + icon + animation + pattern combos)
+- Light/Dark/System mode switching
+- Tailwind CSS integration and shadcn/ui compatibility
+- Built-in gallery, storybook, editor, and diff tools (via `/theming/gallery/`)
+- Theme inspector with real-time CSS generation
+- Critical CSS splitting and deferred CSS loading
+- CSS prefix isolation support
+- CSS cascade layers support
+- RTL direction support
 
 ## Quick Start
 
@@ -30,151 +39,92 @@ python manage.py runserver
 
 Visit http://localhost:8000
 
+## Pages
+
+| URL | Page | Features |
+|-----|------|----------|
+| `/` | Homepage | Feature overview, architecture guide, quick start |
+| `/components/` | Component Library | All 24 components with live demos and code snippets |
+| `/forms/` | Form Integration | Django form rendering with 3 layouts and error display |
+| `/layouts/` | Layout Templates | 6 layout templates with visual previews and block reference |
+| `/pages/` | Page Templates | Auth, error, and utility page fragments |
+| `/design-systems/` | Design Systems | 11 design systems with live preview and color mixing |
+| `/presets/` | Color Presets | 19 color palettes with light/dark previews |
+| `/packs/` | Theme Packs | Complete theme bundles with all style dimensions |
+| `/inspector/` | Theme Inspector | Debug theme combinations, view generated CSS |
+| `/tailwind/` | Tailwind Integration | Config generation, theme color utilities, @apply examples |
+| `/theming/gallery/` | Gallery | Visual theme browser (built-in) |
+| `/theming/gallery/storybook/` | Storybook | Component isolation testing (built-in) |
+| `/theming/gallery/editor/` | Editor | Live theme customization (built-in) |
+| `/theming/gallery/diff/` | Diff | Compare theme CSS output (built-in) |
+
 ## Project Structure
 
 ```
 example_project/
-├── manage.py                   # Django management script
-├── requirements.txt            # Python dependencies
+├── manage.py
+├── requirements.txt
 ├── example_project/
-│   ├── settings.py             # Project settings
-│   ├── urls.py                 # URL configuration
-│   └── wsgi.py                 # WSGI application
+│   ├── settings.py              # LIVEVIEW_CONFIG with all theme settings
+│   ├── urls.py                  # Includes djust_theming.urls at /theming/
+│   └── wsgi.py
 └── theme_demo/
-    ├── views.py                # Demo views
-    ├── urls.py                 # App URLs
-    └── templates/
-        └── theme_demo/
-            ├── base.html       # Base template with navigation
-            ├── index.html      # Homepage
-            ├── components.html # Component showcase
-            ├── presets.html    # Preset gallery
-            └── tailwind.html   # Tailwind integration demo
+    ├── views.py                 # Demo views for all features
+    ├── urls.py                  # App URLs (13 routes)
+    └── templates/theme_demo/
+        ├── base.html            # Base template with full navigation
+        ├── index.html           # Homepage with feature overview
+        ├── components.html      # All 24 components showcase
+        ├── forms.html           # Django form integration demo
+        ├── layouts.html         # Layout template showcase
+        ├── pages.html           # Page template demos
+        ├── presets.html         # 19 color presets gallery
+        ├── design_systems.html  # 11 design systems with mixer
+        ├── packs.html           # Theme packs gallery
+        ├── themes.html          # Legacy theme switcher
+        ├── inspector.html       # Theme inspector tool
+        └── tailwind.html        # Tailwind integration demo
 ```
 
-## Pages
+## Template Tag Libraries
 
-### Homepage (`/`)
-- Overview of djust-theming features
-- Feature grid with all capabilities
-- Quick start guide
-- Try it now section
+```django
+{% load theme_tags %}         {# theme_head, theme_switcher, theme_mode_toggle, theme_preset_selector #}
+{% load theme_components %}   {# 24 UI components #}
+{% load theme_form_tags %}    {# theme_form, theme_form_errors, get_css_prefix #}
+{% load theme_pages %}        {# auth, error, and utility page fragments #}
+```
 
-### Components (`/components/`)
-- Complete component library showcase
-- Buttons (5 variants, 3 sizes)
-- Badges (6 variants)
-- Alerts (4 variants with dismissal)
-- Form inputs with labels
-- Cards with headers and footers
+## Configuration
 
-### Presets (`/presets/`)
-- Gallery of all 7 built-in presets
-- Light and dark mode color previews
-- shadcn/ui import/export instructions
-- Current preset indicator
-
-### Tailwind Integration (`/tailwind/`)
-- Config generation instructions
-- Theme color utilities showcase
-- Background, border, and text colors
-- Opacity modifiers
-- @apply directive examples
-
-## Customization
-
-### Change Default Preset
-
-Edit `example_project/settings.py`:
+All settings in `example_project/settings.py`:
 
 ```python
 LIVEVIEW_CONFIG = {
     'theme': {
-        'preset': 'purple',  # Change to: default, shadcn, blue, green, purple, orange, rose
-        'default_mode': 'dark',  # Change to: light, dark, system
+        'preset': 'blue',          # Any of 19 presets
+        'default_mode': 'system',  # light, dark, or system
+        'persist_in_session': True,
+        'enable_dark_mode': True,
+        'css_prefix': '',          # CSS class prefix for isolation
+        'critical_css': True,      # Split into critical/deferred CSS
+        'use_css_layers': False,   # Enable CSS cascade layers
+        'direction': 'ltr',       # Text direction: ltr or rtl
+        'themes_dir': '',          # Custom themes directory
     }
 }
 ```
 
-### Add Custom Components
-
-1. Create a new component template in `djust_theming/templates/djust_theming/components/`
-2. Add a template tag in `djust_theming/templatetags/theme_components.py`
-3. Use it in your templates: `{% my_component %}`
-
-### Import shadcn Theme
-
-```bash
-# Download a theme from themes.shadcn.com
-python manage.py djust_theme shadcn-import path/to/theme.json --register
-```
-
-## djust LiveView Integration (Optional)
-
-To enable reactive theme switching without page reload:
-
-1. Install djust:
-   ```bash
-   pip install djust
-   ```
-
-2. Add to `INSTALLED_APPS` in settings.py:
-   ```python
-   INSTALLED_APPS = [
-       'channels',
-       'djust',
-       ...
-   ]
-   ```
-
-3. Create a LiveView version of the demo
-
-See the main [djust-theming README](../README.md) for full LiveView integration guide.
-
 ## CLI Commands
 
-Generate Tailwind config:
 ```bash
-python manage.py djust_theme tailwind-config --preset blue
+python manage.py djust_theme list-presets          # List all 19 presets
+python manage.py djust_theme tailwind-config       # Generate Tailwind config
+python manage.py djust_theme shadcn-import theme.json  # Import shadcn theme
+python manage.py djust_theme shadcn-export --preset blue  # Export to shadcn format
+python manage.py djust_theme export-colors --preset blue  # Export color tokens
+python manage.py djust_theme generate-examples     # Generate @apply CSS examples
 ```
-
-Export colors:
-```bash
-python manage.py djust_theme export-colors --preset blue --format json
-```
-
-List presets:
-```bash
-python manage.py djust_theme list-presets
-```
-
-Generate @apply examples:
-```bash
-python manage.py djust_theme generate-examples
-```
-
-## Troubleshooting
-
-### Theme switcher not working
-- Ensure `djust_theming` is in `INSTALLED_APPS`
-- Check that `theme_context` processor is added to `TEMPLATES` settings
-- Verify `{{ theme_head }}` is in your template's `<head>`
-
-### Components not rendering
-- Make sure you load template tags: `{% load theme_components %}`
-- Check that `djust_theming` templates are accessible
-
-### Tailwind colors not working
-- Run `djust-theme tailwind-config` to generate config
-- Ensure the config is in your project root
-- Restart your Tailwind build process
-
-## Learn More
-
-- [djust-theming Documentation](../README.md)
-- [djust LiveView](https://djust.org)
-- [shadcn/ui](https://ui.shadcn.com)
-- [Tailwind CSS](https://tailwindcss.com)
 
 ## License
 

@@ -1,0 +1,143 @@
+{% extends "theme_demo/base.html" %}
+{% load theme_components theme_form_tags %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-4xl font-bold mb-2">Django Form Integration</h1>
+    <p class="text-muted-foreground">
+        Render Django forms with themed styling using <code>{% verbatim %}{% load theme_form_tags %}{% endverbatim %}</code>.
+        Supports stacked, horizontal, and inline layouts.
+    </p>
+</div>
+
+<!-- Stacked Layout -->
+<div class="bg-card border border-border rounded-lg p-8 mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Stacked Layout (Default)</h2>
+    <p class="text-sm text-muted-foreground mb-6">
+        Fields stack vertically with labels above inputs. The default and most common layout.
+    </p>
+
+    <div class="max-w-lg">
+        <form method="post" action="">
+            {% csrf_token %}
+            {% theme_form contact_form layout="stacked" %}
+            <div class="mt-6">
+                {% theme_button "Submit" variant="primary" %}
+            </div>
+        </form>
+    </div>
+
+    <div class="code-block text-xs mt-6">
+{% verbatim %}{% load theme_form_tags %}
+<form method="post">
+    {% csrf_token %}
+    {% theme_form form layout="stacked" %}
+    <button type="submit">Submit</button>
+</form>{% endverbatim %}
+    </div>
+</div>
+
+<!-- Horizontal Layout -->
+<div class="bg-card border border-border rounded-lg p-8 mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Horizontal Layout</h2>
+    <p class="text-sm text-muted-foreground mb-6">
+        Labels and inputs side-by-side, suited for wider screens and shorter forms.
+    </p>
+
+    <div class="max-w-2xl">
+        <form method="post" action="">
+            {% csrf_token %}
+            {% theme_form login_form layout="horizontal" %}
+            <div class="mt-6">
+                {% theme_button "Sign In" variant="primary" %}
+            </div>
+        </form>
+    </div>
+
+    <div class="code-block text-xs mt-6">
+{% verbatim %}{% theme_form form layout="horizontal" %}{% endverbatim %}
+    </div>
+</div>
+
+<!-- Inline Layout -->
+<div class="bg-card border border-border rounded-lg p-8 mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Inline Layout</h2>
+    <p class="text-sm text-muted-foreground mb-6">
+        Compact inline rendering for search bars and quick filters.
+    </p>
+
+    <div>
+        <form method="post" action="" class="flex items-end gap-4 flex-wrap">
+            {% csrf_token %}
+            {% theme_form login_form layout="inline" %}
+            {% theme_button "Go" variant="primary" %}
+        </form>
+    </div>
+
+    <div class="code-block text-xs mt-6">
+{% verbatim %}{% theme_form form layout="inline" %}{% endverbatim %}
+    </div>
+</div>
+
+<!-- Form with Errors -->
+<div class="bg-card border border-border rounded-lg p-8 mb-8">
+    <h2 class="text-2xl font-semibold mb-4">Form Validation Errors</h2>
+    <p class="text-sm text-muted-foreground mb-6">
+        Field errors and non-field errors are displayed with themed alert styling.
+    </p>
+
+    <div class="max-w-lg">
+        <form method="post" action="">
+            {% csrf_token %}
+            {% theme_form error_form layout="stacked" %}
+            <div class="mt-6">
+                {% theme_button "Submit" variant="primary" %}
+            </div>
+        </form>
+    </div>
+
+    <div class="code-block text-xs mt-6">
+{% verbatim %}{% load theme_form_tags %}
+{# Errors are rendered automatically by theme_form #}
+{# Or render just errors: %}
+{% theme_form_errors form %}{% endverbatim %}
+    </div>
+</div>
+
+<!-- CSS Prefix -->
+<div class="bg-card border border-border rounded-lg p-8 mb-8">
+    <h2 class="text-2xl font-semibold mb-4">CSS Prefix</h2>
+    <p class="text-sm text-muted-foreground mb-6">
+        Use <code>{% verbatim %}{% get_css_prefix as prefix %}{% endverbatim %}</code> to access
+        the configured CSS prefix for custom themed markup.
+    </p>
+
+    <div class="code-block text-xs">
+{% verbatim %}{% load theme_form_tags %}
+{% get_css_prefix as prefix %}
+<div class="{{ prefix }}theme-input">
+    <label class="{{ prefix }}theme-label">Custom Label</label>
+    <input class="{{ prefix }}theme-input" type="text" />
+</div>{% endverbatim %}
+    </div>
+</div>
+
+<!-- Available Tags Reference -->
+<div class="bg-card border border-border rounded-lg p-8">
+    <h2 class="text-2xl font-semibold mb-4">Form Tag Reference</h2>
+    <div class="space-y-3 text-sm">
+        <div class="flex gap-4">
+            <code class="font-mono text-primary w-64">{% verbatim %}{% theme_form form %}{% endverbatim %}</code>
+            <span class="text-muted-foreground">Render a full form with themed layout</span>
+        </div>
+        <div class="flex gap-4">
+            <code class="font-mono text-primary w-64">{% verbatim %}{% theme_form_errors form %}{% endverbatim %}</code>
+            <span class="text-muted-foreground">Render form-level non-field errors</span>
+        </div>
+        <div class="flex gap-4">
+            <code class="font-mono text-primary w-64">{% verbatim %}{% get_css_prefix as var %}{% endverbatim %}</code>
+            <span class="text-muted-foreground">Expose css_prefix for custom markup</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

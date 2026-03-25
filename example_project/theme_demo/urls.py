@@ -16,4 +16,7 @@ urlpatterns = [
     path('theme-inspector-api/', views.theme_inspector_api, name='inspector_api'),
     path('theme-css-api/', views.theme_css_api, name='css_api'),
     path('tailwind/', views.tailwind_demo, name='tailwind'),
+    path('forms/', views.forms_demo, name='forms'),
+    path('layouts/', views.layouts_demo, name='layouts'),
+    path('pages/', views.pages_demo, name='pages'),
 ]

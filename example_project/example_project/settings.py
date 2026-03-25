@@ -114,9 +114,14 @@ LOGGING = {
 # djust-theming configuration
 LIVEVIEW_CONFIG = {
     'theme': {
-        'preset': 'blue',  # Default preset
+        'preset': 'blue',  # Default preset (19 available)
         'default_mode': 'system',  # light, dark, or system
         'persist_in_session': True,
         'enable_dark_mode': True,
+        'css_prefix': '',  # Optional CSS class prefix for isolation
+        'critical_css': True,  # Split CSS into critical/deferred
+        'use_css_layers': False,  # Enable CSS cascade layers
+        'direction': 'ltr',  # Text direction: 'ltr' or 'rtl'
+        'themes_dir': '',  # Custom themes directory
     }
 }

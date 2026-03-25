@@ -1,0 +1,189 @@
+{% extends "theme_demo/base.html" %}
+{% load theme_components theme_pages %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-4xl font-bold mb-2">Page Templates</h1>
+    <p class="text-muted-foreground">
+        8 pre-built page fragments for auth, error, and utility pages.
+        Use with <code>{% verbatim %}{% load theme_pages %}{% endverbatim %}</code>.
+    </p>
+</div>
+
+<!-- Auth Pages -->
+<div class="mb-12">
+    <h2 class="text-2xl font-bold mb-6">Auth Pages</h2>
+
+    <div class="grid lg:grid-cols-2 gap-8">
+        <!-- Login -->
+        <div class="bg-card border border-border rounded-lg overflow-hidden">
+            <div class="border-b border-border px-6 py-3 bg-muted/30">
+                <h3 class="font-semibold">Login Page</h3>
+                <code class="text-xs text-muted-foreground">{% verbatim %}{% theme_login_page %}{% endverbatim %}</code>
+            </div>
+            <div class="p-6 bg-muted/10">
+                {% theme_login_page action="#" forgot_password_url="#" register_url="#" %}
+            </div>
+        </div>
+
+        <!-- Register -->
+        <div class="bg-card border border-border rounded-lg overflow-hidden">
+            <div class="border-b border-border px-6 py-3 bg-muted/30">
+                <h3 class="font-semibold">Register Page</h3>
+                <code class="text-xs text-muted-foreground">{% verbatim %}{% theme_register_page %}{% endverbatim %}</code>
+            </div>
+            <div class="p-6 bg-muted/10">
+                {% theme_register_page action="#" login_url="#" terms_url="#" %}
+            </div>
+        </div>
+
+        <!-- Password Reset -->
+        <div class="bg-card border border-border rounded-lg overflow-hidden">
+            <div class="border-b border-border px-6 py-3 bg-muted/30">
+                <h3 class="font-semibold">Password Reset</h3>
+                <code class="text-xs text-muted-foreground">{% verbatim %}{% theme_password_reset_page %}{% endverbatim %}</code>
+            </div>
+            <div class="p-6 bg-muted/10">
+                {% theme_password_reset_page action="#" login_url="#" %}
+            </div>
+        </div>
+
+        <!-- Password Confirm -->
+        <div class="bg-card border border-border rounded-lg overflow-hidden">
+            <div class="border-b border-border px-6 py-3 bg-muted/30">
+                <h3 class="font-semibold">Password Confirm</h3>
+                <code class="text-xs text-muted-foreground">{% verbatim %}{% theme_password_confirm_page %}{% endverbatim %}</code>
+            </div>
+            <div class="p-6 bg-muted/10">
+                {% theme_password_confirm_page action="#" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Pages -->
+<div class="mb-12">
+    <h2 class="text-2xl font-bold mb-6">Error Pages</h2>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+        <!-- 404 -->
+        <div class="bg-card border border-border rounded-lg overflow-hidden">
+            <div class="border-b border-border px-6 py-3 bg-muted/30">
+                <h3 class="font-semibold">404 Page</h3>
+                <code class="text-xs text-muted-foreground">{% verbatim %}{% theme_404_page %}{% endverbatim %}</code>
+            </div>
+            <div class="p-6 bg-muted/10">
+                {% theme_404_page home_url="/" %}
+            </div>
+        </div>
+
+        <!-- 403 -->
+        <div class="bg-card border border-border rounded-lg overflow-hidden">
+            <div class="border-b border-border px-6 py-3 bg-muted/30">
+                <h3 class="font-semibold">403 Page</h3>
+                <code class="text-xs text-muted-foreground">{% verbatim %}{% theme_403_page %}{% endverbatim %}</code>
+            </div>
+            <div class="p-6 bg-muted/10">
+                {% theme_403_page back_url="/" %}
+            </div>
+        </div>
+
+        <!-- 500 -->
+        <div class="bg-card border border-border rounded-lg overflow-hidden">
+            <div class="border-b border-border px-6 py-3 bg-muted/30">
+                <h3 class="font-semibold">500 Page</h3>
+                <code class="text-xs text-muted-foreground">{% verbatim %}{% theme_500_page %}{% endverbatim %}</code>
+            </div>
+            <div class="p-6 bg-muted/10">
+                {% theme_500_page home_url="/" retry_url="/" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Utility Pages -->
+<div class="mb-12">
+    <h2 class="text-2xl font-bold mb-6">Utility Pages</h2>
+
+    <div class="grid lg:grid-cols-2 gap-8">
+        <!-- Maintenance -->
+        <div class="bg-card border border-border rounded-lg overflow-hidden">
+            <div class="border-b border-border px-6 py-3 bg-muted/30">
+                <h3 class="font-semibold">Maintenance Page</h3>
+                <code class="text-xs text-muted-foreground">{% verbatim %}{% theme_maintenance_page %}{% endverbatim %}</code>
+            </div>
+            <div class="p-6 bg-muted/10">
+                {% theme_maintenance_page slot_eta="<p style='margin-top:0.5rem;font-size:0.875rem;'>Expected back at 2:00 PM UTC</p>" %}
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="bg-card border border-border rounded-lg overflow-hidden">
+            <div class="border-b border-border px-6 py-3 bg-muted/30">
+                <h3 class="font-semibold">Empty State</h3>
+                <code class="text-xs text-muted-foreground">{% verbatim %}{% theme_empty_state_page %}{% endverbatim %}</code>
+            </div>
+            <div class="p-6 bg-muted/10">
+                {% theme_empty_state_page title="No projects yet" description="Create your first project to get started." cta_text="New Project" cta_url="#" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Usage Guide -->
+<div class="bg-card border border-border rounded-lg p-8">
+    <h2 class="text-2xl font-semibold mb-4">Usage Guide</h2>
+    <p class="text-sm text-muted-foreground mb-6">
+        Page templates are designed to be used inside layout templates. They render page fragments, not full HTML documents.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-6">
+        <div>
+            <h3 class="text-lg font-semibold mb-3">Auth Page Example</h3>
+            <div class="code-block text-xs">
+{% verbatim %}{% extends "djust_theming/layouts/centered.html" %}
+{% load theme_pages %}
+
+{% block centered_content %}
+    {% theme_login_page
+        action="/auth/login/"
+        forgot_password_url="/auth/reset/"
+        register_url="/auth/register/"
+    %}
+{% endblock %}{% endverbatim %}
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-lg font-semibold mb-3">Error Page Example</h3>
+            <div class="code-block text-xs">
+{% verbatim %}{% extends "djust_theming/layouts/centered.html" %}
+{% load theme_pages %}
+
+{% block centered_content %}
+    {% theme_404_page
+        home_url="/"
+        title="Oops! Page not found"
+        description="We looked everywhere."
+    %}
+{% endblock %}{% endverbatim %}
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-6">
+        <h3 class="text-lg font-semibold mb-3">All Page Tags</h3>
+        <div class="grid md:grid-cols-2 gap-2 text-sm">
+            <div><code class="text-primary">theme_login_page</code> &mdash; Sign in form</div>
+            <div><code class="text-primary">theme_register_page</code> &mdash; Registration form</div>
+            <div><code class="text-primary">theme_password_reset_page</code> &mdash; Request password reset</div>
+            <div><code class="text-primary">theme_password_confirm_page</code> &mdash; Set new password</div>
+            <div><code class="text-primary">theme_404_page</code> &mdash; Not found error</div>
+            <div><code class="text-primary">theme_403_page</code> &mdash; Access denied error</div>
+            <div><code class="text-primary">theme_500_page</code> &mdash; Server error</div>
+            <div><code class="text-primary">theme_maintenance_page</code> &mdash; Maintenance notice</div>
+            <div><code class="text-primary">theme_empty_state_page</code> &mdash; Empty state placeholder</div>
+        </div>
+    </div>
+</div>
+{% endblock %}

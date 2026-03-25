@@ -8,99 +8,114 @@
         Welcome to <span class="text-primary">djust-theming</span>
     </h1>
     <p class="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-        A complete design system framework for Django—control typography, spacing, animations, and colors
-        with 11 design systems × 12 color presets for 132 unique combinations.
+        A complete design system framework for Django &mdash; 24 components, 19 color presets,
+        11 design systems, 6 layout templates, and 8 page templates.
     </p>
-    <div class="flex justify-center gap-4">
+    <div class="flex justify-center gap-4 flex-wrap">
         <a href="{% url 'theme_demo:components' %}" class="btn btn-primary px-8 py-3 text-base no-underline">View Components</a>
         <a href="{% url 'theme_demo:presets' %}" class="btn btn-secondary px-8 py-3 text-base no-underline">Explore Presets</a>
+        <a href="/theming/gallery/" class="btn btn-secondary px-8 py-3 text-base no-underline">Open Gallery</a>
     </div>
 </div>
 
 <!-- Features Grid -->
 <div class="grid md:grid-cols-3 gap-6 mb-12">
-    <div class="bg-card border border-border rounded-lg p-6 demo-card">
-        <div class="text-3xl mb-4">🎨</div>
+    <a href="{% url 'theme_demo:components' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
+        <h3 class="text-lg font-semibold mb-2">24 Components</h3>
+        <p class="text-sm text-muted-foreground">
+            Button, card, badge, alert, input, select, textarea, checkbox, radio, modal, dropdown,
+            tabs, table, pagination, breadcrumb, avatar, toast, progress, skeleton, tooltip, nav,
+            sidebar nav, nav item, nav group
+        </p>
+    </a>
+
+    <a href="{% url 'theme_demo:presets' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
+        <h3 class="text-lg font-semibold mb-2">19 Color Presets</h3>
+        <p class="text-sm text-muted-foreground">
+            Default, Shadcn, Blue, Green, Purple, Orange, Rose, Natural20, Catppuccin,
+            Rose Pine, Tokyo Night, Nord, Synthwave, Cyberpunk, Outrun, Forest, Amber, Slate, Nebula
+        </p>
+    </a>
+
+    <a href="{% url 'theme_demo:design_systems' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
         <h3 class="text-lg font-semibold mb-2">11 Design Systems</h3>
         <p class="text-sm text-muted-foreground">
-            Complete visual frameworks: Material, iOS, Fluent, Minimalist, Playful, Corporate, and more
+            Material, iOS, Fluent, Minimalist, Playful, Corporate, Retro, Elegant,
+            Neo-Brutalist, Organic, Dense
         </p>
-    </div>
+    </a>
 
-    <div class="bg-card border border-border rounded-lg p-6 demo-card">
-        <div class="text-3xl mb-4">🌈</div>
-        <h3 class="text-lg font-semibold mb-2">12 Color Presets</h3>
+    <a href="{% url 'theme_demo:layouts' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
+        <h3 class="text-lg font-semibold mb-2">6 Layout Templates</h3>
         <p class="text-sm text-muted-foreground">
-            Beautiful color palettes from Default and Shadcn to Cyberpunk and Ocean
+            Topbar, Sidebar, Sidebar+Topbar, Centered, Dashboard, Split &mdash;
+            extend and fill blocks for instant page structure
         </p>
-    </div>
+    </a>
 
-    <div class="bg-card border border-border rounded-lg p-6 demo-card">
-        <div class="text-3xl mb-4">🔀</div>
-        <h3 class="text-lg font-semibold mb-2">Mix & Match</h3>
+    <a href="{% url 'theme_demo:pages' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
+        <h3 class="text-lg font-semibold mb-2">8+ Page Templates</h3>
         <p class="text-sm text-muted-foreground">
-            Combine any design system with any color preset for endless possibilities
+            Login, Register, Password Reset, Password Confirm, 404, 403, 500,
+            Maintenance, Empty State &mdash; drop-in themed page fragments
         </p>
-    </div>
+    </a>
 
-    <div class="bg-card border border-border rounded-lg p-6 demo-card">
-        <div class="text-3xl mb-4">🔄</div>
-        <h3 class="text-lg font-semibold mb-2">Reactive Switching</h3>
+    <a href="{% url 'theme_demo:forms' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
+        <h3 class="text-lg font-semibold mb-2">Django Form Integration</h3>
         <p class="text-sm text-muted-foreground">
-            Change themes instantly without page reload using djust LiveView
+            Render Django forms with themed styling. Stacked, horizontal, and inline layouts.
+            Automatic error display with themed alerts.
         </p>
-    </div>
+    </a>
 
-    <div class="bg-card border border-border rounded-lg p-6 demo-card">
-        <div class="text-3xl mb-4">🌓</div>
-        <h3 class="text-lg font-semibold mb-2">Light/Dark Mode</h3>
+    <a href="{% url 'theme_demo:packs' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
+        <h3 class="text-lg font-semibold mb-2">Theme Packs</h3>
         <p class="text-sm text-muted-foreground">
-            Automatic system detection with manual override and smooth transitions
+            Complete bundles combining design system + colors + icons + animations + patterns
+            into cohesive themes
         </p>
-    </div>
+    </a>
 
-    <div class="bg-card border border-border rounded-lg p-6 demo-card">
-        <div class="text-3xl mb-4">⚡</div>
-        <h3 class="text-lg font-semibold mb-2">Tailwind Ready + shadcn/ui Compatible</h3>
+    <a href="/theming/gallery/" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
+        <h3 class="text-lg font-semibold mb-2">Gallery, Storybook & Editor</h3>
         <p class="text-sm text-muted-foreground">
-            Generate Tailwind configs and import/export shadcn themes
+            Built-in gallery to browse all themes, storybook for component isolation,
+            and live editor to customize themes with diff export
         </p>
-    </div>
+    </a>
+
+    <a href="{% url 'theme_demo:tailwind' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
+        <h3 class="text-lg font-semibold mb-2">Tailwind + shadcn/ui</h3>
+        <p class="text-sm text-muted-foreground">
+            Generate Tailwind configs, import/export shadcn themes,
+            use theme colors as Tailwind utilities
+        </p>
+    </a>
 </div>
 
-<!-- What Makes This Different -->
+<!-- Architecture Overview -->
 <div class="bg-card border border-border rounded-lg p-8 mb-12">
-    <h2 class="text-2xl font-bold mb-6">What Makes This Different?</h2>
+    <h2 class="text-2xl font-bold mb-6">Architecture Overview</h2>
     <div class="grid md:grid-cols-2 gap-8">
         <div>
             <h3 class="text-lg font-semibold mb-3 text-primary">Design Systems vs. Color Presets</h3>
             <p class="text-muted-foreground mb-4">
-                Most theming libraries only change colors. djust-theming goes further by
-                providing complete design systems that control:
+                Design systems control structure (typography, spacing, shadows, animations).
+                Color presets control palette. Mix any design system with any color preset.
             </p>
-            <ul class="space-y-2 text-sm text-muted-foreground">
-                <li>✓ Typography (fonts, sizes, weights, line heights)</li>
-                <li>✓ Spacing (tight, normal, loose scales)</li>
-                <li>✓ Border Radius (sharp, rounded, pill)</li>
-                <li>✓ Shadows (flat, subtle, material, elevated)</li>
-                <li>✓ Animations (instant, snappy, smooth, bouncy)</li>
-                <li>✓ Component Styles (button, card, input variants)</li>
-            </ul>
+            <p class="text-sm text-muted-foreground">
+                <strong>11 x 19 = 209 unique combinations</strong> out of the box.
+            </p>
         </div>
         <div>
-            <h3 class="text-lg font-semibold mb-3 text-primary">Mix ANY Design System with ANY Color</h3>
-            <p class="text-muted-foreground mb-4">
-                Design systems are color-independent, so you can combine them freely:
-            </p>
+            <h3 class="text-lg font-semibold mb-3 text-primary">Template Tag Libraries</h3>
             <ul class="space-y-2 text-sm text-muted-foreground">
-                <li>• Material Design + Cyberpunk colors</li>
-                <li>• iOS + Forest green palette</li>
-                <li>• Neo-Brutalist + Sunset oranges</li>
-                <li>• Elegant serif typography + Ocean blues</li>
+                <li><code class="text-primary">{% verbatim %}{% load theme_tags %}{% endverbatim %}</code> &mdash; theme_head, theme_switcher, theme_mode_toggle, theme_preset_selector</li>
+                <li><code class="text-primary">{% verbatim %}{% load theme_components %}{% endverbatim %}</code> &mdash; 24 UI components</li>
+                <li><code class="text-primary">{% verbatim %}{% load theme_form_tags %}{% endverbatim %}</code> &mdash; theme_form, theme_form_errors, get_css_prefix</li>
+                <li><code class="text-primary">{% verbatim %}{% load theme_pages %}{% endverbatim %}</code> &mdash; auth, error, and utility page fragments</li>
             </ul>
-            <p class="text-sm text-muted-foreground mt-4">
-                <strong>132 unique combinations</strong> (11 × 12) out of the box, or create your own!
-            </p>
         </div>
     </div>
 </div>
@@ -118,43 +133,54 @@
         </div>
 
         <div>
-            <h3 class="text-lg font-semibold mb-2">2. Initialize</h3>
+            <h3 class="text-lg font-semibold mb-2">2. Configure</h3>
             <div class="code-block">
-                python manage.py djust_theme init --with-tailwind --with-examples
+{% verbatim %}INSTALLED_APPS = ['djust_theming', ...]
+
+TEMPLATES = [{
+    'OPTIONS': {
+        'context_processors': [
+            'djust_theming.context_processors.theme_context',
+        ],
+    },
+}]
+
+LIVEVIEW_CONFIG = {
+    'theme': {
+        'preset': 'blue',
+        'default_mode': 'system',
+        'critical_css': True,
+    }
+}{% endverbatim %}
             </div>
         </div>
 
         <div>
             <h3 class="text-lg font-semibold mb-2">3. Use in Templates</h3>
             <div class="code-block">
-{% verbatim %}{% load theme_components %}
-
-<!DOCTYPE html>
-<html>
-<head>
-    {{ theme_head }}
-</head>
+{% verbatim %}{% load theme_tags theme_components %}
+<head>{% theme_head %}</head>
 <body>
-    {{ theme_switcher }}
+    {% theme_switcher %}
     {% theme_button "Click me" variant="primary" %}
-</body>
-</html>{% endverbatim %}
+    {% theme_alert "Done!" variant="success" %}
+</body>{% endverbatim %}
             </div>
         </div>
     </div>
 </div>
 
-<!-- Try it Now -->
+<!-- Built-in Tools -->
 <div class="bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-8 text-center">
-    <h2 class="text-2xl font-bold mb-4">Try it Now!</h2>
+    <h2 class="text-2xl font-bold mb-4">Built-in Tools</h2>
     <p class="text-muted-foreground mb-6">
-        Use the theme switcher in the top-right corner to change presets and modes
+        Explore themes visually with the built-in gallery, storybook, and editor
     </p>
-    <div class="flex justify-center gap-3 flex-wrap">
-        {% theme_badge "Reactive" variant="success" %}
-        {% theme_badge "Fast" variant="default" %}
-        {% theme_badge "Beautiful" variant="secondary" %}
-        {% theme_badge "Open Source" variant="default" %}
+    <div class="flex justify-center gap-4 flex-wrap">
+        <a href="/theming/gallery/" class="btn btn-primary px-6 py-2 no-underline">Gallery</a>
+        <a href="/theming/gallery/storybook/" class="btn btn-secondary px-6 py-2 no-underline">Storybook</a>
+        <a href="/theming/gallery/editor/" class="btn btn-secondary px-6 py-2 no-underline">Editor</a>
+        <a href="/theming/gallery/diff/" class="btn btn-secondary px-6 py-2 no-underline">Diff</a>
     </div>
 </div>
 {% endblock %}
