@@ -5,8 +5,10 @@ Each component gets a section with display name, description, and a list of
 example dicts containing the kwargs that will be passed to its template tag.
 """
 
+from dataclasses import fields as dataclass_fields
+
 from djust_theming.contracts import COMPONENT_CONTRACTS
-from djust_theming.presets import list_presets
+from djust_theming.presets import ColorScale, ThemePreset, ThemeTokens, get_preset, list_presets
 
 
 def _button_examples():
@@ -341,4 +343,41 @@ def build_gallery_context(preset_name: str = "default") -> dict:
         "sections": sections,
         "presets": list_presets(),
         "current_preset": preset_name,
+    }
+
+
+def serialize_tokens(tokens: ThemeTokens) -> dict:
+    """Convert ThemeTokens to a JSON-friendly dict.
+
+    Returns:
+        Dict mapping field names to ``{"h": int, "s": int, "l": int}``.
+    """
+    result = {}
+    for f in dataclass_fields(tokens):
+        value = getattr(tokens, f.name)
+        if isinstance(value, ColorScale):
+            result[f.name] = {"h": value.h, "s": value.s, "l": value.lightness}
+    return result
+
+
+def serialize_preset(preset: ThemePreset) -> dict:
+    """Serialize a ThemePreset to a JSON-friendly structure.
+
+    Returns:
+        Dict with ``light``, ``dark``, and ``radius`` keys.
+    """
+    return {
+        "light": serialize_tokens(preset.light),
+        "dark": serialize_tokens(preset.dark),
+        "radius": float(preset.radius),
+    }
+
+
+def serialize_all_presets() -> dict:
+    """Serialize every registered preset to a dict keyed by preset name."""
+    from djust_theming.presets import THEME_PRESETS
+
+    return {
+        name: serialize_preset(preset)
+        for name, preset in THEME_PRESETS.items()
     }

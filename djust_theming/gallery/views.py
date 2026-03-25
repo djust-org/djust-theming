@@ -1,15 +1,26 @@
 """
-Theme gallery view -- renders every component in every variant.
+Theme gallery views -- gallery, live editor, and diff comparison.
 
 Gated by ``DEBUG=True`` or ``is_staff`` for production safety.
 """
 
-from django.conf import settings
-from django.http import HttpResponseForbidden
-from django.template.loader import render_to_string
-from django.http import HttpResponse
+import json
+import re
 
-from .context import build_gallery_context
+from django.conf import settings
+from django.http import (
+    HttpResponse,
+    HttpResponseForbidden,
+    HttpResponseNotAllowed,
+    JsonResponse,
+)
+from django.template.loader import render_to_string
+
+from .context import build_gallery_context, serialize_all_presets, serialize_preset
+from djust_theming.presets import get_preset, list_presets
+
+# Allowed CSS token names: lowercase letters, digits, hyphens, underscores only.
+_VALID_TOKEN_NAME = re.compile(r"^[a-z][a-z0-9_-]*$")
 
 
 def gallery_view(request):
@@ -21,13 +32,9 @@ def gallery_view(request):
 
     Supports ``?preset=<name>`` query parameter to switch color presets.
     """
-    # Access control
-    if not settings.DEBUG:
-        user = getattr(request, "user", None)
-        if not user or not getattr(user, "is_staff", False):
-            return HttpResponseForbidden(
-                "Gallery is only available in DEBUG mode or for staff users."
-            )
+    denied = _check_access(request)
+    if denied:
+        return denied
 
     # Read preset from query param
     preset_name = request.GET.get("preset", "default")
@@ -44,6 +51,203 @@ def gallery_view(request):
         request=request,
     )
     return HttpResponse(html)
+
+
+def editor_view(request):
+    """Render the live theme editor page.
+
+    Two-panel layout: left panel with token controls, right panel with
+    live component preview. All updates happen client-side via CSS custom
+    property manipulation -- no server round-trip for preview.
+
+    Supports ``?preset=<name>`` to set the initial preset.
+    """
+    denied = _check_access(request)
+    if denied:
+        return denied
+
+    preset_name = request.GET.get("preset", "default")
+
+    ctx = build_gallery_context(preset_name=preset_name)
+    ctx["request"] = request
+    ctx.update(_template_sample_data())
+
+    # Serialize all presets for JS initialization
+    ctx["preset_data_json"] = json.dumps(serialize_all_presets())
+
+    html = render_to_string(
+        "djust_theming/gallery/editor.html",
+        ctx,
+        request=request,
+    )
+    return HttpResponse(html)
+
+
+def editor_export_view(request):
+    """Export edited theme tokens as tokens.css + theme.toml.
+
+    POST only. Expects JSON body with structure::
+
+        {
+            "name": "my-theme",
+            "radius": 0.5,
+            "tokens": {
+                "light": {"background": {"h": 0, "s": 0, "l": 100}, ...},
+                "dark": {"background": {"h": 240, "s": 10, "l": 4}, ...}
+            }
+        }
+
+    Returns JSON::
+
+        {"tokens_css": "...", "theme_toml": "..."}
+    """
+    denied = _check_access(request)
+    if denied:
+        return denied
+
+    if request.method != "POST":
+        return HttpResponseNotAllowed(["POST"])
+
+    try:
+        payload = json.loads(request.body)
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    theme_name = payload.get("name", "custom")
+    radius = payload.get("radius", 0.5)
+    tokens_data = payload.get("tokens", {})
+
+    # --- Input validation ---
+    # Validate theme name: alphanumeric + hyphens only
+    if not isinstance(theme_name, str) or not re.match(r"^[a-zA-Z][a-zA-Z0-9 _-]*$", theme_name):
+        return JsonResponse({"error": "Invalid theme name"}, status=400)
+    if len(theme_name) > 64:
+        return JsonResponse({"error": "Theme name too long"}, status=400)
+
+    # Validate radius: must be a number in [0, 4]
+    try:
+        radius = float(radius)
+    except (TypeError, ValueError):
+        return JsonResponse({"error": "Invalid radius value"}, status=400)
+    if not (0 <= radius <= 4):
+        return JsonResponse({"error": "Radius must be between 0 and 4"}, status=400)
+
+    # Validate tokens structure
+    if not isinstance(tokens_data, dict):
+        return JsonResponse({"error": "Invalid tokens structure"}, status=400)
+    for mode in ("light", "dark"):
+        mode_tokens = tokens_data.get(mode, {})
+        if not isinstance(mode_tokens, dict):
+            return JsonResponse({"error": f"Invalid {mode} tokens"}, status=400)
+        for token_name, hsl in mode_tokens.items():
+            if not _VALID_TOKEN_NAME.match(token_name):
+                return JsonResponse({"error": f"Invalid token name: {token_name}"}, status=400)
+            if not isinstance(hsl, dict):
+                return JsonResponse({"error": f"Invalid HSL for {token_name}"}, status=400)
+            for key in ("h", "s", "l"):
+                val = hsl.get(key, 0)
+                if not isinstance(val, (int, float)):
+                    return JsonResponse({"error": f"Invalid {key} value for {token_name}"}, status=400)
+
+    # Generate tokens.css
+    tokens_css = _generate_tokens_css(tokens_data, radius)
+
+    # Generate theme.toml
+    theme_toml = _generate_theme_toml(theme_name, radius)
+
+    return JsonResponse({
+        "tokens_css": tokens_css,
+        "theme_toml": theme_toml,
+    })
+
+
+def diff_view(request):
+    """Render the side-by-side theme comparison page.
+
+    Uses two iframes loading the gallery with different presets.
+    Supports ``?left=<preset>&right=<preset>`` query parameters.
+    """
+    denied = _check_access(request)
+    if denied:
+        return denied
+
+    left_preset = request.GET.get("left", "default")
+    right_preset = request.GET.get("right", "nord")
+
+    ctx = {
+        "presets": list_presets(),
+        "left_preset": left_preset,
+        "right_preset": right_preset,
+        "request": request,
+    }
+
+    html = render_to_string(
+        "djust_theming/gallery/diff.html",
+        ctx,
+        request=request,
+    )
+    return HttpResponse(html)
+
+
+# ---------------------------------------------------------------------------
+# Export helpers
+# ---------------------------------------------------------------------------
+
+
+def _generate_tokens_css(tokens_data: dict, radius: float) -> str:
+    """Generate CSS custom property declarations from token data.
+
+    All token names and values are validated before reaching this function,
+    but we still cast values to int/float as a defense-in-depth measure.
+    """
+    lines = ["/* djust-theming -- Custom theme tokens */", ""]
+
+    # Light mode
+    lines.append(":root {")
+    for name, hsl in sorted(tokens_data.get("light", {}).items()):
+        css_name = name.replace("_", "-")
+        h, s, l = int(hsl.get("h", 0)), int(hsl.get("s", 0)), int(hsl.get("l", 0))
+        lines.append(f"  --{css_name}: {h} {s}% {l}%;")
+    lines.append(f"  --radius: {float(radius)}rem;")
+    lines.append("}")
+    lines.append("")
+
+    # Dark mode
+    lines.append('.dark,\n[data-theme="dark"] {')
+    for name, hsl in sorted(tokens_data.get("dark", {}).items()):
+        css_name = name.replace("_", "-")
+        h, s, l = int(hsl.get("h", 0)), int(hsl.get("s", 0)), int(hsl.get("l", 0))
+        lines.append(f"  --{css_name}: {h} {s}% {l}%;")
+    lines.append("}")
+
+    return "\n".join(lines)
+
+
+def _generate_theme_toml(name: str, radius: float) -> str:
+    """Generate a minimal theme.toml manifest."""
+    lines = [
+        "[theme]",
+        f'name = "{name}"',
+        f'display_name = "{name.replace("-", " ").title()}"',
+        f"radius = {radius}",
+        'design_system = "default"',
+        "",
+        "[tokens]",
+        "# Override specific tokens here",
+        '# primary = "220 80% 50%"',
+    ]
+    return "\n".join(lines)
+
+
+def _check_access(request):
+    """Return an HttpResponseForbidden if access should be denied, else None."""
+    if not settings.DEBUG:
+        user = getattr(request, "user", None)
+        if not user or not getattr(user, "is_staff", False):
+            return HttpResponseForbidden(
+                "Gallery is only available in DEBUG mode or for staff users."
+            )
+    return None
 
 
 def _template_sample_data() -> dict:
