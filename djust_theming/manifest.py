@@ -209,7 +209,14 @@ class ThemeManifest:
     @staticmethod
     def _escape_toml_string(value: str) -> str:
         """Escape a string for use in a TOML double-quoted value."""
-        return value.replace("\\", "\\\\").replace('"', '\\"')
+        return (
+            value
+            .replace("\\", "\\\\")
+            .replace('"', '\\"')
+            .replace("\n", "\\n")
+            .replace("\r", "\\r")
+            .replace("\t", "\\t")
+        )
 
     def to_toml(self) -> str:
         """Serialize this manifest to a TOML string."""

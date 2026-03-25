@@ -305,6 +305,20 @@ class TestToToml:
         roundtrip = ThemeManifest.from_toml(rt_path)
         assert roundtrip.description == "Path: C:\\themes\\custom"
 
+    def test_to_toml_escapes_newlines_and_tabs(self, tmp_path):
+        manifest = ThemeManifest(
+            name="test", version="1.0.0",
+            description="Line one\nLine two\tTabbed",
+        )
+        toml_str = manifest.to_toml()
+        assert "\\n" in toml_str
+        assert "\\t" in toml_str
+        assert "\n" not in toml_str.split('description = "')[1].split('"')[0]
+
+        rt_path = _write_toml(tmp_path, toml_str, filename="newlines.toml")
+        roundtrip = ThemeManifest.from_toml(rt_path)
+        assert roundtrip.description == "Line one\nLine two\tTabbed"
+
 
 # ---------------------------------------------------------------------------
 # Version validation tests
