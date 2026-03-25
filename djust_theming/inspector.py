@@ -117,7 +117,7 @@ class ThemeInspector:
             return {
                 "hue": color_scale.h,
                 "saturation": color_scale.s,
-                "lightness": color_scale.l,
+                "lightness": color_scale.lightness,
                 "hsl": color_scale.to_hsl(),
                 "hsl_func": color_scale.to_hsl_func()
             }
@@ -149,7 +149,7 @@ class ThemeInspector:
                 "border": color_to_dict(color_preset.light.border),
                 "input": color_to_dict(color_preset.light.input),
                 "ring": color_to_dict(color_preset.light.ring),
-                "radius": color_preset.light.radius
+                "radius": color_preset.radius
             },
             "dark": {
                 "background": color_to_dict(color_preset.dark.background),
@@ -175,7 +175,7 @@ class ThemeInspector:
                 "border": color_to_dict(color_preset.dark.border),
                 "input": color_to_dict(color_preset.dark.input),
                 "ring": color_to_dict(color_preset.dark.ring),
-                "radius": color_preset.dark.radius
+                "radius": color_preset.radius
             }
         }
         

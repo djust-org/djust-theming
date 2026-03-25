@@ -15,17 +15,12 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
-    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # djust (LiveView)
-    'channels',
-    'djust',
 
     # djust-theming (required)
     'djust_theming',
@@ -34,7 +29,9 @@ INSTALLED_APPS = [
     'theme_demo',
 ]
 
-ASGI_APPLICATION = 'example_project.asgi.application'
+# Optional: uncomment for djust LiveView support
+# INSTALLED_APPS = ['daphne', 'channels', 'djust'] + INSTALLED_APPS
+# ASGI_APPLICATION = 'example_project.asgi.application'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
