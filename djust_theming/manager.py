@@ -14,6 +14,21 @@ from .presets import THEME_PRESETS, ThemePreset, get_preset
 
 ThemeMode = Literal["light", "dark", "system"]
 
+# Languages that use right-to-left script direction.
+RTL_LANGUAGES = frozenset({
+    "ar",   # Arabic
+    "he",   # Hebrew
+    "fa",   # Farsi / Persian
+    "ur",   # Urdu
+    "ps",   # Pashto
+    "sd",   # Sindhi
+    "ckb",  # Central Kurdish (Sorani)
+    "yi",   # Yiddish
+    "dv",   # Divehi / Maldivian
+    "ku",   # Kurdish
+    "ug",   # Uyghur
+})
+
 # Default configuration
 DEFAULT_CONFIG = {
     "theme": "material",  # Design system theme
@@ -27,6 +42,7 @@ DEFAULT_CONFIG = {
     "css_layer_order": "base, tokens, components, theme",  # Layer priority order
     "critical_css": True,  # Split CSS into critical (inlined) and deferred (async-loaded)
     "themes_dir": "themes/",  # User theme directory, relative to BASE_DIR
+    "direction": "auto",  # Text direction: "ltr", "rtl", or "auto" (detect from LANGUAGE_CODE)
 }
 
 
@@ -61,6 +77,27 @@ class ThemeState:
 def get_css_prefix() -> str:
     """Get the configured CSS namespace prefix."""
     return get_theme_config().get("css_prefix", "")
+
+
+def get_direction() -> str:
+    """Resolve the text direction for the current configuration.
+
+    Returns ``"ltr"`` or ``"rtl"``.  When the config value is ``"auto"``
+    (the default), the direction is inferred from Django's
+    ``settings.LANGUAGE_CODE`` by checking the primary language subtag
+    against :data:`RTL_LANGUAGES`.
+    """
+    config = get_theme_config()
+    direction = config.get("direction", "auto")
+
+    if direction in ("ltr", "rtl"):
+        return direction
+
+    # "auto" -- detect from LANGUAGE_CODE
+    lang_code = getattr(settings, "LANGUAGE_CODE", "en")
+    # Extract primary language subtag (e.g. "ar-sa" -> "ar")
+    primary = lang_code.split("-")[0].lower()
+    return "rtl" if primary in RTL_LANGUAGES else "ltr"
 
 
 def generate_css_for_state(state: "ThemeState", css_prefix: str = "") -> str:

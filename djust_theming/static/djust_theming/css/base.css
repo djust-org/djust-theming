@@ -281,7 +281,7 @@ a:hover {
   width: var(--sidebar-width);
   min-width: var(--sidebar-width);
   background: hsl(var(--popover));
-  border-right: 1px solid hsl(var(--border) / 0.6);
+  border-inline-end: 1px solid hsl(var(--border) / 0.6);
   padding: var(--space-6) var(--space-5);
   overflow-y: auto;
   display: flex;
@@ -336,7 +336,7 @@ a:hover {
 }
 
 .sidebar-item-count {
-  margin-left: auto;
+  margin-inline-start: auto;
   font-size: 0.75rem;
   background: hsl(var(--background));
   padding: 0.1rem 0.5rem;
@@ -384,8 +384,7 @@ a:hover {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding-left: var(--space-4);
-  padding-right: var(--space-4);
+  padding-inline: var(--space-4);
 }
 
 
@@ -627,7 +626,7 @@ a:hover {
 
 .search-icon {
   position: absolute;
-  left: 12px;
+  inset-inline-start: 12px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--color-text-muted);
@@ -635,7 +634,8 @@ a:hover {
 
 .search-input {
   width: 100%;
-  padding: 0.65rem 0.9rem 0.65rem 2.4rem;
+  padding-block: 0.65rem;
+  padding-inline: 2.4rem 0.9rem;
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border-subtle);
   background: var(--color-bg);
@@ -663,7 +663,7 @@ a:hover {
 .table td {
   padding: var(--space-3);
   border-bottom: 1px solid var(--color-border-subtle);
-  text-align: left;
+  text-align: start;
 }
 
 .table thead th {
@@ -782,7 +782,7 @@ a:hover {
 }
 
 .alert-close {
-  margin-left: auto;
+  margin-inline-start: auto;
   background: transparent;
   border: none;
   color: inherit;
@@ -882,7 +882,7 @@ a:hover {
 .toast-container {
   position: fixed;
   bottom: var(--space-4);
-  right: var(--space-4);
+  inset-inline-end: var(--space-4);
   z-index: 60;
   display: flex;
   flex-direction: column;
@@ -994,8 +994,7 @@ a:hover {
 
 .list-group-flush .list-group-item {
   border-radius: 0;
-  border-left: none;
-  border-right: none;
+  border-inline: none;
 }
 
 
@@ -1047,7 +1046,7 @@ a:hover {
   width: 1rem;
   height: 1rem;
   border: 2px solid currentColor;
-  border-right-color: transparent;
+  border-inline-end-color: transparent;
   border-radius: 9999px;
   animation: spin 0.75s linear infinite;
 }
@@ -1210,8 +1209,8 @@ a:hover {
 .position-fixed { position: fixed; }
 .top-0 { top: 0; }
 .bottom-0 { bottom: 0; }
-.end-0 { right: 0; }
-.start-0 { left: 0; }
+.end-0 { inset-inline-end: 0; }
+.start-0 { inset-inline-start: 0; }
 
 /* Margin */
 .m-0 { margin: 0; }
@@ -1229,20 +1228,20 @@ a:hover {
 .mb-4 { margin-bottom: var(--space-4); }
 .mb-5 { margin-bottom: var(--space-5); }
 .mb-6 { margin-bottom: var(--space-6); }
-.mx-2 { margin-left: var(--space-2); margin-right: var(--space-2); }
-.mx-3 { margin-left: var(--space-3); margin-right: var(--space-3); }
-.mx-4 { margin-left: var(--space-4); margin-right: var(--space-4); }
+.mx-2 { margin-inline: var(--space-2); }
+.mx-3 { margin-inline: var(--space-3); }
+.mx-4 { margin-inline: var(--space-4); }
 .my-2 { margin-top: var(--space-2); margin-bottom: var(--space-2); }
 .my-3 { margin-top: var(--space-3); margin-bottom: var(--space-3); }
 .my-4 { margin-top: var(--space-4); margin-bottom: var(--space-4); }
-.me-1 { margin-right: var(--space-1); }
-.me-2 { margin-right: var(--space-2); }
-.me-3 { margin-right: var(--space-3); }
-.me-4 { margin-right: var(--space-4); }
-.ms-1 { margin-left: var(--space-1); }
-.ms-2 { margin-left: var(--space-2); }
-.ms-3 { margin-left: var(--space-3); }
-.ms-4 { margin-left: var(--space-4); }
+.me-1 { margin-inline-end: var(--space-1); }
+.me-2 { margin-inline-end: var(--space-2); }
+.me-3 { margin-inline-end: var(--space-3); }
+.me-4 { margin-inline-end: var(--space-4); }
+.ms-1 { margin-inline-start: var(--space-1); }
+.ms-2 { margin-inline-start: var(--space-2); }
+.ms-3 { margin-inline-start: var(--space-3); }
+.ms-4 { margin-inline-start: var(--space-4); }
 
 /* Padding */
 .p-0 { padding: 0; }
@@ -1252,10 +1251,10 @@ a:hover {
 .p-4 { padding: var(--space-4); }
 .p-5 { padding: var(--space-5); }
 .p-6 { padding: var(--space-6); }
-.px-1 { padding-left: var(--space-1); padding-right: var(--space-1); }
-.px-2 { padding-left: var(--space-2); padding-right: var(--space-2); }
-.px-3 { padding-left: var(--space-3); padding-right: var(--space-3); }
-.px-4 { padding-left: var(--space-4); padding-right: var(--space-4); }
+.px-1 { padding-inline: var(--space-1); }
+.px-2 { padding-inline: var(--space-2); }
+.px-3 { padding-inline: var(--space-3); }
+.px-4 { padding-inline: var(--space-4); }
 .py-1 { padding-top: var(--space-1); padding-bottom: var(--space-1); }
 .py-2 { padding-top: var(--space-2); padding-bottom: var(--space-2); }
 .py-3 { padding-top: var(--space-3); padding-bottom: var(--space-3); }
@@ -1356,24 +1355,24 @@ a:hover {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 50%;
+  inset-inline-start: 50%;
   width: 0;
   height: 2px;
   background: var(--color-primary);
-  transition: width 0.2s ease, left 0.2s ease;
+  transition: width 0.2s ease, inset-inline-start 0.2s ease;
 }
 
 .nav-link:hover::after,
 .nav-link.active::after {
   width: 100%;
-  left: 0;
+  inset-inline-start: 0;
 }
 
 /* Sidebar active indicator */
 .sidebar-item::before {
   content: '';
   position: absolute;
-  left: 0;
+  inset-inline-start: 0;
   top: 0;
   bottom: 0;
   width: 3px;
@@ -1434,4 +1433,43 @@ html {
     flex-direction: column;
     gap: var(--space-3);
   }
+}
+
+
+/* ============================================
+   9. RTL Overrides
+   ============================================ */
+
+/* Sidebar active indicator flips to inline-end in RTL */
+[dir="rtl"] .sidebar-item::before {
+  transform: translateX(100%);
+}
+
+[dir="rtl"] .sidebar-item.active::before,
+[dir="rtl"] .sidebar-item:hover::before {
+  transform: translateX(0);
+}
+
+/* Nav link underline animation direction */
+[dir="rtl"] .nav-link::after {
+  transition: width 0.2s ease, inset-inline-start 0.2s ease;
+}
+
+/* Toast slide-in/out animations reverse in RTL */
+@keyframes toastSlideInRtl {
+  from { opacity: 0; transform: translateX(-100%) scale(0.9); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes toastSlideOutRtl {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to { opacity: 0; transform: translateX(-100%) scale(0.9); }
+}
+
+[dir="rtl"] .toast {
+  animation-name: toastSlideInRtl;
+}
+
+[dir="rtl"] .toast.hiding {
+  animation-name: toastSlideOutRtl;
 }
