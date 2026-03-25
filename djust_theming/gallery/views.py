@@ -1,5 +1,5 @@
 """
-Theme gallery views -- gallery, live editor, and diff comparison.
+Theme gallery views -- gallery, live editor, diff comparison, and component storybook.
 
 Gated by ``DEBUG=True`` or ``is_staff`` for production safety.
 """
@@ -12,11 +12,14 @@ from django.http import (
     HttpResponse,
     HttpResponseForbidden,
     HttpResponseNotAllowed,
+    HttpResponseNotFound,
     JsonResponse,
 )
 from django.template.loader import render_to_string
 
 from .context import build_gallery_context, serialize_all_presets, serialize_preset
+from .storybook import build_storybook_detail_context, build_storybook_index_context
+from djust_theming.contracts import COMPONENT_CONTRACTS
 from djust_theming.presets import get_preset, list_presets
 
 # Allowed CSS token names: lowercase letters, digits, hyphens, underscores only.
@@ -183,6 +186,59 @@ def diff_view(request):
 
     html = render_to_string(
         "djust_theming/gallery/diff.html",
+        ctx,
+        request=request,
+    )
+    return HttpResponse(html)
+
+
+# ---------------------------------------------------------------------------
+# Storybook views
+# ---------------------------------------------------------------------------
+
+
+def storybook_index_view(request):
+    """Render the component storybook index -- lists all components.
+
+    Access control: same as gallery (DEBUG=True or is_staff).
+    """
+    denied = _check_access(request)
+    if denied:
+        return denied
+
+    ctx = build_storybook_index_context()
+    ctx["request"] = request
+
+    html = render_to_string(
+        "djust_theming/gallery/storybook_index.html",
+        ctx,
+        request=request,
+    )
+    return HttpResponse(html)
+
+
+def storybook_detail_view(request, component_name):
+    """Render the storybook detail page for a single component.
+
+    Shows rendered variants, template source, context contract, slots,
+    accessibility requirements, and CSS variables.
+
+    Returns 404 if the component name is not recognized.
+    """
+    denied = _check_access(request)
+    if denied:
+        return denied
+
+    if component_name not in COMPONENT_CONTRACTS:
+        return HttpResponseNotFound(
+            f"Unknown component: {component_name}"
+        )
+
+    ctx = build_storybook_detail_context(component_name)
+    ctx["request"] = request
+
+    html = render_to_string(
+        "djust_theming/gallery/storybook_detail.html",
         ctx,
         request=request,
     )

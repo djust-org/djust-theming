@@ -53,6 +53,12 @@ class ThemeManifest:
     css: list[str] = field(default_factory=list)
     fonts: list[str] = field(default_factory=list)
 
+    # [marketplace] section (optional)
+    screenshots: list[str] = field(default_factory=list)
+    tags: list[str] = field(default_factory=list)
+    compatibility_range: str = ""
+    preview_url: str = ""
+
     # Internal (not from TOML)
     path: Optional[Path] = None
     templates_dir: Optional[Path] = None
@@ -122,6 +128,13 @@ class ThemeManifest:
         # Direction (optional)
         direction = theme_section.get("direction")
 
+        # --- [marketplace] section (optional) ---
+        marketplace_section = data.get("marketplace", {})
+        screenshots = list(marketplace_section.get("screenshots", []))
+        tags = list(marketplace_section.get("tags", []))
+        compatibility_range = marketplace_section.get("compatibility_range", "")
+        preview_url = marketplace_section.get("preview_url", "")
+
         return cls(
             name=name,
             version=version,
@@ -135,6 +148,10 @@ class ThemeManifest:
             overrides=dict(overrides),
             css=list(css_files),
             fonts=list(font_files),
+            screenshots=screenshots,
+            tags=tags,
+            compatibility_range=compatibility_range,
+            preview_url=preview_url,
             path=toml_path.parent,
         )
 
@@ -222,6 +239,25 @@ class ThemeManifest:
             if self.fonts:
                 items = ", ".join(f'"{f}"' for f in self.fonts)
                 lines.append(f"fonts = [{items}]")
+
+        # [marketplace]
+        has_marketplace = (
+            self.screenshots or self.tags
+            or self.compatibility_range or self.preview_url
+        )
+        if has_marketplace:
+            lines.append("")
+            lines.append("[marketplace]")
+            if self.screenshots:
+                items = ", ".join(f'"{s}"' for s in self.screenshots)
+                lines.append(f"screenshots = [{items}]")
+            if self.tags:
+                items = ", ".join(f'"{t}"' for t in self.tags)
+                lines.append(f"tags = [{items}]")
+            if self.compatibility_range:
+                lines.append(f'compatibility_range = "{self.compatibility_range}"')
+            if self.preview_url:
+                lines.append(f'preview_url = "{self.preview_url}"')
 
         lines.append("")  # trailing newline
         return "\n".join(lines)

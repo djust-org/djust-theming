@@ -1,0 +1,52 @@
+{% load theme_tags %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Component Storybook</title>
+  {% theme_head %}
+  <style>
+    .storybook { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+    .storybook__header { margin-bottom: 2rem; }
+    .storybook__header h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+    .storybook__header p { color: hsl(var(--muted-foreground, 220 9% 46%)); margin: 0; }
+    .storybook__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+    .storybook__card { border: 1px solid hsl(var(--border, 220 13% 91%)); border-radius: var(--radius, 0.5rem); padding: 1.25rem; transition: box-shadow 0.15s; }
+    .storybook__card:hover { box-shadow: 0 2px 8px hsl(var(--foreground, 222 47% 11%) / 0.08); }
+    .storybook__card a { text-decoration: none; color: inherit; display: block; }
+    .storybook__card h2 { margin: 0 0 0.5rem; font-size: 1.125rem; color: hsl(var(--foreground, 222 47% 11%)); }
+    .storybook__meta { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.8125rem; color: hsl(var(--muted-foreground, 220 9% 46%)); }
+    .storybook__meta span { display: flex; align-items: center; gap: 0.25rem; }
+    .storybook__nav { margin-bottom: 1rem; }
+    .storybook__nav a { color: hsl(var(--link, 220 80% 50%)); text-decoration: none; }
+    .storybook__nav a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body style="background: hsl(var(--background, 0 0% 100%)); color: hsl(var(--foreground, 222 47% 11%));">
+  <div class="storybook">
+    <nav class="storybook__nav">
+      <a href="../">Gallery</a>
+    </nav>
+    <div class="storybook__header">
+      <h1>Component Storybook</h1>
+      <p>Auto-generated documentation for all {{ components|length }} theme components. Click a component to see its contract, template source, and variants.</p>
+    </div>
+
+    <div class="storybook__grid">
+      {% for comp in components %}
+      <div class="storybook__card">
+        <a href="storybook/{{ comp.name }}/">
+          <h2>{{ comp.display_name }}</h2>
+          <div class="storybook__meta">
+            <span>{{ comp.required_count }} required</span>
+            <span>{{ comp.optional_count }} optional</span>
+            <span>{{ comp.slot_count }} slots</span>
+            {% if comp.a11y_count %}<span>{{ comp.a11y_count }} a11y</span>{% endif %}
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>

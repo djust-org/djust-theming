@@ -1,0 +1,128 @@
+{% load theme_tags theme_components %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ display_name }} — Component Storybook</title>
+  {% theme_head %}
+  <style>
+    .storybook-detail { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
+    .storybook-detail__nav { margin-bottom: 1rem; font-size: 0.875rem; }
+    .storybook-detail__nav a { color: hsl(var(--link, 220 80% 50%)); text-decoration: none; }
+    .storybook-detail__nav a:hover { text-decoration: underline; }
+    .storybook-detail h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
+    .storybook-detail h2 { font-size: 1.25rem; margin: 2rem 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid hsl(var(--border, 220 13% 91%)); }
+    .storybook-detail__examples { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; padding: 1rem; background: hsl(var(--muted, 220 14% 96%)); border-radius: var(--radius, 0.5rem); }
+
+    .storybook-detail table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.875rem; }
+    .storybook-detail th, .storybook-detail td { text-align: start; padding: 0.5rem 0.75rem; border-bottom: 1px solid hsl(var(--border, 220 13% 91%)); }
+    .storybook-detail th { font-weight: 600; background: hsl(var(--muted, 220 14% 96%)); }
+    .storybook-detail code { font-family: monospace; font-size: 0.8125rem; background: hsl(var(--muted, 220 14% 96%)); padding: 0.125rem 0.375rem; border-radius: 3px; }
+    .storybook-detail pre { background: hsl(var(--muted, 220 14% 96%)); padding: 1rem; border-radius: var(--radius, 0.5rem); overflow-x: auto; font-size: 0.8125rem; line-height: 1.6; }
+    .storybook-detail__slots { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .storybook-detail__slot { background: hsl(var(--muted, 220 14% 96%)); padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.8125rem; font-family: monospace; }
+    .storybook-detail__css-vars { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .storybook-detail__css-var { background: hsl(var(--muted, 220 14% 96%)); padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.8125rem; font-family: monospace; }
+  </style>
+</head>
+<body style="background: hsl(var(--background, 0 0% 100%)); color: hsl(var(--foreground, 222 47% 11%));">
+  <div class="storybook-detail">
+    <nav class="storybook-detail__nav">
+      <a href="../../">Gallery</a> / <a href="../">Storybook</a> / {{ display_name }}
+    </nav>
+
+    <h1>{{ display_name }}</h1>
+
+    {# ---- Rendered Variants ---- #}
+    {% if examples %}
+    <h2>Variants</h2>
+    <div class="storybook-detail__examples">
+      {% for ex in examples %}
+        <div>
+          {% if name == "button" %}{% theme_button ex.text variant=ex.variant size=ex.size %}
+          {% elif name == "badge" %}{% theme_badge ex.text variant=ex.variant %}
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {# ---- Context Contract ---- #}
+    <h2>Context Contract</h2>
+
+    {% if required_context %}
+    <h3>Required</h3>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Type</th><th>Default</th></tr>
+      </thead>
+      <tbody>
+        {% for v in required_context %}
+        <tr><td><code>{{ v.name }}</code></td><td><code>{{ v.type }}</code></td><td>{{ v.default|default:"—" }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    {% if optional_context %}
+    <h3>Optional</h3>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Type</th><th>Default</th></tr>
+      </thead>
+      <tbody>
+        {% for v in optional_context %}
+        <tr><td><code>{{ v.name }}</code></td><td><code>{{ v.type }}</code></td><td>{{ v.default|default:"—" }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    {# ---- Accessibility ---- #}
+    {% if accessibility %}
+    <h2>Accessibility Requirements</h2>
+    <table>
+      <thead>
+        <tr><th>Requirement</th><th>Selector</th><th>Attribute</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+        {% for a in accessibility %}
+        <tr>
+          <td>{{ a.description }}</td>
+          <td><code>{{ a.selector_hint }}</code></td>
+          <td><code>{{ a.attr }}</code></td>
+          <td>{{ a.value|default:"(present)" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    {# ---- Available Slots ---- #}
+    {% if available_slots %}
+    <h2>Available Slots</h2>
+    <div class="storybook-detail__slots">
+      {% for slot in available_slots %}
+      <span class="storybook-detail__slot">{{ slot }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {# ---- CSS Variables ---- #}
+    <h2>CSS Variables</h2>
+    {% if css_variables %}
+    <div class="storybook-detail__css-vars" id="css-variables">
+      {% for var in css_variables %}
+      <span class="storybook-detail__css-var">{{ var }}</span>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>No CSS custom properties detected for this component.</p>
+    {% endif %}
+
+    {# ---- Template Source ---- #}
+    <h2>Template Source</h2>
+    <pre><code>{{ template_source }}</code></pre>
+  </div>
+</body>
+</html>

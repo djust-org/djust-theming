@@ -279,6 +279,21 @@ class Command(BaseCommand):
             help='Override themes directory'
         )
 
+        # marketplace-info subcommand
+        mp_parser = subparsers.add_parser(
+            'marketplace-info',
+            help='Show marketplace metadata and component coverage for a theme'
+        )
+        mp_parser.add_argument(
+            'mp_theme_name',
+            type=str,
+            help='Theme name to inspect'
+        )
+        mp_parser.add_argument(
+            '--dir', type=str, dest='dir',
+            help='Override themes directory'
+        )
+
     def handle(self, *args, **options):
         subcommand = options.get('subcommand')
 
@@ -308,6 +323,8 @@ class Command(BaseCommand):
             self.handle_create_package(options)
         elif subcommand == 'check-compat':
             self.handle_check_compat(options)
+        elif subcommand == 'marketplace-info':
+            self.handle_marketplace_info(options)
         else:
             raise CommandError(f"Unknown subcommand: {subcommand}")
 
@@ -1145,3 +1162,78 @@ SOFTWARE.
                 f"  PASS: Compatible (with {len(warnings)} warning(s), "
                 f"{len(infos)} info(s))."
             ))
+
+    def handle_marketplace_info(self, options):
+        """Show marketplace metadata and component coverage for a theme."""
+        from pathlib import Path
+
+        from django.conf import settings as django_settings
+
+        from djust_theming.gallery.storybook import get_component_coverage
+        from djust_theming.manager import get_theme_config
+        from djust_theming.manifest import ThemeManifest
+
+        theme_name = options.get('mp_theme_name')
+        dir_override = options.get('dir')
+
+        # Resolve themes directory
+        if dir_override:
+            themes_dir = Path(dir_override)
+        else:
+            config = get_theme_config()
+            themes_dir_rel = config.get('themes_dir', 'themes/')
+            base_dir = getattr(django_settings, 'BASE_DIR', Path.cwd())
+            themes_dir = Path(base_dir) / themes_dir_rel
+
+        theme_dir = themes_dir / theme_name
+        if not theme_dir.is_dir():
+            raise CommandError(f"Theme directory not found: {theme_dir}")
+
+        # Load manifest
+        toml_path = theme_dir / "theme.toml"
+        if not toml_path.is_file():
+            raise CommandError(f"No theme.toml found in: {theme_dir}")
+
+        manifest = ThemeManifest.from_toml(toml_path)
+
+        # Component coverage
+        coverage = get_component_coverage(theme_name, themes_dir)
+
+        # Output
+        self.stdout.write(f"\nTheme: {manifest.name} v{manifest.version}")
+        if manifest.description:
+            self.stdout.write(f"Description: {manifest.description}")
+        if manifest.author:
+            self.stdout.write(f"Author: {manifest.author}")
+        self.stdout.write("")
+
+        # Marketplace metadata
+        if manifest.tags or manifest.compatibility_range or manifest.preview_url:
+            self.stdout.write("Marketplace metadata:")
+            if manifest.tags:
+                self.stdout.write(f"  Tags: {', '.join(manifest.tags)}")
+            if manifest.compatibility_range:
+                self.stdout.write(f"  Compatibility: {manifest.compatibility_range}")
+            if manifest.preview_url:
+                self.stdout.write(f"  Preview URL: {manifest.preview_url}")
+            if manifest.screenshots:
+                self.stdout.write(f"  Screenshots: {', '.join(manifest.screenshots)}")
+            self.stdout.write("")
+
+        # Coverage report
+        total = len(coverage["overridden"]) + len(coverage["inherited"])
+        self.stdout.write(
+            f"Component Coverage: {coverage['coverage_pct']}% "
+            f"({len(coverage['overridden'])}/{total})"
+        )
+        self.stdout.write("")
+
+        if coverage["overridden"]:
+            self.stdout.write("Overridden components:")
+            for name in coverage["overridden"]:
+                self.stdout.write(self.style.SUCCESS(f"  + {name}"))
+
+        if coverage["inherited"]:
+            self.stdout.write("Inherited (default) components:")
+            for name in coverage["inherited"]:
+                self.stdout.write(f"  - {name}")

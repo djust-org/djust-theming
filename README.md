@@ -735,6 +735,7 @@ See the [Customization Guide](djust_theming/docs/customization.md#accessibility-
 - **[Customization Guide](djust_theming/docs/customization.md)** -- Template overrides, theme-specific templates, CSS cascade layers, color conversions, CSS architecture, caching, static file handling, accessibility validation
 - **[Design System](djust_theming/docs/design-system.md)** -- Spacing, typography, color tokens
 - **[Color Presets](djust_theming/docs/colors.md)** -- HSL color system and custom presets
+- **[Marketplace Spec](docs/marketplace-spec.md)** -- Theme marketplace metadata format, component coverage, and publishing workflow
 
 ## Contributing
 
