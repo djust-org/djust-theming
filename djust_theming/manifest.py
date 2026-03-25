@@ -28,6 +28,11 @@ else:
 # Regex: only lowercase ASCII letters, digits, and hyphens
 _VALID_NAME_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
+# Semantic versioning regex (e.g., 1.0.0, 1.2.3-beta.1, 1.0.0+build.42)
+_VALID_VERSION_RE = re.compile(
+    r"^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?(\+[a-zA-Z0-9.-]+)?$"
+)
+
 
 @dataclass
 class ThemeManifest:
@@ -173,6 +178,13 @@ class ThemeManifest:
                 f"lowercase letters, digits, and hyphens (pattern: [a-z0-9-])."
             )
 
+        # Version validation
+        if self.version and not _VALID_VERSION_RE.match(self.version):
+            errors.append(
+                f"Invalid version '{self.version}': must follow semantic versioning "
+                f"(e.g., 1.0.0, 1.2.3-beta.1)."
+            )
+
         # Preset validation
         if not registry.has_preset(self.preset):
             valid = ", ".join(sorted(registry.list_presets().keys()))
@@ -194,50 +206,56 @@ class ThemeManifest:
     # Serialization
     # ------------------------------------------------------------------
 
+    @staticmethod
+    def _escape_toml_string(value: str) -> str:
+        """Escape a string for use in a TOML double-quoted value."""
+        return value.replace("\\", "\\\\").replace('"', '\\"')
+
     def to_toml(self) -> str:
         """Serialize this manifest to a TOML string."""
+        esc = self._escape_toml_string
         lines: list[str] = []
 
         # [theme]
         lines.append("[theme]")
-        lines.append(f'name = "{self.name}"')
-        lines.append(f'version = "{self.version}"')
+        lines.append(f'name = "{esc(self.name)}"')
+        lines.append(f'version = "{esc(self.version)}"')
         if self.description:
-            lines.append(f'description = "{self.description}"')
+            lines.append(f'description = "{esc(self.description)}"')
         if self.author:
-            lines.append(f'author = "{self.author}"')
+            lines.append(f'author = "{esc(self.author)}"')
         if self.license:
-            lines.append(f'license = "{self.license}"')
+            lines.append(f'license = "{esc(self.license)}"')
         if self.direction:
-            lines.append(f'direction = "{self.direction}"')
+            lines.append(f'direction = "{esc(self.direction)}"')
 
         # [extends]
         if self.base:
             lines.append("")
             lines.append("[extends]")
-            lines.append(f'base = "{self.base}"')
+            lines.append(f'base = "{esc(self.base)}"')
 
         # [tokens] — always include so the manifest is self-documenting
         lines.append("")
         lines.append("[tokens]")
-        lines.append(f'preset = "{self.preset}"')
-        lines.append(f'design_system = "{self.design_system}"')
+        lines.append(f'preset = "{esc(self.preset)}"')
+        lines.append(f'design_system = "{esc(self.design_system)}"')
 
         if self.overrides:
             lines.append("")
             lines.append("[tokens.overrides]")
             for key, value in self.overrides.items():
-                lines.append(f'{key} = "{value}"')
+                lines.append(f'{key} = "{esc(value)}"')
 
         # [static]
         if self.css or self.fonts:
             lines.append("")
             lines.append("[static]")
             if self.css:
-                items = ", ".join(f'"{f}"' for f in self.css)
+                items = ", ".join(f'"{esc(f)}"' for f in self.css)
                 lines.append(f"css = [{items}]")
             if self.fonts:
-                items = ", ".join(f'"{f}"' for f in self.fonts)
+                items = ", ".join(f'"{esc(f)}"' for f in self.fonts)
                 lines.append(f"fonts = [{items}]")
 
         # [marketplace]
@@ -249,15 +267,15 @@ class ThemeManifest:
             lines.append("")
             lines.append("[marketplace]")
             if self.screenshots:
-                items = ", ".join(f'"{s}"' for s in self.screenshots)
+                items = ", ".join(f'"{esc(s)}"' for s in self.screenshots)
                 lines.append(f"screenshots = [{items}]")
             if self.tags:
-                items = ", ".join(f'"{t}"' for t in self.tags)
+                items = ", ".join(f'"{esc(t)}"' for t in self.tags)
                 lines.append(f"tags = [{items}]")
             if self.compatibility_range:
-                lines.append(f'compatibility_range = "{self.compatibility_range}"')
+                lines.append(f'compatibility_range = "{esc(self.compatibility_range)}"')
             if self.preview_url:
-                lines.append(f'preview_url = "{self.preview_url}"')
+                lines.append(f'preview_url = "{esc(self.preview_url)}"')
 
         lines.append("")  # trailing newline
         return "\n".join(lines)

@@ -638,12 +638,16 @@ def theme_tooltip(context, text: str, position: str = 'top', **attrs):
     Usage:
         {% theme_tooltip "Help text" position="top" slot_content="<button>Hover me</button>" %}
     """
+    import uuid
+
     slots, remaining_attrs = _extract_slots(attrs)
     request = context.get("request")
     tmpl = resolve_component_template(request, "tooltip")
+    tooltip_id = remaining_attrs.pop("id", f"tooltip-{uuid.uuid4().hex[:8]}")
     ctx = {
         'text': text,
         'position': position,
+        'tooltip_id': tooltip_id,
         'attrs': remaining_attrs,
         'css_prefix': _css_prefix(),
         **slots,

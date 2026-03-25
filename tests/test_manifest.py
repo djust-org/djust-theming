@@ -277,6 +277,56 @@ class TestToToml:
         toml_str = manifest.to_toml()
         assert "[static]" in toml_str
 
+    def test_to_toml_escapes_double_quotes(self, tmp_path):
+        manifest = ThemeManifest(
+            name="test", version="1.0.0",
+            description='A theme with "quotes" inside',
+            author='Jane "DJ" Doe',
+        )
+        toml_str = manifest.to_toml()
+        assert r'description = "A theme with \"quotes\" inside"' in toml_str
+        assert r'author = "Jane \"DJ\" Doe"' in toml_str
+
+        # Verify the escaped TOML is still parseable
+        rt_path = _write_toml(tmp_path, toml_str, filename="escaped.toml")
+        roundtrip = ThemeManifest.from_toml(rt_path)
+        assert roundtrip.description == 'A theme with "quotes" inside'
+        assert roundtrip.author == 'Jane "DJ" Doe'
+
+    def test_to_toml_escapes_backslashes(self, tmp_path):
+        manifest = ThemeManifest(
+            name="test", version="1.0.0",
+            description="Path: C:\\themes\\custom",
+        )
+        toml_str = manifest.to_toml()
+        assert 'C:\\\\themes\\\\custom' in toml_str
+
+        rt_path = _write_toml(tmp_path, toml_str, filename="backslash.toml")
+        roundtrip = ThemeManifest.from_toml(rt_path)
+        assert roundtrip.description == "Path: C:\\themes\\custom"
+
+
+# ---------------------------------------------------------------------------
+# Version validation tests
+# ---------------------------------------------------------------------------
+
+class TestVersionValidation:
+    """Test semver validation in ThemeManifest.validate()."""
+
+    def test_valid_semver_versions(self):
+        for version in ("0.1.0", "1.0.0", "1.2.3", "10.20.30", "1.0.0-beta.1", "1.0.0+build.42"):
+            manifest = ThemeManifest(name="test", version=version)
+            errors = manifest.validate()
+            version_errors = [e for e in errors if "version" in e.lower()]
+            assert version_errors == [], f"Version '{version}' should be valid but got: {version_errors}"
+
+    def test_invalid_semver_versions(self):
+        for version in ("not-a-version", "1.0", "1", "v1.0.0", "1.0.0.0", "foo.bar.baz"):
+            manifest = ThemeManifest(name="test", version=version)
+            errors = manifest.validate()
+            version_errors = [e for e in errors if "version" in e.lower()]
+            assert len(version_errors) == 1, f"Version '{version}' should be invalid"
+
 
 # ---------------------------------------------------------------------------
 # Discovery tests

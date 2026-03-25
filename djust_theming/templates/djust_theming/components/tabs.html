@@ -1,5 +1,7 @@
 <div class="{{ css_prefix }}tabs {% if attrs.class %}{{ attrs.class }}{% endif %}"
      data-theme-tabs="{{ id }}"
+     data-active-class="{{ css_prefix }}tab-active"
+     data-hidden-class="{{ css_prefix }}tab-panel-hidden"
      {% if attrs.id %}id="{{ attrs.id }}"{% endif %}>
     <div class="{{ css_prefix }}tab-list" role="tablist">
         {% for tab in tabs %}
