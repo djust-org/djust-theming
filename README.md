@@ -730,6 +730,8 @@ See the [Customization Guide](djust_theming/docs/customization.md#accessibility-
 
 ## Documentation
 
+- **[Getting Started](docs/getting-started.md)** -- Create your first theme in 10 minutes
+- **[Breaking Changes](docs/BREAKING_CHANGES.md)** -- Component contract changes and migration guide
 - **[Customization Guide](djust_theming/docs/customization.md)** -- Template overrides, theme-specific templates, CSS cascade layers, color conversions, CSS architecture, caching, static file handling, accessibility validation
 - **[Design System](djust_theming/docs/design-system.md)** -- Spacing, typography, color tokens
 - **[Color Presets](djust_theming/docs/colors.md)** -- HSL color system and custom presets

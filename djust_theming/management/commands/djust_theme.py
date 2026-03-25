@@ -261,6 +261,24 @@ class Command(BaseCommand):
             help='Overwrite existing package directory'
         )
 
+        # check-compat subcommand
+        compat_parser = subparsers.add_parser(
+            'check-compat',
+            help='Check theme overrides against component contracts'
+        )
+        compat_parser.add_argument(
+            'compat_theme_name', nargs='?',
+            help='Theme name to check'
+        )
+        compat_parser.add_argument(
+            '--all', action='store_true', dest='check_all',
+            help='Check all themes in the themes directory'
+        )
+        compat_parser.add_argument(
+            '--dir', type=str, dest='dir',
+            help='Override themes directory'
+        )
+
     def handle(self, *args, **options):
         subcommand = options.get('subcommand')
 
@@ -288,6 +306,8 @@ class Command(BaseCommand):
             self.handle_validate_theme(options)
         elif subcommand == 'create-package':
             self.handle_create_package(options)
+        elif subcommand == 'check-compat':
+            self.handle_check_compat(options)
         else:
             raise CommandError(f"Unknown subcommand: {subcommand}")
 
@@ -1045,3 +1065,83 @@ SOFTWARE.
         self.stdout.write(f"  2. Add component templates to templates/")
         self.stdout.write(f"  3. Build: pip install -e {pkg_root}")
         self.stdout.write(f"  4. Publish: python -m build && twine upload dist/*\n")
+
+    def handle_check_compat(self, options):
+        """Check theme overrides against component contracts."""
+        from pathlib import Path
+
+        from django.conf import settings as django_settings
+
+        from djust_theming.compat import check_theme_compat
+        from djust_theming.manager import get_theme_config
+
+        check_all = options.get('check_all', False)
+        theme_name = options.get('compat_theme_name')
+        dir_override = options.get('dir')
+
+        # Resolve themes directory
+        if dir_override:
+            themes_dir = Path(dir_override)
+        else:
+            config = get_theme_config()
+            themes_dir_rel = config.get('themes_dir', 'themes/')
+            base_dir = getattr(django_settings, 'BASE_DIR', Path.cwd())
+            themes_dir = Path(base_dir) / themes_dir_rel
+
+        if check_all:
+            if not themes_dir.is_dir():
+                raise CommandError(
+                    f"Themes directory not found: {themes_dir}"
+                )
+            found = False
+            for child in sorted(themes_dir.iterdir()):
+                if child.is_dir() and (child / "theme.toml").exists():
+                    found = True
+                    self._check_compat_single(child)
+            if not found:
+                self.stdout.write(
+                    self.style.WARNING("No themes found in: " + str(themes_dir))
+                )
+            return
+
+        if not theme_name:
+            raise CommandError(
+                "Provide a theme name or use --all to check all themes."
+            )
+
+        theme_dir = themes_dir / theme_name
+        if not theme_dir.is_dir():
+            raise CommandError(
+                f"Theme directory not found: {theme_dir}"
+            )
+
+        self._check_compat_single(theme_dir)
+
+    def _check_compat_single(self, theme_dir):
+        """Run compatibility check on a single theme directory."""
+        from djust_theming.compat import check_theme_compat
+
+        theme_name = theme_dir.name
+        self.stdout.write(f"\nChecking compatibility: {theme_name}")
+        self.stdout.write("-" * 40)
+
+        issues = check_theme_compat(theme_dir)
+
+        errors = [i for i in issues if i.severity == "error"]
+        warnings = [i for i in issues if i.severity == "warning"]
+        infos = [i for i in issues if i.severity == "info"]
+
+        for issue in errors:
+            self.stdout.write(self.style.ERROR(f"  ERROR: {issue.message}"))
+        for issue in warnings:
+            self.stdout.write(self.style.WARNING(f"  WARNING: {issue.message}"))
+        for issue in infos:
+            self.stdout.write(f"  INFO: {issue.message}")
+
+        if not issues:
+            self.stdout.write(self.style.SUCCESS(f"  PASS: All contract checks passed."))
+        elif not errors:
+            self.stdout.write(self.style.SUCCESS(
+                f"  PASS: Compatible (with {len(warnings)} warning(s), "
+                f"{len(infos)} info(s))."
+            ))
