@@ -222,7 +222,8 @@
     }
 
     function activateTab(container, tabs, selectedTab) {
-        var tabId = container.getAttribute('data-theme-tabs');
+        var activeClass = container.getAttribute('data-active-class') || 'tab-active';
+        var hiddenClass = container.getAttribute('data-hidden-class') || 'tab-panel-hidden';
 
         tabs.forEach(function(tab, index) {
             var panelId = tab.getAttribute('aria-controls');
@@ -234,18 +235,18 @@
 
             // Toggle active class
             if (isSelected) {
-                tab.classList.add('tab-active');
+                tab.classList.add(activeClass);
             } else {
-                tab.classList.remove('tab-active');
+                tab.classList.remove(activeClass);
             }
 
             if (panel) {
                 if (isSelected) {
                     panel.removeAttribute('hidden');
-                    panel.classList.remove('tab-panel-hidden');
+                    panel.classList.remove(hiddenClass);
                 } else {
                     panel.setAttribute('hidden', '');
-                    panel.classList.add('tab-panel-hidden');
+                    panel.classList.add(hiddenClass);
                 }
             }
         });

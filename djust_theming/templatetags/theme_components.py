@@ -11,6 +11,8 @@ Falling back to:
     djust_theming/components/{component}.html
 """
 
+import uuid
+
 from django import template
 from django.utils.safestring import mark_safe
 from typing import Any, Optional, List
@@ -641,9 +643,11 @@ def theme_tooltip(context, text: str, position: str = 'top', **attrs):
     slots, remaining_attrs = _extract_slots(attrs)
     request = context.get("request")
     tmpl = resolve_component_template(request, "tooltip")
+    tooltip_id = remaining_attrs.pop("id", f"tooltip-{uuid.uuid4().hex}")
     ctx = {
         'text': text,
         'position': position,
+        'tooltip_id': tooltip_id,
         'attrs': remaining_attrs,
         'css_prefix': _css_prefix(),
         **slots,

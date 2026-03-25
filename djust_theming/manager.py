@@ -10,7 +10,7 @@ from typing import Literal
 from django.conf import settings
 from django.http import HttpRequest
 
-from .presets import THEME_PRESETS, ThemePreset, get_preset
+from .presets import ThemePreset, get_preset
 
 ThemeMode = Literal["light", "dark", "system"]
 

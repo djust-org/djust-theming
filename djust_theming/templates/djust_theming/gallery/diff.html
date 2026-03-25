@@ -94,11 +94,11 @@
   <div class="diff-panels">
     <div class="diff-panel">
       <span class="diff-panel-label">{{ left_preset }}</span>
-      <iframe src="../?preset={{ left_preset }}" title="Left preset: {{ left_preset }}"></iframe>
+      <iframe src="{% url 'djust_theming:gallery' %}?preset={{ left_preset }}" title="Left preset: {{ left_preset }}"></iframe>
     </div>
     <div class="diff-panel">
       <span class="diff-panel-label">{{ right_preset }}</span>
-      <iframe src="../?preset={{ right_preset }}" title="Right preset: {{ right_preset }}"></iframe>
+      <iframe src="{% url 'djust_theming:gallery' %}?preset={{ right_preset }}" title="Right preset: {{ right_preset }}"></iframe>
     </div>
   </div>
 </body>

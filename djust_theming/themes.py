@@ -81,6 +81,22 @@ class _DeprecatedThemesDict(dict):
         )
         return super().values()
 
+    def __iter__(self):
+        warnings.warn(
+            _DEPRECATION_MSG.format(name="THEMES"),
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return super().__iter__()
+
+    def __len__(self):
+        warnings.warn(
+            _DEPRECATION_MSG.format(name="THEMES"),
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return super().__len__()
+
 
 @dataclass
 class Typography:

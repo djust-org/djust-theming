@@ -315,3 +315,13 @@ class TestThemeHeadCriticalCSS(TestCase):
         html = self._render_theme_head(critical_css=True)
         # Utilities should be in the deferred file, not inlined
         assert ".bg-background" not in html
+
+    def test_critical_css_has_both_inline_and_deferred_link(self):
+        """When critical_css is enabled, output has both inline critical CSS and a preload link."""
+        html = self._render_theme_head(critical_css=True)
+        # Inline critical CSS present
+        assert "data-djust-theme-critical" in html
+        assert "--primary:" in html
+        # Deferred CSS link also present
+        assert "deferred.css" in html
+        assert 'rel="preload"' in html
