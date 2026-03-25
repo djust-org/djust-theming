@@ -39,6 +39,7 @@ class ThemeManifest:
     description: str = ""
     author: str = ""
     license: str = ""
+    direction: Optional[str] = None  # "ltr", "rtl", or None (inherit from config)
 
     # [extends] section
     base: Optional[str] = None
@@ -118,12 +119,16 @@ class ThemeManifest:
         css_files = static_section.get("css", [])
         font_files = static_section.get("fonts", [])
 
+        # Direction (optional)
+        direction = theme_section.get("direction")
+
         return cls(
             name=name,
             version=version,
             description=theme_section.get("description", ""),
             author=theme_section.get("author", ""),
             license=theme_section.get("license", ""),
+            direction=direction,
             base=base,
             preset=preset,
             design_system=design_system,
@@ -186,6 +191,8 @@ class ThemeManifest:
             lines.append(f'author = "{self.author}"')
         if self.license:
             lines.append(f'license = "{self.license}"')
+        if self.direction:
+            lines.append(f'direction = "{self.direction}"')
 
         # [extends]
         if self.base:

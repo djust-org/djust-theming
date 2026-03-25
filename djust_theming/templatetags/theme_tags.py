@@ -30,6 +30,7 @@ from ..manager import (
     generate_critical_css_for_state,
     generate_css_for_state,
     get_css_prefix,
+    get_direction,
     get_theme_config,
     get_theme_manager,
 )
@@ -123,6 +124,9 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
         component_css_block = f"<style data-djust-components>{component_css}</style>"
         include_component_link = False
 
+    # Resolve text direction
+    direction = get_direction()
+
     # Render via shared template
     html = render_to_string("djust_theming/theme_head.html", {
         "loading_class": True,
@@ -131,6 +135,7 @@ def theme_head(context, include_js: bool = True, link_css: bool = False):
         "component_css_block": component_css_block,
         "include_component_link": include_component_link,
         "include_js": include_js,
+        "direction": direction,
     })
     return mark_safe(html)
 
