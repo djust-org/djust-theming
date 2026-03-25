@@ -82,9 +82,12 @@ class TestThemeCSSGeneratorCriticalSplit:
         assert ".bg-background" in css
         assert ".text-foreground" in css
 
-    def test_deferred_does_not_contain_root_variables(self):
+    def test_deferred_does_not_contain_root_color_variables(self):
         css = self.gen.generate_deferred_css()
-        assert ":root" not in css
+        # Theme color :root vars should be in critical, not deferred.
+        # (:root may appear inside @media blocks for a11y overrides, which is fine.)
+        assert "--primary:" not in css
+        assert "--background:" not in css
 
     def test_deferred_does_not_contain_dark_mode_vars(self):
         css = self.gen.generate_deferred_css()

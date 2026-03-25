@@ -461,6 +461,81 @@ def get_animation_keyframes() -> str:
 }"""
 
 
+def get_reduced_motion_css() -> str:
+    """
+    Generate reduced-motion media query CSS.
+
+    Overrides all duration tokens to 0ms and kills animations/transitions
+    for users who prefer reduced motion. Complements the partial rules in
+    ``performance.css`` and ``css_generator._generate_base_styles()``.
+
+    Returns:
+        CSS string with @media (prefers-reduced-motion: reduce) block.
+    """
+    return """/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}"""
+
+
+def get_high_contrast_css() -> str:
+    """
+    Generate high-contrast media query CSS.
+
+    Increases border widths, focus ring visibility, and forces solid borders
+    for users who prefer more contrast. Works alongside the high-contrast
+    theme presets in ``high_contrast.py``.
+
+    Returns:
+        CSS string with @media (prefers-contrast: more) block.
+    """
+    return """/* High contrast accessibility */
+@media (prefers-contrast: more) {
+  :root {
+    --border-width: 2px;
+    --ring-width: 3px;
+    --ring-offset: 3px;
+  }
+
+  *,
+  *::before,
+  *::after {
+    border-style: solid;
+  }
+
+  *:focus-visible {
+    outline: var(--ring-width, 3px) solid hsl(var(--ring));
+    outline-offset: var(--ring-offset, 3px);
+  }
+
+  .btn,
+  .card-theme,
+  .input-theme,
+  .badge-primary,
+  .badge-secondary,
+  .badge-destructive,
+  .badge-success,
+  .badge-warning,
+  .badge-info {
+    border-width: var(--border-width, 2px);
+  }
+}"""
+
+
 def generate_design_tokens_root_css() -> str:
     """
     Generate only the :root custom property declarations for design tokens.
@@ -534,6 +609,13 @@ def generate_design_tokens_classes_css(
         if sections:
             sections.append("")
         sections.extend([get_animation_keyframes()])
+
+    # Accessibility media queries (always included)
+    if sections:
+        sections.append("")
+    sections.append(get_reduced_motion_css())
+    sections.append("")
+    sections.append(get_high_contrast_css())
 
     return "\n".join(sections)
 
