@@ -20,13 +20,13 @@
     <style>
         /* Landing page body - uses standard design tokens for theme-agnosticism */
         body {
-            background-color: var(--color-surface-1);
+            background-color: var(--surface-1);
             color: var(--foreground);
         }
 
         /* Override nav from base.css */
         nav {
-            background-color: var(--color-surface-1) !important;
+            background-color: var(--surface-1) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
@@ -43,14 +43,14 @@
         }
 
         footer {
-            background-color: var(--color-surface-1);
+            background-color: var(--surface-1);
             border-top: 1px solid var(--border);
         }
 
         /* Surface color system - surfaces respond to data-theme via theme CSS */
         /* Accent colors (rust, django green) stay brand-consistent via extra_css_vars */
-        .bg-brand-dark { background-color: var(--color-surface-1); }
-        .bg-brand-panel { background-color: var(--color-surface-2); }
+        .bg-brand-dark { background-color: var(--surface-1); }
+        .bg-brand-panel { background-color: var(--surface-2); }
         .bg-brand-rust { background-color: var(--primary); }
         .bg-brand-django { background-color: var(--accent); }
         .bg-brand-text { background-color: var(--foreground); }
@@ -59,8 +59,8 @@
         .bg-brand-danger { background-color: var(--destructive); }
         .bg-brand-success { background-color: var(--success); }
 
-        .text-brand-dark { color: var(--color-surface-1); }
-        .text-brand-panel { color: var(--color-surface-2); }
+        .text-brand-dark { color: var(--surface-1); }
+        .text-brand-panel { color: var(--surface-2); }
         .text-brand-rust { color: var(--primary); }
         .text-brand-django { color: var(--accent); }
         .text-brand-text { color: var(--foreground); }
@@ -69,8 +69,8 @@
         .text-brand-danger { color: var(--destructive); }
         .text-brand-success { color: var(--success); }
 
-        .border-brand-dark { border-color: var(--color-surface-1); }
-        .border-brand-panel { border-color: var(--color-surface-2); }
+        .border-brand-dark { border-color: var(--surface-1); }
+        .border-brand-panel { border-color: var(--surface-2); }
         .border-brand-rust { border-color: var(--primary); }
         .border-brand-django { border-color: var(--accent); }
         .border-brand-text { border-color: var(--foreground); }
@@ -134,7 +134,7 @@
 
         /* Code block */
         .code-block-landing {
-            background: var(--color-surface-1);
+            background: var(--surface-1);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 0.375rem;
             padding: 0.75rem;
