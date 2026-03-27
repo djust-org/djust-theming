@@ -69,9 +69,6 @@ class CompleteThemeCSSGenerator:
         typography_css = self._generate_typography_classes()
         component_css = self._generate_component_styles()
 
-        # Combine color tokens + theme vars into one tokens block
-        all_tokens = color_tokens_css + "\n\n" + theme_vars
-
         base_css = self.color_generator._generate_base_styles() if self.color_generator.include_base_styles else ""
         utilities_css = self.color_generator._generate_utilities() if self.color_generator.include_utilities else ""
 
@@ -83,7 +80,11 @@ class CompleteThemeCSSGenerator:
         if use_layers:
             parts.append(f"@layer {layer_order};")
             parts.append("")
-            parts.append(f"@layer tokens {{\n{all_tokens}\n}}")
+            # Color tokens go in @layer tokens (light, dark, system preference)
+            parts.append(f"@layer tokens {{\n{color_tokens_css}\n}}")
+            # Design system theme vars (font, shadow, spacing, radius, duration)
+            # emitted OUTSIDE @layer so they override base.css static defaults
+            parts.extend(["", theme_vars])
             if base_css:
                 parts.extend(["", f"@layer base {{\n{base_css}\n}}"])
             if utilities_css:
