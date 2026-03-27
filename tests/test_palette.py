@@ -94,7 +94,7 @@ class TestOutputValidation:
     def test_all_31_fields_present(self, preset):
         """Every ThemeTokens field must be a ColorScale instance."""
         field_names = [f.name for f in ThemeTokens.__dataclass_fields__.values()]
-        assert len(field_names) == 31
+        assert len(field_names) == 34
 
         for mode_label, tokens in [("light", preset.light), ("dark", preset.dark)]:
             for field_name in field_names:

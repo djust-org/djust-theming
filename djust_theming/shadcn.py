@@ -146,6 +146,11 @@ def _parse_shadcn_vars(vars_dict: Dict[str, str]) -> ThemeTokens:
     input_color = parse_hsl(vars_dict.get("input", "214.3 31.8% 91.4%"))
     ring = parse_hsl(vars_dict.get("ring", "221.2 83.2% 53.3%"))
 
+    # Surface tokens - fall back to background variants
+    surface_1 = parse_hsl(vars_dict.get("surface-1", vars_dict.get("background", "0 0% 99%")))
+    surface_2 = parse_hsl(vars_dict.get("surface-2", vars_dict.get("background", "0 0% 97%")))
+    surface_3 = parse_hsl(vars_dict.get("surface-3", vars_dict.get("background", "0 0% 95%")))
+
     return ThemeTokens(
         background=background,
         foreground=foreground,
@@ -178,6 +183,9 @@ def _parse_shadcn_vars(vars_dict: Dict[str, str]) -> ThemeTokens:
         border=border,
         input=input_color,
         ring=ring,
+        surface_1=surface_1,
+        surface_2=surface_2,
+        surface_3=surface_3,
     )
 
 

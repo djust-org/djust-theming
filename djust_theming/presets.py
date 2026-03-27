@@ -137,6 +137,35 @@ class ThemeTokens:
     input: ColorScale
     ring: ColorScale
 
+    # Surface levels for complex dark layouts (e.g., landing pages)
+    # surface_1: darkest (ultra-dark background)
+    # surface_2: mid-level (panels, navbar)
+    # surface_3: elevated (cards, elevated elements)
+    surface_1: ColorScale
+    surface_2: ColorScale
+    surface_3: ColorScale
+
+
+@dataclass
+class SurfaceTreatment:
+    """Surface styling treatments for glass panels, gradients, and noise effects."""
+
+    style: str = "glass"  # "glass" | "gradient" | "noise"
+
+    # Glass surface properties
+    glass_background: str = "rgba(21, 27, 43, 0.7)"
+    glass_border: str = "rgba(255, 255, 255, 0.1)"
+    glass_blur: str = "12px"
+    surface_radius: str | None = None  # None means use --radius
+
+    # Gradient surface properties
+    gradient_direction: str = "180deg"
+    gradient_from: str = "#1e293b"
+    gradient_to: str = "#0f172a"
+
+    # Noise surface properties
+    noise_opacity: float = 0.03
+
 
 
 @dataclass
@@ -149,6 +178,27 @@ class ThemePreset:
     dark: ThemeTokens
     description: str = ""
     radius: float = 0.5  # Border radius multiplier (output as --radius: {val}rem)
+
+    # Which mode is the default (emitted in :root)?
+    # "light" = :root gets light tokens (standard shadcn behavior)
+    # "dark" = :root gets dark tokens (for dark-first themes like djust.org)
+    default_mode: str = "light"
+
+    # Extra CSS custom properties beyond the standard shadcn set.
+    # Use this for brand-specific variables like --color-brand-rust,
+    # --background-image-grid-pattern, --animation-pulse-slow, etc.
+    # These are emitted in the base :root block.
+    extra_css_vars: dict | None = None
+
+    # Per-mode brand CSS variables for light and dark modes.
+    # Use these for brand surface colors that need to differ between modes
+    # (e.g., --color-brand-dark: #0B0F19 in dark, #f8fafc in light).
+    # If None, extra_css_vars is used for both modes.
+    extra_css_vars_light: dict | None = None
+    extra_css_vars_dark: dict | None = None
+
+    # Surface treatment for glass panels, gradients, etc.
+    surface: SurfaceTreatment | None = None
 
 
 # =============================================================================
@@ -187,6 +237,9 @@ _DEFAULT_LIGHT = ThemeTokens(
     border=ColorScale(240, 6, 90),
     input=ColorScale(240, 6, 90),
     ring=ColorScale(240, 6, 10),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _DEFAULT_DARK = ThemeTokens(
@@ -221,6 +274,9 @@ _DEFAULT_DARK = ThemeTokens(
     border=ColorScale(240, 4, 16),
     input=ColorScale(240, 4, 16),
     ring=ColorScale(240, 5, 84),
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 DEFAULT_THEME = ThemePreset(
@@ -268,6 +324,9 @@ _SHADCN_LIGHT = ThemeTokens(
     border=ColorScale(240, 6, 90),
     input=ColorScale(240, 6, 90),
     ring=ColorScale(240, 6, 10),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _SHADCN_DARK = ThemeTokens(
@@ -302,6 +361,9 @@ _SHADCN_DARK = ThemeTokens(
     border=ColorScale(240, 4, 16),
     input=ColorScale(240, 4, 16),
     ring=ColorScale(240, 5, 84),
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 SHADCN_THEME = ThemePreset(
@@ -349,6 +411,9 @@ _BLUE_LIGHT = ThemeTokens(
     border=ColorScale(214, 32, 91),
     input=ColorScale(214, 32, 91),
     ring=ColorScale(221, 83, 53),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _BLUE_DARK = ThemeTokens(
@@ -383,6 +448,9 @@ _BLUE_DARK = ThemeTokens(
     border=ColorScale(217, 33, 17),
     input=ColorScale(217, 33, 17),
     ring=ColorScale(224, 76, 48),
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 BLUE_THEME = ThemePreset(
@@ -430,6 +498,9 @@ _GREEN_LIGHT = ThemeTokens(
     border=ColorScale(140, 20, 88),
     input=ColorScale(140, 20, 88),
     ring=ColorScale(142, 76, 36),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _GREEN_DARK = ThemeTokens(
@@ -464,6 +535,9 @@ _GREEN_DARK = ThemeTokens(
     border=ColorScale(140, 30, 16),
     input=ColorScale(140, 30, 16),
     ring=ColorScale(142, 69, 45),
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 GREEN_THEME = ThemePreset(
@@ -511,6 +585,9 @@ _PURPLE_LIGHT = ThemeTokens(
     border=ColorScale(270, 20, 90),
     input=ColorScale(270, 20, 90),
     ring=ColorScale(270, 50, 50),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _PURPLE_DARK = ThemeTokens(
@@ -545,6 +622,9 @@ _PURPLE_DARK = ThemeTokens(
     border=ColorScale(270, 30, 16),
     input=ColorScale(270, 30, 16),
     ring=ColorScale(270, 60, 60),
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 PURPLE_THEME = ThemePreset(
@@ -592,6 +672,9 @@ _ORANGE_LIGHT = ThemeTokens(
     border=ColorScale(24, 25, 88),
     input=ColorScale(24, 25, 88),
     ring=ColorScale(24, 95, 53),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _ORANGE_DARK = ThemeTokens(
@@ -626,6 +709,9 @@ _ORANGE_DARK = ThemeTokens(
     border=ColorScale(20, 30, 16),
     input=ColorScale(20, 30, 16),
     ring=ColorScale(24, 95, 55),
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 ORANGE_THEME = ThemePreset(
@@ -673,6 +759,9 @@ _ROSE_LIGHT = ThemeTokens(
     border=ColorScale(346, 20, 90),
     input=ColorScale(346, 20, 90),
     ring=ColorScale(346, 77, 50),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _ROSE_DARK = ThemeTokens(
@@ -707,6 +796,9 @@ _ROSE_DARK = ThemeTokens(
     border=ColorScale(346, 30, 16),
     input=ColorScale(346, 30, 16),
     ring=ColorScale(346, 77, 55),
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 ROSE_THEME = ThemePreset(
@@ -754,6 +846,9 @@ _NATURAL20_LIGHT = ThemeTokens(
     border=ColorScale(240, 5, 90),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(211, 100, 65),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _NATURAL20_DARK = ThemeTokens(
@@ -788,6 +883,9 @@ _NATURAL20_DARK = ThemeTokens(
     border=ColorScale(240, 9, 13),  # #1f1f23
     input=ColorScale(240, 15, 6),
     ring=ColorScale(211, 100, 65),
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 NATURAL20_THEME = ThemePreset(
@@ -836,6 +934,9 @@ _CATPPUCCIN_LIGHT = ThemeTokens(
     border=ColorScale(220, 17, 93),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(217, 92, 76),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _CATPPUCCIN_DARK = ThemeTokens(
@@ -871,6 +972,9 @@ _CATPPUCCIN_DARK = ThemeTokens(
     input=ColorScale(240, 21, 19),
     ring=ColorScale(217, 92, 76),
     # Gentle animations for pastel theme
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 CATPPUCCIN_THEME = ThemePreset(
@@ -919,6 +1023,9 @@ _ROSE_PINE_LIGHT = ThemeTokens(
     border=ColorScale(245, 22, 91),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(343, 76, 68),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _ROSE_PINE_DARK = ThemeTokens(
@@ -954,6 +1061,9 @@ _ROSE_PINE_DARK = ThemeTokens(
     input=ColorScale(250, 23, 17),
     ring=ColorScale(343, 76, 68),
     # Gentle animations for pastel theme
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 ROSE_PINE_THEME = ThemePreset(
@@ -1001,6 +1111,9 @@ _TOKYO_NIGHT_LIGHT = ThemeTokens(
     border=ColorScale(219, 20, 92),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(217, 89, 72),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _TOKYO_NIGHT_DARK = ThemeTokens(
@@ -1036,6 +1149,9 @@ _TOKYO_NIGHT_DARK = ThemeTokens(
     input=ColorScale(233, 15, 18),
     ring=ColorScale(217, 89, 72),
     # Moderate animations for vibrant pastel theme
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 TOKYO_NIGHT_THEME = ThemePreset(
@@ -1083,6 +1199,9 @@ _NORD_LIGHT = ThemeTokens(
     border=ColorScale(219, 20, 92),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(193, 43, 67),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _NORD_DARK = ThemeTokens(
@@ -1118,6 +1237,9 @@ _NORD_DARK = ThemeTokens(
     input=ColorScale(220, 16, 28),
     ring=ColorScale(193, 43, 67),
     # Gentle animations for pastel theme
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 NORD_THEME = ThemePreset(
@@ -1169,6 +1291,9 @@ _SYNTHWAVE_LIGHT = ThemeTokens(
     border=ColorScale(255, 26, 88),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(320, 100, 74),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _SYNTHWAVE_DARK = ThemeTokens(
@@ -1204,6 +1329,9 @@ _SYNTHWAVE_DARK = ThemeTokens(
     input=ColorScale(255, 26, 22),
     ring=ColorScale(320, 100, 74),
     # Dramatic animations for neon theme
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 SYNTHWAVE_THEME = ThemePreset(
@@ -1252,6 +1380,9 @@ _CYBERPUNK_LIGHT = ThemeTokens(
     border=ColorScale(219, 50, 88),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(54, 70, 68),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _CYBERPUNK_DARK = ThemeTokens(
@@ -1287,6 +1418,9 @@ _CYBERPUNK_DARK = ThemeTokens(
     input=ColorScale(219, 100, 10),
     ring=ColorScale(54, 70, 68),
     # Dramatic animations for neon theme
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 CYBERPUNK_THEME = ThemePreset(
@@ -1334,6 +1468,9 @@ _OUTRUN_LIGHT = ThemeTokens(
     border=ColorScale(240, 50, 88),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(329, 100, 71),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _OUTRUN_DARK = ThemeTokens(
@@ -1369,6 +1506,9 @@ _OUTRUN_DARK = ThemeTokens(
     input=ColorScale(240, 100, 12),
     ring=ColorScale(329, 100, 71),
     # Dramatic animations for neon theme
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 OUTRUN_THEME = ThemePreset(
@@ -1417,6 +1557,9 @@ _FOREST_LIGHT = ThemeTokens(
     border=ColorScale(150, 20, 85),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(142, 71, 45),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _FOREST_DARK = ThemeTokens(
@@ -1452,6 +1595,9 @@ _FOREST_DARK = ThemeTokens(
     input=ColorScale(150, 48, 12),
     ring=ColorScale(142, 71, 45),
     # Gentle animations for nature theme
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 FOREST_THEME = ThemePreset(
@@ -1500,6 +1646,9 @@ _AMBER_LIGHT = ThemeTokens(
     border=ColorScale(38, 30, 82),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(38, 92, 50),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _AMBER_DARK = ThemeTokens(
@@ -1535,6 +1684,9 @@ _AMBER_DARK = ThemeTokens(
     input=ColorScale(36, 100, 8),
     ring=ColorScale(38, 92, 50),
     # Gentle animations for warm theme
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 AMBER_THEME = ThemePreset(
@@ -1583,6 +1735,9 @@ _SLATE_LIGHT = ThemeTokens(
     border=ColorScale(0, 0, 88),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(214, 16, 46),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _SLATE_DARK = ThemeTokens(
@@ -1618,6 +1773,9 @@ _SLATE_DARK = ThemeTokens(
     input=ColorScale(240, 18, 8),
     ring=ColorScale(214, 16, 66),
     # Subtle animations for focus mode
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 SLATE_THEME = ThemePreset(
@@ -1666,6 +1824,9 @@ _NEBULA_LIGHT = ThemeTokens(
     border=ColorScale(239, 40, 85),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(239, 84, 67),
+    surface_1=ColorScale(0, 0, 99),
+    surface_2=ColorScale(0, 0, 97),
+    surface_3=ColorScale(0, 0, 95),
 )
 
 _NEBULA_DARK = ThemeTokens(
@@ -1701,6 +1862,9 @@ _NEBULA_DARK = ThemeTokens(
     input=ColorScale(220, 45, 15),
     ring=ColorScale(239, 84, 67),
     # Moderate animations for space theme
+    surface_1=ColorScale(240, 4, 8),
+    surface_2=ColorScale(240, 4, 12),
+    surface_3=ColorScale(240, 4, 16),
 )
 
 NEBULA_THEME = ThemePreset(
@@ -1710,6 +1874,126 @@ NEBULA_THEME = ThemePreset(
     light=_NEBULA_LIGHT,
     dark=_NEBULA_DARK,
     radius=0.75,
+)
+
+
+# =============================================================================
+# djust.org Theme (Dark-focused brand theme)
+# =============================================================================
+
+_DJUST_LIGHT = ThemeTokens(
+    background=ColorScale(220, 10, 98),  # Near white
+    foreground=ColorScale(220, 10, 4),    # Near black
+    card=ColorScale(220, 10, 100),
+    card_foreground=ColorScale(220, 10, 4),
+    popover=ColorScale(220, 10, 100),
+    popover_foreground=ColorScale(220, 10, 4),
+    primary=ColorScale(28, 80, 53),        # djust rust orange
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(154, 48, 39),    # djust django green
+    secondary_foreground=ColorScale(0, 0, 100),
+    muted=ColorScale(215, 14, 93),        # Light muted gray
+    muted_foreground=ColorScale(215, 10, 45),
+    accent=ColorScale(28, 80, 53),        # djust rust orange (same as primary)
+    accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(350, 89, 60),
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(160, 84, 39),
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(38, 92, 50),
+    warning_foreground=ColorScale(0, 0, 100),
+    info=ColorScale(199, 89, 48),
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(28, 80, 53),
+    link_hover=ColorScale(28, 80, 45),
+    code=ColorScale(215, 14, 93),
+    code_foreground=ColorScale(215, 10, 20),
+    selection=ColorScale(28, 80, 53),
+    selection_foreground=ColorScale(0, 0, 100),
+    border=ColorScale(215, 14, 88),
+    input=ColorScale(215, 14, 88),
+    ring=ColorScale(28, 80, 53),
+    surface_1=ColorScale(220, 10, 98),
+    surface_2=ColorScale(220, 10, 95),
+    surface_3=ColorScale(220, 10, 92),
+)
+
+_DJUST_DARK = ThemeTokens(
+    background=ColorScale(222, 30, 5),    # djust brand dark
+    foreground=ColorScale(214, 20, 87),  # djust brand text
+    card=ColorScale(222, 24, 11),         # djust panel
+    card_foreground=ColorScale(214, 20, 87),
+    popover=ColorScale(222, 24, 11),
+    popover_foreground=ColorScale(214, 20, 87),
+    primary=ColorScale(28, 80, 55),        # djust rust orange
+    primary_foreground=ColorScale(222, 30, 5),
+    secondary=ColorScale(154, 48, 53),   # djust django green
+    secondary_foreground=ColorScale(222, 30, 5),
+    muted=ColorScale(222, 24, 16),        # djust muted
+    muted_foreground=ColorScale(215, 14, 65),
+    accent=ColorScale(28, 80, 55),
+    accent_foreground=ColorScale(222, 30, 5),
+    destructive=ColorScale(350, 89, 60),
+    destructive_foreground=ColorScale(222, 30, 5),
+    success=ColorScale(160, 84, 39),
+    success_foreground=ColorScale(222, 30, 5),
+    warning=ColorScale(28, 80, 55),
+    warning_foreground=ColorScale(222, 30, 5),
+    info=ColorScale(199, 89, 48),
+    info_foreground=ColorScale(222, 30, 5),
+    link=ColorScale(28, 80, 55),
+    link_hover=ColorScale(28, 80, 65),
+    code=ColorScale(222, 24, 11),
+    code_foreground=ColorScale(214, 20, 87),
+    selection=ColorScale(28, 80, 55),
+    selection_foreground=ColorScale(222, 30, 5),
+    border=ColorScale(222, 24, 12),
+    input=ColorScale(222, 24, 12),
+    ring=ColorScale(28, 80, 55),
+    surface_1=ColorScale(222, 30, 5),
+    surface_2=ColorScale(222, 24, 8),
+    surface_3=ColorScale(222, 24, 12),
+)
+
+DJUST_THEME = ThemePreset(
+    name="djust",
+    display_name="djust.org",
+    description="djust.org brand — dark with rust orange and Django green accents",
+    light=_DJUST_LIGHT,
+    dark=_DJUST_DARK,
+    default_mode="dark",  # djust.org is dark-first
+    radius=0.5,
+    extra_css_vars={
+        # Brand colors (djust.org specific)
+        "color-brand-dark": "#0B0F19",
+        "color-brand-panel": "#151B2B",
+        "color-brand-rust": "#E57324",
+        "color-brand-django": "#44B78B",
+        "color-brand-text": "#E2E8F0",
+        "color-brand-muted": "#94A3B8",
+        "color-brand-border": "#1E293B",
+        "color-brand-danger": "#F43F5E",
+        "color-brand-success": "#10B981",
+        # Background patterns
+        "background-image-grid-pattern": "linear-gradient(to right, #1e293b 1px, transparent 1px), linear-gradient(to bottom, #1e293b 1px, transparent 1px)",
+        "background-image-gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        # Animations
+        "animation-pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+    },
+    extra_css_vars_light={
+        # Light-mode brand surfaces (surfaces change, accents stay)
+        "color-brand-dark": "#f8fafc",
+        "color-brand-panel": "#f1f5f9",
+        "color-brand-text": "#0f172a",
+        "color-brand-muted": "#64748b",
+        "color-brand-border": "#e2e8f0",
+    },
+    surface=SurfaceTreatment(
+        style='glass',
+        glass_background='rgba(21, 27, 43, 0.7)',
+        glass_border='rgba(255, 255, 255, 0.1)',
+        glass_blur='12px',
+    ),
 )
 
 
@@ -1737,6 +2021,7 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "amber": AMBER_THEME,
     "slate": SLATE_THEME,
     "nebula": NEBULA_THEME,
+    "djust": DJUST_THEME,
 }
 
 

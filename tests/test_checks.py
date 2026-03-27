@@ -102,6 +102,9 @@ class TestCheckPresetContrast:
             border=white,
             input=white,
             ring=white,
+            surface_1=white,
+            surface_2=white,
+            surface_3=white,
         )
         bad_preset = ThemePreset(
             name="bad",
@@ -158,6 +161,9 @@ class TestCheckPresetContrast:
             border=black,
             input=black,
             ring=black,
+            surface_1=black,
+            surface_2=black,
+            surface_3=black,
         )
         good_preset = ThemePreset(
             name="good",

@@ -80,6 +80,9 @@ class ThemeCSSGenerator:
             ("border", tokens.border),
             ("input", tokens.input),
             ("ring", tokens.ring),
+            ("surface-1", tokens.surface_1),
+            ("surface-2", tokens.surface_2),
+            ("surface-3", tokens.surface_3),
         ]
 
         for name, color in color_mappings:
@@ -106,29 +109,140 @@ class ThemeCSSGenerator:
         for name, color in shadcn_mappings:
             lines.append(f"{indent}--{name}: {color.to_hsl()};")
 
+        # Extra CSS custom properties (brand-specific variables)
+        if self.preset.extra_css_vars:
+            lines.append("")
+            for name, value in self.preset.extra_css_vars.items():
+                lines.append(f"{indent}--{name}: {value};")
+
         return "\n".join(lines)
 
     def _generate_light_mode(self) -> str:
-        """Generate :root light mode variables."""
+        """Generate :root light mode variables (or dark mode if default_mode='dark')."""
+        tokens = self.preset.dark if self.preset.default_mode == "dark" else self.preset.light
         return f""":root {{
-{self._tokens_to_css_vars(self.preset.light)}
+{self._tokens_to_css_vars(tokens)}
   --radius: {self.preset.radius}rem;
 }}"""
 
     def _generate_dark_mode(self) -> str:
-        """Generate dark mode variables for explicit .dark class and data attribute."""
-        return f""".dark,
-[data-theme="dark"] {{
-{self._tokens_to_css_vars(self.preset.dark)}
+        """Generate dark mode variables for explicit data-theme attribute.
+
+        Uses html[data-theme="*"] selectors to set CSS custom properties on :root
+        via cascade (html sets vars, body inherits). This approach avoids
+        specificity conflicts with the system-preference media query.
+
+        The :root selector sets the DEFAULT (theme-first) values.
+        html[data-theme="light"] sets LIGHT values (override for light-first themes).
+        html[data-theme="dark"] sets DARK values (override for dark-first themes).
+        When data-theme is absent, bare :root provides the default.
+        When data-theme is present, the html[data-theme] rule overrides bare :root.
+        """
+        # For dark-first: light values come from html[data-theme="light"]
+        # For light-first: dark values come from html[data-theme="dark"]
+        light_tokens = self.preset.light
+        dark_tokens = self.preset.dark
+
+        light_extra = self._extra_vars_block(
+            self.preset.extra_css_vars_light or self.preset.extra_css_vars,
+            indent="  ",
+            important=True,
+        )
+        dark_extra = self._extra_vars_block(
+            self.preset.extra_css_vars_dark or self.preset.extra_css_vars,
+            indent="  ",
+            important=True,
+        )
+        return f"""html[data-theme="light"] {{
+{self._tokens_to_css_vars(light_tokens, indent="  ")}
+{light_extra}
+}}
+html[data-theme="dark"] {{
+{self._tokens_to_css_vars(dark_tokens, indent="  ")}
+{dark_extra}
 }}"""
 
+    def _extra_vars_block(
+        self, extra_vars: dict | None, indent: str = "  ", important: bool = False
+    ) -> str:
+        """Generate CSS custom properties from extra_vars dict, if provided."""
+        if not extra_vars:
+            return ""
+        suffix = " !important" if important else ""
+        lines = []
+        for name, value in extra_vars.items():
+            lines.append(f"{indent}--{name}: {value}{suffix};")
+        return "\n".join(lines)
+
     def _generate_system_preference(self) -> str:
-        """Generate system preference media query for auto dark mode."""
-        return f"""@media (prefers-color-scheme: dark) {{
-  :root:not([data-theme="light"]) {{
-{self._tokens_to_css_vars(self.preset.dark, indent="    ")}
-  }}
-}}"""
+        """Generate system preference media query for auto dark mode.
+
+        For dark-first themes (default_mode="dark"): skip the media query.
+        The explicit html[data-theme="*"] selectors handle both light and
+        dark modes, and the anti-FOUC script sets data-theme appropriately.
+
+        For light-first themes: media query overrides bare :root when OS
+        prefers dark. The html[data-theme="dark"] explicit selector has
+        higher specificity and overrides the media query when the user
+        explicitly chooses dark.
+        """
+        if self.preset.default_mode == "dark":
+            # Dark-first: explicit selectors handle everything, skip OS override
+            return ""
+        else:
+            # Light default → system preference shows dark mode
+            return """@media (prefers-color-scheme: dark) {{
+  :root:not([data-theme]) {{
+{vars}  }}
+}}""".format(vars=self._tokens_to_css_vars(self.preset.dark, indent="    "))
+
+    def _generate_surface_styles(self) -> str:
+        """Generate surface treatment CSS (glass panels, gradients, noise)."""
+        if not self.preset.surface:
+            return ""
+
+        s = self.preset.surface
+        lines = ["/* Surface treatments */"]
+
+        if s.style == "glass":
+            lines.append(""".glass-panel {
+  background: var(--glass-background, rgba(21, 27, 43, 0.7));
+  backdrop-filter: blur(var(--glass-blur, 12px));
+  -webkit-backdrop-filter: blur(var(--glass-blur, 12px));
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--surface-radius, var(--radius, 0.5rem));
+}""")
+
+        elif s.style == "gradient":
+            lines.append(f""".gradient-surface {{
+  background: linear-gradient({s.gradient_direction}, var(--gradient-from, #1e293b), var(--gradient-to, #0f172a));
+  border-radius: var(--surface-radius, var(--radius, 0.5rem));
+}}""")
+
+        elif s.style == "noise":
+            lines.append(f""".noise-surface {{
+  position: relative;
+}}
+.noise-surface::before {{
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='{s.noise_opacity}'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: inherit;
+}}""")
+
+        # Add CSS custom properties for surface if extra_css_vars not used
+        if s.glass_background and s.style == "glass":
+            lines.append(f"\n:root {{")
+            lines.append(f"  --glass-background: {s.glass_background};")
+            lines.append(f"  --glass-border: {s.glass_border};")
+            lines.append(f"  --glass-blur: {s.glass_blur};")
+            if s.surface_radius:
+                lines.append(f"  --surface-radius: {s.surface_radius};")
+            lines.append(f"}}")
+
+        return "\n".join(lines)
 
     def _generate_base_styles(self) -> str:
         """Generate base element styles using CSS variables."""
@@ -387,6 +501,14 @@ pre code {
                 sections.extend(["", f"@layer components {{\n{utilities_css}\n}}"])
             else:
                 sections.extend(["", utilities_css])
+
+        # Surface treatments (glass panels, gradients, noise)
+        surface_css = self._generate_surface_styles()
+        if surface_css:
+            if use_layers:
+                sections.extend(["", f"@layer components {{\n{surface_css}\n}}"])
+            else:
+                sections.extend(["", surface_css])
 
         return "\n".join(sections)
 

@@ -238,6 +238,9 @@ def _build_light_tokens(
         border=border,
         input=input_border,
         ring=ring,
+        surface_1=ColorScale(0, 0, 99),
+        surface_2=ColorScale(0, 0, 97),
+        surface_3=ColorScale(0, 0, 95),
     )
 
     return _fix_light_contrast(tokens)
@@ -333,6 +336,9 @@ def _build_dark_tokens(
         border=border,
         input=input_border,
         ring=ring,
+        surface_1=ColorScale(primary_h, _clamp(primary_s, 5, 15), 8),
+        surface_2=ColorScale(primary_h, _clamp(primary_s, 5, 15), 12),
+        surface_3=ColorScale(primary_h, _clamp(primary_s, 5, 15), 16),
     )
 
     return _fix_dark_contrast(tokens)
@@ -376,6 +382,9 @@ def _fix_light_contrast(t: ThemeTokens) -> ThemeTokens:
         border=_ensure_contrast(t.border, t.background, min_ratio=3.0),
         input=_ensure_contrast(t.input, t.background, min_ratio=3.0),
         ring=t.ring,
+        surface_1=t.surface_1,
+        surface_2=t.surface_2,
+        surface_3=t.surface_3,
     )
 
 
@@ -413,6 +422,9 @@ def _fix_dark_contrast(t: ThemeTokens) -> ThemeTokens:
         border=_ensure_contrast(t.border, t.background, min_ratio=3.0),
         input=_ensure_contrast(t.input, t.background, min_ratio=3.0),
         ring=t.ring,
+        surface_1=t.surface_1,
+        surface_2=t.surface_2,
+        surface_3=t.surface_3,
     )
 
 

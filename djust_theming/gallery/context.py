@@ -9,6 +9,7 @@ from dataclasses import fields as dataclass_fields
 
 from djust_theming.contracts import COMPONENT_CONTRACTS
 from djust_theming.presets import ColorScale, ThemePreset, ThemeTokens, get_preset, list_presets
+from djust_theming.theme_packs import DESIGN_SYSTEMS, DesignSystem
 
 
 def _button_examples():
@@ -364,12 +365,13 @@ def serialize_preset(preset: ThemePreset) -> dict:
     """Serialize a ThemePreset to a JSON-friendly structure.
 
     Returns:
-        Dict with ``light``, ``dark``, and ``radius`` keys.
+        Dict with ``light``, ``dark``, ``radius``, and ``default_mode`` keys.
     """
     return {
         "light": serialize_tokens(preset.light),
         "dark": serialize_tokens(preset.dark),
         "radius": float(preset.radius),
+        "default_mode": preset.default_mode,
     }
 
 
@@ -380,4 +382,76 @@ def serialize_all_presets() -> dict:
     return {
         name: serialize_preset(preset)
         for name, preset in THEME_PRESETS.items()
+    }
+
+
+def serialize_design_system(ds: DesignSystem) -> dict:
+    """Serialize a DesignSystem to a JSON-friendly structure."""
+    return {
+        "name": ds.name,
+        "display_name": ds.display_name,
+        "description": ds.description,
+        "category": ds.category,
+        "typography": {
+            "heading_font": ds.typography.heading_font,
+            "body_font": ds.typography.body_font,
+            "base_size": ds.typography.base_size,
+            "heading_scale": ds.typography.heading_scale,
+            "line_height": ds.typography.line_height,
+            "heading_weight": ds.typography.heading_weight,
+            "body_weight": ds.typography.body_weight,
+            "letter_spacing": ds.typography.letter_spacing,
+        },
+        "layout": {
+            "space_unit": ds.layout.space_unit,
+            "space_scale": ds.layout.space_scale,
+            "border_radius_sm": ds.layout.border_radius_sm,
+            "border_radius_md": ds.layout.border_radius_md,
+            "border_radius_lg": ds.layout.border_radius_lg,
+            "button_shape": ds.layout.button_shape,
+            "card_shape": ds.layout.card_shape,
+            "input_shape": ds.layout.input_shape,
+            "container_width": ds.layout.container_width,
+            "grid_gap": ds.layout.grid_gap,
+            "section_spacing": ds.layout.section_spacing,
+        },
+        "surface": {
+            "shadow_sm": ds.surface.shadow_sm,
+            "shadow_md": ds.surface.shadow_md,
+            "shadow_lg": ds.surface.shadow_lg,
+            "border_width": ds.surface.border_width,
+            "border_style": ds.surface.border_style,
+            "surface_treatment": ds.surface.surface_treatment,
+            "backdrop_blur": ds.surface.backdrop_blur,
+            "noise_opacity": ds.surface.noise_opacity,
+        },
+        "animation": {
+            "entrance_effect": ds.animation.entrance_effect,
+            "exit_effect": ds.animation.exit_effect,
+            "hover_effect": ds.animation.hover_effect,
+            "hover_scale": ds.animation.hover_scale,
+            "hover_translate_y": ds.animation.hover_translate_y,
+            "click_effect": ds.animation.click_effect,
+            "loading_style": ds.animation.loading_style,
+            "transition_style": ds.animation.transition_style,
+            "duration_fast": ds.animation.duration_fast,
+            "duration_normal": ds.animation.duration_normal,
+            "duration_slow": ds.animation.duration_slow,
+            "easing": ds.animation.easing,
+        },
+        "interaction": {
+            "button_hover": ds.interaction.button_hover,
+            "link_hover": ds.interaction.link_hover,
+            "card_hover": ds.interaction.card_hover,
+            "focus_style": ds.interaction.focus_style,
+            "focus_ring_width": ds.interaction.focus_ring_width,
+        },
+    }
+
+
+def serialize_all_design_systems() -> dict:
+    """Serialize every registered design system to a dict keyed by name."""
+    return {
+        name: serialize_design_system(ds)
+        for name, ds in DESIGN_SYSTEMS.items()
     }
