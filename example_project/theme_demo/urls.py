@@ -19,4 +19,5 @@ urlpatterns = [
     path('forms/', views.forms_demo, name='forms'),
     path('layouts/', views.layouts_demo, name='layouts'),
     path('pages/', views.pages_demo, name='pages'),
+    path('landing/', views.landing, name='landing'),
 ]

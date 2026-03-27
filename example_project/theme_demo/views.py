@@ -4,7 +4,7 @@ Demo views showcasing djust-theming features across Phases 1-9.
 from django import forms
 from django.shortcuts import render
 from djust_theming.presets import THEME_PRESETS
-from djust_theming.theme_packs import DESIGN_SYSTEMS, get_all_theme_packs, get_all_design_systems
+from djust_theming.theme_packs import get_all_theme_packs, get_all_design_systems
 from djust_theming.manager import ThemeManager, get_theme_manager
 from djust_theming.inspector import theme_inspector_view, theme_inspector_api, theme_css_api
 
@@ -115,26 +115,6 @@ def tailwind_demo(request):
     """Demonstrate Tailwind CSS integration."""
     return render(request, 'theme_demo/tailwind.html', {
         'title': 'Tailwind Integration',
-    })
-
-
-def themes(request):
-    """Show all available design system themes."""
-    manager = get_theme_manager(request)
-    theme_state = manager.get_state()
-
-    theme_list = []
-    for name, design_system in DESIGN_SYSTEMS.items():
-        theme_list.append({
-            'name': name,
-            'display_name': design_system.display_name,
-            'description': design_system.description,
-        })
-
-    return render(request, 'theme_demo/themes.html', {
-        'title': 'Design System Themes',
-        'theme_state': theme_state,
-        'themes': theme_list,
     })
 
 
@@ -335,4 +315,11 @@ def pages_demo(request):
     """Showcase page template tags (auth, error, utility pages)."""
     return render(request, 'theme_demo/pages.html', {
         'title': 'Page Templates',
+    })
+
+
+def landing(request):
+    """Landing page showcasing djust-theming capabilities."""
+    return render(request, 'theme_demo/landing.html', {
+        'title': 'djust-theming Landing Page',
     })
