@@ -1,4 +1,4 @@
-# djust-theming Roadmap
+--# djust-theming Roadmap
 
 > Goal: A complete theming system where full customization of look and feel is achieved by writing a new template set + design tokens. No Python code required to create a theme.
 
@@ -3433,3 +3433,21 @@ The fallback values come from the `default` preset. The CSS generator can inject
 | I129 | CSS custom property fallback values | Low | Medium | Do with I2 — component CSS restructure is the right moment |
 | I130 | push_event availability warning | Low | Medium | Do with I88 — standalone mode awareness |
 | I124 | Silent theme pack fallback logging | Low | Medium | Do with I5/I24 — CSS generation path consolidation |
+| I134 | Design system tokens not varying (font, shadow, duration) | Medium | **High** | None — blocks djust-components gallery quality |
+
+### I134: Design System Tokens Only Vary Radius — Font, Shadow, Duration Are Static (Priority: High)
+
+**Problem**: When switching between design systems (material → ios → neo_brutalist), only `--radius` changes. The following tokens are identical across all 11 design systems:
+- `--font-sans` — always Inter (should be Roboto for material, SF Pro for iOS, monospace for neo_brutalist)
+- `--shadow-sm/md/lg` — always the same values (material should have elevation-based shadows, neo_brutalist should have hard/sharp shadows or none)
+- `--duration-fast/normal/slow` — always 120ms/200ms/320ms (iOS should have longer fluid animations, neo_brutalist should have instant/no transitions)
+
+**Root cause**: `design_system_css.py` defines `TypographyStyle`, `SurfaceStyle`, `AnimationStyle` dataclasses with per-system values, but `base.css` statically defines `--font-sans`, `--shadow-*`, and `--duration-*` and is loaded after the generated CSS. Since `base.css` is unlayered and the generated CSS wraps some tokens in `@layer`, the static `base.css` values win.
+
+**Fix**: Either:
+1. Include font/shadow/duration tokens in the generated CSS output (outside `@layer`, like dark mode colors already are), so they override `base.css` defaults
+2. Or remove the static definitions from `base.css` and let the generated CSS be the sole source
+
+**Impact**: djust-components gallery shows identical styling across all 11 design systems except for border radius. This makes the design system picker appear broken.
+
+**Verification**: After fix, switching material → neo_brutalist should produce: different font family, 0 border radius (already works), sharp/no shadows, instant transitions.
