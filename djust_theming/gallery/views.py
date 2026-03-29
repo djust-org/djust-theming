@@ -23,7 +23,7 @@ from djust_theming.theme_packs import DESIGN_SYSTEMS
 from .storybook import build_storybook_detail_context, build_storybook_index_context
 from djust_theming.contracts import COMPONENT_CONTRACTS
 from djust_theming.presets import get_preset, list_presets
-from djust_theming.manager import ThemeState, generate_css_for_state, get_css_prefix, get_theme_manager
+from djust_theming.css_generator import ThemeCSSGenerator as ColorCSSGenerator
 
 # Allowed CSS token names: lowercase letters, digits, hyphens, underscores only.
 _VALID_TOKEN_NAME = re.compile(r"^[a-z][a-z0-9_-]*$")
@@ -53,19 +53,12 @@ def gallery_view(request):
     if not get_registry().has_preset(preset_name):
         preset_name = "default"
 
-    # Generate CSS for the explicitly-chosen preset, independent of session/cookie state.
-    # This ensures the preset selector actually changes what the user sees without
-    # permanently overriding their theme preferences for the rest of the site.
-    manager = get_theme_manager(request)
-    base_state = manager.get_state()
-    gallery_state = ThemeState(
-        theme=base_state.theme,
-        preset=preset_name,
-        mode=base_state.mode,
-        resolved_mode=base_state.resolved_mode,
-        pack=None,
-    )
-    gallery_preset_css = generate_css_for_state(gallery_state, css_prefix=get_css_prefix())
+    # Generate unlayered preset override CSS for the gallery.
+    # Using generate_variables_only() emits bare :root {} / .dark {} blocks without
+    # @layer wrappers. Unlayered CSS always wins over @layer tokens from theme_head,
+    # so the preset selector actually changes what the user sees.
+    color_gen = ColorCSSGenerator(preset_name=preset_name)
+    gallery_preset_css = color_gen.generate_variables_only()
 
     ctx = build_gallery_context(preset_name=preset_name)
     ctx["request"] = request
