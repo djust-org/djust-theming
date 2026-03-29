@@ -1,21 +1,21 @@
 {% extends "theme_demo/base.html" %}
-{% load theme_components %}
+{% load djust_components static %}
 
 {% block extra_head %}
 <style>
 .inspector-panel {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem;
-    margin-bottom: 1rem;
+    background: var(--surface-1, var(--card));
+    border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border));
+    border-radius: var(--card-radius, var(--radius));
+    padding: var(--grid-gap, 1rem);
+    margin-bottom: var(--grid-gap, 1rem);
 }
 
 .color-swatch {
     width: 2rem;
     height: 2rem;
-    border-radius: 0.25rem;
-    border: 1px solid var(--border);
+    border-radius: calc(var(--card-radius, 0.25rem) * 0.5);
+    border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border));
     display: inline-block;
     margin-right: 0.5rem;
 }
@@ -23,7 +23,7 @@
 .token-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
+    gap: var(--grid-gap, 1rem);
 }
 
 .token-item {
@@ -31,19 +31,19 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 0.25rem;
+    border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border));
+    border-radius: calc(var(--card-radius, 0.25rem) * 0.5);
     font-family: monospace;
-    font-size: 0.875rem;
+    font-size: var(--small-size);
 }
 
 .css-output {
-    background: var(--muted);
-    color: var(--muted-foreground);
-    padding: 1rem;
-    border-radius: var(--radius);
+    background: hsl(var(--muted));
+    color: hsl(var(--muted-foreground));
+    padding: var(--grid-gap, 1rem);
+    border-radius: var(--card-radius, var(--radius));
     font-family: monospace;
-    font-size: 0.75rem;
+    font-size: var(--tiny-size);
     max-height: 400px;
     overflow-y: auto;
     white-space: pre;
@@ -51,9 +51,9 @@
 
 .inspector-controls {
     display: flex;
-    gap: 1rem;
+    gap: var(--grid-gap, 1rem);
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: var(--grid-gap, 1rem);
     flex-wrap: wrap;
 }
 
@@ -67,8 +67,8 @@
 
 .tabs {
     display: flex;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 1rem;
+    border-bottom: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border));
+    margin-bottom: var(--grid-gap, 1rem);
 }
 
 .tab {
@@ -77,25 +77,45 @@
     background: none;
     cursor: pointer;
     border-bottom: 2px solid transparent;
+    font-family: var(--font-body, system-ui);
+    font-size: var(--small-size);
+    color: hsl(var(--foreground));
+    transition: border-color var(--duration-fast, 150ms) var(--easing, ease);
 }
 
 .tab.active {
-    border-bottom-color: var(--primary);
-    color: var(--primary);
+    border-bottom-color: hsl(var(--primary));
+    color: hsl(var(--primary));
 }
 
 .comparison-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: var(--grid-gap, 1.5rem);
+}
+
+.inspector-select {
+    border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border));
+    border-radius: var(--input-radius, var(--radius));
+    padding: 0.25rem 0.75rem;
+    margin-left: 0.5rem;
+    background: var(--surface-1, hsl(var(--card)));
+    color: hsl(var(--foreground));
+    font-size: var(--small-size);
+    font-family: var(--font-body, system-ui);
 }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="mb-8">
-    <h1 class="text-4xl font-bold mb-2">Theme Inspector</h1>
-    <p class="text-muted-foreground">
+<div class="text-center" style="margin-bottom: var(--section-spacing, 2rem);">
+    <span class="badge" style="background-color: color-mix(in oklab, hsl(var(--primary)) 10%, transparent); color: hsl(var(--primary)); border: var(--border-width, 1px) var(--border-style, solid) color-mix(in oklab, hsl(var(--primary)) 20%, transparent); margin-bottom: var(--grid-gap, 1.5rem);">
+        Theme Inspector
+    </span>
+    <h1 style="font-family: var(--font-heading, system-ui); font-size: var(--h1-size); font-weight: var(--font-weight-heading, 800); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.67);">
+        Theme <span class="gradient-text">Inspector</span>
+    </h1>
+    <p class="fg-muted mx-auto" style="max-width: var(--prose-max-width, 42rem); line-height: var(--body-line-height, 1.6);">
         Debug and analyze theme combinations in real-time
     </p>
 </div>
@@ -103,8 +123,8 @@
 <!-- Inspector Controls -->
 <div class="inspector-controls">
     <div>
-        <label for="design-select" class="text-sm font-medium">Design System:</label>
-        <select id="design-select" class="border border-border rounded px-3 py-1 ml-2">
+        <label for="design-select" style="font-size: var(--small-size); font-weight: 500;">Design System:</label>
+        <select id="design-select" class="inspector-select">
             {% for design in design_systems %}
             <option value="{{ design }}" {% if design == current_design %}selected{% endif %}>
                 {{ design|title }}
@@ -112,10 +132,10 @@
             {% endfor %}
         </select>
     </div>
-    
+
     <div>
-        <label for="color-select" class="text-sm font-medium">Color Preset:</label>
-        <select id="color-select" class="border border-border rounded px-3 py-1 ml-2">
+        <label for="color-select" style="font-size: var(--small-size); font-weight: 500;">Color Preset:</label>
+        <select id="color-select" class="inspector-select">
             {% for color in color_presets %}
             <option value="{{ color }}" {% if color == current_color %}selected{% endif %}>
                 {{ color|title }}
@@ -123,35 +143,35 @@
             {% endfor %}
         </select>
     </div>
-    
+
     <button onclick="refreshInspector()" class="btn btn-primary">
         Inspect Theme
     </button>
-    
+
     <button onclick="toggleComparison()" class="btn btn-secondary" id="compare-btn">
         Enable Comparison
     </button>
 </div>
 
 <!-- Theme Info Display -->
-<div id="theme-info" class="mb-8">
-    <div class="inspector-panel">
-        <h3 class="text-lg font-semibold mb-4">Current Theme: {{ theme_info.combination }}</h3>
-        <div class="grid md:grid-cols-2 gap-4">
+<div id="theme-info" style="margin-bottom: calc(var(--grid-gap, 1.5rem) * 1.33);">
+    <div class="glass-card" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33);">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1.5rem);">Current Theme: <span class="fg-primary">{{ theme_info.combination }}</span></h3>
+        <div class="grid md:grid-cols-2" style="gap: var(--grid-gap, 1rem);">
             <div>
-                <h4 class="font-medium mb-2">Design System</h4>
+                <h4 style="font-weight: 500; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Design System</h4>
                 <p><strong>{{ theme_info.design_system.display_name }}</strong></p>
-                <p class="text-sm text-muted-foreground">{{ theme_info.design_system.description }}</p>
-                <p class="text-xs mt-1">Category: {{ theme_info.design_system.category }}</p>
+                <p class="fg-muted" style="font-size: var(--small-size);">{{ theme_info.design_system.description }}</p>
+                <p style="font-size: var(--tiny-size); margin-top: 0.25rem;">Category: {{ theme_info.design_system.category }}</p>
             </div>
             <div>
-                <h4 class="font-medium mb-2">Color Preset</h4>
+                <h4 style="font-weight: 500; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Color Preset</h4>
                 <p><strong>{{ theme_info.color_preset.display_name }}</strong></p>
-                <div class="flex items-center gap-2 mt-2">
+                <div style="display: flex; align-items: center; gap: calc(var(--grid-gap, 1.5rem) * 0.33); margin-top: 0.5rem;">
                     <div class="color-swatch" style="background: {{ theme_info.color_preset.light.primary.hsl_func }};"></div>
-                    <span class="text-sm">Primary Light</span>
-                    <div class="color-swatch ml-4" style="background: {{ theme_info.color_preset.dark.primary.hsl_func }};"></div>
-                    <span class="text-sm">Primary Dark</span>
+                    <span style="font-size: var(--small-size);">Primary Light</span>
+                    <div class="color-swatch" style="background: {{ theme_info.color_preset.dark.primary.hsl_func }}; margin-left: var(--grid-gap, 1rem);"></div>
+                    <span style="font-size: var(--small-size);">Primary Dark</span>
                 </div>
             </div>
         </div>
@@ -171,15 +191,15 @@
 <!-- Colors Tab -->
 <div id="tab-colors" class="tab-content active">
     <div class="inspector-panel">
-        <h3 class="text-lg font-semibold mb-4">Color Tokens</h3>
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1.5rem);">Color Tokens</h3>
         <div class="token-grid">
             {% for token_name, token_data in theme_info.color_preset.light.items %}
             {% if token_name != 'radius' %}
             <div class="token-item">
                 <div class="color-swatch" style="background: {{ token_data.hsl_func }};"></div>
                 <div>
-                    <div class="font-medium">{{ token_name }}</div>
-                    <div class="text-xs text-muted-foreground">{{ token_data.hsl }}</div>
+                    <div style="font-weight: 500;">{{ token_name }}</div>
+                    <div class="fg-muted" style="font-size: var(--tiny-size);">{{ token_data.hsl }}</div>
                 </div>
             </div>
             {% endif %}
@@ -191,11 +211,11 @@
 <!-- Typography Tab -->
 <div id="tab-typography" class="tab-content">
     <div class="inspector-panel">
-        <h3 class="text-lg font-semibold mb-4">Typography System</h3>
-        <div class="grid md:grid-cols-2 gap-4">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1.5rem);">Typography System</h3>
+        <div class="grid md:grid-cols-2" style="gap: var(--grid-gap, 1rem);">
             <div>
-                <h4 class="font-medium mb-2">Font Configuration</h4>
-                <div class="space-y-2 text-sm">
+                <h4 style="font-weight: 500; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Font Configuration</h4>
+                <div style="display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.33); font-size: var(--small-size);">
                     <div><strong>Heading Font:</strong> {{ theme_info.design_system.typography.heading_font }}</div>
                     <div><strong>Body Font:</strong> {{ theme_info.design_system.typography.body_font }}</div>
                     <div><strong>Base Size:</strong> {{ theme_info.design_system.typography.base_size }}</div>
@@ -204,8 +224,8 @@
                 </div>
             </div>
             <div>
-                <h4 class="font-medium mb-2">Typography Preview</h4>
-                <div class="space-y-2">
+                <h4 style="font-weight: 500; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Typography Preview</h4>
+                <div style="display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.33);">
                     <h1 style="font-family: var(--font-heading); font-weight: var(--font-weight-heading);">
                         Heading 1 Sample
                     </h1>
@@ -224,11 +244,11 @@
 <!-- Layout Tab -->
 <div id="tab-layout" class="tab-content">
     <div class="inspector-panel">
-        <h3 class="text-lg font-semibold mb-4">Layout System</h3>
-        <div class="grid md:grid-cols-2 gap-4">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1.5rem);">Layout System</h3>
+        <div class="grid md:grid-cols-2" style="gap: var(--grid-gap, 1rem);">
             <div>
-                <h4 class="font-medium mb-2">Spacing & Sizing</h4>
-                <div class="space-y-2 text-sm">
+                <h4 style="font-weight: 500; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Spacing & Sizing</h4>
+                <div style="display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.33); font-size: var(--small-size);">
                     <div><strong>Space Unit:</strong> {{ theme_info.design_system.layout.space_unit }}</div>
                     <div><strong>Space Scale:</strong> {{ theme_info.design_system.layout.space_scale }}</div>
                     <div><strong>Container Width:</strong> {{ theme_info.design_system.layout.container_width }}</div>
@@ -236,15 +256,15 @@
                 </div>
             </div>
             <div>
-                <h4 class="font-medium mb-2">Component Shapes</h4>
-                <div class="space-y-2 text-sm">
+                <h4 style="font-weight: 500; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Component Shapes</h4>
+                <div style="display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.33); font-size: var(--small-size);">
                     <div><strong>Button Shape:</strong> {{ theme_info.design_system.layout.button_shape }}</div>
                     <div><strong>Card Shape:</strong> {{ theme_info.design_system.layout.card_shape }}</div>
                     <div><strong>Input Shape:</strong> {{ theme_info.design_system.layout.input_shape }}</div>
                 </div>
-                
-                <h4 class="font-medium mb-2 mt-4">Border Radius</h4>
-                <div class="space-y-2 text-sm">
+
+                <h4 style="font-weight: 500; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33); margin-top: var(--grid-gap, 1rem);">Border Radius</h4>
+                <div style="display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.33); font-size: var(--small-size);">
                     <div><strong>Small:</strong> {{ theme_info.design_system.layout.border_radius_sm }}</div>
                     <div><strong>Medium:</strong> {{ theme_info.design_system.layout.border_radius_md }}</div>
                     <div><strong>Large:</strong> {{ theme_info.design_system.layout.border_radius_lg }}</div>
@@ -257,28 +277,28 @@
 <!-- Surface Tab -->
 <div id="tab-surface" class="tab-content">
     <div class="inspector-panel">
-        <h3 class="text-lg font-semibold mb-4">Surface Treatment</h3>
-        <div class="grid md:grid-cols-2 gap-4">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1.5rem);">Surface Treatment</h3>
+        <div class="grid md:grid-cols-2" style="gap: var(--grid-gap, 1rem);">
             <div>
-                <h4 class="font-medium mb-2">Shadows</h4>
-                <div class="space-y-3">
-                    <div class="p-3 border rounded" style="box-shadow: {{ theme_info.design_system.surface.shadow_sm }}">
-                        <div class="text-sm">Small Shadow</div>
-                        <div class="text-xs text-muted-foreground">{{ theme_info.design_system.surface.shadow_sm }}</div>
+                <h4 style="font-weight: 500; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Shadows</h4>
+                <div style="display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.5);">
+                    <div style="padding: calc(var(--grid-gap, 1rem) * 0.75); border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border)); border-radius: var(--card-radius, var(--radius)); box-shadow: {{ theme_info.design_system.surface.shadow_sm }}">
+                        <div style="font-size: var(--small-size);">Small Shadow</div>
+                        <div class="fg-muted" style="font-size: var(--tiny-size);">{{ theme_info.design_system.surface.shadow_sm }}</div>
                     </div>
-                    <div class="p-3 border rounded" style="box-shadow: {{ theme_info.design_system.surface.shadow_md }}">
-                        <div class="text-sm">Medium Shadow</div>
-                        <div class="text-xs text-muted-foreground">{{ theme_info.design_system.surface.shadow_md }}</div>
+                    <div style="padding: calc(var(--grid-gap, 1rem) * 0.75); border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border)); border-radius: var(--card-radius, var(--radius)); box-shadow: {{ theme_info.design_system.surface.shadow_md }}">
+                        <div style="font-size: var(--small-size);">Medium Shadow</div>
+                        <div class="fg-muted" style="font-size: var(--tiny-size);">{{ theme_info.design_system.surface.shadow_md }}</div>
                     </div>
-                    <div class="p-3 border rounded" style="box-shadow: {{ theme_info.design_system.surface.shadow_lg }}">
-                        <div class="text-sm">Large Shadow</div>
-                        <div class="text-xs text-muted-foreground">{{ theme_info.design_system.surface.shadow_lg }}</div>
+                    <div style="padding: calc(var(--grid-gap, 1rem) * 0.75); border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border)); border-radius: var(--card-radius, var(--radius)); box-shadow: {{ theme_info.design_system.surface.shadow_lg }}">
+                        <div style="font-size: var(--small-size);">Large Shadow</div>
+                        <div class="fg-muted" style="font-size: var(--tiny-size);">{{ theme_info.design_system.surface.shadow_lg }}</div>
                     </div>
                 </div>
             </div>
             <div>
-                <h4 class="font-medium mb-2">Border & Effects</h4>
-                <div class="space-y-2 text-sm">
+                <h4 style="font-weight: 500; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Border & Effects</h4>
+                <div style="display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.33); font-size: var(--small-size);">
                     <div><strong>Border Width:</strong> {{ theme_info.design_system.surface.border_width }}</div>
                     <div><strong>Border Style:</strong> {{ theme_info.design_system.surface.border_style }}</div>
                     <div><strong>Surface Treatment:</strong> {{ theme_info.design_system.surface.surface_treatment }}</div>
@@ -297,11 +317,11 @@
 <!-- Animation Tab -->
 <div id="tab-animation" class="tab-content">
     <div class="inspector-panel">
-        <h3 class="text-lg font-semibold mb-4">Animation System</h3>
-        <div class="grid md:grid-cols-2 gap-4">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1.5rem);">Animation System</h3>
+        <div class="grid md:grid-cols-2" style="gap: var(--grid-gap, 1rem);">
             <div>
-                <h4 class="font-medium mb-2">Timing & Easing</h4>
-                <div class="space-y-2 text-sm">
+                <h4 style="font-weight: 500; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Timing & Easing</h4>
+                <div style="display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.33); font-size: var(--small-size);">
                     <div><strong>Fast:</strong> {{ theme_info.design_system.animation.duration_fast }}</div>
                     <div><strong>Normal:</strong> {{ theme_info.design_system.animation.duration_normal }}</div>
                     <div><strong>Slow:</strong> {{ theme_info.design_system.animation.duration_slow }}</div>
@@ -309,8 +329,8 @@
                 </div>
             </div>
             <div>
-                <h4 class="font-medium mb-2">Effects</h4>
-                <div class="space-y-2 text-sm">
+                <h4 style="font-weight: 500; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Effects</h4>
+                <div style="display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.33); font-size: var(--small-size);">
                     <div><strong>Entrance:</strong> {{ theme_info.design_system.animation.entrance_effect }}</div>
                     <div><strong>Hover Effect:</strong> {{ theme_info.design_system.animation.hover_effect }}</div>
                     <div><strong>Click Effect:</strong> {{ theme_info.design_system.animation.click_effect }}</div>
@@ -324,11 +344,11 @@
 <!-- CSS Tab -->
 <div id="tab-css" class="tab-content">
     <div class="inspector-panel">
-        <h3 class="text-lg font-semibold mb-4">Generated CSS</h3>
-        <div class="mb-4">
-            <div class="text-sm text-muted-foreground">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1.5rem);">Generated CSS</h3>
+        <div style="margin-bottom: var(--grid-gap, 1.5rem);">
+            <div class="fg-muted" style="font-size: var(--small-size);">
                 Size: {{ theme_info.css_size }} characters
-                <button onclick="copyCss()" class="btn btn-sm btn-secondary ml-4">Copy CSS</button>
+                <button onclick="copyCss()" class="btn btn-sm btn-secondary" style="margin-left: var(--grid-gap, 1rem);">Copy CSS</button>
             </div>
         </div>
         <div class="css-output" id="css-output">{{ theme_info.generated_css }}</div>
@@ -336,9 +356,9 @@
 </div>
 
 <!-- Comparison Mode (initially hidden) -->
-<div id="comparison-mode" class="mt-8" style="display: none;">
+<div id="comparison-mode" style="display: none; margin-top: calc(var(--grid-gap, 1.5rem) * 1.33);">
     <div class="inspector-panel">
-        <h3 class="text-lg font-semibold mb-4">Theme Comparison</h3>
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1.5rem);">Theme Comparison</h3>
         <div class="comparison-grid" id="comparison-grid">
             <!-- Comparison content will be populated by JavaScript -->
         </div>
@@ -357,7 +377,7 @@ function showTab(tabName) {
     document.querySelectorAll('.tab').forEach(tab => {
         tab.classList.remove('active');
     });
-    
+
     // Show selected tab
     document.getElementById(`tab-${tabName}`).classList.add('active');
     event.target.classList.add('active');
@@ -366,28 +386,28 @@ function showTab(tabName) {
 async function refreshInspector() {
     const design = document.getElementById('design-select').value;
     const color = document.getElementById('color-select').value;
-    
+
     try {
         const response = await fetch(`/theme-inspector-api/?design=${design}&color=${color}`);
         const themeInfo = await response.json();
-        
+
         if (themeInfo.error) {
             alert('Error: ' + themeInfo.error);
             return;
         }
-        
+
         currentThemeInfo = themeInfo;
-        
+
         // Update URL
         const url = new URL(window.location);
         url.searchParams.set('design', design);
         url.searchParams.set('color', color);
         window.history.pushState({}, '', url);
-        
+
         // Reload page to update all content
         // TODO: Implement dynamic content updates
         location.reload();
-        
+
     } catch (error) {
         alert('Failed to load theme info: ' + error.message);
     }
@@ -397,7 +417,7 @@ function toggleComparison() {
     comparisonMode = !comparisonMode;
     const btn = document.getElementById('compare-btn');
     const comparisonDiv = document.getElementById('comparison-mode');
-    
+
     if (comparisonMode) {
         btn.textContent = 'Disable Comparison';
         comparisonDiv.style.display = 'block';
@@ -410,7 +430,7 @@ function toggleComparison() {
 
 function copyCss() {
     const cssOutput = document.getElementById('css-output');
-    
+
     if (navigator.clipboard) {
         navigator.clipboard.writeText(cssOutput.textContent).then(() => {
             alert('CSS copied to clipboard!');

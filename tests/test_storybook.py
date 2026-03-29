@@ -207,8 +207,8 @@ class TestStorybookDetailContent:
         response = storybook_detail_view(request, "button")
         content = response.content.decode()
 
-        # Should have a CSS variables section heading
-        assert "CSS Variables" in content or "css-variables" in content
+        # Should have a CSS variables section heading (template renders in all-caps)
+        assert "CSS VARIABLES" in content or "css-variables" in content
 
 
 # ---------------------------------------------------------------------------

@@ -59,7 +59,7 @@
         </div>
         <div class="bg-primary/10 border border-primary/20 rounded-lg p-4 mt-4">
             <p class="text-foreground">
-                <strong>Mix ANY design system with ANY color preset for 132 unique combinations!</strong>
+                <strong>Mix ANY design system with ANY color preset for 209 unique combinations!</strong>
                 <br/>
                 Try switching design systems below and notice how typography, spacing, and shadows change—not just colors.
             </p>
@@ -128,6 +128,100 @@
         <!-- Input Sample -->
         <div class="max-w-md">
             <input class="input-theme w-full px-3 py-2" placeholder="Input field example" />
+        </div>
+    </div>
+</div>
+
+<!-- Animation Preview Section -->
+<div class="bg-card border border-border rounded-lg p-6 mb-8">
+    <h3 class="text-lg font-semibold mb-2">Animation Preview</h3>
+    <p class="text-sm text-muted-foreground mb-6">
+        Each design system defines its own timing, easing, and hover/click effects.
+        Switch design systems above to see how animations change.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-8">
+        <!-- Hover Effects -->
+        <div>
+            <h4 class="text-sm font-medium mb-3">Hover Effects</h4>
+            <div class="space-y-3">
+                <div class="hover-lift transition p-4 bg-muted rounded-lg cursor-pointer border border-border">
+                    <div class="text-sm font-medium">Lift</div>
+                    <div class="text-xs text-muted-foreground">translateY + scale on hover</div>
+                </div>
+                <div class="hover-scale transition p-4 bg-muted rounded-lg cursor-pointer border border-border">
+                    <div class="text-sm font-medium">Scale</div>
+                    <div class="text-xs text-muted-foreground">scale transform on hover</div>
+                </div>
+                <div class="hover-glow transition p-4 bg-muted rounded-lg cursor-pointer border border-border">
+                    <div class="text-sm font-medium">Glow</div>
+                    <div class="text-xs text-muted-foreground">box-shadow glow on hover</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transition Speeds -->
+        <div>
+            <h4 class="text-sm font-medium mb-3">Transition Speeds</h4>
+            <div class="space-y-3">
+                <button class="transition-fast w-full text-left p-4 bg-muted rounded-lg border border-border hover:bg-primary hover:text-primary-foreground">
+                    <div class="text-sm font-medium">Fast</div>
+                    <div class="text-xs opacity-70">var(--duration-fast)</div>
+                </button>
+                <button class="transition w-full text-left p-4 bg-muted rounded-lg border border-border hover:bg-primary hover:text-primary-foreground">
+                    <div class="text-sm font-medium">Normal</div>
+                    <div class="text-xs opacity-70">var(--duration-normal)</div>
+                </button>
+                <button class="transition-slow w-full text-left p-4 bg-muted rounded-lg border border-border hover:bg-primary hover:text-primary-foreground">
+                    <div class="text-sm font-medium">Slow</div>
+                    <div class="text-xs opacity-70">var(--duration-slow)</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Entrance Animations -->
+        <div>
+            <h4 class="text-sm font-medium mb-3">Entrance Animations</h4>
+            <div class="space-y-3">
+                <button onclick="replayEntrance(this, 'fade')" class="w-full text-left p-4 bg-muted rounded-lg border border-border hover:border-primary/50 transition">
+                    <div class="text-sm font-medium">Fade In</div>
+                    <div class="text-xs text-muted-foreground">Click to replay</div>
+                </button>
+                <button onclick="replayEntrance(this, 'slide')" class="w-full text-left p-4 bg-muted rounded-lg border border-border hover:border-primary/50 transition">
+                    <div class="text-sm font-medium">Slide In</div>
+                    <div class="text-xs text-muted-foreground">Click to replay</div>
+                </button>
+                <button onclick="replayEntrance(this, 'scale')" class="w-full text-left p-4 bg-muted rounded-lg border border-border hover:border-primary/50 transition">
+                    <div class="text-sm font-medium">Scale In</div>
+                    <div class="text-xs text-muted-foreground">Click to replay</div>
+                </button>
+                <button onclick="replayEntrance(this, 'bounce')" class="w-full text-left p-4 bg-muted rounded-lg border border-border hover:border-primary/50 transition">
+                    <div class="text-sm font-medium">Bounce In</div>
+                    <div class="text-xs text-muted-foreground">Click to replay</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Combined Example -->
+        <div>
+            <h4 class="text-sm font-medium mb-3">Interactive Card</h4>
+            <div class="hover-lift transition cursor-pointer p-6 bg-background rounded-lg border border-border shadow-sm"
+                 style="transition-property: transform, box-shadow;">
+                <h4 class="font-semibold mb-2">Hover this card</h4>
+                <p class="text-sm text-muted-foreground mb-3">
+                    This card combines hover-lift with the current design system's
+                    transition duration and easing curve.
+                </p>
+                <div class="flex gap-2">
+                    <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">hover-lift</span>
+                    <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">transition</span>
+                </div>
+            </div>
+
+            <h4 class="text-sm font-medium mt-6 mb-3">Current Values</h4>
+            <div class="text-xs font-mono space-y-1 text-muted-foreground" id="animation-values">
+                <!-- Populated by JS -->
+            </div>
         </div>
     </div>
 </div>
@@ -212,13 +306,13 @@
     
     <div class="grid md:grid-cols-3 gap-4">
         <div class="bg-card border border-border rounded-lg p-4 text-center cursor-pointer hover:shadow-md transition-shadow"
-             onclick="updateCombination('neo_brutalist', 'ocean')">
-            <div class="text-sm font-medium mb-2">Brutalist + Ocean</div>
+             onclick="updateCombination('neo_brutalist', 'nord')">
+            <div class="text-sm font-medium mb-2">Brutalist + Nord</div>
             <div class="text-xs text-muted-foreground">Sharp edges with calming blues</div>
         </div>
         <div class="bg-card border border-border rounded-lg p-4 text-center cursor-pointer hover:shadow-md transition-shadow"
-             onclick="updateCombination('elegant', 'sunset')">
-            <div class="text-sm font-medium mb-2">Elegant + Sunset</div>
+             onclick="updateCombination('elegant', 'amber')">
+            <div class="text-sm font-medium mb-2">Elegant + Amber</div>
             <div class="text-xs text-muted-foreground">Refined typography with warm tones</div>
         </div>
         <div class="bg-card border border-border rounded-lg p-4 text-center cursor-pointer hover:shadow-md transition-shadow"
@@ -261,6 +355,65 @@ function applyColorPreset(colorName) {
     const currentDesign = document.querySelector('.design-system-select').value;
     updateCombination(currentDesign, colorName);
 }
+
+// Entrance animation replay
+function replayEntrance(el, type) {
+    const root = document.documentElement;
+    const duration = getComputedStyle(root).getPropertyValue('--duration-normal').trim() || '0.3s';
+    const easing = getComputedStyle(root).getPropertyValue('--easing').trim() || 'ease';
+
+    // Reset
+    el.style.transition = 'none';
+    if (type === 'fade') {
+        el.style.opacity = '0';
+    } else if (type === 'slide') {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(12px)';
+    } else if (type === 'scale') {
+        el.style.opacity = '0';
+        el.style.transform = 'scale(0.9)';
+    } else if (type === 'bounce') {
+        el.style.transform = 'scale(0.85)';
+    }
+
+    // Force reflow
+    void el.offsetWidth;
+
+    // Animate
+    el.style.transition = `opacity ${duration} ${easing}, transform ${duration} ${easing}`;
+    el.style.opacity = '1';
+    el.style.transform = 'translateY(0) scale(1)';
+
+    // Clean up
+    el.addEventListener('transitionend', function cleanup() {
+        el.style.transition = '';
+        el.style.opacity = '';
+        el.style.transform = '';
+        el.removeEventListener('transitionend', cleanup);
+    });
+}
+
+// Show current animation CSS variable values
+function showAnimationValues() {
+    const root = document.documentElement;
+    const styles = getComputedStyle(root);
+    const vars = [
+        '--duration-fast',
+        '--duration-normal',
+        '--duration-slow',
+        '--easing',
+        '--hover-scale',
+        '--hover-translate-y',
+    ];
+    const container = document.getElementById('animation-values');
+    if (!container) return;
+    container.innerHTML = vars.map(v => {
+        const val = styles.getPropertyValue(v).trim() || '(not set)';
+        return `<div>${v}: <span class="text-foreground">${val}</span></div>`;
+    }).join('');
+}
+
+document.addEventListener('DOMContentLoaded', showAnimationValues);
 </script>
 
 {% endblock %}

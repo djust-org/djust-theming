@@ -1030,6 +1030,173 @@
 }
 
 /* ==========================================================================
+   Form Layouts (theme_form tag)
+   ========================================================================== */
+
+/* Stacked layout — vertical stack with spacing */
+.theme-form-stacked {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* Horizontal layout — label and widget side by side */
+.theme-form-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.theme-form-horizontal .theme-form-field {
+    display: grid;
+    grid-template-columns: minmax(8rem, auto) 1fr;
+    gap: 0.5rem 1rem;
+    align-items: start;
+}
+
+.theme-form-horizontal .theme-form-field .theme-label {
+    padding-top: 0.5rem;
+    text-align: end;
+}
+
+/* Inline layout — fields flow horizontally */
+.theme-form-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.theme-form-inline .theme-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+/* Individual form field container */
+.theme-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+/* Form labels */
+.theme-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+}
+
+/* Help text */
+.theme-help-text {
+    font-size: 0.75rem;
+    color: hsl(var(--muted-foreground));
+}
+
+/* Field errors */
+.theme-field-error {
+    font-size: 0.75rem;
+    color: hsl(var(--destructive));
+}
+
+/* Form-level error list */
+.theme-form-errors {
+    margin-bottom: 1rem;
+}
+
+.theme-error-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.theme-error-list li {
+    font-size: 0.875rem;
+}
+
+/* Style Django default form widgets within themed forms */
+.theme-form-stacked input[type="text"],
+.theme-form-stacked input[type="email"],
+.theme-form-stacked input[type="password"],
+.theme-form-stacked input[type="number"],
+.theme-form-stacked input[type="url"],
+.theme-form-stacked input[type="tel"],
+.theme-form-stacked input[type="search"],
+.theme-form-stacked input[type="date"],
+.theme-form-stacked select,
+.theme-form-stacked textarea,
+.theme-form-horizontal input[type="text"],
+.theme-form-horizontal input[type="email"],
+.theme-form-horizontal input[type="password"],
+.theme-form-horizontal input[type="number"],
+.theme-form-horizontal input[type="url"],
+.theme-form-horizontal input[type="tel"],
+.theme-form-horizontal input[type="search"],
+.theme-form-horizontal input[type="date"],
+.theme-form-horizontal select,
+.theme-form-horizontal textarea,
+.theme-form-inline input[type="text"],
+.theme-form-inline input[type="email"],
+.theme-form-inline input[type="password"],
+.theme-form-inline input[type="number"],
+.theme-form-inline select,
+.theme-form-inline textarea {
+    display: flex;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--background));
+    border: 1px solid hsl(var(--input));
+    border-radius: var(--radius);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.theme-form-stacked input:focus,
+.theme-form-stacked select:focus,
+.theme-form-stacked textarea:focus,
+.theme-form-horizontal input:focus,
+.theme-form-horizontal select:focus,
+.theme-form-horizontal textarea:focus,
+.theme-form-inline input:focus,
+.theme-form-inline select:focus,
+.theme-form-inline textarea:focus {
+    outline: none;
+    border-color: hsl(var(--ring));
+    box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+}
+
+/* Radio/checkbox lists within forms */
+.theme-form-stacked ul,
+.theme-form-horizontal ul,
+.theme-form-inline ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.theme-form-stacked ul li label,
+.theme-form-horizontal ul li label,
+.theme-form-inline ul li label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+/* Error state on fields */
+.theme-form-field:has(.theme-field-error) input,
+.theme-form-field:has(.theme-field-error) select,
+.theme-form-field:has(.theme-field-error) textarea {
+    border-color: hsl(var(--destructive));
+}
+
+/* ==========================================================================
    RTL Overrides
    ========================================================================== */
 

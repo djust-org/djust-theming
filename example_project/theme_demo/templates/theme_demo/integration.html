@@ -1,0 +1,127 @@
+{% extends "theme_demo/base.html" %}
+{% load djust_components static %}
+
+{% block content %}
+<div class="text-center" style="margin-bottom: var(--section-spacing, 2rem);">
+    <span class="badge" style="background-color: color-mix(in oklab, hsl(var(--accent)) 10%, transparent); color: hsl(var(--accent)); border: var(--border-width, 1px) var(--border-style, solid) color-mix(in oklab, hsl(var(--accent)) 20%, transparent); margin-bottom: var(--grid-gap, 1.5rem);">
+        Architecture
+    </span>
+    <h1 style="font-family: var(--font-heading, system-ui); font-size: var(--h1-size); font-weight: var(--font-weight-heading, 800); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.67);">
+        Integration <span class="gradient-text">Guide</span>
+    </h1>
+    <p class="fg-muted mx-auto" style="max-width: var(--prose-max-width, 42rem); line-height: var(--body-line-height, 1.6);">
+        How <strong class="fg">djust-theming</strong> and <strong class="fg">djust-components</strong> work together.
+        Tokens flow from themes to components automatically.
+    </p>
+</div>
+
+<!-- Architecture Overview -->
+<div class="glass-card" data-accent="primary" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 class="fg-primary" style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem);">How It Works</h2>
+    <div class="grid md:grid-cols-2" style="gap: calc(var(--grid-gap, 1.5rem) * 1.33);">
+        <div>
+            <h3 class="fg-primary" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">djust-theming provides tokens</h3>
+            <p class="fg-muted" style="font-size: var(--small-size); line-height: var(--body-line-height, 1.6); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">
+                180+ CSS custom properties: colors, typography, spacing, radius, shadows, animations.
+                Theme packs bundle design systems + color presets into cohesive experiences.
+            </p>
+            <ul class="fg-muted" style="font-size: var(--small-size); display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.25); padding-left: 1.25rem;">
+                <li><code class="fg-primary">--primary</code>, <code class="fg-primary">--accent</code>, <code class="fg-primary">--border</code> — Colors</li>
+                <li><code class="fg-primary">--radius-*</code>, <code class="fg-primary">--shadow-*</code> — Shapes</li>
+                <li><code class="fg-primary">--text-*</code>, <code class="fg-primary">--font-*</code> — Typography</li>
+                <li><code class="fg-primary">--space-*</code>, <code class="fg-primary">--grid-gap</code> — Spacing</li>
+                <li><code class="fg-primary">--duration-*</code>, <code class="fg-primary">--easing</code> — Motion</li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="fg-accent" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">djust-components consumes tokens</h3>
+            <p class="fg-muted" style="font-size: var(--small-size); line-height: var(--body-line-height, 1.6); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">
+                171 components styled with CSS that references theme tokens.
+                Switch packs and every component adapts automatically.
+            </p>
+            <ul class="fg-muted" style="font-size: var(--small-size); display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.25); padding-left: 1.25rem;">
+                <li><code class="fg-primary">.btn-primary</code> → <code class="fg-accent">hsl(var(--primary))</code></li>
+                <li><code class="fg-primary">.alert-info</code> → <code class="fg-accent">hsl(var(--info) / 0.08)</code></li>
+                <li><code class="fg-primary">.dj-card</code> → <code class="fg-accent">var(--radius-lg)</code></li>
+                <li><code class="fg-primary">.dj-tab</code> → <code class="fg-accent">var(--text-sm)</code></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Token Flow -->
+<div class="glass-card" data-accent="accent" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 class="fg-accent" style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem);">Token Flow</h2>
+    <div style="display: flex; flex-direction: column; gap: var(--grid-gap, 1.5rem); font-size: var(--small-size);">
+        <div class="glass-card" style="padding: var(--grid-gap, 1rem); text-center;">
+            <strong class="fg-primary">Theme Pack</strong> <span class="fg-muted">(e.g., "brutalist")</span>
+            <br><span class="fg-muted">defines --radius: 0px, --font-weight-heading: 900, --shadow-sm: 4px 4px 0px...</span>
+        </div>
+        <div class="fg-muted text-center">↓</div>
+        <div class="glass-card" style="padding: var(--grid-gap, 1rem); text-center;">
+            <strong class="fg-accent">Component CSS</strong> <span class="fg-muted">(components.css)</span>
+            <br><span class="fg-muted">reads var(--radius), var(--shadow-sm), var(--primary)...</span>
+        </div>
+        <div class="fg-muted text-center">↓</div>
+        <div class="glass-card" style="padding: var(--grid-gap, 1rem); text-center;">
+            <strong class="fg">Rendered Component</strong>
+            <br><span class="fg-muted">sharp corners, hard shadows, bold text — matches the pack personality</span>
+        </div>
+    </div>
+</div>
+
+<!-- Customization Layer -->
+<div class="glass-card" data-accent="warning" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem); color: hsl(var(--warning));">Custom Overrides</h2>
+    <p class="fg-muted" style="margin-bottom: var(--grid-gap, 1.5rem); line-height: var(--body-line-height, 1.6);">
+        Components define <code class="fg-primary">--dj-*</code> variables for per-component customization.
+        These override theme tokens for specific components without affecting the rest.
+    </p>
+    <div class="code-panel">
+        <div class="code-panel-header">
+            <div class="code-panel-dots">
+                <div class="code-panel-dot" style="background: hsl(var(--destructive));"></div>
+                <div class="code-panel-dot" style="background: hsl(var(--warning));"></div>
+                <div class="code-panel-dot" style="background: hsl(var(--success));"></div>
+            </div>
+            <span class="fg-muted" style="font-size: var(--tiny-size); font-family: monospace;">custom.css</span>
+        </div>
+        <pre class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--small-size); margin: 0; line-height: var(--body-line-height, 1.6);"><span class="fg-muted">/* Override just the alert info background */</span>
+<span style="color: hsl(var(--info, var(--primary)));">.my-section</span> {
+    <span style="color: hsl(var(--warning));">--dj-alert-info-bg</span>: <span style="color: hsl(var(--success));">200 80% 20%</span>;
+}
+
+<span class="fg-muted">/* Override just the card radius for a specific area */</span>
+<span style="color: hsl(var(--info, var(--primary)));">.sharp-zone</span> {
+    <span style="color: hsl(var(--warning));">--radius-lg</span>: <span style="color: hsl(var(--success));">0px</span>;
+}</pre>
+    </div>
+</div>
+
+<!-- CSS Loading Order -->
+<div class="glass-card" data-accent="info" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33);">
+    <h2 style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem); color: hsl(var(--info, var(--primary)));">CSS Loading Order</h2>
+    <p class="fg-muted" style="margin-bottom: var(--grid-gap, 1.5rem); line-height: var(--body-line-height, 1.6);">
+        The CSS files should be loaded in this order for correct cascade behavior:
+    </p>
+    <div class="code-panel">
+        <div class="code-panel-header">
+            <div class="code-panel-dots">
+                <div class="code-panel-dot" style="background: hsl(var(--destructive));"></div>
+                <div class="code-panel-dot" style="background: hsl(var(--warning));"></div>
+                <div class="code-panel-dot" style="background: hsl(var(--success));"></div>
+            </div>
+            <span class="fg-muted" style="font-size: var(--tiny-size); font-family: monospace;">template.html</span>
+        </div>
+        <pre class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--small-size); margin: 0; line-height: var(--body-line-height, 1.6);">{% verbatim %}<span class="fg-muted">&lt;!-- 1. Base theming CSS --&gt;</span>
+<span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">theme_head</span> <span style="color: hsl(var(--accent));">%}</span>
+
+<span class="fg-muted">&lt;!-- 2. Component CSS --&gt;</span>
+<span class="fg-muted">&lt;link</span> href=<span style="color: hsl(var(--warning));">"components.css"</span><span class="fg-muted">&gt;</span>
+<span class="fg-muted">&lt;link</span> href=<span style="color: hsl(var(--warning));">"bridge.css"</span><span class="fg-muted">&gt;</span>
+
+<span class="fg-muted">&lt;!-- 3. Your custom overrides --&gt;</span>
+<span class="fg-muted">&lt;link</span> href=<span style="color: hsl(var(--warning));">"custom.css"</span><span class="fg-muted">&gt;</span>{% endverbatim %}</pre>
+    </div>
+</div>
+{% endblock %}

@@ -1,128 +1,167 @@
-{% load theme_tags theme_components %}<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ display_name }} — Component Storybook</title>
-  {% theme_head %}
-  <style>
-    .storybook-detail { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
-    .storybook-detail__nav { margin-bottom: 1rem; font-size: 0.875rem; }
-    .storybook-detail__nav a { color: hsl(var(--link, 220 80% 50%)); text-decoration: none; }
-    .storybook-detail__nav a:hover { text-decoration: underline; }
-    .storybook-detail h1 { margin: 0 0 0.5rem; font-size: 1.75rem; }
-    .storybook-detail h2 { font-size: 1.25rem; margin: 2rem 0 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid hsl(var(--border, 220 13% 91%)); }
-    .storybook-detail__examples { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; padding: 1rem; background: hsl(var(--muted, 220 14% 96%)); border-radius: var(--radius, 0.5rem); }
+{% extends "djust_theming/gallery/storybook_base.html" %}
+{% load theme_tags theme_components %}
 
-    .storybook-detail table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.875rem; }
-    .storybook-detail th, .storybook-detail td { text-align: start; padding: 0.5rem 0.75rem; border-bottom: 1px solid hsl(var(--border, 220 13% 91%)); }
-    .storybook-detail th { font-weight: 600; background: hsl(var(--muted, 220 14% 96%)); }
-    .storybook-detail code { font-family: monospace; font-size: 0.8125rem; background: hsl(var(--muted, 220 14% 96%)); padding: 0.125rem 0.375rem; border-radius: 3px; }
-    .storybook-detail pre { background: hsl(var(--muted, 220 14% 96%)); padding: 1rem; border-radius: var(--radius, 0.5rem); overflow-x: auto; font-size: 0.8125rem; line-height: 1.6; }
-    .storybook-detail__slots { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .storybook-detail__slot { background: hsl(var(--muted, 220 14% 96%)); padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.8125rem; font-family: monospace; }
-    .storybook-detail__css-vars { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .storybook-detail__css-var { background: hsl(var(--muted, 220 14% 96%)); padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.8125rem; font-family: monospace; }
-  </style>
-</head>
-<body style="background: hsl(var(--background, 0 0% 100%)); color: hsl(var(--foreground, 222 47% 11%));">
-  <div class="storybook-detail">
-    <nav class="storybook-detail__nav">
-      <a href="../../">Gallery</a> / <a href="../">Storybook</a> / {{ display_name }}
-    </nav>
+{% block title %}{{ display_name }} — Component Storybook{% endblock %}
 
-    <h1>{{ display_name }}</h1>
+{% block content %}
+{# ===== Header ===== #}
+<nav class="sb-breadcrumb">
+  <a href="../">Storybook</a> <span>/</span> <span>{{ display_name }}</span>
+</nav>
 
-    {# ---- Rendered Variants ---- #}
-    {% if examples %}
-    <h2>Variants</h2>
-    <div class="storybook-detail__examples">
-      {% for ex in examples %}
-        <div>
-          {% if name == "button" %}{% theme_button ex.text variant=ex.variant size=ex.size %}
-          {% elif name == "badge" %}{% theme_badge ex.text variant=ex.variant %}
-          {% endif %}
-        </div>
-      {% endfor %}
-    </div>
-    {% endif %}
+<h1 class="sb-comp-title">{{ display_name }}</h1>
 
-    {# ---- Context Contract ---- #}
-    <h2>Context Contract</h2>
+<div class="sb-comp-meta">
+  <span>{{ required_context|length }} required</span>
+  <span>{{ optional_context|length }} optional</span>
+  <span>{{ available_slots|length }} slot{{ available_slots|length|pluralize }}</span>
+  <span>{{ accessibility|length }} a11y rule{{ accessibility|length|pluralize }}</span>
+</div>
 
-    {% if required_context %}
-    <h3>Required</h3>
-    <table>
-      <thead>
-        <tr><th>Name</th><th>Type</th><th>Default</th></tr>
-      </thead>
-      <tbody>
-        {% for v in required_context %}
-        <tr><td><code>{{ v.name }}</code></td><td><code>{{ v.type }}</code></td><td>{{ v.default|default:"—" }}</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% endif %}
-
-    {% if optional_context %}
-    <h3>Optional</h3>
-    <table>
-      <thead>
-        <tr><th>Name</th><th>Type</th><th>Default</th></tr>
-      </thead>
-      <tbody>
-        {% for v in optional_context %}
-        <tr><td><code>{{ v.name }}</code></td><td><code>{{ v.type }}</code></td><td>{{ v.default|default:"—" }}</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% endif %}
-
-    {# ---- Accessibility ---- #}
-    {% if accessibility %}
-    <h2>Accessibility Requirements</h2>
-    <table>
-      <thead>
-        <tr><th>Requirement</th><th>Selector</th><th>Attribute</th><th>Value</th></tr>
-      </thead>
-      <tbody>
-        {% for a in accessibility %}
-        <tr>
-          <td>{{ a.description }}</td>
-          <td><code>{{ a.selector_hint }}</code></td>
-          <td><code>{{ a.attr }}</code></td>
-          <td>{{ a.value|default:"(present)" }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% endif %}
-
-    {# ---- Available Slots ---- #}
-    {% if available_slots %}
-    <h2>Available Slots</h2>
-    <div class="storybook-detail__slots">
-      {% for slot in available_slots %}
-      <span class="storybook-detail__slot">{{ slot }}</span>
-      {% endfor %}
-    </div>
-    {% endif %}
-
-    {# ---- CSS Variables ---- #}
-    <h2>CSS Variables</h2>
-    {% if css_variables %}
-    <div class="storybook-detail__css-vars" id="css-variables">
-      {% for var in css_variables %}
-      <span class="storybook-detail__css-var">{{ var }}</span>
-      {% endfor %}
-    </div>
-    {% else %}
-    <p>No CSS custom properties detected for this component.</p>
-    {% endif %}
-
-    {# ---- Template Source ---- #}
-    <h2>Template Source</h2>
-    <pre><code>{{ template_source }}</code></pre>
+{# ===== Live Preview ===== #}
+{% if examples %}
+<div class="sb-section">
+  <div class="sb-section-title">LIVE PREVIEW <span class="sb-badge sb-badge-count">{{ examples|length }}</span></div>
+  <div class="sb-preview">
+    {% for ex in examples %}
+      <div>
+        {% if name == "button" %}{% theme_button ex.text variant=ex.variant size=ex.size %}
+        {% elif name == "badge" %}{% theme_badge ex.text variant=ex.variant %}
+        {% elif name == "card" %}{% theme_card title=ex.title description=ex.description %}
+        {% elif name == "alert" %}{% theme_alert ex.message variant=ex.variant %}
+        {% elif name == "input" %}{% theme_input placeholder=ex.placeholder type=ex.type %}
+        {% else %}
+          <span style="font-size: 0.8125rem; color: hsl(var(--muted-foreground));">
+            {{ name }}({% for key, val in ex.items %}{{ key }}={{ val }}{% if not forloop.last %}, {% endif %}{% endfor %})
+          </span>
+        {% endif %}
+      </div>
+    {% endfor %}
   </div>
-</body>
-</html>
+</div>
+{% endif %}
+
+{# ===== Usage ===== #}
+<div class="sb-section">
+  <div class="sb-section-title">USAGE</div>
+  <div class="sb-code">
+    <div class="sb-code-header">
+      <div class="sb-code-dots">
+        <span class="sb-code-dot" style="background:#ff5f57;"></span>
+        <span class="sb-code-dot" style="background:#febc2e;"></span>
+        <span class="sb-code-dot" style="background:#28c840;"></span>
+      </div>
+      <span>template</span>
+    </div>
+    <pre class="sb-code-body">{% verbatim %}{%{% endverbatim %} load theme_components {% verbatim %}%}{% endverbatim %}
+
+{% verbatim %}{%{% endverbatim %} theme_{{ name }}{% for p in required_context %} {{ p.name }}{% endfor %}{% for p in optional_context %} {{ p.name }}={{ p.default|default:"..." }}{% endfor %} {% verbatim %}%}{% endverbatim %}</pre>
+  </div>
+</div>
+
+{# ===== Props — Required ===== #}
+{% if required_context %}
+<div class="sb-section">
+  <div class="sb-section-title">PROPS — REQUIRED <span class="sb-badge sb-badge-count">{{ required_context|length }}</span></div>
+  <table class="sb-table">
+    <thead>
+      <tr><th>Name</th><th>Type</th><th>Default</th></tr>
+    </thead>
+    <tbody>
+      {% for p in required_context %}
+      <tr>
+        <td><code>{{ p.name }}</code></td>
+        <td><code>{{ p.type }}</code></td>
+        <td>{{ p.default|default:"—" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{# ===== Props — Optional ===== #}
+{% if optional_context %}
+<div class="sb-section">
+  <div class="sb-section-title">PROPS — OPTIONAL <span class="sb-badge sb-badge-count">{{ optional_context|length }}</span></div>
+  <table class="sb-table">
+    <thead>
+      <tr><th>Name</th><th>Type</th><th>Default</th></tr>
+    </thead>
+    <tbody>
+      {% for p in optional_context %}
+      <tr>
+        <td><code>{{ p.name }}</code></td>
+        <td><code>{{ p.type }}</code></td>
+        <td>{{ p.default|default:"—" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{# ===== Accessibility ===== #}
+{% if accessibility %}
+<div class="sb-section">
+  <div class="sb-section-title">ACCESSIBILITY <span class="sb-badge sb-badge-count">{{ accessibility|length }}</span></div>
+  <table class="sb-table">
+    <thead>
+      <tr><th>Requirement</th><th>Element</th><th>Attribute</th><th>Value</th></tr>
+    </thead>
+    <tbody>
+      {% for a in accessibility %}
+      <tr>
+        <td>{{ a.description }}</td>
+        <td><code>{{ a.selector_hint }}</code></td>
+        <td><code>{{ a.attr }}</code></td>
+        <td>{{ a.value|default:"(present)" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+{# ===== Available Slots ===== #}
+{% if available_slots %}
+<div class="sb-section">
+  <div class="sb-section-title">AVAILABLE SLOTS <span class="sb-badge sb-badge-count">{{ available_slots|length }}</span></div>
+  <div>
+    {% for slot in available_slots %}
+    <span class="sb-pill">{{ slot }}</span>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{# ===== CSS Variables ===== #}
+{% if css_variables %}
+<div class="sb-section">
+  <div class="sb-section-title">CSS VARIABLES <span class="sb-badge sb-badge-count">{{ css_variables|length }}</span></div>
+  <div>
+    {% for var in css_variables %}
+    <span class="sb-pill">{{ var }}</span>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{# ===== Template Source ===== #}
+{% if template_source %}
+<div class="sb-section">
+  <div class="sb-section-title">TEMPLATE SOURCE</div>
+  <div class="sb-code">
+    <div class="sb-code-header">
+      <div class="sb-code-dots">
+        <span class="sb-code-dot" style="background:#ff5f57;"></span>
+        <span class="sb-code-dot" style="background:#febc2e;"></span>
+        <span class="sb-code-dot" style="background:#28c840;"></span>
+      </div>
+      <span>{{ name }}.html</span>
+    </div>
+    <pre class="sb-code-body">{{ template_source }}</pre>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

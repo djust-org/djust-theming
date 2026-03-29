@@ -1,12 +1,12 @@
-{% load theme_tags theme_components %}<!DOCTYPE html>
+{% load theme_tags theme_components static %}<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Theme Gallery</title>
   {% theme_head %}
-  <style>
-    .gallery { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+<style>
+<style>
     .gallery__header { margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
     .gallery__header h1 { margin: 0; font-size: 1.75rem; }
     .gallery__preset-form { display: flex; align-items: center; gap: 0.5rem; margin-inline-start: auto; }
@@ -16,10 +16,11 @@
     .gallery__example { display: flex; flex-direction: column; gap: 0.25rem; }
     .gallery__example-label { font-size: 0.75rem; color: hsl(var(--muted-foreground, 220 9% 46%)); }
     .gallery__wide { width: 100%; }
-  </style>
+    .gallery { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+</style>
 </head>
 <body style="background: hsl(var(--background, 0 0% 100%)); color: hsl(var(--foreground, 222 47% 11%));">
-  <div class="gallery">
+<div class="gallery">
     <div class="gallery__header">
       <h1>Theme Gallery</h1>
       <form class="gallery__preset-form" method="get">
@@ -282,6 +283,6 @@
       </div>
     </section>
 
-  </div>
+</div>
 </body>
 </html>

@@ -71,6 +71,7 @@ class CompleteThemeCSSGenerator:
 
         base_css = self.color_generator._generate_base_styles() if self.color_generator.include_base_styles else ""
         utilities_css = self.color_generator._generate_utilities() if self.color_generator.include_utilities else ""
+        surface_css = self.color_generator._generate_surface_styles()
 
         parts = [
             "/* djust-theming - Complete Theme CSS */",
@@ -89,6 +90,8 @@ class CompleteThemeCSSGenerator:
                 parts.extend(["", f"@layer base {{\n{base_css}\n}}"])
             if utilities_css:
                 parts.extend(["", f"@layer components {{\n{utilities_css}\n}}"])
+            if surface_css:
+                parts.extend(["", f"@layer components {{\n{surface_css}\n}}"])
             parts.extend([
                 "",
                 f"@layer components {{\n{typography_css}\n}}",
@@ -96,11 +99,14 @@ class CompleteThemeCSSGenerator:
                 f"@layer components {{\n{component_css}\n}}",
             ])
         else:
+            all_tokens = color_tokens_css + "\n\n" + theme_vars
             parts.append(all_tokens)
             if base_css:
                 parts.extend(["", base_css])
             if utilities_css:
                 parts.extend(["", utilities_css])
+            if surface_css:
+                parts.extend(["", surface_css])
             parts.extend([
                 "",
                 typography_css,

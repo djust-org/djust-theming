@@ -39,7 +39,7 @@ DEFAULT_CONFIG = {
     "enable_dark_mode": True,
     "css_prefix": "",  # Namespace prefix for component CSS classes (e.g. "dj-")
     "use_css_layers": True,  # Wrap generated CSS in @layer declarations
-    "css_layer_order": "base, tokens, components, theme",  # Layer priority order
+    "css_layer_order": "base, tokens, components, djust-components, theme",  # Layer priority order
     "critical_css": True,  # Split CSS into critical (inlined) and deferred (async-loaded)
     "themes_dir": "themes/",  # User theme directory, relative to BASE_DIR
     "direction": "auto",  # Text direction: "ltr", "rtl", or "auto" (detect from LANGUAGE_CODE)

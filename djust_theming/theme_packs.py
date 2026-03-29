@@ -17,20 +17,26 @@ from typing import Dict, Optional
 class TypographyStyle:
     """Typography configuration."""
     name: str
-    
+
     # Font families
     heading_font: str = "system-ui"  # "system-ui", "serif", "mono", "display"
     body_font: str = "system-ui"
-    
+
     # Scale and sizing
     base_size: str = "16px"
     heading_scale: float = 1.25  # Multiplier between heading levels
     line_height: str = "1.5"
-    
+    body_line_height: str = "1.6"     # Relaxed line-height for body/paragraph text
+
     # Weight and style
     heading_weight: str = "600"  # "300", "400", "500", "600", "700", "800", "900"
+    section_heading_weight: str = "700"  # Weight for section h2s (often lighter than hero)
     body_weight: str = "400"
-    letter_spacing: str = "normal"  # "tight", "normal", "wide"
+    letter_spacing: str = "normal"  # CSS value: "normal", "-0.025em", "0.025em"
+
+    # Measure
+    prose_max_width: str = "42rem"    # Max width for readable text blocks
+    badge_radius: str = "9999px"      # Badge border-radius (pill by default)
 
 
 @dataclass 
@@ -56,6 +62,12 @@ class LayoutStyle:
     container_width: str = "1200px"
     grid_gap: str = "1.5rem"
     section_spacing: str = "3rem"
+
+    # Hero section
+    hero_padding_top: str = "8rem"
+    hero_padding_bottom: str = "5rem"
+    hero_line_height: str = "1.1"
+    hero_max_width: str = "64rem"      # Content width within hero
 
 
 @dataclass
@@ -180,7 +192,7 @@ TYPO_IOS = TypographyStyle(
     line_height="1.4",
     heading_weight="600",
     body_weight="400",
-    letter_spacing="tight"
+    letter_spacing="-0.025em"
 )
 
 TYPO_FLUENT = TypographyStyle(
@@ -228,7 +240,7 @@ TYPO_DENSE = TypographyStyle(
     line_height="1.35",
     heading_weight="600",
     body_weight="400",
-    letter_spacing="tight"
+    letter_spacing="-0.025em"
 )
 
 TYPO_MINIMAL = TypographyStyle(
@@ -244,15 +256,19 @@ TYPO_MINIMAL = TypographyStyle(
 )
 
 TYPO_BRUTALIST = TypographyStyle(
-    name="brutalist", 
+    name="brutalist",
     heading_font="system-ui",
     body_font="system-ui",
     base_size="18px",  # Larger base
     heading_scale=1.4,  # Aggressive scale
     line_height="1.3",  # Tighter line height
+    body_line_height="1.4",
     heading_weight="900",  # Black weight
+    section_heading_weight="900",  # All headings are black
     body_weight="500",
-    letter_spacing="tight"
+    letter_spacing="-0.025em",
+    prose_max_width="56rem",      # Wide blocks
+    badge_radius="0px",           # Sharp badges
 )
 
 TYPO_ELEGANT = TypographyStyle(
@@ -262,33 +278,53 @@ TYPO_ELEGANT = TypographyStyle(
     base_size="16px",
     heading_scale=1.3,
     line_height="1.7",  # Generous line height
+    body_line_height="1.8",       # Extra breathing room
     heading_weight="400",  # Light serif
+    section_heading_weight="500",
     body_weight="400",
-    letter_spacing="wide"  # Spaced out
+    letter_spacing="0.025em",     # Spaced out
+    prose_max_width="36rem",      # Narrow, book-like measure
+    badge_radius="4px",           # Subtle, refined badges
 )
 
 TYPO_RETRO = TypographyStyle(
     name="retro",
     heading_font="mono",  # Monospace
-    body_font="system-ui", 
+    body_font="system-ui",
     base_size="14px",  # Smaller, pixel-like
     heading_scale=1.1,  # Minimal scale
     line_height="1.4",
+    body_line_height="1.5",
     heading_weight="700",
+    section_heading_weight="700",
     body_weight="400",
-    letter_spacing="normal"
+    letter_spacing="normal",
+    prose_max_width="40rem",
+    badge_radius="0px",           # Sharp pixel badges
 )
 
 TYPO_ORGANIC = TypographyStyle(
     name="organic",
     heading_font="system-ui",
     body_font="system-ui",
-    base_size="16px", 
+    base_size="16px",
     heading_scale=1.25,
     line_height="1.6",
     heading_weight="600",
     body_weight="400",
     letter_spacing="normal"
+)
+
+TYPO_DJUST = TypographyStyle(
+    name="djust",
+    heading_font="Inter, sans-serif",
+    body_font="Inter, sans-serif",
+    base_size="16px",
+    heading_scale=1.35,  # Bold scale — hero reaches ~5.4rem at 4 levels
+    line_height="1.5",
+    heading_weight="800",  # Extrabold headings like djust.org
+    body_weight="400",
+    letter_spacing="-0.025em"  # tracking-tight
 )
 
 
@@ -308,7 +344,11 @@ LAYOUT_MATERIAL = LayoutStyle(
     input_shape="rounded",
     container_width="1200px",
     grid_gap="1.5rem",
-    section_spacing="3rem"
+    section_spacing="3rem",
+    hero_padding_top="6rem",
+    hero_padding_bottom="4rem",
+    hero_line_height="1.2",
+    hero_max_width="56rem",
 )
 
 LAYOUT_IOS = LayoutStyle(
@@ -323,7 +363,11 @@ LAYOUT_IOS = LayoutStyle(
     input_shape="rounded",
     container_width="1100px",
     grid_gap="1.5rem",
-    section_spacing="3rem"
+    section_spacing="3rem",
+    hero_padding_top="7rem",
+    hero_padding_bottom="4rem",
+    hero_line_height="1.15",
+    hero_max_width="52rem",
 )
 
 LAYOUT_FLUENT = LayoutStyle(
@@ -338,7 +382,11 @@ LAYOUT_FLUENT = LayoutStyle(
     input_shape="rounded",
     container_width="1200px",
     grid_gap="1.5rem",
-    section_spacing="3rem"
+    section_spacing="3rem",
+    hero_padding_top="6rem",
+    hero_padding_bottom="4rem",
+    hero_line_height="1.2",
+    hero_max_width="56rem",
 )
 
 LAYOUT_PLAYFUL = LayoutStyle(
@@ -353,7 +401,11 @@ LAYOUT_PLAYFUL = LayoutStyle(
     input_shape="pill",
     container_width="1200px",
     grid_gap="2rem",
-    section_spacing="4rem"
+    section_spacing="4rem",
+    hero_padding_top="8rem",
+    hero_padding_bottom="5rem",
+    hero_line_height="1.15",
+    hero_max_width="60rem",
 )
 
 LAYOUT_CORPORATE = LayoutStyle(
@@ -368,7 +420,11 @@ LAYOUT_CORPORATE = LayoutStyle(
     input_shape="rounded",
     container_width="1200px",
     grid_gap="1.5rem",
-    section_spacing="3rem"
+    section_spacing="3rem",
+    hero_padding_top="6rem",
+    hero_padding_bottom="3rem",
+    hero_line_height="1.25",
+    hero_max_width="56rem",
 )
 
 LAYOUT_DENSE = LayoutStyle(
@@ -383,7 +439,11 @@ LAYOUT_DENSE = LayoutStyle(
     input_shape="rounded",
     container_width="1400px",
     grid_gap="1rem",
-    section_spacing="2rem"
+    section_spacing="2rem",
+    hero_padding_top="4rem",
+    hero_padding_bottom="2rem",
+    hero_line_height="1.0",
+    hero_max_width="72rem",
 )
 
 LAYOUT_MINIMAL = LayoutStyle(
@@ -398,7 +458,11 @@ LAYOUT_MINIMAL = LayoutStyle(
     input_shape="rounded",
     container_width="1000px",  # Narrower
     grid_gap="2rem",  # More space
-    section_spacing="4rem"
+    section_spacing="4rem",
+    hero_padding_top="7rem",
+    hero_padding_bottom="5rem",
+    hero_line_height="1.2",
+    hero_max_width="48rem",       # Narrow and focused
 )
 
 LAYOUT_BRUTALIST = LayoutStyle(
@@ -413,7 +477,11 @@ LAYOUT_BRUTALIST = LayoutStyle(
     input_shape="sharp",
     container_width="1400px",  # Wide
     grid_gap="1rem",  # Tight spacing
-    section_spacing="2rem"
+    section_spacing="2rem",
+    hero_padding_top="5rem",
+    hero_padding_bottom="3rem",
+    hero_line_height="1.0",       # Ultra tight
+    hero_max_width="72rem",       # Full width impact
 )
 
 LAYOUT_ELEGANT = LayoutStyle(
@@ -428,7 +496,11 @@ LAYOUT_ELEGANT = LayoutStyle(
     input_shape="rounded",
     container_width="900px",  # Conservative width
     grid_gap="3rem",  # Generous spacing
-    section_spacing="5rem"
+    section_spacing="5rem",
+    hero_padding_top="10rem",     # Grand entrance
+    hero_padding_bottom="6rem",
+    hero_line_height="1.15",
+    hero_max_width="48rem",       # Refined, narrow
 )
 
 LAYOUT_RETRO = LayoutStyle(
@@ -443,7 +515,11 @@ LAYOUT_RETRO = LayoutStyle(
     input_shape="sharp",
     container_width="1024px",  # Old screen size
     grid_gap="16px",
-    section_spacing="32px"
+    section_spacing="32px",
+    hero_padding_top="64px",      # Pixel-perfect
+    hero_padding_bottom="48px",
+    hero_line_height="1.1",
+    hero_max_width="640px",       # Compact retro screen
 )
 
 LAYOUT_ORGANIC = LayoutStyle(
@@ -452,13 +528,32 @@ LAYOUT_ORGANIC = LayoutStyle(
     space_scale=1.4,
     border_radius_sm="12px",  # Very rounded
     border_radius_md="20px",
-    border_radius_lg="32px", 
+    border_radius_lg="32px",
     button_shape="pill",  # Pill shapes
     card_shape="organic",
     input_shape="pill",
     container_width="1100px",
     grid_gap="1.5rem",
-    section_spacing="3rem"
+    section_spacing="3rem",
+    hero_padding_top="7rem",
+    hero_padding_bottom="4rem",
+    hero_line_height="1.2",
+    hero_max_width="56rem",
+)
+
+LAYOUT_DJUST = LayoutStyle(
+    name="djust",
+    space_unit="1rem",
+    space_scale=1.5,
+    border_radius_sm="0.375rem",  # rounded-md
+    border_radius_md="0.5rem",    # rounded-lg
+    border_radius_lg="0.75rem",   # rounded-xl (cards, code panels)
+    button_shape="rounded",
+    card_shape="organic",         # Uses border-radius-lg (0.75rem)
+    input_shape="rounded",
+    container_width="1280px",     # max-w-7xl like djust.org
+    grid_gap="1.5rem",
+    section_spacing="6rem"        # py-24 = 6rem — generous like djust.org
 )
 
 
@@ -589,12 +684,24 @@ SURFACE_RETRO = SurfaceStyle(
 SURFACE_ORGANIC = SurfaceStyle(
     name="organic",
     shadow_sm="0 3px 6px rgba(0,0,0,0.1)",
-    shadow_md="0 6px 12px rgba(0,0,0,0.15)", 
+    shadow_md="0 6px 12px rgba(0,0,0,0.15)",
     shadow_lg="0 12px 24px rgba(0,0,0,0.2)",
     border_width="0px",  # No borders
     border_style="none",
     surface_treatment="glass",  # Soft glass effect
     backdrop_blur="8px",
+    noise_opacity=0.0
+)
+
+SURFACE_DJUST = SurfaceStyle(
+    name="djust",
+    shadow_sm="0 1px 3px rgba(0,0,0,0.3)",
+    shadow_md="0 10px 15px -3px rgba(0,0,0,0.3), 0 4px 6px -2px rgba(0,0,0,0.2)",
+    shadow_lg="0 20px 25px -5px rgba(0,0,0,0.3), 0 10px 10px -5px rgba(0,0,0,0.15)",
+    border_width="1px",
+    border_style="solid",
+    surface_treatment="glass",   # Glass panels like djust.org
+    backdrop_blur="12px",
     noise_opacity=0.0
 )
 
@@ -700,6 +807,15 @@ ICON_ORGANIC = IconStyle(
     size_scale=1.1,
     stroke_width="2",
     corner_rounding="8px"  # Very rounded
+)
+
+ICON_DJUST = IconStyle(
+    name="djust",
+    style="outlined",
+    weight="regular",
+    size_scale=1.0,
+    stroke_width="2",
+    corner_rounding="0px"
 )
 
 
@@ -870,17 +986,33 @@ ANIM_RETRO = AnimationStyle(
 ANIM_ORGANIC = AnimationStyle(
     name="organic",
     entrance_effect="scale",  # Organic growth
-    exit_effect="scale", 
+    exit_effect="scale",
     hover_effect="glow",
     hover_scale=1.03,
     hover_translate_y="-2px",
     click_effect="ripple",  # Natural ripple
     loading_style="pulse",
     transition_style="bouncy",
-    duration_fast="0.3s", 
+    duration_fast="0.3s",
     duration_normal="0.5s",
     duration_slow="0.8s",
     easing="cubic-bezier(0.34, 1.56, 0.64, 1)"  # Organic bounce
+)
+
+ANIM_DJUST = AnimationStyle(
+    name="djust",
+    entrance_effect="fade",
+    exit_effect="fade",
+    hover_effect="lift",
+    hover_scale=1.02,
+    hover_translate_y="-2px",
+    click_effect="ripple",
+    loading_style="spinner",
+    transition_style="smooth",
+    duration_fast="0.15s",
+    duration_normal="0.2s",
+    duration_slow="0.3s",
+    easing="cubic-bezier(0.4, 0, 0.2, 1)"
 )
 
 
@@ -983,8 +1115,17 @@ INTERACT_ORGANIC = InteractionStyle(
     button_hover="glow",  # Soft organic glow
     link_hover="color",
     card_hover="lift",  # Natural lift
-    focus_style="glow", 
+    focus_style="glow",
     focus_ring_width="3px"
+)
+
+INTERACT_DJUST = InteractionStyle(
+    name="djust",
+    button_hover="lift",
+    link_hover="underline",
+    card_hover="shadow",
+    focus_style="ring",
+    focus_ring_width="2px"
 )
 
 
@@ -1135,6 +1276,19 @@ DESIGN_ORGANIC = DesignSystem(
     interaction=INTERACT_ORGANIC
 )
 
+DESIGN_DJUST = DesignSystem(
+    name="djust",
+    display_name="djust.org",
+    description="djust.org brand — dark, professional, with rust orange accents",
+    category="professional",
+    typography=TYPO_DJUST,
+    layout=LAYOUT_DJUST,
+    surface=SURFACE_DJUST,
+    icons=ICON_DJUST,
+    animation=ANIM_DJUST,
+    interaction=INTERACT_DJUST
+)
+
 
 # Design System Registry
 DESIGN_SYSTEMS: Dict[str, DesignSystem] = {
@@ -1149,6 +1303,7 @@ DESIGN_SYSTEMS: Dict[str, DesignSystem] = {
     "elegant": DESIGN_ELEGANT,
     "retro": DESIGN_RETRO,
     "organic": DESIGN_ORGANIC,
+    "djust": DESIGN_DJUST,
 }
 
 
@@ -1711,9 +1866,24 @@ PACK_METALLIC = ThemePack(
     illustration_style=ILLUST_LINE,
 )
 
+PACK_DJUST = ThemePack(
+    name="djust",
+    display_name="djust.org",
+    description="djust.org brand — dark, professional, with rust orange accents",
+    category="professional",
+    design_theme="djust",
+    color_preset="djust",
+    icon_style=ICON_OUTLINED,
+    animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_DOTS,
+    interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_LINE,
+)
+
 
 # Theme Pack Registry
 THEME_PACKS: Dict[str, ThemePack] = {
+    "djust": PACK_DJUST,
     "corporate": PACK_CORPORATE,
     "playful": PACK_PLAYFUL,
     "retro": PACK_RETRO,

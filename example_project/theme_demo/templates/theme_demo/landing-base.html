@@ -6,11 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }} | djust-theming Demo</title>
 
+    <!-- Fonts (Inter for djust, system-ui fallback for other packs) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <!-- Base CSS from djust-theming -->
     <link href="{% static 'djust_theming/css/base.css' %}" rel="stylesheet">
 
-    <!-- Tailwind CSS (CDN for demo) -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Layout utilities (replaces Tailwind CDN — all in @layer base for djust-components compatibility) -->
+    <link href="{% static 'theme_demo/css/utilities.css' %}" rel="stylesheet">
 
     {% block extra_head %}{% endblock %}
 
@@ -18,176 +23,222 @@
     {% theme_head link_css=True %}
 
     <style>
-        /* Landing page body - uses standard design tokens for theme-agnosticism */
-        body {
-            background-color: var(--surface-1);
-            color: var(--foreground);
+        /* ===== Token aliases — short names for common expressions ===== */
+        :root {
+            /* Heading sizes via font-scale exponents */
+            --h1-size: calc(var(--font-size-base, 16px) * var(--font-scale, 1.25) * var(--font-scale, 1.25) * var(--font-scale, 1.25));
+            --h2-size: calc(var(--font-size-base, 16px) * var(--font-scale, 1.25) * var(--font-scale, 1.25));
+            --h3-size: calc(var(--font-size-base, 16px) * var(--font-scale, 1.25));
+            --h4-size: var(--font-size-base, 16px);
+            --body-size: var(--font-size-base, 16px);
+            --small-size: calc(var(--font-size-base, 16px) * 0.875);
+            --tiny-size: calc(var(--font-size-base, 16px) * 0.75);
+            --hero-size: calc(var(--font-size-base, 16px) * var(--font-scale, 1.25) * var(--font-scale, 1.25) * var(--font-scale, 1.25) * var(--font-scale, 1.25));
         }
 
-        /* Override nav from base.css */
+        /* ===== Body ===== */
+        body {
+            background-color: hsl(var(--surface-1));
+            color: hsl(var(--foreground));
+            font-family: var(--font-body, system-ui, sans-serif);
+            font-size: var(--body-size);
+            line-height: var(--line-height, 1.5);
+            font-weight: var(--font-weight-body, 400);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ===== Nav ===== */
         nav {
-            background-color: var(--surface-1) !important;
+            background-color: hsl(var(--surface-1)) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
+            border-bottom: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border));
         }
-
         nav a {
-            color: var(--muted-foreground);
+            color: hsl(var(--muted-foreground));
+            transition: color var(--duration-fast, 150ms) var(--easing, ease);
         }
-        nav a:hover {
-            color: var(--foreground);
-        }
-        nav a.active, nav a[aria-current="page"] {
-            color: var(--foreground);
-        }
+        nav a:hover { color: hsl(var(--foreground)); }
 
+        /* ===== Footer ===== */
         footer {
-            background-color: var(--surface-1);
-            border-top: 1px solid var(--border);
+            background-color: hsl(var(--surface-1));
+            border-top: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border));
         }
 
-        /* Surface color system - surfaces respond to data-theme via theme CSS */
-        /* Accent colors (rust, django green) stay brand-consistent via extra_css_vars */
-        .bg-brand-dark { background-color: var(--surface-1); }
-        .bg-brand-panel { background-color: var(--surface-2); }
-        .bg-brand-rust { background-color: var(--primary); }
-        .bg-brand-django { background-color: var(--accent); }
-        .bg-brand-text { background-color: var(--foreground); }
-        .bg-brand-muted { background-color: var(--muted-foreground); }
-        .bg-brand-border { background-color: var(--border); }
-        .bg-brand-danger { background-color: var(--destructive); }
-        .bg-brand-success { background-color: var(--success); }
+        /* ===== Semantic color utilities ===== */
+        .fg          { color: hsl(var(--foreground)); }
+        .fg-muted    { color: hsl(var(--muted-foreground)); }
+        .fg-primary  { color: hsl(var(--primary)); }
+        .fg-accent   { color: hsl(var(--accent)); }
+        .fg-danger   { color: hsl(var(--destructive)); }
+        .fg-success  { color: hsl(var(--success)); }
+        .bg-s1       { background-color: hsl(var(--surface-1)); }
+        .bg-s2       { background-color: hsl(var(--surface-2)); }
+        .bg-primary  { background-color: hsl(var(--primary)); }
+        .bg-accent   { background-color: hsl(var(--accent)); }
 
-        .text-brand-dark { color: var(--surface-1); }
-        .text-brand-panel { color: var(--surface-2); }
-        .text-brand-rust { color: var(--primary); }
-        .text-brand-django { color: var(--accent); }
-        .text-brand-text { color: var(--foreground); }
-        .text-brand-muted { color: var(--muted-foreground); }
-        .text-brand-border { color: var(--border); }
-        .text-brand-danger { color: var(--destructive); }
-        .text-brand-success { color: var(--success); }
+        /* ===== Tokenized component styles ===== */
+        .landing-section {
+            padding: var(--section-spacing, 3rem) 1.5rem;
+        }
+        .landing-container {
+            max-width: var(--container-width, 1200px);
+            margin: 0 auto;
+        }
+        .landing-grid {
+            display: grid;
+            gap: var(--grid-gap, 1.5rem);
+        }
+        .landing-card {
+            background: hsl(var(--surface-2) / var(--card-opacity, 1));
+            backdrop-filter: blur(var(--card-blur, 0px));
+            -webkit-backdrop-filter: blur(var(--card-blur, 0px));
+            border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border));
+            border-radius: var(--card-radius, var(--border-radius-lg, 0.75rem));
+            box-shadow: var(--shadow-sm, none);
+            transition: all var(--duration-normal, 200ms) var(--easing, ease);
+        }
+        .landing-card:hover {
+            box-shadow: var(--shadow-md, none);
+            transform: translateY(var(--hover-translate-y, -2px));
+        }
+        /* Per-card accent border on hover */
+        .landing-card[data-accent="primary"]:hover { border-color: hsl(var(--primary) / 0.5); }
+        .landing-card[data-accent="accent"]:hover  { border-color: hsl(var(--accent) / 0.5); }
+        .landing-card[data-accent="info"]:hover    { border-color: hsl(var(--info) / 0.5); }
+        .landing-card[data-accent="warning"]:hover { border-color: hsl(var(--warning) / 0.5); }
+        .landing-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: var(--font-weight-heading, 700);
+            border-radius: var(--button-radius, var(--border-radius-md, 0.5rem));
+            transition: all var(--duration-normal, 200ms) var(--easing, ease);
+            cursor: pointer;
+        }
+        .landing-btn-primary {
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            padding: 0.75rem 2rem;
+            box-shadow: 0 10px 15px -3px hsl(var(--primary) / 0.2), 0 4px 6px -2px hsl(var(--primary) / 0.1);
+        }
+        .landing-btn-primary:hover {
+            background-color: hsl(var(--primary) / 0.9);
+            box-shadow: 0 10px 20px -3px hsl(var(--primary) / 0.3), 0 6px 8px -2px hsl(var(--primary) / 0.15);
+        }
+        .code-block-landing {
+            background: hsl(var(--surface-1));
+            border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border));
+            border-radius: var(--border-radius-sm, 0.25rem);
+            padding: 0.75rem;
+            font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+            font-size: var(--tiny-size);
+            overflow-x: auto;
+        }
+        .code-panel {
+            background: hsl(var(--surface-1));
+            border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border));
+            border-radius: var(--card-radius, var(--border-radius-lg, 0.75rem));
+            box-shadow: var(--shadow-lg, none);
+            overflow: hidden;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--badge-radius, 9999px);
+            font-size: var(--tiny-size);
+            font-weight: var(--font-weight-section, 700);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
 
-        .border-brand-dark { border-color: var(--surface-1); }
-        .border-brand-panel { border-color: var(--surface-2); }
-        .border-brand-rust { border-color: var(--primary); }
-        .border-brand-django { border-color: var(--accent); }
-        .border-brand-text { border-color: var(--foreground); }
-        .border-brand-muted { border-color: var(--muted-foreground); }
-        .border-brand-border { border-color: var(--border); }
-        .border-brand-danger { border-color: var(--destructive); }
-        .border-brand-success { border-color: var(--success); }
-
-        .border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
-        .border-white\/5 { border-color: rgba(255, 255, 255, 0.05); }
-        .bg-white\/5 { background-color: rgba(255, 255, 255, 0.05); }
-        .bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
-
-        /* Code syntax colors */
-        .text-red-400 { color: #f87171; }
-        .text-green-400 { color: #4ade80; }
-        .text-blue-400 { color: #60a5fa; }
-        .text-amber-300 { color: #fbbf24; }
-        .text-purple-400 { color: #c084fc; }
-
-        .bg-red-500\/5 { background-color: rgba(239, 68, 68, 0.05); }
-        .bg-green-500\/5 { background-color: rgba(34, 197, 94, 0.05); }
-        .border-red-500\/20 { border-color: rgba(239, 68, 68, 0.2); }
-        .border-green-500\/20 { border-color: rgba(34, 197, 94, 0.2); }
-        .border-brand-rust\/40 { border-color: rgba(229, 115, 36, 0.4); }
-        .hover\:border-brand-rust\/50:hover { border-color: rgba(229, 115, 36, 0.5); }
-        .hover\:border-brand-django\/50:hover { border-color: rgba(68, 183, 139, 0.5); }
-        .hover\:border-blue-400\/50:hover { border-color: rgba(96, 165, 250, 0.5); }
-        .hover\:border-purple-400\/50:hover { border-color: rgba(192, 132, 252, 0.5); }
-        .border-brand-rust\/20 { border-color: rgba(229, 115, 36, 0.2); }
-        .border-brand-django\/20 { border-color: rgba(68, 183, 139, 0.2); }
-        .border-brand-rust\/10 { border-color: rgba(229, 115, 36, 0.1); }
-        .border-brand-django\/10 { border-color: rgba(68, 183, 139, 0.1); }
-        .bg-brand-rust\/10 { background-color: rgba(229, 115, 36, 0.1); }
-        .bg-brand-django\/10 { background-color: rgba(68, 183, 139, 0.1); }
-        .bg-brand-rust\/20 { background-color: rgba(229, 115, 36, 0.2); }
-        .bg-brand-django\/20 { background-color: rgba(68, 183, 139, 0.2); }
-        .hover\:bg-white\/10:hover { background-color: rgba(255, 255, 255, 0.1); }
-        .text-brand-rust\/40 { color: rgba(229, 115, 36, 0.4); }
-
-        .shadow-brand-rust\/20 { box-shadow: 0 10px 15px -3px rgba(229, 115, 36, 0.2), 0 4px 6px -2px rgba(229, 115, 36, 0.1); }
-        .hover\:bg-gray-100:hover { background-color: #f3f4f6; }
-        .hover\:text-white:hover { color: white; }
-        .hover\:text-brand-rust:hover { color: var(--primary); }
-
-        /* Gradient text */
+        /* ===== Gradient text ===== */
         .gradient-text {
-            background: linear-gradient(to right, var(--accent), var(--primary));
+            background: linear-gradient(to right, hsl(var(--accent)), hsl(var(--primary)));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        /* Glass panel */
-        .glass-panel {
-            background: rgba(21, 27, 43, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Code block */
-        .code-block-landing {
-            background: var(--surface-1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 0.375rem;
-            padding: 0.75rem;
-            font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
-            font-size: 0.75rem;
-            overflow-x: auto;
-        }
-
-        /* Grid pattern */
+        /* ===== Grid pattern ===== */
         .grid-pattern {
             background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='rgba(255,255,255,0.05)'/%3E%3C/svg%3E");
             mask-image: linear-gradient(to bottom, white, transparent);
             -webkit-mask-image: linear-gradient(to bottom, white, transparent);
         }
 
-        /* Hero glows */
-        .hero-glow-django {
-            background: radial-gradient(ellipse at center, rgba(68, 183, 139, 0.2) 0%, transparent 70%);
+        /* ===== Hero glows (color-mix for accurate blending like djust.org) ===== */
+        .hero-glow-accent {
+            background-color: color-mix(in oklab, hsl(var(--accent)) 20%, transparent);
         }
-        .hero-glow-rust {
-            background: radial-gradient(ellipse at center, rgba(229, 115, 36, 0.1) 0%, transparent 70%);
+        .hero-glow-primary {
+            background-color: color-mix(in oklab, hsl(var(--primary)) 10%, transparent);
+        }
+
+        /* ===== Light-mode overrides ===== */
+        [data-theme="light"] .grid-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='rgba(0,0,0,0.06)'/%3E%3C/svg%3E");
+        }
+        [data-theme="light"] .hero-glow-accent {
+            background-color: color-mix(in oklab, hsl(var(--accent)) 8%, transparent);
+        }
+        [data-theme="light"] .hero-glow-primary {
+            background-color: color-mix(in oklab, hsl(var(--primary)) 5%, transparent);
+        }
+
+        /* ===== Responsive ===== */
+        @media (min-width: 768px) {
+            :root {
+                --hero-size: calc(var(--font-size-base, 16px) * var(--font-scale, 1.25) * var(--font-scale, 1.25) * var(--font-scale, 1.25) * var(--font-scale, 1.25) * var(--font-scale, 1.25));
+            }
         }
     </style>
 </head>
 <body class="min-h-screen">
 
 <!-- Skip to content link -->
-<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-brand-rust text-white rounded-md font-medium shadow-lg">
+<a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] landing-btn landing-btn-primary">
     Skip to content
 </a>
 
-<!-- Navigation - djust.org style -->
-<nav class="fixed w-full z-50 border-b border-white/10 bg-brand-dark/90 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+<!-- Navigation -->
+<nav class="fixed w-full z-50" style="border-bottom: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border));">
+    <div class="mx-auto px-6 flex items-center justify-between" style="max-width: var(--container-width, 1200px); height: 4rem;">
+        <a href="{% url 'theme_demo:index' %}">
+            <img src="{% static 'theme_demo/img/djust-logo.png' %}" alt="djust" style="height: 3rem !important; max-width: none;">
+        </a>
+        <div class="hidden md:flex items-center" style="gap: var(--grid-gap, 1.5rem); font-size: var(--small-size);">
+            <a href="{% url 'theme_demo:index' %}" style="color: hsl(var(--foreground));">Home</a>
+            <a href="{% url 'theme_demo:components' %}">Components</a>
+            <a href="{% url 'theme_demo:themes' %}">Themes</a>
+            <a href="/theming/gallery/">Gallery</a>
+        </div>
         <div class="flex items-center gap-3">
-            <a href="{% url 'theme_demo:index' %}" class="group">
-                <span class="text-xl font-bold text-white">djust-theming</span>
-            </a>
-        </div>
-        <div class="hidden md:flex items-center gap-4 text-sm font-medium text-brand-muted">
-            <a href="{% url 'theme_demo:index' %}" class="hover:text-white transition text-white">Home</a>
-            <a href="{% url 'theme_demo:components' %}" class="hover:text-white transition">Components</a>
-            <a href="{% url 'theme_demo:design_systems' %}" class="hover:text-white transition">Design Systems</a>
-            <a href="{% url 'theme_demo:presets' %}" class="hover:text-white transition">Colors</a>
-            <a href="/theming/gallery/" class="hover:text-white transition">Gallery</a>
-        </div>
-        <div class="flex items-center gap-4">
-            {% theme_switcher show_labels=False button_class="text-brand-muted hover:text-white" %}
-            <a href="/quickstart/" class="hidden md:inline-flex text-xs font-bold uppercase tracking-wide bg-brand-rust hover:bg-brand-rust/90 text-white px-5 py-2.5 rounded transition shadow-lg shadow-brand-rust/20">
+            {% theme_switcher show_labels=False show_presets=False %}
+            <select id="pack-selector" aria-label="Select theme pack"
+                    style="background-color: hsl(var(--surface-2)); color: hsl(var(--foreground)); border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border)); border-radius: var(--button-radius, var(--border-radius-md, 0.375rem)); padding: 0.35rem 0.5rem; font-size: var(--tiny-size); cursor: pointer; max-width: 130px;">
+                <option value="djust">djust</option>
+                <option value="corporate">Corporate</option>
+                <option value="elegant">Elegant</option>
+                <option value="brutalist">Brutalist</option>
+                <option value="retro">Retro</option>
+                <option value="playful">Playful</option>
+                <option value="nature">Nature</option>
+                <option value="cyberpunk">Cyberpunk</option>
+                <option value="sunset">Sunset</option>
+                <option value="forest">Forest</option>
+                <option value="ocean">Ocean</option>
+                <option value="metallic">Metallic</option>
+            </select>
+            <a href="/quickstart/" class="hidden md:inline-flex landing-btn landing-btn-primary" style="padding: 0.5rem 1.25rem; font-size: var(--tiny-size); text-transform: uppercase; letter-spacing: 0.05em;">
                 Get Started
             </a>
-            <!-- Mobile menu button -->
-            <button id="mobile-menu-button" class="md:hidden text-white p-2 hover:text-brand-rust transition" aria-label="Toggle mobile menu">
+            <button id="mobile-menu-button" class="md:hidden p-2 fg" style="transition: color var(--duration-fast, 150ms) var(--easing, ease);" aria-label="Toggle mobile menu">
                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
@@ -197,18 +248,15 @@
 </nav>
 
 <!-- Mobile Menu -->
-<div id="mobile-menu" class="fixed top-16 left-0 right-0 z-[45] bg-brand-dark/95 backdrop-blur-lg border-b border-white/10 md:hidden">
-    <div class="px-6 py-6 space-y-4">
-        <a href="{% url 'theme_demo:index' %}" class="block py-2 text-white hover:text-white transition text-lg font-medium">Home</a>
-        <a href="{% url 'theme_demo:components' %}" class="block py-2 text-brand-muted hover:text-white transition text-lg font-medium">Components</a>
-        <a href="{% url 'theme_demo:design_systems' %}" class="block py-2 text-brand-muted hover:text-white transition text-lg font-medium">Design Systems</a>
-        <a href="{% url 'theme_demo:presets' %}" class="block py-2 text-brand-muted hover:text-white transition text-lg font-medium">Colors</a>
-        <a href="/theming/gallery/" class="block py-2 text-brand-muted hover:text-white transition text-lg font-medium">Gallery</a>
-        <div class="pt-2">
-            <a href="/quickstart/" class="block w-full text-center text-xs font-bold uppercase tracking-wide bg-brand-rust hover:bg-brand-rust/90 text-white px-5 py-3 rounded transition shadow-lg shadow-brand-rust/20">
-                Get Started
-            </a>
-        </div>
+<div id="mobile-menu" class="fixed left-0 right-0 z-[45] md:hidden hidden" style="top: 4rem; background-color: hsl(var(--surface-1)); border-bottom: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border)); backdrop-filter: blur(12px);">
+    <div style="padding: var(--section-spacing, 1.5rem) 1.5rem; display: flex; flex-direction: column; gap: var(--grid-gap, 1rem);">
+        <a href="{% url 'theme_demo:index' %}" class="fg" style="font-size: var(--h4-size); font-weight: var(--font-weight-heading, 600);">Home</a>
+        <a href="{% url 'theme_demo:components' %}" class="fg-muted" style="font-size: var(--h4-size);">Components</a>
+        <a href="{% url 'theme_demo:themes' %}" class="fg-muted" style="font-size: var(--h4-size);">Themes</a>
+        <a href="/theming/gallery/" class="fg-muted" style="font-size: var(--h4-size);">Gallery</a>
+        <a href="/quickstart/" class="landing-btn landing-btn-primary" style="padding: 0.75rem 1.5rem; font-size: var(--tiny-size); text-transform: uppercase; letter-spacing: 0.05em; width: 100%; text-align: center;">
+            Get Started
+        </a>
     </div>
 </div>
 
@@ -218,29 +266,40 @@
 </main>
 
 <!-- Footer -->
-<footer class="py-12 px-6 border-t border-white/10 bg-brand-dark">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-        <div class="flex items-center gap-2">
-            <span class="text-lg font-bold text-white">djust-theming</span>
-        </div>
-        <div class="text-brand-muted text-sm">
+<footer style="padding: calc(var(--section-spacing, 6rem) * 0.5) 1.5rem; background-color: hsl(var(--surface-1)); border-top: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border));">
+    <div class="mx-auto flex flex-col md:flex-row justify-between items-center" style="max-width: var(--container-width, 1200px); gap: var(--grid-gap, 1.5rem);">
+        <img src="{% static 'theme_demo/img/djust-logo.png' %}" alt="djust" style="height: 2.25rem !important; max-width: none;">
+        <span class="fg-muted" style="font-size: var(--small-size);">
             &copy; 2026 djust Framework. MIT License.
-        </div>
-        <div class="flex gap-6 text-brand-muted text-sm">
-            <a href="https://github.com/djust-org/djust-theming" class="hover:text-white transition">GitHub</a>
+        </span>
+        <div class="flex fg-muted" style="gap: var(--grid-gap, 1.5rem); font-size: var(--small-size);">
+            <a href="https://github.com/djust-org/djust-theming" style="transition: color var(--duration-fast, 150ms) var(--easing, ease);">GitHub</a>
         </div>
     </div>
 </footer>
 
 <script>
-    // Mobile menu toggle
-    const btn = document.getElementById('mobile-menu-button');
-    const menu = document.getElementById('mobile-menu');
-    if (btn && menu) {
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-    }
+    // Wait for DOM + deferred scripts (theme.js) to be ready
+    document.addEventListener('DOMContentLoaded', () => {
+        // Mobile menu toggle
+        const btn = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
+        if (btn && menu) {
+            btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+        }
+
+        // Pack selector
+        const packSelect = document.getElementById('pack-selector');
+        if (packSelect) {
+            packSelect.value = localStorage.getItem('djust-theme-pack') || 'djust';
+            packSelect.addEventListener('change', () => {
+                const pack = packSelect.value;
+                localStorage.setItem('djust-theme-pack', pack);
+                document.cookie = 'djust_theme_pack=' + pack + ';path=/;max-age=31536000;SameSite=Lax';
+                window.location.reload();
+            });
+        }
+    });
 </script>
 
 </body>

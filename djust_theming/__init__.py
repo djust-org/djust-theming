@@ -22,6 +22,12 @@ from .manager import (
 from .registry import ThemeRegistry, get_registry
 from .mixins import ThemeMixin
 from .palette import PaletteGenerator
+from .tailwind import (
+    generate_tailwind_config,
+    generate_tailwindv4_theme_block,
+    generate_tailwindv4_theme_block_cached,
+    export_preset_as_tailwind_colors,
+)
 from .presets import (
     BLUE_THEME,
     DEFAULT_THEME,
@@ -74,6 +80,11 @@ __all__ = [
     "ThemeSwitcher",
     # Palette generator
     "PaletteGenerator",
+    # Tailwind CSS integration
+    "generate_tailwind_config",
+    "generate_tailwindv4_theme_block",
+    "generate_tailwindv4_theme_block_cached",
+    "export_preset_as_tailwind_colors",
 ]
 
 __version__ = "0.1.0"

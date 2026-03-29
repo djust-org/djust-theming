@@ -1,502 +1,341 @@
 {% extends "theme_demo/base.html" %}
-{% load theme_components %}
+{% load djust_components static %}
 
 {% block content %}
-<div class="mb-8">
-    <h1 class="text-4xl font-bold mb-2">Component Library</h1>
-    <p class="text-muted-foreground">
-        All 24 components automatically adapt to your theme preset and light/dark mode.
-        Each component is a template tag from <code>{% verbatim %}{% load theme_components %}{% endverbatim %}</code>.
+<!-- Header -->
+<div class="text-center" style="margin-bottom: var(--section-spacing, 2rem);">
+    <span class="badge" style="background-color: color-mix(in oklab, hsl(var(--accent)) 10%, transparent); color: hsl(var(--accent)); border: var(--border-width, 1px) var(--border-style, solid) color-mix(in oklab, hsl(var(--accent)) 20%, transparent); margin-bottom: var(--grid-gap, 1.5rem);">
+        171 Components
+    </span>
+    <h1 style="font-family: var(--font-heading, system-ui); font-size: var(--h1-size); font-weight: var(--font-weight-heading, 800); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.67);">
+        Component <span class="gradient-text">Library</span>
+    </h1>
+    <p class="fg-muted mx-auto" style="max-width: var(--prose-max-width, 42rem); line-height: var(--body-line-height, 1.6);">
+        Theme-aware components from <strong class="fg">djust-components</strong>,
+        styled by <strong class="fg">djust-theming</strong> design tokens.
+        Switch packs to see every component adapt instantly.
     </p>
 </div>
 
-<!-- Table of Contents -->
-<div class="bg-card border border-border rounded-lg p-6 mb-8">
-    <h2 class="text-lg font-semibold mb-3">Components</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2 text-sm">
-        <a href="#buttons" class="text-primary hover:underline">Buttons</a>
-        <a href="#badges" class="text-primary hover:underline">Badges</a>
-        <a href="#alerts" class="text-primary hover:underline">Alerts</a>
-        <a href="#cards" class="text-primary hover:underline">Cards</a>
-        <a href="#inputs" class="text-primary hover:underline">Inputs</a>
-        <a href="#select" class="text-primary hover:underline">Select</a>
-        <a href="#textarea" class="text-primary hover:underline">Textarea</a>
-        <a href="#checkbox" class="text-primary hover:underline">Checkbox</a>
-        <a href="#radio" class="text-primary hover:underline">Radio</a>
-        <a href="#modal" class="text-primary hover:underline">Modal</a>
-        <a href="#dropdown" class="text-primary hover:underline">Dropdown</a>
-        <a href="#tabs" class="text-primary hover:underline">Tabs</a>
-        <a href="#table" class="text-primary hover:underline">Table</a>
-        <a href="#pagination" class="text-primary hover:underline">Pagination</a>
-        <a href="#breadcrumb" class="text-primary hover:underline">Breadcrumb</a>
-        <a href="#avatar" class="text-primary hover:underline">Avatar</a>
-        <a href="#toast" class="text-primary hover:underline">Toast</a>
-        <a href="#progress" class="text-primary hover:underline">Progress</a>
-        <a href="#skeleton" class="text-primary hover:underline">Skeleton</a>
-        <a href="#tooltip" class="text-primary hover:underline">Tooltip</a>
-        <a href="#nav" class="text-primary hover:underline">Nav</a>
-        <a href="#sidebar-nav" class="text-primary hover:underline">Sidebar Nav</a>
-        <a href="#nav-item" class="text-primary hover:underline">Nav Item</a>
-        <a href="#nav-group" class="text-primary hover:underline">Nav Group</a>
+<!-- ================================================================== -->
+<!-- BUTTONS                                                            -->
+<!-- ================================================================== -->
+<div class="glass-card" data-accent="primary" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 class="fg-primary" style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem);">Buttons</h2>
+
+    <p class="fg-muted" style="font-size: var(--small-size); margin-bottom: var(--grid-gap, 1rem);">6 variants, 3 sizes, plus icon, loading, and disabled states.</p>
+
+    <div class="flex flex-wrap items-center" style="gap: calc(var(--grid-gap, 1.5rem) * 0.5);">
+        {% dj_button label="Primary" variant="primary" %}
+        {% dj_button label="Secondary" variant="secondary" %}
+        {% dj_button label="Destructive" variant="destructive" %}
+        {% dj_button label="Ghost" variant="ghost" %}
+        {% dj_button label="Outline" variant="outline" %}
+        {% dj_button label="Done" variant="primary" icon="✓" %}
+        {% dj_button label="Loading" variant="primary" loading=True %}
+        {% dj_button label="Disabled" variant="primary" disabled=True %}
+    </div>
+
+    <div class="flex flex-wrap items-center" style="gap: calc(var(--grid-gap, 1.5rem) * 0.5); margin-top: var(--grid-gap, 1rem);">
+        {% dj_button label="Small" variant="primary" size="sm" %}
+        {% dj_button label="Medium" variant="primary" size="md" %}
+        {% dj_button label="Large" variant="primary" size="lg" %}
+    </div>
+
+    <!-- Code panel -->
+    <div class="code-panel" style="margin-top: var(--grid-gap, 1.5rem);">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <pre><code>{% verbatim %}<span class="fg-accent">{%</span> <span class="fg-info">dj_button</span> <span class="fg-success">label=</span><span class="fg-warning">"Primary"</span> <span class="fg-success">variant=</span><span class="fg-warning">"primary"</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">dj_button</span> <span class="fg-success">label=</span><span class="fg-warning">"Done"</span> <span class="fg-success">variant=</span><span class="fg-warning">"primary"</span> <span class="fg-success">icon=</span><span class="fg-warning">"✓"</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">dj_button</span> <span class="fg-success">label=</span><span class="fg-warning">"Loading"</span> <span class="fg-success">loading=</span><span class="fg-warning">True</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">dj_button</span> <span class="fg-success">label=</span><span class="fg-warning">"Small"</span> <span class="fg-success">size=</span><span class="fg-warning">"sm"</span> <span class="fg-accent">%}</span>{% endverbatim %}</code></pre>
     </div>
 </div>
 
 <!-- ================================================================== -->
-<!-- BUTTONS -->
+<!-- BADGES                                                             -->
 <!-- ================================================================== -->
-<div id="buttons" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Buttons</h2>
-    <p class="text-sm text-muted-foreground mb-6">5 variants and 3 sizes</p>
+<div class="glass-card" data-accent="accent" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 class="fg-accent" style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem);">Badges</h2>
 
-    <div class="space-y-4">
+    <div class="flex flex-wrap items-center" style="gap: calc(var(--grid-gap, 1.5rem) * 0.5);">
+        {% badge label="Default" %}
+        {% badge label="Success" status="success" %}
+        {% badge label="Warning" status="warning" %}
+        {% badge label="Error" status="error" %}
+        {% badge label="Info" status="info" %}
+        {% badge label="Live" status="success" pulse=True %}
+    </div>
+
+    <!-- Code panel -->
+    <div class="code-panel" style="margin-top: var(--grid-gap, 1.5rem);">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <pre><code>{% verbatim %}<span class="fg-accent">{%</span> <span class="fg-info">badge</span> <span class="fg-success">label=</span><span class="fg-warning">"Success"</span> <span class="fg-success">status=</span><span class="fg-warning">"success"</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">badge</span> <span class="fg-success">label=</span><span class="fg-warning">"Live"</span> <span class="fg-success">status=</span><span class="fg-warning">"success"</span> <span class="fg-success">pulse=</span><span class="fg-warning">True</span> <span class="fg-accent">%}</span>{% endverbatim %}</code></pre>
+    </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- FORM CONTROLS                                                      -->
+<!-- ================================================================== -->
+<div class="glass-card" data-accent="info" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem); color: hsl(var(--info, var(--primary)));">Form Controls</h2>
+
+    <div class="grid md:grid-cols-2" style="gap: var(--grid-gap, 1.5rem);">
         <div>
-            <h3 class="text-sm font-medium mb-2">Variants</h3>
-            <div class="flex flex-wrap gap-3">
-                {% theme_button "Primary" variant="primary" %}
-                {% theme_button "Secondary" variant="secondary" %}
-                {% theme_button "Destructive" variant="destructive" %}
-                {% theme_button "Ghost" variant="ghost" %}
-                {% theme_button "Link" variant="link" %}
+            {% dj_input name="demo_name" label="Full Name" placeholder="John Doe" %}
+            {% dj_input name="demo_email" label="Email" placeholder="john@example.com" input_type="email" %}
+            {% dj_select name="demo_role" label="Role" options="admin:Admin,editor:Editor,viewer:Viewer" %}
+        </div>
+        <div>
+            {% dj_textarea name="demo_bio" label="Bio" placeholder="Tell us about yourself..." rows=3 %}
+            {% dj_checkbox name="demo_agree" label="I agree to the terms" %}
+            {% dj_radio name="demo_plan" label="Starter" value="starter" %}
+            {% dj_radio name="demo_plan" label="Pro" value="pro" current_value="pro" %}
+        </div>
+    </div>
+
+    <!-- Code panel -->
+    <div class="code-panel" style="margin-top: var(--grid-gap, 1.5rem);">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <pre><code>{% verbatim %}<span class="fg-accent">{%</span> <span class="fg-info">dj_input</span> <span class="fg-success">name=</span><span class="fg-warning">"email"</span> <span class="fg-success">label=</span><span class="fg-warning">"Email"</span> <span class="fg-success">input_type=</span><span class="fg-warning">"email"</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">dj_select</span> <span class="fg-success">name=</span><span class="fg-warning">"role"</span> <span class="fg-success">options=</span><span class="fg-warning">"admin:Admin,editor:Editor"</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">dj_textarea</span> <span class="fg-success">name=</span><span class="fg-warning">"bio"</span> <span class="fg-success">rows=</span><span class="fg-warning">3</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">dj_checkbox</span> <span class="fg-success">name=</span><span class="fg-warning">"agree"</span> <span class="fg-success">label=</span><span class="fg-warning">"I agree"</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">dj_radio</span> <span class="fg-success">name=</span><span class="fg-warning">"plan"</span> <span class="fg-success">label=</span><span class="fg-warning">"Pro"</span> <span class="fg-success">value=</span><span class="fg-warning">"pro"</span> <span class="fg-accent">%}</span>{% endverbatim %}</code></pre>
+    </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- CARDS                                                              -->
+<!-- ================================================================== -->
+<div class="grid md:grid-cols-3" style="gap: var(--grid-gap, 1.5rem); margin-bottom: var(--grid-gap, 1.5rem);">
+    {% card title="Getting Started" subtitle="Quick setup guide" footer_text="5 min read" %}
+        <p class="fg-muted" style="font-size: var(--small-size); line-height: var(--body-line-height, 1.6);">
+            Install djust-components and start building themed Django applications with ready-to-use components.
+        </p>
+    {% endcard %}
+
+    {% card title="Theme Integration" subtitle="Works with djust-theming" variant="elevated" %}
+        <p class="fg-muted" style="font-size: var(--small-size); line-height: var(--body-line-height, 1.6);">
+            All components use CSS custom properties from djust-theming. Switch packs and watch every component adapt.
+        </p>
+    {% endcard %}
+
+    {% card title="Production Ready" subtitle="Battle-tested components" variant="outlined" %}
+        <p class="fg-muted" style="font-size: var(--small-size); line-height: var(--body-line-height, 1.6);">
+            Accessible, responsive, and performant. Built for real Django applications with HTMX and LiveView support.
+        </p>
+    {% endcard %}
+</div>
+
+<!-- Cards code panel -->
+<div class="code-panel" style="margin-bottom: var(--grid-gap, 1.5rem);">
+    <div class="code-dots"><span></span><span></span><span></span></div>
+    <pre><code>{% verbatim %}<span class="fg-accent">{%</span> <span class="fg-info">card</span> <span class="fg-success">title=</span><span class="fg-warning">"Title"</span> <span class="fg-success">subtitle=</span><span class="fg-warning">"Subtitle"</span> <span class="fg-success">footer_text=</span><span class="fg-warning">"Footer"</span> <span class="fg-accent">%}</span>
+    <span class="fg-muted">&lt;!-- card body content --&gt;</span>
+<span class="fg-accent">{%</span> <span class="fg-info">endcard</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">card</span> <span class="fg-success">title=</span><span class="fg-warning">"Elevated"</span> <span class="fg-success">variant=</span><span class="fg-warning">"elevated"</span> <span class="fg-accent">%}</span> ... <span class="fg-accent">{%</span> <span class="fg-info">endcard</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">card</span> <span class="fg-success">title=</span><span class="fg-warning">"Outlined"</span> <span class="fg-success">variant=</span><span class="fg-warning">"outlined"</span> <span class="fg-accent">%}</span> ... <span class="fg-accent">{%</span> <span class="fg-info">endcard</span> <span class="fg-accent">%}</span>{% endverbatim %}</code></pre>
+</div>
+
+<!-- ================================================================== -->
+<!-- ALERTS                                                             -->
+<!-- ================================================================== -->
+<div style="display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.5); margin-bottom: var(--grid-gap, 1.5rem);">
+    {% alert variant="info" title="Information" %}
+        djust-components provides 171 themed UI components for Django templates.
+    {% endalert %}
+
+    {% alert variant="success" title="Success" %}
+        Theme pack successfully applied. All components have adapted to the new design system.
+    {% endalert %}
+
+    {% alert variant="warning" title="Warning" %}
+        Some components may render differently across design systems. Test thoroughly.
+    {% endalert %}
+
+    {% alert variant="error" title="Error" %}
+        Failed to load custom theme pack. Falling back to default.
+    {% endalert %}
+</div>
+
+<!-- Alerts code panel -->
+<div class="code-panel" style="margin-bottom: var(--grid-gap, 1.5rem);">
+    <div class="code-dots"><span></span><span></span><span></span></div>
+    <pre><code>{% verbatim %}<span class="fg-accent">{%</span> <span class="fg-info">alert</span> <span class="fg-success">variant=</span><span class="fg-warning">"success"</span> <span class="fg-success">title=</span><span class="fg-warning">"Success"</span> <span class="fg-accent">%}</span>
+    Theme pack applied successfully.
+<span class="fg-accent">{%</span> <span class="fg-info">endalert</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">alert</span> <span class="fg-success">variant=</span><span class="fg-warning">"error"</span> <span class="fg-success">title=</span><span class="fg-warning">"Error"</span> <span class="fg-accent">%}</span> ... <span class="fg-accent">{%</span> <span class="fg-info">endalert</span> <span class="fg-accent">%}</span>{% endverbatim %}</code></pre>
+</div>
+
+<!-- ================================================================== -->
+<!-- AVATARS + SKELETON + PROGRESS                                      -->
+<!-- ================================================================== -->
+<div class="grid md:grid-cols-3" style="gap: var(--grid-gap, 1.5rem); margin-bottom: var(--grid-gap, 1.5rem);">
+    <div class="glass-card" data-accent="warning" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33);">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1rem);">Avatars</h3>
+        <div class="flex items-center" style="gap: calc(var(--grid-gap, 1.5rem) * 0.5);">
+            {% avatar initials="JD" size="sm" %}
+            {% avatar initials="AB" size="md" status="online" %}
+            {% avatar initials="XY" size="lg" %}
+        </div>
+        <div class="code-panel" style="margin-top: var(--grid-gap, 1rem);">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <pre><code>{% verbatim %}<span class="fg-accent">{%</span> <span class="fg-info">avatar</span> <span class="fg-success">initials=</span><span class="fg-warning">"AB"</span> <span class="fg-success">size=</span><span class="fg-warning">"md"</span> <span class="fg-success">status=</span><span class="fg-warning">"online"</span> <span class="fg-accent">%}</span>{% endverbatim %}</code></pre>
+        </div>
+    </div>
+
+    <div class="glass-card" data-accent="success" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33);">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1rem);">Skeleton</h3>
+        {% skeleton skeleton_type="text" lines=3 %}
+        <div class="code-panel" style="margin-top: var(--grid-gap, 1rem);">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <pre><code>{% verbatim %}<span class="fg-accent">{%</span> <span class="fg-info">skeleton</span> <span class="fg-success">skeleton_type=</span><span class="fg-warning">"text"</span> <span class="fg-success">lines=</span><span class="fg-warning">3</span> <span class="fg-accent">%}</span>{% endverbatim %}</code></pre>
+        </div>
+    </div>
+
+    <div class="glass-card" data-accent="primary" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33);">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1rem);">Progress</h3>
+        {% progress value=72 label="Upload progress" %}
+        <div style="margin-top: calc(var(--grid-gap, 1.5rem) * 0.5);">
+            {% progress value=35 color="success" %}
+        </div>
+        <div class="code-panel" style="margin-top: var(--grid-gap, 1rem);">
+            <div class="code-dots"><span></span><span></span><span></span></div>
+            <pre><code>{% verbatim %}<span class="fg-accent">{%</span> <span class="fg-info">progress</span> <span class="fg-success">value=</span><span class="fg-warning">72</span> <span class="fg-success">label=</span><span class="fg-warning">"Upload"</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">progress</span> <span class="fg-success">value=</span><span class="fg-warning">35</span> <span class="fg-success">color=</span><span class="fg-warning">"success"</span> <span class="fg-accent">%}</span>{% endverbatim %}</code></pre>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- INTERACTIVE COMPONENTS                                             -->
+<!-- ================================================================== -->
+<div class="glass-card" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem);">Interactive Components</h2>
+
+    <div class="grid md:grid-cols-2" style="gap: calc(var(--grid-gap, 1.5rem) * 1.33);">
+        <div>
+            <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1rem);">Tabs</h3>
+            {% tabs id="demo-tabs" active="overview" %}
+                {% tab id="overview" label="Overview" %}
+                    <p class="fg-muted" style="font-size: var(--small-size);">This is the overview tab content. Tabs adapt their styling to the active theme pack.</p>
+                {% endtab %}
+                {% tab id="settings" label="Settings" %}
+                    <p class="fg-muted" style="font-size: var(--small-size);">Settings panel content goes here.</p>
+                {% endtab %}
+                {% tab id="api" label="API" %}
+                    <p class="fg-muted" style="font-size: var(--small-size);">API documentation and endpoints.</p>
+                {% endtab %}
+            {% endtabs %}
+        </div>
+
+        <div>
+            <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1rem);">Accordion</h3>
+            {% accordion id="demo-accordion" %}
+                {% accordion_item id="install" title="Installation" %}
+                    <p class="fg-muted" style="font-size: var(--small-size);">Run <code class="fg-primary">pip install djust-components</code> to get started.</p>
+                {% endaccordion_item %}
+                {% accordion_item id="config" title="Configuration" %}
+                    <p class="fg-muted" style="font-size: var(--small-size);">Add <code class="fg-primary">djust_components</code> to your INSTALLED_APPS.</p>
+                {% endaccordion_item %}
+                {% accordion_item id="usage" title="Usage" %}
+                    <p class="fg-muted" style="font-size: var(--small-size);">Use <code class="fg-primary">{% verbatim %}{% load djust_components %}{% endverbatim %}</code> in your templates.</p>
+                {% endaccordion_item %}
+            {% endaccordion %}
+        </div>
+    </div>
+
+    <!-- Code panel -->
+    <div class="code-panel" style="margin-top: var(--grid-gap, 1.5rem);">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <pre><code>{% verbatim %}<span class="fg-accent">{%</span> <span class="fg-info">tabs</span> <span class="fg-success">id=</span><span class="fg-warning">"my-tabs"</span> <span class="fg-success">active=</span><span class="fg-warning">"overview"</span> <span class="fg-accent">%}</span>
+    <span class="fg-accent">{%</span> <span class="fg-info">tab</span> <span class="fg-success">id=</span><span class="fg-warning">"overview"</span> <span class="fg-success">label=</span><span class="fg-warning">"Overview"</span> <span class="fg-accent">%}</span> ... <span class="fg-accent">{%</span> <span class="fg-info">endtab</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">endtabs</span> <span class="fg-accent">%}</span>
+
+<span class="fg-accent">{%</span> <span class="fg-info">accordion</span> <span class="fg-success">id=</span><span class="fg-warning">"faq"</span> <span class="fg-accent">%}</span>
+    <span class="fg-accent">{%</span> <span class="fg-info">accordion_item</span> <span class="fg-success">id=</span><span class="fg-warning">"q1"</span> <span class="fg-success">title=</span><span class="fg-warning">"Question?"</span> <span class="fg-accent">%}</span> ... <span class="fg-accent">{%</span> <span class="fg-info">endaccordion_item</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">endaccordion</span> <span class="fg-accent">%}</span>{% endverbatim %}</code></pre>
+    </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- ADDITIONAL COMPONENTS                                              -->
+<!-- ================================================================== -->
+<div class="glass-card" data-accent="warning" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem); color: hsl(var(--warning, var(--primary)));">Additional Components</h2>
+
+    <!-- Breadcrumb demo (rendered as simple HTML since it needs a Python list) -->
+    <div style="margin-bottom: var(--grid-gap, 1.5rem);">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1rem);">Breadcrumb</h3>
+        <nav style="font-size: var(--small-size); display: flex; align-items: center; gap: 0.5rem;">
+            <a class="fg-accent" href="#" style="text-decoration: none;">Home</a>
+            <span class="fg-muted">/</span>
+            <a class="fg-accent" href="#" style="text-decoration: none;">Components</a>
+            <span class="fg-muted">/</span>
+            <span class="fg-muted">Breadcrumb</span>
+        </nav>
+    </div>
+
+    <!-- Stat Card demo -->
+    <div style="margin-bottom: var(--grid-gap, 1.5rem);">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1rem);">Stat Card</h3>
+        <div class="grid md:grid-cols-3" style="gap: var(--grid-gap, 1rem);">
+            <div style="padding: 1rem 1.25rem; border-radius: var(--radius-lg, 0.5rem); border: 1px solid hsl(var(--border)); background: hsl(var(--card));">
+                <div class="fg-muted" style="font-size: var(--tiny-size); text-transform: uppercase; letter-spacing: 0.05em;">Total Users</div>
+                <div class="fg-primary" style="font-size: var(--h2-size); font-weight: 700;">12,847</div>
+                <div class="fg-muted" style="font-size: var(--tiny-size);">+14% from last month</div>
+            </div>
+            <div style="padding: 1rem 1.25rem; border-radius: var(--radius-lg, 0.5rem); border: 1px solid hsl(var(--border)); background: hsl(var(--card));">
+                <div class="fg-muted" style="font-size: var(--tiny-size); text-transform: uppercase; letter-spacing: 0.05em;">Revenue</div>
+                <div class="fg-primary" style="font-size: var(--h2-size); font-weight: 700;">$48.2k</div>
+                <div class="fg-muted" style="font-size: var(--tiny-size);">+7% from last month</div>
+            </div>
+            <div style="padding: 1rem 1.25rem; border-radius: var(--radius-lg, 0.5rem); border: 1px solid hsl(var(--border)); background: hsl(var(--card));">
+                <div class="fg-muted" style="font-size: var(--tiny-size); text-transform: uppercase; letter-spacing: 0.05em;">Uptime</div>
+                <div class="fg-primary" style="font-size: var(--h2-size); font-weight: 700;">99.9%</div>
+                <div class="fg-muted" style="font-size: var(--tiny-size);">Last 30 days</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Block demo -->
+    <div style="margin-bottom: var(--grid-gap, 1.5rem);">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1rem);">Code Block</h3>
+        {% code_block code='INSTALLED_APPS = ["djust_components", "djust_theming"]' language="python" %}
+    </div>
+
+    <!-- Spinner + Empty State -->
+    <div class="grid md:grid-cols-2" style="gap: var(--grid-gap, 1.5rem); margin-bottom: var(--grid-gap, 1.5rem);">
+        <div>
+            <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1rem);">Spinner</h3>
+            <div class="flex items-center" style="gap: var(--grid-gap, 1rem);">
+                {% spinner size="sm" %}
+                {% spinner size="md" %}
+                {% spinner size="lg" %}
             </div>
         </div>
         <div>
-            <h3 class="text-sm font-medium mb-2">Sizes</h3>
-            <div class="flex flex-wrap items-center gap-3">
-                {% theme_button "Small" size="sm" %}
-                {% theme_button "Medium" size="md" %}
-                {% theme_button "Large" size="lg" %}
-            </div>
-        </div>
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_button "Click me" variant="primary" size="md" %}{% endverbatim %}
+            <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: var(--grid-gap, 1rem);">Empty State</h3>
+            {% empty_state title="No results found" description="Try adjusting your search or filter criteria." %}
         </div>
     </div>
-</div>
 
-<!-- ================================================================== -->
-<!-- BADGES -->
-<!-- ================================================================== -->
-<div id="badges" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Badges</h2>
-    <p class="text-sm text-muted-foreground mb-6">Small status indicators with 6 variants</p>
+    <!-- Code panel -->
+    <div class="code-panel">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <pre><code>{% verbatim %}<span class="fg-muted">{# Breadcrumb — pass a Python list of dicts #}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">breadcrumb</span> <span class="fg-success">items=</span><span class="fg-warning">breadcrumb_items</span> <span class="fg-accent">%}</span>
 
-    <div class="space-y-4">
-        <div class="flex flex-wrap gap-2">
-            {% theme_badge "Default" variant="default" %}
-            {% theme_badge "Secondary" variant="secondary" %}
-            {% theme_badge "Success" variant="success" %}
-            {% theme_badge "Warning" variant="warning" %}
-            {% theme_badge "Destructive" variant="destructive" %}
-            {% theme_badge "Outline" variant="outline" %}
-        </div>
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_badge "New Feature" variant="success" %}{% endverbatim %}
-        </div>
-    </div>
-</div>
+<span class="fg-muted">{# Stat card #}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">stat_card</span> <span class="fg-success">label=</span><span class="fg-warning">"Users"</span> <span class="fg-success">value=</span><span class="fg-warning">"12,847"</span> <span class="fg-success">change=</span><span class="fg-warning">"+14%"</span> <span class="fg-accent">%}</span>
 
-<!-- ================================================================== -->
-<!-- ALERTS -->
-<!-- ================================================================== -->
-<div id="alerts" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Alerts</h2>
-    <p class="text-sm text-muted-foreground mb-6">Alert messages with 4 variants and optional dismissal</p>
+<span class="fg-muted">{# Code block #}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">code_block</span> <span class="fg-success">language=</span><span class="fg-warning">"python"</span> <span class="fg-accent">%}</span>print("hello")<span class="fg-accent">{%</span> <span class="fg-info">endcode_block</span> <span class="fg-accent">%}</span>
 
-    <div class="space-y-4">
-        {% theme_alert "This is a default alert message" variant="default" %}
-        {% theme_alert "Operation completed successfully!" variant="success" dismissible=True %}
-        {% theme_alert "Warning: Please review your changes" title="Warning" variant="warning" dismissible=True %}
-        {% theme_alert "Error: Something went wrong" title="Error" variant="destructive" dismissible=True %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_alert "Success!" variant="success" dismissible=True %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- CARDS -->
-<!-- ================================================================== -->
-<div id="cards" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Cards</h2>
-    <p class="text-sm text-muted-foreground mb-6">Card containers with header, body, and footer sections</p>
-
-    <div class="grid md:grid-cols-2 gap-6">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Simple Card</h3>
-            </div>
-            <div class="card-body">
-                <p class="text-sm">This is a card with just a header and body.</p>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Card with Footer</h3>
-            </div>
-            <div class="card-body">
-                <p class="text-sm">This card includes a footer section for actions.</p>
-            </div>
-            <div class="card-footer">
-                {% theme_button "Action" variant="primary" size="sm" %}
-                {% theme_button "Cancel" variant="ghost" size="sm" %}
-            </div>
-        </div>
-    </div>
-    <div class="code-block text-xs mt-4">
-{% verbatim %}{% theme_card title="My Card" footer="Footer text" %}{% endverbatim %}
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- INPUTS -->
-<!-- ================================================================== -->
-<div id="inputs" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Inputs</h2>
-    <p class="text-sm text-muted-foreground mb-6">Themed form inputs with labels and placeholders</p>
-
-    <div class="space-y-4 max-w-md">
-        {% theme_input "username" label="Username" placeholder="Enter your username" %}
-        {% theme_input "email" label="Email Address" placeholder="you@example.com" type="email" %}
-        {% theme_input "password" label="Password" type="password" placeholder="Enter password" %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_input "email" label="Email" placeholder="you@example.com" type="email" %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- SELECT -->
-<!-- ================================================================== -->
-<div id="select" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Select</h2>
-    <p class="text-sm text-muted-foreground mb-6">Themed select dropdown</p>
-
-    <div class="space-y-4 max-w-md">
-        {% theme_select "country" label="Country" options=country_options placeholder="Choose a country..." %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_select "country" label="Country" options=countries placeholder="Choose..." %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- TEXTAREA -->
-<!-- ================================================================== -->
-<div id="textarea" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Textarea</h2>
-    <p class="text-sm text-muted-foreground mb-6">Multi-line text input</p>
-
-    <div class="space-y-4 max-w-md">
-        {% theme_textarea "bio" label="Biography" placeholder="Tell us about yourself..." rows=4 %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_textarea "bio" label="Biography" placeholder="Tell us..." rows=4 %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- CHECKBOX -->
-<!-- ================================================================== -->
-<div id="checkbox" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Checkbox</h2>
-    <p class="text-sm text-muted-foreground mb-6">Themed checkbox with label and description</p>
-
-    <div class="space-y-4 max-w-md">
-        {% theme_checkbox "terms" label="I agree to the terms and conditions" %}
-        {% theme_checkbox "newsletter" label="Subscribe to newsletter" description="Get weekly updates on new features" %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_checkbox "agree" label="I agree to terms" required=True %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- RADIO -->
-<!-- ================================================================== -->
-<div id="radio" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Radio</h2>
-    <p class="text-sm text-muted-foreground mb-6">Radio button group</p>
-
-    <div class="space-y-4 max-w-md">
-        {% theme_radio "size" label="Size" options=size_options selected="md" %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_radio "size" label="Size" options=sizes selected="md" %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- MODAL -->
-<!-- ================================================================== -->
-<div id="modal" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Modal</h2>
-    <p class="text-sm text-muted-foreground mb-6">Dialog overlay with 3 sizes</p>
-
-    <div class="space-y-4">
-        <div class="flex flex-wrap gap-3">
-            <button data-theme-modal-open="demo-modal-sm" class="btn btn-primary px-4 py-2 rounded-md bg-primary text-primary-foreground">Open Small Modal</button>
-            <button data-theme-modal-open="demo-modal-md" class="btn btn-secondary px-4 py-2 rounded-md bg-secondary text-secondary-foreground">Open Medium Modal</button>
-            <button data-theme-modal-open="demo-modal-lg" class="btn btn-primary px-4 py-2 rounded-md bg-accent text-accent-foreground">Open Large Modal</button>
-        </div>
-        {% theme_modal id="demo-modal-sm" title="Small Modal" size="sm" %}
-        {% theme_modal id="demo-modal-md" title="Confirm Action" size="md" %}
-        {% theme_modal id="demo-modal-lg" title="Large Content" size="lg" %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_modal id="confirm" title="Confirm Action" size="md" %}
-<!-- Trigger: <button data-theme-modal-open="confirm">Open</button> -->{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- DROPDOWN -->
-<!-- ================================================================== -->
-<div id="dropdown" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Dropdown</h2>
-    <p class="text-sm text-muted-foreground mb-6">Dropdown menu with configurable alignment</p>
-
-    <div class="space-y-4">
-        <div class="flex flex-wrap gap-3">
-            {% theme_dropdown id="actions-menu" label="Actions" align="left" %}
-            {% theme_dropdown id="options-menu" label="Options" align="right" %}
-        </div>
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_dropdown id="actions" label="Actions" align="right" %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- TABS -->
-<!-- ================================================================== -->
-<div id="tabs" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Tabs</h2>
-    <p class="text-sm text-muted-foreground mb-6">Tabbed content panels</p>
-
-    <div class="space-y-4">
-        {% theme_tabs id="demo-tabs" tabs=tab_list active=0 %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_tabs id="settings" tabs=tab_list active=0 %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- TABLE -->
-<!-- ================================================================== -->
-<div id="table" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Table</h2>
-    <p class="text-sm text-muted-foreground mb-6">Responsive themed table with 3 variants</p>
-
-    <div class="space-y-6">
-        <div>
-            <h3 class="text-sm font-medium mb-2">Striped variant</h3>
-            {% theme_table headers=table_headers rows=table_rows variant="striped" caption="Team Members" %}
-        </div>
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_table headers=headers rows=rows variant="striped" caption="Users" %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- PAGINATION -->
-<!-- ================================================================== -->
-<div id="pagination" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Pagination</h2>
-    <p class="text-sm text-muted-foreground mb-6">Page navigation controls</p>
-
-    <div class="space-y-4">
-        {% theme_pagination current_page=3 total_pages=10 url_pattern="?page={}" %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_pagination current_page=3 total_pages=10 url_pattern="?page={}" %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- BREADCRUMB -->
-<!-- ================================================================== -->
-<div id="breadcrumb" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Breadcrumb</h2>
-    <p class="text-sm text-muted-foreground mb-6">Hierarchical navigation trail</p>
-
-    <div class="space-y-4">
-        {% theme_breadcrumb items=breadcrumb_items separator="/" %}
-        {% theme_breadcrumb items=breadcrumb_items separator=">" %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_breadcrumb items=breadcrumbs separator="/" %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- AVATAR -->
-<!-- ================================================================== -->
-<div id="avatar" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Avatar</h2>
-    <p class="text-sm text-muted-foreground mb-6">User avatar with image or initials fallback, in 3 sizes</p>
-
-    <div class="space-y-4">
-        <div class="flex flex-wrap items-end gap-4">
-            {% theme_avatar name="Alice Johnson" size="sm" %}
-            {% theme_avatar name="Bob Smith" size="md" %}
-            {% theme_avatar name="Carol White" size="lg" %}
-        </div>
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_avatar name="John Doe" size="md" %}
-{% theme_avatar src="/img/user.jpg" alt="John Doe" size="lg" %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- TOAST -->
-<!-- ================================================================== -->
-<div id="toast" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Toast</h2>
-    <p class="text-sm text-muted-foreground mb-6">Notification messages with 4 variants</p>
-
-    <div class="space-y-4">
-        {% theme_toast "Item saved successfully" variant="success" %}
-        {% theme_toast "Something needs attention" variant="warning" %}
-        {% theme_toast "An error occurred while saving" variant="error" %}
-        {% theme_toast "New update available" variant="info" %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_toast "Saved!" variant="success" position="top-right" %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- PROGRESS -->
-<!-- ================================================================== -->
-<div id="progress" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Progress</h2>
-    <p class="text-sm text-muted-foreground mb-6">Progress bar with determinate and indeterminate modes</p>
-
-    <div class="space-y-4 max-w-md">
-        {% theme_progress value=25 max=100 label="Upload: 25%" %}
-        {% theme_progress value=60 max=100 label="Processing: 60%" %}
-        {% theme_progress value=90 max=100 label="Almost done: 90%" %}
-        {% theme_progress label="Loading..." %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_progress value=75 max=100 label="Upload progress" %}
-{% theme_progress label="Loading..." %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- SKELETON -->
-<!-- ================================================================== -->
-<div id="skeleton" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Skeleton</h2>
-    <p class="text-sm text-muted-foreground mb-6">Loading placeholder in text, circle, and rect variants</p>
-
-    <div class="space-y-4 max-w-md">
-        <div class="flex items-center gap-3">
-            {% theme_skeleton variant="circle" width="3rem" height="3rem" %}
-            <div class="flex-1 space-y-2">
-                {% theme_skeleton variant="text" width="60%" %}
-                {% theme_skeleton variant="text" width="40%" %}
-            </div>
-        </div>
-        {% theme_skeleton variant="rect" width="100%" height="8rem" %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_skeleton variant="text" width="200px" %}
-{% theme_skeleton variant="circle" width="3rem" height="3rem" %}
-{% theme_skeleton variant="rect" width="100%" height="8rem" %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- TOOLTIP -->
-<!-- ================================================================== -->
-<div id="tooltip" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Tooltip</h2>
-    <p class="text-sm text-muted-foreground mb-6">CSS-only tooltip shown on hover, 4 positions</p>
-
-    <div class="space-y-4">
-        <div class="flex flex-wrap gap-4">
-            {% theme_tooltip "Tooltip on top" position="top" slot_content="<button class='px-4 py-2 bg-primary text-primary-foreground rounded-md'>Top</button>" %}
-            {% theme_tooltip "Tooltip on bottom" position="bottom" slot_content="<button class='px-4 py-2 bg-secondary text-secondary-foreground rounded-md'>Bottom</button>" %}
-            {% theme_tooltip "Tooltip on left" position="left" slot_content="<button class='px-4 py-2 bg-accent text-accent-foreground rounded-md'>Left</button>" %}
-            {% theme_tooltip "Tooltip on right" position="right" slot_content="<button class='px-4 py-2 bg-muted text-muted-foreground rounded-md'>Right</button>" %}
-        </div>
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_tooltip "Help text" position="top" slot_content="<button>Hover me</button>" %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- NAV -->
-<!-- ================================================================== -->
-<div id="nav" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Nav</h2>
-    <p class="text-sm text-muted-foreground mb-6">Horizontal navigation bar with brand and items</p>
-
-    <div class="space-y-4">
-        {% theme_nav brand="MyApp" items=nav_items %}
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_nav brand="MyApp" items=nav_items %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- SIDEBAR NAV -->
-<!-- ================================================================== -->
-<div id="sidebar-nav" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Sidebar Nav</h2>
-    <p class="text-sm text-muted-foreground mb-6">Vertical sidebar navigation with grouped sections</p>
-
-    <div class="space-y-4">
-        <div class="max-w-xs">
-            {% theme_sidebar_nav sections=sidebar_sections %}
-        </div>
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_sidebar_nav sections=sidebar_sections %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- NAV ITEM -->
-<!-- ================================================================== -->
-<div id="nav-item" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Nav Item</h2>
-    <p class="text-sm text-muted-foreground mb-6">Individual navigation link with auto-active detection</p>
-
-    <div class="space-y-4">
-        <div class="flex gap-2">
-            {% theme_nav_item "Home" "/" %}
-            {% theme_nav_item "Components" "/components/" %}
-            {% theme_nav_item "Inbox" "/inbox/" badge="5" %}
-        </div>
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_nav_item "Dashboard" "/dash/" %}
-{% theme_nav_item "Inbox" "/inbox/" badge="5" %}{% endverbatim %}
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
-<!-- NAV GROUP -->
-<!-- ================================================================== -->
-<div id="nav-group" class="bg-card border border-border rounded-lg p-8 mb-8">
-    <h2 class="text-2xl font-semibold mb-4">Nav Group</h2>
-    <p class="text-sm text-muted-foreground mb-6">Collapsible navigation group with heading and child items</p>
-
-    <div class="space-y-4">
-        <div class="max-w-xs">
-            {% theme_nav_group "Admin" items=nav_items %}
-        </div>
-        <div class="code-block text-xs">
-{% verbatim %}{% theme_nav_group "Admin" items=admin_links expanded=True %}{% endverbatim %}
-        </div>
+<span class="fg-accent">{%</span> <span class="fg-info">spinner</span> <span class="fg-success">size=</span><span class="fg-warning">"md"</span> <span class="fg-accent">%}</span>
+<span class="fg-accent">{%</span> <span class="fg-info">empty_state</span> <span class="fg-success">title=</span><span class="fg-warning">"No results"</span> <span class="fg-success">message=</span><span class="fg-warning">"Try again."</span> <span class="fg-accent">%}</span>{% endverbatim %}</code></pre>
     </div>
 </div>
 

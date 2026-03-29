@@ -42,7 +42,7 @@ class TestCSSLayersConfig:
         assert "css_layer_order" in DEFAULT_CONFIG
 
     def test_css_layer_order_default(self):
-        assert DEFAULT_CONFIG["css_layer_order"] == "base, tokens, components, theme"
+        assert DEFAULT_CONFIG["css_layer_order"] == "base, tokens, components, djust-components, theme"
 
     def test_can_disable_via_settings(self):
         from djust_theming.manager import get_theme_config
@@ -69,7 +69,7 @@ class TestLayerOrderDeclaration:
         gen = ThemeCSSGenerator(preset_name="default")
         css = gen.generate_css()
         # Layer order must appear before any @layer block
-        layer_order_line = "@layer base, tokens, components, theme;"
+        layer_order_line = "@layer base, tokens, components, djust-components, theme;"
         assert layer_order_line in css
         # It should appear before the first @layer { block
         layer_order_pos = css.index(layer_order_line)
@@ -82,7 +82,7 @@ class TestLayerOrderDeclaration:
 
         gen = CompleteThemeCSSGenerator("material")
         css = gen.generate_css()
-        assert "@layer base, tokens, components, theme;" in css
+        assert "@layer base, tokens, components, djust-components, theme;" in css
 
     def test_no_layers_when_disabled(self):
         """When use_css_layers=False, no @layer declarations in output."""

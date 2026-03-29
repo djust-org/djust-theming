@@ -323,3 +323,39 @@ def landing(request):
     return render(request, 'theme_demo/landing.html', {
         'title': 'djust-theming Landing Page',
     })
+
+
+def djust_components_demo(request):
+    """Demo page for djust-components integration."""
+    return render(request, 'theme_demo/djust_components.html', {
+        'title': 'djust-components',
+    })
+
+
+def themes(request):
+    """Themes page — design systems + color presets combined."""
+    from djust_theming.presets import list_presets
+    from djust_theming.theme_packs import get_all_design_systems
+
+    presets = list_presets()
+    design_systems = get_all_design_systems()
+
+    return render(request, 'theme_demo/themes.html', {
+        'title': 'Themes',
+        'presets': presets,
+        'design_systems': design_systems,
+    })
+
+
+def docs(request):
+    """Documentation page — getting started, layouts, pages."""
+    return render(request, 'theme_demo/docs.html', {
+        'title': 'Documentation',
+    })
+
+
+def integration(request):
+    """Integration guide — how djust-theming + djust-components work together."""
+    return render(request, 'theme_demo/integration.html', {
+        'title': 'Integration',
+    })

@@ -1,0 +1,118 @@
+{% extends "theme_demo/base.html" %}
+{% load djust_components static %}
+
+{% block content %}
+<div class="text-center" style="margin-bottom: var(--section-spacing, 2rem);">
+    <span class="badge" style="background-color: color-mix(in oklab, hsl(var(--primary)) 10%, transparent); color: hsl(var(--primary)); border: var(--border-width, 1px) var(--border-style, solid) color-mix(in oklab, hsl(var(--primary)) 20%, transparent); margin-bottom: var(--grid-gap, 1.5rem);">
+        Documentation
+    </span>
+    <h1 style="font-family: var(--font-heading, system-ui); font-size: var(--h1-size); font-weight: var(--font-weight-heading, 800); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.67);">
+        Getting <span class="gradient-text">Started</span>
+    </h1>
+    <p class="fg-muted mx-auto" style="max-width: var(--prose-max-width, 42rem); line-height: var(--body-line-height, 1.6);">
+        Install, configure, and start building themed Django applications
+        with <strong class="fg">djust-theming</strong> and <strong class="fg">djust-components</strong>.
+    </p>
+</div>
+
+<!-- Installation -->
+<div class="glass-card" data-accent="primary" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 class="fg-primary" style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem);">1. Install</h2>
+    <div class="code-panel">
+        <div class="code-panel-header">
+            <div class="code-panel-dots">
+                <div class="code-panel-dot" style="background: hsl(var(--destructive));"></div>
+                <div class="code-panel-dot" style="background: hsl(var(--warning));"></div>
+                <div class="code-panel-dot" style="background: hsl(var(--success));"></div>
+            </div>
+            <span class="fg-muted" style="font-size: var(--tiny-size); font-family: monospace;">terminal</span>
+        </div>
+        <div class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--small-size);">
+            <span class="fg-muted">$</span> pip install <span class="fg-primary">djust-theming djust-components</span>
+        </div>
+    </div>
+</div>
+
+<!-- Configuration -->
+<div class="glass-card" data-accent="accent" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 class="fg-accent" style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem);">2. Configure</h2>
+    <div class="code-panel">
+        <div class="code-panel-header">
+            <div class="code-panel-dots">
+                <div class="code-panel-dot" style="background: hsl(var(--destructive));"></div>
+                <div class="code-panel-dot" style="background: hsl(var(--warning));"></div>
+                <div class="code-panel-dot" style="background: hsl(var(--success));"></div>
+            </div>
+            <span class="fg-muted" style="font-size: var(--tiny-size); font-family: monospace;">settings.py</span>
+        </div>
+        <pre class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--small-size); margin: 0; line-height: var(--body-line-height, 1.6);">{% verbatim %}<span style="color: hsl(var(--info, var(--primary)));">INSTALLED_APPS</span> = [
+    <span style="color: hsl(var(--warning));">'djust_theming'</span>,
+    <span style="color: hsl(var(--warning));">'djust_components'</span>,
+    ...
+]
+
+<span style="color: hsl(var(--info, var(--primary)));">LIVEVIEW_CONFIG</span> = {
+    <span style="color: hsl(var(--warning));">'theme'</span>: {
+        <span style="color: hsl(var(--warning));">'preset'</span>: <span style="color: hsl(var(--success));">'djust'</span>,
+        <span style="color: hsl(var(--warning));">'default_mode'</span>: <span style="color: hsl(var(--success));">'system'</span>,
+    }
+}{% endverbatim %}</pre>
+    </div>
+</div>
+
+<!-- Usage -->
+<div class="glass-card" data-accent="info" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem); color: hsl(var(--info, var(--primary)));">3. Use in Templates</h2>
+    <div class="code-panel">
+        <div class="code-panel-header">
+            <div class="code-panel-dots">
+                <div class="code-panel-dot" style="background: hsl(var(--destructive));"></div>
+                <div class="code-panel-dot" style="background: hsl(var(--warning));"></div>
+                <div class="code-panel-dot" style="background: hsl(var(--success));"></div>
+            </div>
+            <span class="fg-muted" style="font-size: var(--tiny-size); font-family: monospace;">template.html</span>
+        </div>
+        <pre class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--small-size); margin: 0; line-height: var(--body-line-height, 1.6);">{% verbatim %}<span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">load</span> <span style="color: hsl(var(--warning));">theme_tags djust_components</span> <span style="color: hsl(var(--accent));">%}</span>
+<span class="fg-muted">&lt;head&gt;</span>
+    <span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">theme_head</span> <span style="color: hsl(var(--accent));">%}</span>
+<span class="fg-muted">&lt;/head&gt;</span>
+<span class="fg-muted">&lt;body&gt;</span>
+    <span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">dj_button</span> <span style="color: hsl(var(--success));">label=<span style="color: hsl(var(--warning));">"Save"</span> variant=<span style="color: hsl(var(--warning));">"primary"</span></span> <span style="color: hsl(var(--accent));">%}</span>
+    <span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">alert</span> <span style="color: hsl(var(--success));">variant=<span style="color: hsl(var(--warning));">"success"</span></span> <span style="color: hsl(var(--accent));">%}</span>Done!<span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">endalert</span> <span style="color: hsl(var(--accent));">%}</span>
+    <span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">badge</span> <span style="color: hsl(var(--success));">label=<span style="color: hsl(var(--warning));">"New"</span> status=<span style="color: hsl(var(--warning));">"success"</span></span> <span style="color: hsl(var(--accent));">%}</span>
+<span class="fg-muted">&lt;/body&gt;</span>{% endverbatim %}</pre>
+    </div>
+</div>
+
+<!-- Template Tag Reference -->
+<div class="glass-card" data-accent="warning" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem); color: hsl(var(--warning));">Template Tag Reference</h2>
+    <div class="grid md:grid-cols-2" style="gap: var(--grid-gap, 1.5rem);">
+        <div>
+            <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">djust-theming Tags</h3>
+            <p class="fg-muted" style="font-size: var(--small-size); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">
+                <code class="fg-primary">{% verbatim %}{% load theme_tags %}{% endverbatim %}</code>
+            </p>
+            <ul class="fg-muted" style="font-size: var(--small-size); display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.25); padding-left: 1.25rem;">
+                <li><code class="fg-primary">theme_head</code> — CSS + anti-FOUC script</li>
+                <li><code class="fg-primary">theme_switcher</code> — Mode + preset selector</li>
+                <li><code class="fg-primary">theme_mode_toggle</code> — Light/dark/system toggle</li>
+                <li><code class="fg-primary">theme_preset_selector</code> — Preset dropdown/grid</li>
+            </ul>
+        </div>
+        <div>
+            <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">djust-components Tags</h3>
+            <p class="fg-muted" style="font-size: var(--small-size); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">
+                <code class="fg-primary">{% verbatim %}{% load djust_components %}{% endverbatim %}</code>
+            </p>
+            <ul class="fg-muted" style="font-size: var(--small-size); display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.25); padding-left: 1.25rem;">
+                <li><code class="fg-primary">dj_button</code>, <code class="fg-primary">dj_input</code>, <code class="fg-primary">dj_select</code> — Form controls</li>
+                <li><code class="fg-primary">badge</code>, <code class="fg-primary">avatar</code>, <code class="fg-primary">progress</code> — Display</li>
+                <li><code class="fg-primary">modal</code>, <code class="fg-primary">tabs</code>, <code class="fg-primary">accordion</code> — Interactive</li>
+                <li><code class="fg-primary">card</code>, <code class="fg-primary">alert</code>, <code class="fg-primary">callout</code> — Layout</li>
+                <li>...and <a href="{% url 'theme_demo:components' %}" class="fg-primary">167 more</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

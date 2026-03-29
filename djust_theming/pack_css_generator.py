@@ -8,7 +8,7 @@ and all other styling dimensions from a ThemePack.
 from functools import lru_cache
 
 from .manager import get_theme_config
-from .theme_packs import ThemePack, get_theme_pack
+from .theme_packs import ThemePack, get_theme_pack, get_design_system
 from .theme_css_generator import CompleteThemeCSSGenerator
 
 
@@ -34,6 +34,9 @@ class ThemePackCSSGenerator:
 
         # Base theme CSS (already layer-wrapped by CompleteThemeCSSGenerator)
         base_css = self.theme_generator.generate_css()
+
+        # Design system tokens (typography, layout, surface, animation)
+        ds_css = self._generate_design_system_vars()
 
         # Pack-specific additions
         pack_parts = [
@@ -61,6 +64,9 @@ class ThemePackCSSGenerator:
             "/* Base Theme CSS */",
             base_css,
             "",
+            "/* Design System Tokens */",
+            ds_css,
+            "",
         ]
 
         if use_layers:
@@ -69,6 +75,97 @@ class ThemePackCSSGenerator:
             parts.append(pack_css)
 
         return "\n".join(parts)
+
+    def _generate_design_system_vars(self) -> str:
+        """Generate :root CSS variables from the pack's DesignSystem."""
+        ds = get_design_system(self.pack.design_theme)
+        if not ds:
+            return ""
+
+        typo = ds.typography
+        layout = ds.layout
+        surface = ds.surface
+        anim = ds.animation
+
+        shape_map = {
+            "sharp": "0px",
+            "rounded": "var(--border-radius-md)",
+            "pill": "9999px",
+            "organic": "var(--border-radius-lg)",
+        }
+
+        lines = [
+            ":root {",
+            "  /* Design System: Typography */",
+            f"  --font-heading: {typo.heading_font};",
+            f"  --font-body: {typo.body_font};",
+            f"  --font-size-base: {typo.base_size};",
+            f"  --font-scale: {typo.heading_scale};",
+            f"  --line-height: {typo.line_height};",
+            f"  --font-weight-heading: {typo.heading_weight};",
+            f"  --font-weight-section: {typo.section_heading_weight};",
+            f"  --font-weight-body: {typo.body_weight};",
+            f"  --letter-spacing: {typo.letter_spacing};",
+            f"  --body-line-height: {typo.body_line_height};",
+            f"  --prose-max-width: {typo.prose_max_width};",
+            f"  --badge-radius: {typo.badge_radius};",
+            "",
+            "  /* Design System: Layout */",
+            f"  --space-unit: {layout.space_unit};",
+            f"  --space-scale: {layout.space_scale};",
+            f"  --border-radius-sm: {layout.border_radius_sm};",
+            f"  --border-radius-md: {layout.border_radius_md};",
+            f"  --border-radius-lg: {layout.border_radius_lg};",
+            f"  /* Aliases for djust-components compatibility */",
+            f"  --radius: {layout.border_radius_md};",
+            f"  --radius-sm: {layout.border_radius_sm};",
+            f"  --radius-md: {layout.border_radius_md};",
+            f"  --radius-lg: {layout.border_radius_lg};",
+            f"  --container-width: {layout.container_width};",
+            f"  --grid-gap: {layout.grid_gap};",
+            f"  --section-spacing: {layout.section_spacing};",
+            f"  --button-radius: {shape_map.get(layout.button_shape, layout.border_radius_md)};",
+            f"  --card-radius: {shape_map.get(layout.card_shape, layout.border_radius_lg)};",
+            f"  --input-radius: {shape_map.get(layout.input_shape, layout.border_radius_sm)};",
+            "",
+            "  /* Design System: Hero */",
+            f"  --hero-padding-top: {layout.hero_padding_top};",
+            f"  --hero-padding-bottom: {layout.hero_padding_bottom};",
+            f"  --hero-line-height: {layout.hero_line_height};",
+            f"  --hero-max-width: {layout.hero_max_width};",
+            "",
+            "  /* Design System: Surfaces */",
+            f"  --shadow-sm: {surface.shadow_sm};",
+            f"  --shadow-md: {surface.shadow_md};",
+            f"  --shadow-lg: {surface.shadow_lg};",
+            f"  --border-width: {surface.border_width};",
+            f"  --border-style: {surface.border_style};",
+            f"  --backdrop-blur: {surface.backdrop_blur};",
+        ]
+
+        # Glass surface treatment gets card opacity + blur
+        if surface.surface_treatment == "glass":
+            lines.extend([
+                "  --card-opacity: 0.7;",
+                f"  --card-blur: {surface.backdrop_blur};",
+            ])
+
+        lines.extend([
+            "",
+            "  /* Design System: Animation */",
+            f"  --duration-fast: {anim.duration_fast};",
+            f"  --duration-normal: {anim.duration_normal};",
+            f"  --duration-slow: {anim.duration_slow};",
+            f"  --easing: {anim.easing};",
+        ])
+
+        if anim.hover_scale != 1.0:
+            lines.append(f"  --hover-scale: {anim.hover_scale};")
+        if anim.hover_translate_y != "0px":
+            lines.append(f"  --hover-translate-y: {anim.hover_translate_y};")
+
+        lines.append("}")
+        return "\n".join(lines)
 
     def _generate_icon_css(self) -> str:
         """Generate CSS for icon styling."""

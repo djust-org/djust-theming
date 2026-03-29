@@ -17,7 +17,8 @@ from django.http import (
 )
 from django.template.loader import render_to_string
 
-from .context import build_gallery_context, serialize_all_presets, serialize_preset
+from .context import build_gallery_context, serialize_all_design_systems, serialize_all_presets, serialize_preset
+from djust_theming.theme_packs import DESIGN_SYSTEMS
 from .storybook import build_storybook_detail_context, build_storybook_index_context
 from djust_theming.contracts import COMPONENT_CONTRACTS
 from djust_theming.presets import get_preset, list_presets
@@ -75,8 +76,10 @@ def editor_view(request):
     ctx["request"] = request
     ctx.update(_template_sample_data())
 
-    # Serialize all presets for JS initialization
+    # Serialize all presets and design systems for JS initialization
     ctx["preset_data_json"] = json.dumps(serialize_all_presets())
+    ctx["design_systems_json"] = json.dumps(serialize_all_design_systems())
+    ctx["design_systems"] = DESIGN_SYSTEMS
 
     html = render_to_string(
         "djust_theming/gallery/editor.html",
@@ -119,6 +122,7 @@ def editor_export_view(request):
     theme_name = payload.get("name", "custom")
     radius = payload.get("radius", 0.5)
     tokens_data = payload.get("tokens", {})
+    custom_properties = payload.get("custom_properties", {})
 
     # --- Input validation ---
     # Validate theme name: alphanumeric + hyphens only
@@ -152,8 +156,18 @@ def editor_export_view(request):
                 if not isinstance(val, (int, float)):
                     return JsonResponse({"error": f"Invalid {key} value for {token_name}"}, status=400)
 
+    # Validate custom_properties: must be a flat dict of string->string
+    if not isinstance(custom_properties, dict):
+        custom_properties = {}
+    _VALID_PROP_NAME = re.compile(r"^[a-zA-Z][a-zA-Z0-9-]*$")
+    validated_props = {}
+    for prop_name, prop_value in custom_properties.items():
+        if (isinstance(prop_name, str) and isinstance(prop_value, str)
+                and _VALID_PROP_NAME.match(prop_name) and len(prop_value) < 256):
+            validated_props[prop_name] = prop_value
+
     # Generate tokens.css
-    tokens_css = _generate_tokens_css(tokens_data, radius)
+    tokens_css = _generate_tokens_css(tokens_data, radius, validated_props)
 
     # Generate theme.toml
     theme_toml = _generate_theme_toml(theme_name, radius)
@@ -208,6 +222,8 @@ def storybook_index_view(request):
 
     ctx = build_storybook_index_context()
     ctx["request"] = request
+    ctx["all_components"] = ctx.get("components", [])
+    ctx["current_component"] = None
 
     html = render_to_string(
         "djust_theming/gallery/storybook_index.html",
@@ -236,6 +252,10 @@ def storybook_detail_view(request, component_name):
 
     ctx = build_storybook_detail_context(component_name)
     ctx["request"] = request
+    # Pass full component list for sidebar navigation
+    index_ctx = build_storybook_index_context()
+    ctx["all_components"] = index_ctx.get("components", [])
+    ctx["current_component"] = component_name
 
     html = render_to_string(
         "djust_theming/gallery/storybook_detail.html",
@@ -250,7 +270,9 @@ def storybook_detail_view(request, component_name):
 # ---------------------------------------------------------------------------
 
 
-def _generate_tokens_css(tokens_data: dict, radius: float) -> str:
+def _generate_tokens_css(
+    tokens_data: dict, radius: float, custom_properties: dict | None = None
+) -> str:
     """Generate CSS custom property declarations from token data.
 
     All token names and values are validated before reaching this function,
@@ -265,6 +287,14 @@ def _generate_tokens_css(tokens_data: dict, radius: float) -> str:
         h, s, l = int(hsl.get("h", 0)), int(hsl.get("s", 0)), int(hsl.get("l", 0))
         lines.append(f"  --{css_name}: {h} {s}% {l}%;")
     lines.append(f"  --radius: {float(radius)}rem;")
+
+    # Non-color custom properties (typography, spacing, animation, shadows)
+    if custom_properties:
+        lines.append("")
+        lines.append("  /* Typography, spacing, animation, shadows */")
+        for prop_name, prop_value in sorted(custom_properties.items()):
+            lines.append(f"  --{prop_name}: {prop_value};")
+
     lines.append("}")
     lines.append("")
 

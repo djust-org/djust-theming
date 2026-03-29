@@ -1,186 +1,232 @@
 {% extends "theme_demo/base.html" %}
-{% load theme_components %}
+{% load djust_components theme_tags %}
 
 {% block content %}
-<!-- Hero Section -->
-<div class="gradient-bg rounded-2xl p-12 mb-12 text-center">
-    <h1 class="text-5xl font-bold mb-4">
-        Welcome to <span class="text-primary">djust-theming</span>
-    </h1>
-    <p class="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-        A complete design system framework for Django &mdash; 24 components, 19 color presets,
-        11 design systems, 6 layout templates, and 8 page templates.
-    </p>
-    <div class="flex justify-center gap-4 flex-wrap">
-        <a href="{% url 'theme_demo:components' %}" class="btn btn-primary px-8 py-3 text-base no-underline">View Components</a>
-        <a href="{% url 'theme_demo:presets' %}" class="btn btn-secondary px-8 py-3 text-base no-underline">Explore Presets</a>
-        <a href="/theming/gallery/" class="btn btn-secondary px-8 py-3 text-base no-underline">Open Gallery</a>
+<!-- Hero Section — full-width breakout -->
+<section class="relative overflow-hidden" style="margin: calc(var(--section-spacing, 2rem) * -1) calc(var(--grid-gap, 1.5rem) * -1) var(--section-spacing, 2rem); padding: var(--hero-padding-top, 8rem) var(--grid-gap, 1.5rem) var(--hero-padding-bottom, 5rem);">
+    <!-- Background effects -->
+    <div class="absolute inset-0 grid-pattern pointer-events-none"></div>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[400px] hero-glow-accent rounded-full pointer-events-none" style="filter: blur(120px);"></div>
+    <div class="absolute top-20 left-1/3 w-[500px] h-[300px] hero-glow-primary rounded-full pointer-events-none" style="filter: blur(100px);"></div>
+
+    <div class="relative z-10 text-center mx-auto" style="max-width: var(--hero-max-width, 64rem);">
+        <!-- Badge -->
+        <span class="badge" style="background-color: color-mix(in oklab, hsl(var(--accent)) 10%, transparent); color: hsl(var(--accent)); border: var(--border-width, 1px) var(--border-style, solid) color-mix(in oklab, hsl(var(--accent)) 20%, transparent); margin-bottom: calc(var(--grid-gap, 1.5rem) * 1.33);">
+            <span style="width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: hsl(var(--success)); display: inline-block;" class="animate-pulse"></span>
+            171 Components &bull; 19 Presets &bull; 12 Theme Packs
+        </span>
+
+        <!-- Headline -->
+        <h1 style="font-family: var(--font-heading, system-ui); font-size: var(--h1-size); font-weight: var(--font-weight-heading, 800); line-height: var(--hero-line-height, 1.1); letter-spacing: var(--letter-spacing, -0.025em); margin-bottom: calc(var(--grid-gap, 1.5rem) * 1.33);">
+            A Complete Design System<br>
+            <span class="gradient-text">for Django.</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="fg-muted mx-auto" style="font-size: var(--h3-size); margin-bottom: calc(var(--grid-gap, 1.5rem) * 2); max-width: var(--prose-max-width, 42rem); line-height: var(--body-line-height, 1.6);">
+            171 theme-aware components powered by <strong class="fg">djust-components</strong>,
+            styled by <strong class="fg">djust-theming</strong> design tokens.
+            Switch between <strong class="fg">12 theme packs</strong> and watch everything adapt.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row items-center justify-center" style="gap: var(--grid-gap, 1rem);">
+            <a href="{% url 'theme_demo:components' %}" class="btn btn-primary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.58) calc(var(--grid-gap, 1.5rem) * 1.33); font-size: var(--body-size); border-radius: var(--button-radius, var(--border-radius-md, 0.5rem)); box-shadow: 0 10px 15px -3px hsl(var(--primary) / 0.2), 0 4px 6px -2px hsl(var(--primary) / 0.1);">
+                View Components
+                <svg class="w-4 h-4" style="margin-left: 0.25rem;" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </a>
+            <div class="bg-s2 fg-muted flex items-center justify-center" style="padding: calc(var(--grid-gap, 1.5rem) * 0.58) calc(var(--grid-gap, 1.5rem) * 1.33); border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border)); border-radius: var(--button-radius, var(--border-radius-md, 0.5rem)); font-family: monospace; font-size: var(--small-size); gap: calc(var(--grid-gap, 1.5rem) * 0.5); white-space: nowrap;">
+                <span class="fg-primary">$</span> pip install djust-theming
+            </div>
+            <a href="/theming/gallery/" class="btn btn-secondary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.58) calc(var(--grid-gap, 1.5rem) * 1.33); font-size: var(--body-size); border-radius: var(--button-radius, var(--border-radius-md, 0.5rem));">
+                Open Gallery
+            </a>
+        </div>
     </div>
-</div>
+</section>
 
 <!-- Features Grid -->
-<div class="grid md:grid-cols-3 gap-6 mb-12">
-    <a href="{% url 'theme_demo:components' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
-        <h3 class="text-lg font-semibold mb-2">24 Components</h3>
-        <p class="text-sm text-muted-foreground">
-            Button, card, badge, alert, input, select, textarea, checkbox, radio, modal, dropdown,
-            tabs, table, pagination, breadcrumb, avatar, toast, progress, skeleton, tooltip, nav,
-            sidebar nav, nav item, nav group
+<div class="grid md:grid-cols-3" style="gap: var(--grid-gap, 1.5rem); margin-bottom: var(--section-spacing, 2rem);">
+    <a href="{% url 'theme_demo:components' %}" class="glass-card no-underline text-current" data-accent="primary" style="padding: var(--grid-gap, 1.5rem);">
+        <h3 class="fg-primary" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">171 Components</h3>
+        <p class="fg-muted" style="font-size: var(--small-size);">
+            Buttons, cards, alerts, badges, forms, modals, tabs, accordion, tooltips, progress,
+            charts, data tables, and 160 more — all theme-aware via djust-components.
         </p>
     </a>
 
-    <a href="{% url 'theme_demo:presets' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
-        <h3 class="text-lg font-semibold mb-2">19 Color Presets</h3>
-        <p class="text-sm text-muted-foreground">
-            Default, Shadcn, Blue, Green, Purple, Orange, Rose, Natural20, Catppuccin,
-            Rose Pine, Tokyo Night, Nord, Synthwave, Cyberpunk, Outrun, Forest, Amber, Slate, Nebula
+    <a href="{% url 'theme_demo:themes' %}" class="glass-card no-underline text-current" data-accent="accent" style="padding: var(--grid-gap, 1.5rem);">
+        <h3 class="fg-accent" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Themes & Presets</h3>
+        <p class="fg-muted" style="font-size: var(--small-size);">
+            11 design systems &times; 19 color presets = 209 unique combinations.
+            Design systems control structure, presets control palette.
         </p>
     </a>
 
-    <a href="{% url 'theme_demo:design_systems' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
-        <h3 class="text-lg font-semibold mb-2">11 Design Systems</h3>
-        <p class="text-sm text-muted-foreground">
-            Material, iOS, Fluent, Minimalist, Playful, Corporate, Retro, Elegant,
-            Neo-Brutalist, Organic, Dense
+    <a href="{% url 'theme_demo:packs' %}" class="glass-card no-underline text-current" data-accent="info" style="padding: var(--grid-gap, 1.5rem);">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33); color: hsl(var(--info, var(--primary)));">12 Theme Packs</h3>
+        <p class="fg-muted" style="font-size: var(--small-size);">
+            Complete bundles: design system + colors + icons + animations + patterns.
+            One pack changes everything — fonts, spacing, radius, shadows, colors.
         </p>
     </a>
 
-    <a href="{% url 'theme_demo:layouts' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
-        <h3 class="text-lg font-semibold mb-2">6 Layout Templates</h3>
-        <p class="text-sm text-muted-foreground">
-            Topbar, Sidebar, Sidebar+Topbar, Centered, Dashboard, Split &mdash;
-            extend and fill blocks for instant page structure
+    <a href="{% url 'theme_demo:docs' %}" class="glass-card no-underline text-current" data-accent="warning" style="padding: var(--grid-gap, 1.5rem);">
+        <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33); color: hsl(var(--warning));">Documentation</h3>
+        <p class="fg-muted" style="font-size: var(--small-size);">
+            Getting started guide, installation, configuration, template tag reference,
+            layout templates, and page templates.
         </p>
     </a>
 
-    <a href="{% url 'theme_demo:pages' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
-        <h3 class="text-lg font-semibold mb-2">8+ Page Templates</h3>
-        <p class="text-sm text-muted-foreground">
-            Login, Register, Password Reset, Password Confirm, 404, 403, 500,
-            Maintenance, Empty State &mdash; drop-in themed page fragments
+    <a href="{% url 'theme_demo:integration' %}" class="glass-card no-underline text-current" data-accent="success" style="padding: var(--grid-gap, 1.5rem);">
+        <h3 class="fg-success" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Integration Guide</h3>
+        <p class="fg-muted" style="font-size: var(--small-size);">
+            How djust-theming + djust-components work together. Token architecture,
+            CSS loading order, and custom overrides.
         </p>
     </a>
 
-    <a href="{% url 'theme_demo:forms' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
-        <h3 class="text-lg font-semibold mb-2">Django Form Integration</h3>
-        <p class="text-sm text-muted-foreground">
-            Render Django forms with themed styling. Stacked, horizontal, and inline layouts.
-            Automatic error display with themed alerts.
-        </p>
-    </a>
-
-    <a href="{% url 'theme_demo:packs' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
-        <h3 class="text-lg font-semibold mb-2">Theme Packs</h3>
-        <p class="text-sm text-muted-foreground">
-            Complete bundles combining design system + colors + icons + animations + patterns
-            into cohesive themes
-        </p>
-    </a>
-
-    <a href="/theming/gallery/" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
-        <h3 class="text-lg font-semibold mb-2">Gallery, Storybook & Editor</h3>
-        <p class="text-sm text-muted-foreground">
-            Built-in gallery to browse all themes, storybook for component isolation,
-            and live editor to customize themes with diff export
-        </p>
-    </a>
-
-    <a href="{% url 'theme_demo:tailwind' %}" class="bg-card border border-border rounded-lg p-6 demo-card hover:shadow-lg transition-shadow no-underline text-current">
-        <h3 class="text-lg font-semibold mb-2">Tailwind + shadcn/ui</h3>
-        <p class="text-sm text-muted-foreground">
-            Generate Tailwind configs, import/export shadcn themes,
-            use theme colors as Tailwind utilities
+    <a href="/theming/gallery/" class="glass-card no-underline text-current" data-accent="accent" style="padding: var(--grid-gap, 1.5rem);">
+        <h3 class="fg-accent" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Gallery & Storybook</h3>
+        <p class="fg-muted" style="font-size: var(--small-size);">
+            Visual gallery for browsing themes, component storybook for isolation testing,
+            and live editor for customizing with diff export.
         </p>
     </a>
 </div>
 
 <!-- Architecture Overview -->
-<div class="bg-card border border-border rounded-lg p-8 mb-12">
-    <h2 class="text-2xl font-bold mb-6">Architecture Overview</h2>
-    <div class="grid md:grid-cols-2 gap-8">
+<div class="glass-card" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--section-spacing, 2rem);">
+    <h2 style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem);">Architecture Overview</h2>
+    <div class="grid md:grid-cols-2" style="gap: calc(var(--grid-gap, 1.5rem) * 1.33);">
         <div>
-            <h3 class="text-lg font-semibold mb-3 text-primary">Design Systems vs. Color Presets</h3>
-            <p class="text-muted-foreground mb-4">
+            <h3 class="fg-primary" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">Design Systems vs. Color Presets</h3>
+            <p class="fg-muted" style="margin-bottom: var(--grid-gap, 1rem); line-height: var(--body-line-height, 1.6);">
                 Design systems control structure (typography, spacing, shadows, animations).
                 Color presets control palette. Mix any design system with any color preset.
             </p>
-            <p class="text-sm text-muted-foreground">
+            <p class="fg-muted" style="font-size: var(--small-size);">
                 <strong>11 x 19 = 209 unique combinations</strong> out of the box.
             </p>
         </div>
         <div>
-            <h3 class="text-lg font-semibold mb-3 text-primary">Template Tag Libraries</h3>
-            <ul class="space-y-2 text-sm text-muted-foreground">
-                <li><code class="text-primary">{% verbatim %}{% load theme_tags %}{% endverbatim %}</code> &mdash; theme_head, theme_switcher, theme_mode_toggle, theme_preset_selector</li>
-                <li><code class="text-primary">{% verbatim %}{% load theme_components %}{% endverbatim %}</code> &mdash; 24 UI components</li>
-                <li><code class="text-primary">{% verbatim %}{% load theme_form_tags %}{% endverbatim %}</code> &mdash; theme_form, theme_form_errors, get_css_prefix</li>
-                <li><code class="text-primary">{% verbatim %}{% load theme_pages %}{% endverbatim %}</code> &mdash; auth, error, and utility page fragments</li>
+            <h3 class="fg-primary" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">Template Tag Libraries</h3>
+            <ul class="fg-muted" style="font-size: var(--small-size); display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.33);">
+                <li><code class="fg-primary">{% verbatim %}{% load theme_tags %}{% endverbatim %}</code> &mdash; theme_head, theme_switcher, mode toggle, preset selector</li>
+                <li><code class="fg-primary">{% verbatim %}{% load djust_components %}{% endverbatim %}</code> &mdash; 171 UI components (buttons, cards, forms, charts...)</li>
+                <li><code class="fg-primary">{% verbatim %}{% load theme_form_tags %}{% endverbatim %}</code> &mdash; Django form rendering with themed styling</li>
             </ul>
         </div>
     </div>
 </div>
 
-<!-- Quick Start -->
-<div class="bg-card border border-border rounded-lg p-8 mb-12">
-    <h2 class="text-2xl font-bold mb-6">Quick Start</h2>
+<!-- Quick Start (condensed — full guide on /docs/) -->
+<div class="glass-card" data-accent="primary" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--section-spacing, 2rem);">
+    <div class="flex items-center justify-between" style="margin-bottom: var(--grid-gap, 1.5rem);">
+        <h2 style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin: 0;">Quick Start</h2>
+        <a href="{% url 'theme_demo:docs' %}" class="fg-primary" style="font-size: var(--small-size); font-weight: var(--font-weight-section, 600); text-decoration: none; transition: color var(--duration-fast, 150ms) var(--easing, ease);">Full documentation &rarr;</a>
+    </div>
 
-    <div class="space-y-4">
+    <div style="display: flex; flex-direction: column; gap: var(--grid-gap, 1rem);">
         <div>
-            <h3 class="text-lg font-semibold mb-2">1. Install</h3>
-            <div class="code-block">
-                pip install djust-theming
+            <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">1. Install</h3>
+            <div class="code-panel">
+                <div class="code-panel-header">
+                    <div class="code-panel-dots">
+                        <div class="code-panel-dot" style="background: hsl(var(--destructive));"></div>
+                        <div class="code-panel-dot" style="background: hsl(var(--warning));"></div>
+                        <div class="code-panel-dot" style="background: hsl(var(--success));"></div>
+                    </div>
+                    <span class="fg-muted" style="font-size: var(--tiny-size); font-family: monospace;">terminal</span>
+                </div>
+                <div class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--small-size);">
+                    <span class="fg-muted">$</span> pip install <span class="fg-primary">djust-theming djust-components</span>
+                </div>
             </div>
         </div>
 
         <div>
-            <h3 class="text-lg font-semibold mb-2">2. Configure</h3>
-            <div class="code-block">
-{% verbatim %}INSTALLED_APPS = ['djust_theming', ...]
+            <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">2. Use</h3>
+            <div class="code-panel">
+                <div class="code-panel-header">
+                    <div class="code-panel-dots">
+                        <div class="code-panel-dot" style="background: hsl(var(--destructive));"></div>
+                        <div class="code-panel-dot" style="background: hsl(var(--warning));"></div>
+                        <div class="code-panel-dot" style="background: hsl(var(--success));"></div>
+                    </div>
+                    <span class="fg-muted" style="font-size: var(--tiny-size); font-family: monospace;">settings.py</span>
+                </div>
+                <pre class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--small-size); margin: 0; line-height: var(--body-line-height, 1.6);">{% verbatim %}<span style="color: hsl(var(--info, var(--primary)));">INSTALLED_APPS</span> = [<span style="color: hsl(var(--warning));">'djust_theming'</span>, <span style="color: hsl(var(--warning));">'djust_components'</span>, ...]
 
-TEMPLATES = [{
-    'OPTIONS': {
-        'context_processors': [
-            'djust_theming.context_processors.theme_context',
+<span style="color: hsl(var(--info, var(--primary)));">TEMPLATES</span> = [{
+    <span style="color: hsl(var(--warning));">'OPTIONS'</span>: {
+        <span style="color: hsl(var(--warning));">'context_processors'</span>: [
+            <span style="color: hsl(var(--warning));">'djust_theming.context_processors.theme_context'</span>,
         ],
     },
 }]
 
-LIVEVIEW_CONFIG = {
-    'theme': {
-        'preset': 'blue',
-        'default_mode': 'system',
-        'critical_css': True,
+<span style="color: hsl(var(--info, var(--primary)));">LIVEVIEW_CONFIG</span> = {
+    <span style="color: hsl(var(--warning));">'theme'</span>: {
+        <span style="color: hsl(var(--warning));">'preset'</span>: <span style="color: hsl(var(--success));">'blue'</span>,
+        <span style="color: hsl(var(--warning));">'default_mode'</span>: <span style="color: hsl(var(--success));">'system'</span>,
+        <span style="color: hsl(var(--warning));">'critical_css'</span>: <span style="color: hsl(var(--accent));">True</span>,
     }
-}{% endverbatim %}
+}{% endverbatim %}</pre>
             </div>
         </div>
 
         <div>
-            <h3 class="text-lg font-semibold mb-2">3. Use in Templates</h3>
-            <div class="code-block">
-{% verbatim %}{% load theme_tags theme_components %}
-<head>{% theme_head %}</head>
-<body>
-    {% theme_switcher %}
-    {% theme_button "Click me" variant="primary" %}
-    {% theme_alert "Done!" variant="success" %}
-</body>{% endverbatim %}
+            <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">3. Use in Templates</h3>
+            <div class="code-panel">
+                <div class="code-panel-header">
+                    <div class="code-panel-dots">
+                        <div class="code-panel-dot" style="background: hsl(var(--destructive));"></div>
+                        <div class="code-panel-dot" style="background: hsl(var(--warning));"></div>
+                        <div class="code-panel-dot" style="background: hsl(var(--success));"></div>
+                    </div>
+                    <span class="fg-muted" style="font-size: var(--tiny-size); font-family: monospace;">template.html</span>
+                </div>
+                <pre class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--small-size); margin: 0; line-height: var(--body-line-height, 1.6);">{% verbatim %}<span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">load</span> <span style="color: hsl(var(--warning));">theme_tags djust_components</span> <span style="color: hsl(var(--accent));">%}</span>
+<span class="fg-muted">&lt;head&gt;</span><span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">theme_head</span> <span style="color: hsl(var(--accent));">%}</span><span class="fg-muted">&lt;/head&gt;</span>
+<span class="fg-muted">&lt;body&gt;</span>
+    <span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">theme_switcher</span> <span style="color: hsl(var(--accent));">%}</span>
+    <span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">dj_button</span> <span style="color: hsl(var(--success));">label=<span style="color: hsl(var(--warning));">"Save"</span> variant=<span style="color: hsl(var(--warning));">"primary"</span></span> <span style="color: hsl(var(--accent));">%}</span>
+    <span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">alert</span> <span style="color: hsl(var(--success));">variant=<span style="color: hsl(var(--warning));">"success"</span></span> <span style="color: hsl(var(--accent));">%}</span>Done!<span style="color: hsl(var(--accent));">{%</span> <span style="color: hsl(var(--info, var(--primary)));">endalert</span> <span style="color: hsl(var(--accent));">%}</span>
+<span class="fg-muted">&lt;/body&gt;</span>{% endverbatim %}</pre>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Try It -->
+<div class="text-center" style="margin-bottom: var(--section-spacing, 2rem);">
+    <span class="badge" style="background-color: color-mix(in oklab, hsl(var(--primary)) 10%, transparent); color: hsl(var(--primary)); border: var(--border-width, 1px) var(--border-style, solid) color-mix(in oklab, hsl(var(--primary)) 20%, transparent); margin-bottom: var(--grid-gap, 1.5rem);">
+        Try It
+    </span>
+    <h2 style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.67);">
+        Switch Themes in Real Time
+    </h2>
+    <p class="fg-muted mx-auto" style="max-width: var(--prose-max-width, 42rem); margin-bottom: var(--grid-gap, 1.5rem);">
+        Click the theme button in the top-right corner to switch between 12 theme packs,
+        toggle dark/light mode, and change color presets. Every element on the page adapts instantly.
+    </p>
+    <a href="{% url 'theme_demo:integration' %}" class="fg-primary" style="font-weight: var(--font-weight-section, 600); text-decoration: none;">Learn how it works &rarr;</a>
+</div>
+
+
+
 <!-- Built-in Tools -->
-<div class="bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-8 text-center">
-    <h2 class="text-2xl font-bold mb-4">Built-in Tools</h2>
-    <p class="text-muted-foreground mb-6">
+<div class="text-center" style="background: linear-gradient(to right, color-mix(in oklab, hsl(var(--primary)) 10%, transparent), color-mix(in oklab, hsl(var(--accent)) 10%, transparent)); border: var(--border-width, 1px) var(--border-style, solid) color-mix(in oklab, hsl(var(--primary)) 20%, transparent); border-radius: var(--card-radius, var(--border-radius-lg, 0.5rem)); padding: calc(var(--grid-gap, 1.5rem) * 1.33);">
+    <h2 style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1rem);">Built-in Tools</h2>
+    <p class="fg-muted" style="margin-bottom: var(--grid-gap, 1.5rem);">
         Explore themes visually with the built-in gallery, storybook, and editor
     </p>
-    <div class="flex justify-center gap-4 flex-wrap">
-        <a href="/theming/gallery/" class="btn btn-primary px-6 py-2 no-underline">Gallery</a>
-        <a href="/theming/gallery/storybook/" class="btn btn-secondary px-6 py-2 no-underline">Storybook</a>
-        <a href="/theming/gallery/editor/" class="btn btn-secondary px-6 py-2 no-underline">Editor</a>
-        <a href="/theming/gallery/diff/" class="btn btn-secondary px-6 py-2 no-underline">Diff</a>
+    <div class="flex justify-center flex-wrap" style="gap: var(--grid-gap, 1rem);">
+        <a href="/theming/gallery/" class="btn btn-primary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.33) var(--grid-gap, 1.5rem);">Gallery</a>
+        <a href="/theming/gallery/storybook/" class="btn btn-secondary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.33) var(--grid-gap, 1.5rem);">Storybook</a>
+        <a href="/theming/gallery/editor/" class="btn btn-secondary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.33) var(--grid-gap, 1.5rem);">Editor</a>
     </div>
 </div>
 {% endblock %}

@@ -758,6 +758,75 @@ THEME_DENSE = Theme(
     color_preset="default",
 )
 
+# djust.org Theme
+DJUST_THEME = Theme(
+    name="djust",
+    display_name="djust.org",
+    description="djust.org brand — dark with rust orange and Django green accents",
+    typography=Typography(
+        font_sans="Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+        font_mono="JetBrains Mono, monospace",
+        text_base="1rem",
+        text_xs="0.75rem",
+        text_sm="0.875rem",
+        text_lg="1.125rem",
+        text_xl="1.25rem",
+        text_2xl="1.5rem",
+        text_3xl="1.875rem",
+        text_4xl="2.25rem",
+        text_5xl="3rem",
+        font_normal=400,
+        font_medium=500,
+        font_semibold=600,
+        font_bold=700,
+        leading_tight=1.25,
+        leading_normal=1.625,
+        leading_relaxed=1.75,
+    ),
+    spacing=Spacing(
+        scale="normal",
+        base=0.25,
+    ),
+    border_radius=BorderRadius(
+        style="rounded",
+        radius_sm="0.25rem",
+        radius="0.25rem",
+        radius_md="0.375rem",
+        radius_lg="0.5rem",
+        radius_xl="0.75rem",
+        radius_2xl="1rem",
+        radius_3xl="1.5rem",
+        radius_full="9999px",
+    ),
+    shadows=Shadows(
+        style="subtle",
+        shadow_xs="0 1px 2px rgba(0,0,0,0.2)",
+        shadow_sm="0 1px 3px rgba(0,0,0,0.3)",
+        shadow="0 4px 6px rgba(0,0,0,0.3)",
+        shadow_md="0 10px 15px rgba(0,0,0,0.35)",
+        shadow_lg="0 20px 25px rgba(0,0,0,0.4)",
+        shadow_xl="0 25px 50px rgba(0,0,0,0.45)",
+        shadow_2xl="0 25px 50px rgba(0,0,0,0.5)",
+        shadow_inner="inset 0 2px 4px rgba(0,0,0,0.1)",
+    ),
+    animations=Animations(
+        style="smooth",
+        duration_fast="0.15s",
+        duration_normal="0.2s",
+        duration_slow="0.3s",
+        ease_in="cubic-bezier(0.4, 0, 1, 1)",
+        ease_out="cubic-bezier(0, 0, 0.2, 1)",
+        ease_in_out="cubic-bezier(0.4, 0, 0.2, 1)",
+        ease_bounce="cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+    ),
+    component_styles=ComponentStyles(
+        button_style="solid",
+        card_style="elevated",
+        input_style="outlined",
+    ),
+    color_preset="djust",
+)
+
 
 # Theme Registry (deprecated — use DESIGN_SYSTEMS from theme_packs.py)
 THEMES: Dict[str, Theme] = _DeprecatedThemesDict({
@@ -772,6 +841,7 @@ THEMES: Dict[str, Theme] = _DeprecatedThemesDict({
     "neo_brutalist": THEME_NEO_BRUTALIST,
     "organic": THEME_ORGANIC,
     "dense": THEME_DENSE,
+    "djust": DJUST_THEME,
 })
 
 
