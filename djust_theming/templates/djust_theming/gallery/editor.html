@@ -251,30 +251,34 @@
       .editor-layout { grid-template-columns: 1fr; }
       .editor-sidebar { max-height: none; position: static; }
     }
-    .storybook__topbar {
+    .gallery-topbar {
       position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-      background: hsl(var(--background, 0 0% 100%));
+      height: 3rem;
+      background: hsl(var(--surface-1, var(--background, 0 0% 100%)));
       border-bottom: 1px solid hsl(var(--border, 220 13% 91%));
       backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      display: flex; align-items: center; gap: 1rem;
-      padding: 0 1rem; height: 3rem; font-size: 0.875rem;
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0 1rem; font-size: 0.875rem;
     }
-    .storybook__topbar a { color: hsl(var(--muted-foreground, 220 9% 46%)); text-decoration: none; transition: color 0.15s; }
-    .storybook__topbar a:hover { color: hsl(var(--foreground, 222 47% 11%)); }
-    .storybook__topbar .active { color: hsl(var(--foreground, 222 47% 11%)); }
-    .storybook__topbar-brand { font-weight: 700; color: hsl(var(--foreground, 222 47% 11%)) !important; }
-    .storybook__topbar-sep { color: hsl(var(--muted-foreground, 220 9% 46%)); opacity: 0.3; }
+    .gallery-topbar a { color: hsl(var(--muted-foreground, 220 9% 46%)); text-decoration: none; transition: color 0.15s; }
+    .gallery-topbar a:hover { color: hsl(var(--foreground, 222 47% 11%)); }
+    .gallery-topbar-brand { font-weight: 700; color: hsl(var(--foreground, 222 47% 11%)) !important; }
+    .gallery-topbar-sep { color: hsl(var(--muted-foreground, 220 9% 46%)); opacity: 0.3; }
+    .gallery-topbar-active { color: hsl(var(--foreground, 222 47% 11%)) !important; }
   </style>
 </head>
 <body style="background: hsl(var(--background, 0 0% 100%)); color: hsl(var(--foreground, 222 47% 11%));">
-  <div class="storybook__topbar">
-    <a href="/" class="storybook__topbar-brand">djust-theming</a>
-    <span class="storybook__topbar-sep">|</span>
-    <a href="/">Home</a>
-    <a href="/theming/gallery/">Gallery</a>
-    <a href="/theming/gallery/storybook/">Storybook</a>
-    <a href="/theming/gallery/editor/" class="active">Editor</a>
-  </div>
+  <nav class="gallery-topbar">
+    <a href="/" class="gallery-topbar-brand">djust-theming</a>
+    <span class="gallery-topbar-sep">|</span>
+    <a href="/">Demo Home</a>
+    <a href="/components/">Components</a>
+    <span class="gallery-topbar-sep">|</span>
+    <a href="{% url 'djust_theming:gallery' %}">Gallery</a>
+    <a href="{% url 'djust_theming:storybook' %}">Storybook</a>
+    <a href="{% url 'djust_theming:editor' %}" class="gallery-topbar-active">Editor</a>
+    <a href="{% url 'djust_theming:diff' %}">Diff</a>
+  </nav>
   <div class="editor-layout" style="padding-top: 3rem;">
     <!-- ============ Sidebar Controls ============ -->
     <aside class="editor-sidebar">

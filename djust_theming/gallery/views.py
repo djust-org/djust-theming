@@ -16,6 +16,7 @@ from django.http import (
     JsonResponse,
 )
 from django.template.loader import render_to_string
+from django.views.decorators.clickjacking import xframe_options_sameorigin
 
 from .context import build_gallery_context, serialize_all_design_systems, serialize_all_presets, serialize_preset
 from djust_theming.theme_packs import DESIGN_SYSTEMS
@@ -28,6 +29,7 @@ from djust_theming.manager import ThemeState, generate_css_for_state, get_css_pr
 _VALID_TOKEN_NAME = re.compile(r"^[a-z][a-z0-9_-]*$")
 
 
+@xframe_options_sameorigin
 def gallery_view(request):
     """Render the theme component gallery page.
 
@@ -36,6 +38,8 @@ def gallery_view(request):
     - When ``DEBUG=False``, requires ``request.user.is_staff``
 
     Supports ``?preset=<name>`` query parameter to switch color presets.
+    The @xframe_options_sameorigin decorator allows this page to be embedded in
+    an iframe from the same origin, which is required by the diff comparison view.
     """
     denied = _check_access(request)
     if denied:
