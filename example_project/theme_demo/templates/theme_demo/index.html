@@ -38,8 +38,8 @@
             <div class="bg-s2 fg-muted flex items-center justify-center" style="padding: calc(var(--grid-gap, 1.5rem) * 0.58) calc(var(--grid-gap, 1.5rem) * 1.33); border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border)); border-radius: var(--button-radius, var(--border-radius-md, 0.5rem)); font-family: monospace; font-size: var(--small-size); gap: calc(var(--grid-gap, 1.5rem) * 0.5); white-space: nowrap;">
                 <span class="fg-primary">$</span> pip install djust-theming
             </div>
-            <a href="/theming/gallery/" class="btn btn-secondary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.58) calc(var(--grid-gap, 1.5rem) * 1.33); font-size: var(--body-size); border-radius: var(--button-radius, var(--border-radius-md, 0.5rem));">
-                Open Gallery
+            <a href="{% url 'djust_theming:gallery' %}" class="btn btn-secondary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.58) calc(var(--grid-gap, 1.5rem) * 1.33); font-size: var(--body-size); border-radius: var(--button-radius, var(--border-radius-md, 0.5rem));">
+                Theme Gallery
             </a>
         </div>
     </div>
@@ -87,11 +87,11 @@
         </p>
     </a>
 
-    <a href="/theming/gallery/" class="glass-card no-underline text-current" data-accent="accent" style="padding: var(--grid-gap, 1.5rem);">
-        <h3 class="fg-accent" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Gallery & Storybook</h3>
+    <a href="{% url 'djust_theming:gallery' %}" class="glass-card no-underline text-current" data-accent="accent" style="padding: var(--grid-gap, 1.5rem);">
+        <h3 class="fg-accent" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Theme Gallery & Storybook</h3>
         <p class="fg-muted" style="font-size: var(--small-size);">
-            Visual gallery for browsing themes, component storybook for isolation testing,
-            and live editor for customizing with diff export.
+            Developer tools built into djust-theming: browse all theme + preset combinations,
+            isolate components in the storybook, and tune tokens with the live editor.
         </p>
     </a>
 </div>
@@ -224,9 +224,9 @@
         Explore themes visually with the built-in gallery, storybook, and editor
     </p>
     <div class="flex justify-center flex-wrap" style="gap: var(--grid-gap, 1rem);">
-        <a href="/theming/gallery/" class="btn btn-primary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.33) var(--grid-gap, 1.5rem);">Gallery</a>
-        <a href="/theming/gallery/storybook/" class="btn btn-secondary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.33) var(--grid-gap, 1.5rem);">Storybook</a>
-        <a href="/theming/gallery/editor/" class="btn btn-secondary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.33) var(--grid-gap, 1.5rem);">Editor</a>
+        <a href="{% url 'djust_theming:gallery' %}" class="btn btn-primary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.33) var(--grid-gap, 1.5rem);">Gallery</a>
+        <a href="{% url 'djust_theming:storybook' %}" class="btn btn-secondary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.33) var(--grid-gap, 1.5rem);">Storybook</a>
+        <a href="{% url 'djust_theming:editor' %}" class="btn btn-secondary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.33) var(--grid-gap, 1.5rem);">Editor</a>
     </div>
 </div>
 {% endblock %}

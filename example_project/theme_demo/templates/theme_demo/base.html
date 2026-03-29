@@ -266,6 +266,8 @@
                     <span class="nav-divider">|</span>
                     <a href="{% url 'theme_demo:inspector' %}" class="nav-link {% if request.resolver_match.url_name == 'inspector' %}active{% endif %}">Inspector</a>
                     <a href="{% url 'theme_demo:landing' %}" class="nav-link {% if request.resolver_match.url_name == 'landing' %}active{% endif %}">Landing</a>
+                    <span class="nav-divider">|</span>
+                    <a href="{% url 'djust_theming:gallery' %}" class="nav-link {% if request.resolver_match.app_name == 'djust_theming' %}active{% endif %}">Gallery</a>
                 </div>
             </div>
 
@@ -374,8 +376,9 @@
             <div class="text-muted-foreground uppercase" style="font-size: var(--tiny-size); font-weight: var(--font-weight-section, 600); letter-spacing: 0.05em; padding: calc(var(--grid-gap, 1.5rem) * 0.17) calc(var(--grid-gap, 1.5rem) * 0.5); margin-top: calc(var(--grid-gap, 1.5rem) * 0.33);">Tools</div>
             <a href="{% url 'theme_demo:inspector' %}" class="nav-link block {% if request.resolver_match.url_name == 'inspector' %}active{% endif %}">Inspector</a>
             <a href="{% url 'theme_demo:landing' %}" class="nav-link block {% if request.resolver_match.url_name == 'landing' %}active{% endif %}">Landing</a>
-            <a href="/theming/gallery/" class="nav-link block">Gallery</a>
-            <a href="/theming/gallery/storybook/" class="nav-link block">Storybook</a>
+            <a href="{% url 'djust_theming:gallery' %}" class="nav-link block {% if request.resolver_match.app_name == 'djust_theming' %}active{% endif %}">Gallery</a>
+            <a href="{% url 'djust_theming:storybook' %}" class="nav-link block">Storybook</a>
+            <a href="{% url 'djust_theming:editor' %}" class="nav-link block">Editor</a>
 
             <div class="sm:hidden" style="padding: calc(var(--grid-gap, 1.5rem) * 0.33) calc(var(--grid-gap, 1.5rem) * 0.5);">
                 <div class="text-muted-foreground uppercase" style="font-size: var(--tiny-size); font-weight: var(--font-weight-section, 600); letter-spacing: 0.05em; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Theme Settings</div>
