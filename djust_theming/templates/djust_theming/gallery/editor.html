@@ -232,6 +232,8 @@
     .editor-preview .tabs-theme .tab-btn { border-radius: var(--button-radius, var(--radius)); }
     .editor-preview table { border-width: var(--border-width, 1px); border-style: var(--border-style, solid); }
     .editor-preview .toast-theme { border-radius: var(--card-radius, var(--radius)); border-width: var(--border-width, 1px); border-style: var(--border-style, solid); }
+    /* Toast demos: render inline instead of as fixed-position overlays */
+    .editor-preview .toast { position: static; margin-bottom: 0.5rem; }
 
     /* Bridge: focus ring */
     .editor-preview *:focus-visible {
