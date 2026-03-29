@@ -4,9 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Theme Gallery</title>
-  {% theme_head %}
+  {% theme_head include_js=True %}
+  <style data-djust-theme-gallery>{{ gallery_preset_css }}</style>
 <style>
-<style>
+    /* ===== Gallery topbar ===== */
+    .gallery-topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      height: 3rem;
+      background: hsl(var(--surface-1, var(--background, 0 0% 100%)));
+      border-bottom: 1px solid hsl(var(--border, 220 13% 91%));
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0 1rem;
+      font-size: 0.875rem;
+    }
+    .gallery-topbar a { color: hsl(var(--muted-foreground, 220 9% 46%)); text-decoration: none; transition: color 0.15s; }
+    .gallery-topbar a:hover { color: hsl(var(--foreground, 222 47% 11%)); }
+    .gallery-topbar-brand { font-weight: 700; color: hsl(var(--foreground, 222 47% 11%)) !important; }
+    .gallery-topbar-sep { color: hsl(var(--muted-foreground)); opacity: 0.3; }
+    .gallery-topbar-active { color: hsl(var(--foreground, 222 47% 11%)) !important; }
+    /* ===== Gallery layout ===== */
     .gallery__header { margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
     .gallery__header h1 { margin: 0; font-size: 1.75rem; }
     .gallery__preset-form { display: flex; align-items: center; gap: 0.5rem; margin-inline-start: auto; }
@@ -16,10 +33,23 @@
     .gallery__example { display: flex; flex-direction: column; gap: 0.25rem; }
     .gallery__example-label { font-size: 0.75rem; color: hsl(var(--muted-foreground, 220 9% 46%)); }
     .gallery__wide { width: 100%; }
-    .gallery { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+    .gallery { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; padding-top: calc(3rem + 2rem); }
 </style>
 </head>
 <body style="background: hsl(var(--background, 0 0% 100%)); color: hsl(var(--foreground, 222 47% 11%));">
+
+<nav class="gallery-topbar">
+  <a href="/" class="gallery-topbar-brand">djust-theming</a>
+  <span class="gallery-topbar-sep">|</span>
+  <a href="/">Demo Home</a>
+  <a href="/components/">Components</a>
+  <span class="gallery-topbar-sep">|</span>
+  <a href="{% url 'djust_theming:gallery' %}" class="gallery-topbar-active">Gallery</a>
+  <a href="{% url 'djust_theming:storybook' %}">Storybook</a>
+  <a href="{% url 'djust_theming:editor' %}">Editor</a>
+  <a href="{% url 'djust_theming:diff' %}">Diff</a>
+</nav>
+
 <div class="gallery">
     <div class="gallery__header">
       <h1>Theme Gallery</h1>

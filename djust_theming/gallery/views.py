@@ -22,6 +22,7 @@ from djust_theming.theme_packs import DESIGN_SYSTEMS
 from .storybook import build_storybook_detail_context, build_storybook_index_context
 from djust_theming.contracts import COMPONENT_CONTRACTS
 from djust_theming.presets import get_preset, list_presets
+from djust_theming.manager import ThemeState, generate_css_for_state, get_css_prefix, get_theme_manager
 
 # Allowed CSS token names: lowercase letters, digits, hyphens, underscores only.
 _VALID_TOKEN_NAME = re.compile(r"^[a-z][a-z0-9_-]*$")
@@ -43,8 +44,28 @@ def gallery_view(request):
     # Read preset from query param
     preset_name = request.GET.get("preset", "default")
 
+    # Validate and normalise preset name
+    from djust_theming.registry import get_registry
+    if not get_registry().has_preset(preset_name):
+        preset_name = "default"
+
+    # Generate CSS for the explicitly-chosen preset, independent of session/cookie state.
+    # This ensures the preset selector actually changes what the user sees without
+    # permanently overriding their theme preferences for the rest of the site.
+    manager = get_theme_manager(request)
+    base_state = manager.get_state()
+    gallery_state = ThemeState(
+        theme=base_state.theme,
+        preset=preset_name,
+        mode=base_state.mode,
+        resolved_mode=base_state.resolved_mode,
+        pack=None,
+    )
+    gallery_preset_css = generate_css_for_state(gallery_state, css_prefix=get_css_prefix())
+
     ctx = build_gallery_context(preset_name=preset_name)
     ctx["request"] = request
+    ctx["gallery_preset_css"] = gallery_preset_css
 
     # Extra context variables consumed directly by template tags in gallery.html
     ctx.update(_template_sample_data())

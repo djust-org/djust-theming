@@ -242,10 +242,13 @@
   <div class="sb-topbar">
     <a href="/" class="sb-topbar-brand">djust-theming</a>
     <span class="sb-topbar-sep">|</span>
-    <a href="/">Home</a>
-    <a href="/theming/gallery/">Gallery</a>
-    <a href="/theming/gallery/storybook/" class="{% if current_component is None %}active{% endif %}">Storybook</a>
-    <a href="/theming/gallery/editor/">Editor</a>
+    <a href="/">Demo Home</a>
+    <a href="/components/">Components</a>
+    <span class="sb-topbar-sep">|</span>
+    <a href="{% url 'djust_theming:gallery' %}">Gallery</a>
+    <a href="{% url 'djust_theming:storybook' %}" class="{% if current_component is None %}active{% endif %}">Storybook</a>
+    <a href="{% url 'djust_theming:editor' %}">Editor</a>
+    <a href="{% url 'djust_theming:diff' %}">Diff</a>
   </div>
 
   <div class="sb-layout">
@@ -256,7 +259,7 @@
       </div>
       <div class="sb-sidebar-label">Components ({{ all_components|length }})</div>
       {% for comp in all_components %}
-      <a href="/theming/gallery/storybook/{{ comp.name }}/"
+      <a href="{% url 'djust_theming:storybook_detail' comp.name %}"
          class="sb-sidebar-link {% if current_component == comp.name %}active{% endif %}"
          data-name="{{ comp.name }}" data-display="{{ comp.display_name|lower }}">
         {{ comp.display_name }}
