@@ -24,6 +24,9 @@
 
     {% block extra_head %}{% endblock %}
 
+    <!-- Seed default dark mode before theme_head anti-FOUC script reads localStorage -->
+    <script>if (!localStorage.getItem('djust-theme-mode')) { localStorage.setItem('djust-theme-mode', 'dark'); }</script>
+
     <!-- djust-theming CSS + JS - Loaded last to override defaults -->
     {% theme_head link_css=True %}
 
@@ -418,6 +421,14 @@
         const label = document.getElementById('theme-dropdown-label');
         const currentPack = localStorage.getItem('djust-theme-pack') || 'djust';
         const currentMode = localStorage.getItem('djust-theme-mode') || 'dark';
+
+        // Apply current mode to document (theme_head covers FOUC, this is the
+        // authoritative sync for the DOMContentLoaded state)
+        document.documentElement.setAttribute('data-theme-mode', currentMode);
+        const resolvedAtLoad = currentMode === 'system'
+            ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            : currentMode;
+        document.documentElement.setAttribute('data-theme', resolvedAtLoad);
 
         // Set label
         if (label) label.textContent = currentPack;
