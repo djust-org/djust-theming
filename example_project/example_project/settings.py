@@ -106,6 +106,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Make gallery/storybook publicly accessible on the demo site
+DJUST_THEMING_GALLERY_PUBLIC = True
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

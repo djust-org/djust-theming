@@ -392,7 +392,8 @@ def _generate_theme_toml(name: str, radius: float) -> str:
 
 def _check_access(request):
     """Return an HttpResponseForbidden if access should be denied, else None."""
-    if not settings.DEBUG:
+    gallery_public = getattr(settings, "DJUST_THEMING_GALLERY_PUBLIC", settings.DEBUG)
+    if not gallery_public:
         user = getattr(request, "user", None)
         if not user or not getattr(user, "is_staff", False):
             return HttpResponseForbidden(
