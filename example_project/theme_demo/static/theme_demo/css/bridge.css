@@ -1,0 +1,88 @@
+/*
+ * djust-components bridge CSS
+ *
+ * Unlayered overrides for djust-components styles that live inside
+ * @layer djust-components. Since base.css is unlayered, layered
+ * styles lose by default. This file re-declares the critical
+ * component styles outside any @layer so they apply correctly.
+ *
+ * Also bridges naming gaps between djust-components templates
+ * (BEM: .dj-badge--success) and CSS (.dj-badge-success).
+ *
+ * TODO: fix upstream — either move components.css out of @layer
+ * or make base.css use @layer base.
+ */
+
+/* ===== Badge (template uses .dj-badge--, CSS defines .dj-badge-) ===== */
+.dj-badge { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.125rem 0.625rem; border-radius: var(--radius-full, 9999px); font-size: var(--text-xs, 0.75rem); font-weight: var(--font-medium, 500); line-height: 1.5; }
+.dj-badge--success { background: hsl(var(--success, 142 71% 45%) / 0.1); color: hsl(var(--success, 142 71% 45%)); }
+.dj-badge--warning { background: hsl(var(--warning, 48 96% 53%) / 0.1); color: hsl(var(--warning, 48 96% 53%)); }
+.dj-badge--error { background: hsl(var(--destructive, 0 84% 60%) / 0.1); color: hsl(var(--destructive, 0 84% 60%)); }
+.dj-badge--info { background: hsl(var(--info, 199 89% 48%) / 0.1); color: hsl(var(--info, 199 89% 48%)); }
+.dj-badge--default { background: hsl(var(--muted, 220 13% 91%) / 0.3); color: hsl(var(--muted-foreground, 220 9% 46%)); }
+.dj-badge__dot { width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: currentColor; flex-shrink: 0; }
+.dj-badge__dot--pulse { animation: dj-pulse 2s infinite; }
+
+/* ===== Avatar (no .dj-avatar base in components.css) ===== */
+.dj-avatar { position: relative; display: inline-flex; align-items: center; justify-content: center; border-radius: 9999px; background: hsl(var(--muted, 220 13% 91%)); color: hsl(var(--foreground, 222 47% 11%)); font-weight: 600; overflow: hidden; flex-shrink: 0; }
+.dj-avatar--sm { width: 2rem; height: 2rem; font-size: 0.7rem; }
+.dj-avatar--md { width: 2.5rem; height: 2.5rem; font-size: 0.8rem; }
+.dj-avatar--lg { width: 3.5rem; height: 3.5rem; font-size: 1rem; }
+.dj-avatar__initials { text-transform: uppercase; letter-spacing: 0.05em; }
+.dj-avatar__img { width: 100%; height: 100%; object-fit: cover; }
+.dj-avatar__status { position: absolute; bottom: 0; right: 0; width: 0.75rem; height: 0.75rem; border-radius: 9999px; border: 2px solid hsl(var(--background, 0 0% 100%)); }
+.dj-avatar__status--online { background: hsl(var(--success, 142 71% 45%)); }
+
+/* ===== Skeleton (template uses .skeleton-*, CSS defines .dj-skeleton__*) ===== */
+.skeleton-text { width: 100%; }
+.skeleton-line { display: block; height: 0.875rem; margin-bottom: 0.5rem; border-radius: 0.25rem; background-size: 200% 100%; background-image: linear-gradient(90deg, hsl(var(--muted, 220 13% 91%) / 0.3) 25%, hsl(var(--muted, 220 13% 91%) / 0.6) 50%, hsl(var(--muted, 220 13% 91%) / 0.3) 75%); animation: dj-shimmer 1.5s ease-in-out infinite; }
+.skeleton-line:nth-child(2) { width: 85%; }
+.skeleton-line:last-child { width: 60%; }
+
+/* ===== Buttons (unlayered to override base.css resets) ===== */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2, 0.5rem); padding: var(--space-2, 0.5rem) var(--space-4, 1rem); border-radius: var(--button-radius, var(--radius-md, 0.375rem)); font-size: var(--text-sm, 0.875rem); font-weight: var(--font-medium, 500); border: 1px solid transparent; cursor: pointer; transition: all var(--duration-normal, 0.2s) ease; text-decoration: none; white-space: nowrap; }
+.btn:focus-visible { outline: none; box-shadow: 0 0 0 3px hsl(var(--ring) / 0.4); }
+.btn-primary { background: hsl(var(--primary)); border-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+.btn-primary:hover:not(:disabled) { background: hsl(var(--primary) / 0.85); }
+.btn-secondary { background: hsl(var(--muted)); border-color: hsl(var(--border)); color: hsl(var(--foreground)); }
+.btn-secondary:hover:not(:disabled) { background: hsl(var(--accent)); }
+.btn-destructive { background: hsl(var(--destructive)); border-color: hsl(var(--destructive)); color: hsl(var(--destructive-foreground, 0 0% 100%)); }
+.btn-destructive:hover:not(:disabled) { background: hsl(var(--destructive) / 0.85); }
+.btn-ghost { background: transparent; border-color: transparent; color: hsl(var(--muted-foreground)); }
+.btn-ghost:hover:not(:disabled) { background: hsl(var(--muted) / 0.3); color: hsl(var(--foreground)); }
+.btn-outline { background: transparent; border-color: hsl(var(--border)); color: hsl(var(--foreground)); }
+.btn-outline:hover:not(:disabled) { background: hsl(var(--muted) / 0.2); }
+.btn-sm { padding: var(--space-1, 0.25rem) var(--space-3, 0.75rem); font-size: var(--text-xs, 0.75rem); }
+.btn-lg { padding: var(--space-3, 0.75rem) var(--space-6, 1.5rem); font-size: var(--text-base, 1rem); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.btn-loading { pointer-events: none; opacity: 0.75; }
+.btn-spinner { display: inline-block; width: 1em; height: 1em; border: 2px solid currentColor; border-right-color: transparent; border-radius: 9999px; animation: dj-spin 0.6s linear infinite; }
+.btn-icon { font-size: 1.1em; line-height: 1; }
+
+/* ===== Alerts ===== */
+.alert { display: flex; align-items: flex-start; gap: var(--space-3, 0.75rem); padding: var(--space-4, 1rem) var(--space-5, 1.25rem); border-radius: var(--radius-lg, 0.5rem); border: 1px solid hsl(var(--border)); border-inline-start: 4px solid hsl(var(--border)); background: hsl(var(--muted) / 0.3); }
+.alert-info { border-inline-start-color: hsl(var(--info)); background: hsl(var(--info) / 0.08); border-color: hsl(var(--info) / 0.25); }
+.alert-success { border-inline-start-color: hsl(var(--success)); background: hsl(var(--success) / 0.08); border-color: hsl(var(--success) / 0.25); }
+.alert-warning { border-inline-start-color: hsl(var(--warning)); background: hsl(var(--warning) / 0.08); border-color: hsl(var(--warning) / 0.25); }
+.alert-error { border-inline-start-color: hsl(var(--destructive)); background: hsl(var(--destructive) / 0.08); border-color: hsl(var(--destructive) / 0.25); }
+.alert-icon { flex-shrink: 0; width: var(--space-5, 1.25rem); height: var(--space-5, 1.25rem); margin-top: 1px; }
+.alert-info .alert-icon { color: hsl(var(--info)); }
+.alert-success .alert-icon { color: hsl(var(--success)); }
+.alert-warning .alert-icon { color: hsl(var(--warning)); }
+.alert-error .alert-icon { color: hsl(var(--destructive)); }
+.alert-title { font-weight: var(--font-semibold, 600); font-size: var(--text-sm, 0.875rem); margin-bottom: 0.125rem; }
+.alert-info .alert-title { color: hsl(var(--info)); }
+.alert-success .alert-title { color: hsl(var(--success)); }
+.alert-warning .alert-title { color: hsl(var(--warning)); }
+.alert-error .alert-title { color: hsl(var(--destructive)); }
+.alert-message { font-size: var(--text-sm, 0.875rem); color: hsl(var(--muted-foreground)); }
+
+/* ===== Cards (template uses .dj-card--*) ===== */
+.dj-card { border-radius: var(--radius-lg, 0.5rem); border: 1px solid hsl(var(--border)); background: hsl(var(--card)); color: hsl(var(--card-foreground)); overflow: hidden; }
+.dj-card--elevated { box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.1)); }
+.dj-card--outlined { background: transparent; }
+.dj-card__header { padding: 1rem 1.25rem 0.25rem; }
+.dj-card__title { font-size: var(--text-lg, 1.125rem); font-weight: var(--font-semibold, 600); }
+.dj-card__subtitle { font-size: var(--text-sm, 0.875rem); color: hsl(var(--muted-foreground)); }
+.dj-card__body { padding: 0.75rem 1.25rem; }
+.dj-card__footer { padding: 0.75rem 1.25rem; border-top: 1px solid hsl(var(--border)); font-size: var(--text-sm, 0.875rem); color: hsl(var(--muted-foreground)); }

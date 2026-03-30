@@ -4,29 +4,75 @@
 {% block content %}
 <div class="text-center" style="margin-bottom: var(--section-spacing, 2rem);">
     <span class="badge" style="background-color: color-mix(in oklab, hsl(var(--accent)) 10%, transparent); color: hsl(var(--accent)); border: var(--border-width, 1px) var(--border-style, solid) color-mix(in oklab, hsl(var(--accent)) 20%, transparent); margin-bottom: var(--grid-gap, 1.5rem);">
-        Design Systems & Color Presets
+        {{ combination_count }} Unique Combinations
     </span>
     <h1 style="font-family: var(--font-heading, system-ui); font-size: var(--h1-size); font-weight: var(--font-weight-heading, 800); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.67);">
         Themes & <span class="gradient-text">Presets</span>
     </h1>
     <p class="fg-muted mx-auto" style="max-width: var(--prose-max-width, 42rem); line-height: var(--body-line-height, 1.6);">
-        Mix any of <strong class="fg">11 design systems</strong> with any of <strong class="fg">19 color presets</strong>
-        for 209 unique combinations. Design systems control structure, presets control palette.
+        Mix any of <strong class="fg">{{ design_system_count }} design systems</strong> with any of
+        <strong class="fg">{{ preset_count }} color presets</strong> for
+        <strong class="fg">{{ combination_count }} unique combinations</strong>.
+        Design systems control structure and personality. Presets control color.
+    </p>
+</div>
+
+<!-- How It Works -->
+<div class="glass-card" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 class="fg" style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem);">Two Axes, Infinite Combinations</h2>
+    <div class="grid md:grid-cols-2" style="gap: var(--grid-gap, 1.5rem);">
+        <div class="glass-card" data-accent="primary" style="padding: var(--grid-gap, 1.5rem);">
+            <h3 class="fg-primary" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 700); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">Design System</h3>
+            <p class="fg-muted" style="font-size: var(--small-size); line-height: var(--body-line-height, 1.6); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">
+                Controls personality — typography, spacing, border radius, shadows, and animations.
+                Switch from <code class="fg-primary">minimalist</code> to <code class="fg-primary">neo_brutalist</code>
+                and the entire UI changes feel without touching your markup.
+            </p>
+            <div class="code-panel" style="margin-top: calc(var(--grid-gap, 1.5rem) * 0.5);">
+                <pre class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--small-size); margin: 0;"><span style="color: hsl(var(--info, var(--primary)));">LIVEVIEW_CONFIG</span> = {
+    <span style="color: hsl(var(--warning));">'theme'</span>: {
+        <span style="color: hsl(var(--warning));">'design_system'</span>: <span style="color: hsl(var(--success));">'material'</span>,
+    }
+}</pre>
+            </div>
+        </div>
+        <div class="glass-card" data-accent="accent" style="padding: var(--grid-gap, 1.5rem);">
+            <h3 class="fg-accent" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 700); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">Color Preset</h3>
+            <p class="fg-muted" style="font-size: var(--small-size); line-height: var(--body-line-height, 1.6); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">
+                Controls palette — primary, accent, background, foreground, semantic colors.
+                Each preset ships with both light and dark mode tokens.
+                Switch from <code class="fg-accent">blue</code> to <code class="fg-accent">cyberpunk</code>
+                without touching CSS.
+            </p>
+            <div class="code-panel" style="margin-top: calc(var(--grid-gap, 1.5rem) * 0.5);">
+                <pre class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--small-size); margin: 0;"><span style="color: hsl(var(--info, var(--primary)));">LIVEVIEW_CONFIG</span> = {
+    <span style="color: hsl(var(--warning));">'theme'</span>: {
+        <span style="color: hsl(var(--warning));">'preset'</span>: <span style="color: hsl(var(--success));">'blue'</span>,
+    }
+}</pre>
+            </div>
+        </div>
+    </div>
+    <p class="fg-muted" style="margin-top: var(--grid-gap, 1.5rem); font-size: var(--small-size);">
+        Use the <a href="{% url 'djust_theming:editor' %}" class="fg-primary">Live Theme Editor</a> to preview combinations in real-time and export the CSS.
+        Browse all <a href="{% url 'theme_demo:packs' %}" class="fg-accent">theme packs</a> for pre-bundled design system + preset combinations.
     </p>
 </div>
 
 <!-- Design Systems -->
 <div class="glass-card" data-accent="primary" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
-    <h2 class="fg-primary" style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem);">Design Systems</h2>
-    <p class="fg-muted" style="margin-bottom: var(--grid-gap, 1.5rem); line-height: var(--body-line-height, 1.6);">
-        Design systems control typography, spacing, shadows, animations, and component shapes — everything except color.
-        Each system has a distinct personality.
-    </p>
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--grid-gap, 1.5rem); flex-wrap: wrap; gap: var(--grid-gap, 1rem);">
+        <h2 class="fg-primary" style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700);">{{ design_system_count }} Design Systems</h2>
+        <span class="fg-muted" style="font-size: var(--small-size);">Controls typography, spacing, shadows, animations, border-radius</span>
+    </div>
     <div class="grid md:grid-cols-3" style="gap: var(--grid-gap, 1.5rem);">
         {% for name, ds in design_systems.items %}
         <div class="glass-card" style="padding: var(--grid-gap, 1.5rem);">
-            <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">{{ ds.display_name }}</h3>
-            <p class="fg-muted" style="font-size: var(--small-size);">{{ ds.description }}</p>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">
+                <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600);">{{ ds.display_name }}</h3>
+                <code class="fg-muted" style="font-size: var(--tiny-size);">{{ name }}</code>
+            </div>
+            <p class="fg-muted" style="font-size: var(--small-size); line-height: var(--body-line-height, 1.6);">{{ ds.description }}</p>
         </div>
         {% endfor %}
     </div>
@@ -34,17 +80,75 @@
 
 <!-- Color Presets -->
 <div class="glass-card" data-accent="accent" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
-    <h2 class="fg-accent" style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem);">Color Presets</h2>
-    <p class="fg-muted" style="margin-bottom: var(--grid-gap, 1.5rem); line-height: var(--body-line-height, 1.6);">
-        19 built-in color palettes, each with light and dark mode variants. Combine with any design system.
-    </p>
-    <div class="grid md:grid-cols-3" style="gap: var(--grid-gap, 1.5rem);">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: var(--grid-gap, 1.5rem); flex-wrap: wrap; gap: var(--grid-gap, 1rem);">
+        <h2 class="fg-accent" style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700);">{{ preset_count }} Color Presets</h2>
+        <span class="fg-muted" style="font-size: var(--small-size);">Each ships with light &amp; dark mode variants</span>
+    </div>
+    <div class="grid md:grid-cols-4" style="gap: var(--grid-gap, 1rem);">
         {% for preset in presets %}
-        <div class="glass-card" style="padding: var(--grid-gap, 1.5rem);">
-            <h3 style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">{{ preset.display_name }}</h3>
-            <p class="fg-muted" style="font-size: var(--small-size);">{{ preset.description }}</p>
+        <div class="glass-card" style="padding: calc(var(--grid-gap, 1.5rem) * 0.75);">
+            <div style="display: flex; align-items: center; gap: calc(var(--grid-gap, 1.5rem) * 0.5); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">
+                {% if preset.light_primary %}
+                <div style="display: flex; gap: 3px;">
+                    <div style="width: 14px; height: 14px; border-radius: 50%; background: {{ preset.light_primary }};"></div>
+                    <div style="width: 14px; height: 14px; border-radius: 50%; background: {{ preset.dark_primary }};"></div>
+                </div>
+                {% endif %}
+                <code class="fg" style="font-size: var(--small-size); font-weight: var(--font-weight-section, 600);">{{ preset.name }}</code>
+            </div>
+            <p class="fg-muted" style="font-size: var(--tiny-size); line-height: 1.4;">{{ preset.description }}</p>
         </div>
         {% endfor %}
     </div>
+</div>
+
+<!-- Example Combinations -->
+<div class="glass-card" data-accent="warning" style="padding: calc(var(--grid-gap, 1.5rem) * 1.33); margin-bottom: var(--grid-gap, 1.5rem);">
+    <h2 style="font-family: var(--font-heading, system-ui); font-size: var(--h2-size); font-weight: var(--font-weight-section, 700); margin-bottom: var(--grid-gap, 1.5rem); color: hsl(var(--warning));">Example Combinations</h2>
+    <div class="grid md:grid-cols-3" style="gap: var(--grid-gap, 1.5rem);">
+        <div class="glass-card" style="padding: var(--grid-gap, 1.5rem);">
+            <div class="code-panel" style="margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">
+                <pre class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--tiny-size); margin: 0;">'design_system': 'neo_brutalist'
+'preset': 'amber'</pre>
+            </div>
+            <p class="fg-muted" style="font-size: var(--small-size);">
+                <strong class="fg">Neo-Brutalist + Amber</strong> — flat corners, hard shadows, warm gold. Bold dashboard aesthetic.
+            </p>
+        </div>
+        <div class="glass-card" style="padding: var(--grid-gap, 1.5rem);">
+            <div class="code-panel" style="margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">
+                <pre class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--tiny-size); margin: 0;">'design_system': 'elegant'
+'preset': 'rose_pine'</pre>
+            </div>
+            <p class="fg-muted" style="font-size: var(--small-size);">
+                <strong class="fg">Elegant + Rosé Pine</strong> — serif headings, generous spacing, muted pastels. Premium SaaS.
+            </p>
+        </div>
+        <div class="glass-card" style="padding: var(--grid-gap, 1.5rem);">
+            <div class="code-panel" style="margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">
+                <pre class="code-panel-body" style="font-family: 'JetBrains Mono', monospace; font-size: var(--tiny-size); margin: 0;">'design_system': 'dense'
+'preset': 'natural20'</pre>
+            </div>
+            <p class="fg-muted" style="font-size: var(--small-size);">
+                <strong class="fg">Dense + Natural 20</strong> — compact spacing, terminal-style cyan. Data-heavy developer tools.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- CTA -->
+<div class="grid md:grid-cols-3" style="gap: var(--grid-gap, 1.5rem);">
+    <a href="{% url 'djust_theming:editor' %}" class="glass-card no-underline text-current" data-accent="primary" style="padding: var(--grid-gap, 1.5rem);">
+        <div class="fg-primary" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 700); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Live Editor →</div>
+        <p class="fg-muted" style="font-size: var(--small-size);">Tweak tokens in real-time. Export a starting <code>tokens.css</code>.</p>
+    </a>
+    <a href="{% url 'djust_theming:diff' %}" class="glass-card no-underline text-current" data-accent="accent" style="padding: var(--grid-gap, 1.5rem);">
+        <div class="fg-accent" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 700); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Diff View →</div>
+        <p class="fg-muted" style="font-size: var(--small-size);">Side-by-side comparison of any two presets.</p>
+    </a>
+    <a href="{% url 'theme_demo:customize' %}" class="glass-card no-underline text-current" data-accent="warning" style="padding: var(--grid-gap, 1.5rem);">
+        <div style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 700); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33); color: hsl(var(--warning));">Customize →</div>
+        <p class="fg-muted" style="font-size: var(--small-size);">Override tokens or create a full custom theme package.</p>
+    </a>
 </div>
 {% endblock %}

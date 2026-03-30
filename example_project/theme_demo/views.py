@@ -17,7 +17,14 @@ def index(request):
 
 
 def components(request):
-    """Showcase all 24 theme components."""
+    """Showcase all theme components — 24 template-tag components plus category overview."""
+    from djust_theming.gallery.component_registry import COMPONENT_CATEGORIES
+    category_overview = [
+        {'name': cat, 'components': comps, 'count': len(comps)}
+        for cat, comps in COMPONENT_CATEGORIES.items()
+    ]
+    total_components = sum(c['count'] for c in category_overview)
+
     # Data for table component
     table_headers = ['Name', 'Role', 'Status', 'Actions']
     table_rows = [
@@ -91,6 +98,8 @@ def components(request):
         'breadcrumb_items': breadcrumb_items,
         'nav_items': nav_items,
         'sidebar_sections': sidebar_sections,
+        'category_overview': category_overview,
+        'total_components': total_components,
     })
 
 
@@ -334,23 +343,43 @@ def djust_components_demo(request):
 
 def themes(request):
     """Themes page — design systems + color presets combined."""
-    from djust_theming.presets import list_presets
+    from djust_theming.presets import list_presets, THEME_PRESETS
     from djust_theming.theme_packs import get_all_design_systems
 
-    presets = list_presets()
+    # Add color swatch data to presets
+    presets_with_colors = []
+    for p in list_presets():
+        preset_obj = THEME_PRESETS.get(p['name'])
+        presets_with_colors.append({
+            **p,
+            'light_primary': preset_obj.light.primary.to_hsl_func() if preset_obj else None,
+            'dark_primary': preset_obj.dark.primary.to_hsl_func() if preset_obj else None,
+        })
+
     design_systems = get_all_design_systems()
+    combination_count = len(presets_with_colors) * len(design_systems)
 
     return render(request, 'theme_demo/themes.html', {
         'title': 'Themes',
-        'presets': presets,
+        'presets': presets_with_colors,
         'design_systems': design_systems,
+        'combination_count': combination_count,
+        'preset_count': len(presets_with_colors),
+        'design_system_count': len(design_systems),
     })
 
 
 def docs(request):
     """Documentation page — getting started, layouts, pages."""
+    from djust_theming.presets import list_presets
+    from djust_theming.theme_packs import get_all_design_systems
+    from djust_theming.gallery.component_registry import COMPONENT_CATEGORIES
     return render(request, 'theme_demo/docs.html', {
         'title': 'Documentation',
+        'preset_count': len(list_presets()),
+        'design_system_count': len(get_all_design_systems()),
+        'component_count': sum(len(c) for c in COMPONENT_CATEGORIES.values()),
+        'combination_count': len(list_presets()) * len(get_all_design_systems()),
     })
 
 
