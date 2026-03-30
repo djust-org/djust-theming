@@ -115,4 +115,20 @@
         </div>
     </div>
 </div>
+
+<!-- Next steps -->
+<div class="grid md:grid-cols-3" style="gap: var(--grid-gap, 1.5rem);">
+    <a href="{% url 'theme_demo:customize' %}" class="glass-card no-underline text-current" data-accent="primary" style="padding: var(--grid-gap, 1.5rem);">
+        <div class="fg-primary" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 700); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Customize →</div>
+        <p class="fg-muted" style="font-size: var(--small-size);">Presets, design systems, token overrides, and custom theme packages.</p>
+    </a>
+    <a href="{% url 'djust_theming:gallery' %}" class="glass-card no-underline text-current" data-accent="accent" style="padding: var(--grid-gap, 1.5rem);">
+        <div class="fg-accent" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 700); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Gallery →</div>
+        <p class="fg-muted" style="font-size: var(--small-size);">Every component, every variant, live. Includes storybook detail pages with API reference.</p>
+    </a>
+    <a href="{% url 'theme_demo:integration' %}" class="glass-card no-underline text-current" data-accent="warning" style="padding: var(--grid-gap, 1.5rem);">
+        <div style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 700); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33); color: hsl(var(--warning));">Integration →</div>
+        <p class="fg-muted" style="font-size: var(--small-size);">How djust-theming and djust-components work together under the hood.</p>
+    </a>
+</div>
 {% endblock %}

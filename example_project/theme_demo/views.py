@@ -359,3 +359,16 @@ def integration(request):
     return render(request, 'theme_demo/integration.html', {
         'title': 'Integration',
     })
+
+
+def customize(request):
+    """Customization guide — presets, design systems, token overrides, custom themes."""
+    from djust_theming.theme_packs import get_all_theme_packs
+    pack_list = [
+        (name, pack.description)
+        for name, pack in get_all_theme_packs().items()
+    ]
+    return render(request, 'theme_demo/customize.html', {
+        'title': 'Customize',
+        'packs': pack_list,
+    })

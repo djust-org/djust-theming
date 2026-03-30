@@ -14,6 +14,7 @@ urlpatterns = [
     # Documentation
     path('docs/', views.docs, name='docs'),
     path('integration/', views.integration, name='integration'),
+    path('customize/', views.customize, name='customize'),
 
     # Tools
     path('inspector/', views.theme_inspector_view, name='inspector'),
