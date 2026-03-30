@@ -13,7 +13,7 @@
         <!-- Badge -->
         <span class="badge" style="background-color: color-mix(in oklab, hsl(var(--accent)) 10%, transparent); color: hsl(var(--accent)); border: var(--border-width, 1px) var(--border-style, solid) color-mix(in oklab, hsl(var(--accent)) 20%, transparent); margin-bottom: calc(var(--grid-gap, 1.5rem) * 1.33);">
             <span style="width: 0.5rem; height: 0.5rem; border-radius: 9999px; background: hsl(var(--success)); display: inline-block;" class="animate-pulse"></span>
-            171 Components &bull; 19 Presets &bull; 12 Theme Packs
+            175+ Components &bull; 240 Theme Combinations &bull; Zero Build Step
         </span>
 
         <!-- Headline -->
@@ -24,9 +24,9 @@
 
         <!-- Subtitle -->
         <p class="fg-muted mx-auto" style="font-size: var(--h3-size); margin-bottom: calc(var(--grid-gap, 1.5rem) * 2); max-width: var(--prose-max-width, 42rem); line-height: var(--body-line-height, 1.6);">
-            171 theme-aware components powered by <strong class="fg">djust-components</strong>,
+            175+ theme-aware components powered by <strong class="fg">djust-components</strong>,
             styled by <strong class="fg">djust-theming</strong> design tokens.
-            Switch between <strong class="fg">12 theme packs</strong> and watch everything adapt.
+            <strong class="fg">No npm. No build step.</strong> Switch between <strong class="fg">12 theme packs</strong> and watch everything adapt.
         </p>
 
         <!-- CTAs -->
@@ -38,8 +38,8 @@
             <div class="bg-s2 fg-muted flex items-center justify-center" style="padding: calc(var(--grid-gap, 1.5rem) * 0.58) calc(var(--grid-gap, 1.5rem) * 1.33); border: var(--border-width, 1px) var(--border-style, solid) hsl(var(--border)); border-radius: var(--button-radius, var(--border-radius-md, 0.5rem)); font-family: monospace; font-size: var(--small-size); gap: calc(var(--grid-gap, 1.5rem) * 0.5); white-space: nowrap;">
                 <span class="fg-primary">$</span> pip install djust-theming
             </div>
-            <a href="{% url 'djust_theming:gallery' %}" class="btn btn-secondary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.58) calc(var(--grid-gap, 1.5rem) * 1.33); font-size: var(--body-size); border-radius: var(--button-radius, var(--border-radius-md, 0.5rem));">
-                Theme Gallery
+            <a href="{% url 'djust_theming:storybook' %}" class="btn btn-secondary no-underline" style="padding: calc(var(--grid-gap, 1.5rem) * 0.58) calc(var(--grid-gap, 1.5rem) * 1.33); font-size: var(--body-size); border-radius: var(--button-radius, var(--border-radius-md, 0.5rem));">
+                Component Storybook
             </a>
         </div>
     </div>
@@ -48,7 +48,7 @@
 <!-- Features Grid -->
 <div class="grid md:grid-cols-3" style="gap: var(--grid-gap, 1.5rem); margin-bottom: var(--section-spacing, 2rem);">
     <a href="{% url 'theme_demo:components' %}" class="glass-card no-underline text-current" data-accent="primary" style="padding: var(--grid-gap, 1.5rem);">
-        <h3 class="fg-primary" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">171 Components</h3>
+        <h3 class="fg-primary" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">175+ Components</h3>
         <p class="fg-muted" style="font-size: var(--small-size);">
             Buttons, cards, alerts, badges, forms, modals, tabs, accordion, tooltips, progress,
             charts, data tables, and 160 more — all theme-aware via djust-components.
@@ -58,7 +58,7 @@
     <a href="{% url 'theme_demo:themes' %}" class="glass-card no-underline text-current" data-accent="accent" style="padding: var(--grid-gap, 1.5rem);">
         <h3 class="fg-accent" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Themes & Presets</h3>
         <p class="fg-muted" style="font-size: var(--small-size);">
-            11 design systems &times; 19 color presets = 209 unique combinations.
+            12 design systems &times; 20 color presets = 240 unique combinations.
             Design systems control structure, presets control palette.
         </p>
     </a>
@@ -87,11 +87,11 @@
         </p>
     </a>
 
-    <a href="{% url 'djust_theming:gallery' %}" class="glass-card no-underline text-current" data-accent="accent" style="padding: var(--grid-gap, 1.5rem);">
-        <h3 class="fg-accent" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Theme Gallery & Storybook</h3>
+    <a href="{% url 'djust_theming:storybook' %}" class="glass-card no-underline text-current" data-accent="accent" style="padding: var(--grid-gap, 1.5rem);">
+        <h3 class="fg-accent" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.33);">Component Storybook</h3>
         <p class="fg-muted" style="font-size: var(--small-size);">
-            Developer tools built into djust-theming: browse all theme + preset combinations,
-            isolate components in the storybook, and tune tokens with the live editor.
+            Browse all 175+ components organized by category. Live previews, props tables,
+            CSS variables, and template source — plus the live theme editor and diff view.
         </p>
     </a>
 </div>
@@ -107,14 +107,14 @@
                 Color presets control palette. Mix any design system with any color preset.
             </p>
             <p class="fg-muted" style="font-size: var(--small-size);">
-                <strong>11 x 19 = 209 unique combinations</strong> out of the box.
+                <strong>12 &times; 20 = 240 unique combinations</strong> out of the box.
             </p>
         </div>
         <div>
             <h3 class="fg-primary" style="font-size: var(--h3-size); font-weight: var(--font-weight-section, 600); margin-bottom: calc(var(--grid-gap, 1.5rem) * 0.5);">Template Tag Libraries</h3>
             <ul class="fg-muted" style="font-size: var(--small-size); display: flex; flex-direction: column; gap: calc(var(--grid-gap, 1.5rem) * 0.33);">
                 <li><code class="fg-primary">{% verbatim %}{% load theme_tags %}{% endverbatim %}</code> &mdash; theme_head, theme_switcher, mode toggle, preset selector</li>
-                <li><code class="fg-primary">{% verbatim %}{% load djust_components %}{% endverbatim %}</code> &mdash; 171 UI components (buttons, cards, forms, charts...)</li>
+                <li><code class="fg-primary">{% verbatim %}{% load djust_components %}{% endverbatim %}</code> &mdash; 175+ UI components (buttons, cards, forms, charts...)</li>
                 <li><code class="fg-primary">{% verbatim %}{% load theme_form_tags %}{% endverbatim %}</code> &mdash; Django form rendering with themed styling</li>
             </ul>
         </div>
