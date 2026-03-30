@@ -3,6 +3,9 @@ Component storybook -- auto-generated documentation for each theme component.
 
 Reads component contracts, template source, and CSS variable usage to build
 rich per-component detail pages.
+
+Supports both template-based components (24 contracted) and Python components
+(all 169 djust-components).
 """
 
 import re
@@ -120,73 +123,145 @@ def _get_component_css_variables(component_name: str) -> list[str]:
 def build_storybook_index_context() -> dict:
     """Build context data for the storybook index page.
 
-    Returns:
-        Dict with key ``components``: list of dicts with component metadata.
+    Returns a dict with:
+    - ``components``: flat list of all component dicts (for sidebar)
+    - ``components_by_category``: list of {category, components} dicts
+    - ``total_count``: total number of components
     """
-    components = []
-    for name, contract in COMPONENT_CONTRACTS.items():
-        components.append({
-            "name": name,
-            "display_name": name.replace("_", " ").title(),
-            "required_count": len(contract.required_context),
-            "optional_count": len(contract.optional_context),
-            "slot_count": len(contract.available_slots),
-            "a11y_count": len(contract.accessibility),
-        })
-    return {"components": components}
+    from .component_registry import get_all_components_with_metadata, COMPONENT_CATEGORIES
+
+    all_components = get_all_components_with_metadata()
+
+    # Enrich template components with contract data
+    enriched = []
+    for comp in all_components:
+        name = comp["name"]
+        if name in COMPONENT_CONTRACTS:
+            contract = COMPONENT_CONTRACTS[name]
+            comp = dict(comp)
+            comp["required_count"] = len(contract.required_context)
+            comp["optional_count"] = len(contract.optional_context)
+            comp["slot_count"] = len(contract.available_slots)
+            comp["a11y_count"] = len(contract.accessibility)
+        enriched.append(comp)
+
+    # Group by category
+    components_by_category = []
+    for category in COMPONENT_CATEGORIES.keys():
+        cat_comps = [c for c in enriched if c["category"] == category]
+        if cat_comps:
+            components_by_category.append({
+                "category": category,
+                "components": cat_comps,
+                "count": len(cat_comps),
+            })
+
+    return {
+        "components": enriched,
+        "components_by_category": components_by_category,
+        "total_count": len(enriched),
+    }
 
 
 def build_storybook_detail_context(component_name: str) -> dict:
     """Build context data for a single component's storybook detail page.
 
+    Handles both template-based (contracted) and Python components.
+
     Args:
-        component_name: Component name, e.g. "button".
+        component_name: Component name, e.g. "button" or "spinner".
 
     Returns:
-        Dict with contract info, template source, CSS variables, examples.
+        Dict with contract info (or python signature), examples, and metadata.
 
     Raises:
-        KeyError: If component_name is not in COMPONENT_CONTRACTS.
+        KeyError: If component_name is not recognized in either registry.
     """
-    contract = COMPONENT_CONTRACTS[component_name]  # raises KeyError
-    template_source = get_component_template_source(component_name)
-    css_variables = _get_component_css_variables(component_name)
+    from .component_registry import (
+        get_component_category,
+        render_python_component_example,
+        get_python_component_signature,
+        PYTHON_COMPONENT_EXAMPLES,
+        _COMPONENT_TO_CATEGORY,
+    )
 
-    # Get examples from gallery context builders
-    from .context import _EXAMPLE_BUILDERS
+    if component_name not in COMPONENT_CONTRACTS and component_name not in _COMPONENT_TO_CATEGORY:
+        raise KeyError(f"Unknown component: {component_name}")
 
-    builder = _EXAMPLE_BUILDERS.get(component_name)
-    examples = builder() if builder else []
+    category = get_component_category(component_name)
+    display_name = component_name.replace("_", " ").title()
 
-    return {
-        "name": component_name,
-        "display_name": component_name.replace("_", " ").title(),
-        "required_context": [
-            {"name": v.name, "type": v.type, "default": v.default, "required": v.required}
-            for v in contract.required_context
-        ],
-        "optional_context": [
-            {"name": v.name, "type": v.type, "default": v.default, "required": v.required}
-            for v in contract.optional_context
-        ],
-        "required_elements": [
-            {"tag": e.tag, "attrs": e.attrs}
-            for e in contract.required_elements
-        ],
-        "accessibility": [
-            {
-                "description": a.description,
-                "selector_hint": a.selector_hint,
-                "attr": a.attr,
-                "value": a.value,
-            }
-            for a in contract.accessibility
-        ],
-        "available_slots": list(contract.available_slots),
-        "template_source": template_source,
-        "css_variables": css_variables,
-        "examples": examples,
-    }
+    if component_name in COMPONENT_CONTRACTS:
+        # Template-based component: full contract + examples
+        contract = COMPONENT_CONTRACTS[component_name]
+        template_source = get_component_template_source(component_name)
+        css_variables = _get_component_css_variables(component_name)
+
+        from .context import _EXAMPLE_BUILDERS
+        builder = _EXAMPLE_BUILDERS.get(component_name)
+        examples = builder() if builder else []
+
+        return {
+            "name": component_name,
+            "display_name": display_name,
+            "category": category,
+            "component_type": "template",
+            "required_context": [
+                {"name": v.name, "type": v.type, "default": v.default, "required": v.required}
+                for v in contract.required_context
+            ],
+            "optional_context": [
+                {"name": v.name, "type": v.type, "default": v.default, "required": v.required}
+                for v in contract.optional_context
+            ],
+            "required_elements": [
+                {"tag": e.tag, "attrs": e.attrs}
+                for e in contract.required_elements
+            ],
+            "accessibility": [
+                {
+                    "description": a.description,
+                    "selector_hint": a.selector_hint,
+                    "attr": a.attr,
+                    "value": a.value,
+                }
+                for a in contract.accessibility
+            ],
+            "available_slots": list(contract.available_slots),
+            "template_source": template_source,
+            "css_variables": css_variables,
+            "examples": examples,
+        }
+    else:
+        # Python component: render examples via dynamic import
+        raw_examples = PYTHON_COMPONENT_EXAMPLES.get(component_name, [])
+        python_examples_html = []
+        for kwargs in raw_examples:
+            html = render_python_component_example(component_name, kwargs)
+            python_examples_html.append({
+                "html": html,
+                "kwargs": kwargs,
+            })
+
+        # Get parameter signature
+        python_params = get_python_component_signature(component_name) or []
+
+        return {
+            "name": component_name,
+            "display_name": display_name,
+            "category": category,
+            "component_type": "python",
+            "required_context": [],
+            "optional_context": [],
+            "required_elements": [],
+            "accessibility": [],
+            "available_slots": [],
+            "template_source": "",
+            "css_variables": [],
+            "examples": [],
+            "python_examples_html": python_examples_html,
+            "python_params": python_params,
+        }
 
 
 def get_component_coverage(theme_name: str, themes_dir: Path) -> dict:

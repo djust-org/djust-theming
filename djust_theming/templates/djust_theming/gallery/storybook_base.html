@@ -257,14 +257,25 @@
       <div class="sb-sidebar-search">
         <input type="text" id="sb-search" placeholder="Search components..." autocomplete="off">
       </div>
-      <div class="sb-sidebar-label">Components ({{ all_components|length }})</div>
-      {% for comp in all_components %}
-      <a href="{% url 'djust_theming:storybook_detail' comp.name %}"
-         class="sb-sidebar-link {% if current_component == comp.name %}active{% endif %}"
-         data-name="{{ comp.name }}" data-display="{{ comp.display_name|lower }}">
-        {{ comp.display_name }}
-        <span class="sb-sidebar-count">{{ comp.required_count }}+{{ comp.optional_count }}</span>
-      </a>
+      <div class="sb-sidebar-label">All Components ({{ all_components|length }})</div>
+      {% regroup all_components by category as category_groups %}
+      {% for group in category_groups %}
+      <div class="sb-sidebar-category" data-category="{{ group.grouper }}">
+        <div class="sb-sidebar-cat-header" onclick="toggleSidebarCategory(this)"
+          style="padding: 0.375rem 0.75rem; font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: hsl(var(--muted-foreground)); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none;">
+          <span>{{ group.grouper }}</span>
+          <span class="sb-cat-arrow" style="opacity: 0.5; transition: transform 0.15s;">▾</span>
+        </div>
+        <div class="sb-cat-items">
+          {% for comp in group.list %}
+          <a href="{% url 'djust_theming:storybook_detail' comp.name %}"
+             class="sb-sidebar-link {% if current_component == comp.name %}active{% endif %}"
+             data-name="{{ comp.name }}" data-display="{{ comp.display_name|lower }}" data-category="{{ comp.category }}">
+            {{ comp.display_name }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
       {% endfor %}
     </nav>
 
@@ -282,10 +293,38 @@
         const q = search.value.toLowerCase();
         document.querySelectorAll('.sb-sidebar-link').forEach(link => {
           const name = link.dataset.display || link.textContent.toLowerCase();
-          link.style.display = name.includes(q) ? '' : 'none';
+          const visible = name.includes(q);
+          link.style.display = visible ? '' : 'none';
+        });
+        // Show/hide category headers based on whether any items are visible
+        document.querySelectorAll('.sb-sidebar-category').forEach(cat => {
+          const anyVisible = [...cat.querySelectorAll('.sb-sidebar-link')].some(l => l.style.display !== 'none');
+          cat.style.display = anyVisible ? '' : 'none';
         });
       });
     }
+
+    // Toggle sidebar category collapse
+    function toggleSidebarCategory(header) {
+      const items = header.nextElementSibling;
+      const arrow = header.querySelector('.sb-cat-arrow');
+      if (items.style.display === 'none') {
+        items.style.display = '';
+        if (arrow) arrow.style.transform = '';
+      } else {
+        items.style.display = 'none';
+        if (arrow) arrow.style.transform = 'rotate(-90deg)';
+      }
+    }
+
+    // Auto-expand the category of the current active component
+    document.querySelectorAll('.sb-sidebar-link.active').forEach(link => {
+      const cat = link.closest('.sb-sidebar-category');
+      if (cat) {
+        const items = cat.querySelector('.sb-cat-items');
+        if (items) items.style.display = '';
+      }
+    });
   </script>
 </body>
 </html>

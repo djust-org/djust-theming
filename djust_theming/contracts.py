@@ -55,6 +55,7 @@ class ComponentContract:
     required_elements: tuple[RequiredElement, ...] = ()
     accessibility: tuple[AccessibilityRequirement, ...] = ()
     available_slots: tuple[str, ...] = ()
+    category: str = "Core UI"
 
 
 # ---------------------------------------------------------------------------
@@ -80,6 +81,7 @@ BUTTON_CONTRACT = ComponentContract(
     ),
     accessibility=(),
     available_slots=("slot_icon", "slot_content", "slot_loading"),
+    category="Core UI",
 )
 
 CARD_CONTRACT = ComponentContract(
@@ -100,6 +102,7 @@ CARD_CONTRACT = ComponentContract(
     ),
     accessibility=(),
     available_slots=("slot_header", "slot_body", "slot_footer"),
+    category="Core UI",
 )
 
 ALERT_CONTRACT = ComponentContract(
@@ -130,6 +133,7 @@ ALERT_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_icon", "slot_message", "slot_actions", "slot_dismiss"),
+    category="Core UI",
 )
 
 BADGE_CONTRACT = ComponentContract(
@@ -148,6 +152,7 @@ BADGE_CONTRACT = ComponentContract(
     ),
     accessibility=(),
     available_slots=("slot_content",),
+    category="Core UI",
 )
 
 INPUT_CONTRACT = ComponentContract(
@@ -177,6 +182,7 @@ INPUT_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_label", "slot_input", "slot_help_text", "slot_error"),
+    category="Core UI",
 )
 
 
@@ -213,6 +219,7 @@ MODAL_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_header", "slot_body", "slot_footer", "slot_close"),
+    category="Core UI",
 )
 
 DROPDOWN_CONTRACT = ComponentContract(
@@ -246,6 +253,7 @@ DROPDOWN_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_trigger", "slot_menu"),
+    category="Core UI",
 )
 
 TABS_CONTRACT = ComponentContract(
@@ -271,6 +279,7 @@ TABS_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=(),
+    category="Core UI",
 )
 
 TABLE_CONTRACT = ComponentContract(
@@ -295,6 +304,7 @@ TABLE_CONTRACT = ComponentContract(
     ),
     accessibility=(),
     available_slots=("slot_caption", "slot_header", "slot_body", "slot_footer"),
+    category="Core UI",
 )
 
 PAGINATION_CONTRACT = ComponentContract(
@@ -323,6 +333,7 @@ PAGINATION_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_prev", "slot_next"),
+    category="Core UI",
 )
 
 
@@ -354,6 +365,7 @@ SELECT_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_label", "slot_select", "slot_help_text", "slot_error"),
+    category="Core UI",
 )
 
 TEXTAREA_CONTRACT = ComponentContract(
@@ -384,6 +396,7 @@ TEXTAREA_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_label", "slot_textarea", "slot_help_text", "slot_error"),
+    category="Core UI",
 )
 
 CHECKBOX_CONTRACT = ComponentContract(
@@ -411,6 +424,7 @@ CHECKBOX_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_label", "slot_description"),
+    category="Core UI",
 )
 
 RADIO_CONTRACT = ComponentContract(
@@ -439,6 +453,7 @@ RADIO_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_label", "slot_options"),
+    category="Core UI",
 )
 
 
@@ -466,6 +481,7 @@ BREADCRUMB_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_separator",),
+    category="Navigation",
 )
 
 AVATAR_CONTRACT = ComponentContract(
@@ -486,6 +502,7 @@ AVATAR_CONTRACT = ComponentContract(
     ),
     accessibility=(),
     available_slots=("slot_image", "slot_fallback"),
+    category="Core UI",
 )
 
 TOAST_CONTRACT = ComponentContract(
@@ -520,6 +537,7 @@ TOAST_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_message", "slot_actions"),
+    category="Feedback",
 )
 
 PROGRESS_CONTRACT = ComponentContract(
@@ -545,6 +563,7 @@ PROGRESS_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_label",),
+    category="Core UI",
 )
 
 SKELETON_CONTRACT = ComponentContract(
@@ -562,6 +581,7 @@ SKELETON_CONTRACT = ComponentContract(
     ),
     accessibility=(),
     available_slots=(),
+    category="Core UI",
 )
 
 TOOLTIP_CONTRACT = ComponentContract(
@@ -580,6 +600,7 @@ TOOLTIP_CONTRACT = ComponentContract(
     ),
     accessibility=(),
     available_slots=("slot_content",),
+    category="Core UI",
 )
 
 
@@ -610,6 +631,7 @@ NAV_ITEM_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_icon", "slot_badge"),
+    category="Navigation",
 )
 
 NAV_GROUP_CONTRACT = ComponentContract(
@@ -632,6 +654,7 @@ NAV_GROUP_CONTRACT = ComponentContract(
     ),
     accessibility=(),
     available_slots=("slot_label", "slot_items"),
+    category="Navigation",
 )
 
 NAV_CONTRACT = ComponentContract(
@@ -664,6 +687,7 @@ NAV_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_brand", "slot_items", "slot_actions"),
+    category="Navigation",
 )
 
 SIDEBAR_NAV_CONTRACT = ComponentContract(
@@ -695,6 +719,7 @@ SIDEBAR_NAV_CONTRACT = ComponentContract(
         ),
     ),
     available_slots=("slot_header", "slot_sections", "slot_footer"),
+    category="Navigation",
 )
 
 

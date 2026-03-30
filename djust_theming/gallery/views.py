@@ -254,21 +254,24 @@ def storybook_index_view(request):
 def storybook_detail_view(request, component_name):
     """Render the storybook detail page for a single component.
 
-    Shows rendered variants, template source, context contract, slots,
-    accessibility requirements, and CSS variables.
-
+    Handles both template-based (24 contracted) and Python (169 total) components.
     Returns 404 if the component name is not recognized.
     """
     denied = _check_access(request)
     if denied:
         return denied
 
-    if component_name not in COMPONENT_CONTRACTS:
+    from .component_registry import _COMPONENT_TO_CATEGORY
+    if component_name not in COMPONENT_CONTRACTS and component_name not in _COMPONENT_TO_CATEGORY:
         return HttpResponseNotFound(
             f"Unknown component: {component_name}"
         )
 
-    ctx = build_storybook_detail_context(component_name)
+    try:
+        ctx = build_storybook_detail_context(component_name)
+    except KeyError:
+        return HttpResponseNotFound(f"Unknown component: {component_name}")
+
     ctx["request"] = request
     # Pass full component list for sidebar navigation
     index_ctx = build_storybook_index_context()
@@ -277,6 +280,50 @@ def storybook_detail_view(request, component_name):
 
     html = render_to_string(
         "djust_theming/gallery/storybook_detail.html",
+        ctx,
+        request=request,
+    )
+    return HttpResponse(html)
+
+
+def storybook_category_view(request, category):
+    """Render a storybook category page showing all components in the category."""
+    denied = _check_access(request)
+    if denied:
+        return denied
+
+    from .component_registry import COMPONENT_CATEGORIES, get_all_components_with_metadata
+
+    if category not in COMPONENT_CATEGORIES:
+        return HttpResponseNotFound(f"Unknown category: {category}")
+
+    all_components = get_all_components_with_metadata()
+    category_components = [c for c in all_components if c["category"] == category]
+
+    # Enrich template components with contract data
+    enriched = []
+    for comp in category_components:
+        name = comp["name"]
+        if name in COMPONENT_CONTRACTS:
+            contract = COMPONENT_CONTRACTS[name]
+            comp = dict(comp)
+            comp["required_count"] = len(contract.required_context)
+            comp["optional_count"] = len(contract.optional_context)
+            comp["slot_count"] = len(contract.available_slots)
+            comp["a11y_count"] = len(contract.accessibility)
+        enriched.append(comp)
+
+    index_ctx = build_storybook_index_context()
+    ctx = {
+        "request": request,
+        "category": category,
+        "category_components": enriched,
+        "all_components": index_ctx.get("components", []),
+        "current_component": None,
+    }
+
+    html = render_to_string(
+        "djust_theming/gallery/storybook_category.html",
         ctx,
         request=request,
     )
