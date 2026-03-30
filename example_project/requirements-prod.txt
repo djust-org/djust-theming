@@ -1,14 +1,13 @@
 # Production dependencies for theming.djust.org
+# Note: djust-theming and djust-components are built from source in the Dockerfile
 
 # Core
 Django>=5.0.9
 whitenoise>=6.0.0
 gunicorn>=22.0.0
 
-# djust-components (from PyPI)
-djust-components>=0.3.0
-
 # djust framework (required by djust-components, not in INSTALLED_APPS)
+# Installed from PyPI or /wheels dir (CI provides djust wheel for correct Python version)
 djust>=0.3.0
 
 # Sentry error tracking (optional)
