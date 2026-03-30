@@ -238,9 +238,13 @@ def build_storybook_detail_context(component_name: str) -> dict:
         python_examples_html = []
         for kwargs in raw_examples:
             html = render_python_component_example(component_name, kwargs)
+            # Pre-render kwargs display string in Python to avoid Django template
+            # resolving .items as a dict-key lookup instead of dict.items().
+            kwargs_display = ", ".join(f"{k}={repr(v)}" for k, v in kwargs.items())
             python_examples_html.append({
                 "html": html,
                 "kwargs": kwargs,
+                "kwargs_display": kwargs_display,
             })
 
         # Get parameter signature

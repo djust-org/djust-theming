@@ -70,7 +70,7 @@
           </div>
           <span>python</span>
         </div>
-        <pre class="sb-code-body">{{ name }}({% for key, val in ex.kwargs.items %}{{ key }}={{ val|safe }}{% if not forloop.last %}, {% endif %}{% endfor %})</pre>
+        <pre class="sb-code-body">{{ name }}({{ ex.kwargs_display }})</pre>
       </div>
     </div>
     {% endfor %}
