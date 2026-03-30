@@ -1,0 +1,15 @@
+# Production dependencies for theming.djust.org
+
+# Core
+Django>=5.0.9
+whitenoise>=6.0.0
+gunicorn>=22.0.0
+
+# djust-components (from PyPI)
+djust-components>=0.3.0
+
+# djust framework (required by djust-components, not in INSTALLED_APPS)
+djust>=0.3.0
+
+# Sentry error tracking (optional)
+sentry-sdk[django]>=2.0.0
