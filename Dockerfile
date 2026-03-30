@@ -4,6 +4,8 @@
 
 FROM python:3.12-slim-bookworm
 
+LABEL org.opencontainers.image.source=https://github.com/djust-org/djust-theming
+
 WORKDIR /app
 
 # Install runtime dependencies and git (for cloning djust-components)
