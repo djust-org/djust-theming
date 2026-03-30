@@ -44,9 +44,9 @@ spec:
         - name: DJANGO_DEBUG
           value: "False"
         - name: DJANGO_ALLOWED_HOSTS
-          value: "theming.djust.org,localhost,127.0.0.1"
+          value: "themes.djust.org,theming.djust.org,localhost,127.0.0.1"
         - name: CSRF_TRUSTED_ORIGINS
-          value: "https://theming.djust.org"
+          value: "https://themes.djust.org,https://theming.djust.org"
         - name: PYTHONUNBUFFERED
           value: "1"
         - name: POD_IP

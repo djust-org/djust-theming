@@ -11,9 +11,20 @@ spec:
   ingressClassName: nginx
   tls:
   - hosts:
+    - themes.djust.org
     - theming.djust.org
     secretName: djust-theming-tls
   rules:
+  - host: themes.djust.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: djust-theming
+            port:
+              number: 8000
   - host: theming.djust.org
     http:
       paths:

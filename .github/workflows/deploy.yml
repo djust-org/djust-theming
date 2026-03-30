@@ -147,5 +147,5 @@ jobs:
       - name: Deployment summary
         run: |
           echo "Deployment complete!"
-          echo "Site: https://theming.djust.org"
+          echo "Site: https://themes.djust.org (also: https://theming.djust.org)"
           echo "Image: ${{ env.IMAGE_NAME }}:${{ steps.version.outputs.tag }}"
