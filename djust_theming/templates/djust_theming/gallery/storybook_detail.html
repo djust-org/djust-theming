@@ -38,6 +38,12 @@
         {% elif name == "card" %}{% theme_card title=ex.title description=ex.description %}
         {% elif name == "alert" %}{% theme_alert ex.message variant=ex.variant %}
         {% elif name == "input" %}{% theme_input ex.name label=ex.label placeholder=ex.placeholder type=ex.type %}
+        {% elif name == "checkbox" %}{% theme_checkbox ex.name label=ex.label description=ex.description %}
+        {% elif name == "textarea" %}{% theme_textarea ex.name label=ex.label placeholder=ex.placeholder rows=ex.rows %}
+        {% elif name == "select" %}{% theme_select ex.name label=ex.label options=ex.options placeholder=ex.placeholder %}
+        {% elif name == "modal" %}{% theme_modal ex.id title=ex.title size=ex.size %}
+        {% elif name == "dropdown" %}{% theme_dropdown ex.id label=ex.label align=ex.align %}
+        {% elif name == "radio" %}{% theme_radio ex.name label=ex.label options=ex.options selected=ex.selected %}
         {% else %}
           <span style="font-size: 0.8125rem; color: hsl(var(--muted-foreground));">
             {{ name }}({% for key, val in ex.items %}{{ key }}={{ val }}{% if not forloop.last %}, {% endif %}{% endfor %})
