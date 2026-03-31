@@ -37,7 +37,7 @@
         {% elif name == "badge" %}{% theme_badge ex.text variant=ex.variant %}
         {% elif name == "card" %}{% theme_card title=ex.title description=ex.description %}
         {% elif name == "alert" %}{% theme_alert ex.message variant=ex.variant %}
-        {% elif name == "input" %}{% theme_input placeholder=ex.placeholder type=ex.type %}
+        {% elif name == "input" %}{% theme_input ex.name label=ex.label placeholder=ex.placeholder type=ex.type %}
         {% else %}
           <span style="font-size: 0.8125rem; color: hsl(var(--muted-foreground));">
             {{ name }}({% for key, val in ex.items %}{{ key }}={{ val }}{% if not forloop.last %}, {% endif %}{% endfor %})
