@@ -1238,7 +1238,7 @@
     display: none; position: absolute; top: calc(100% + 0.5rem); right: 0;
     background: hsl(var(--card)); border: 1px solid hsl(var(--border));
     border-radius: 0.75rem; box-shadow: 0 8px 30px hsl(var(--foreground) / 0.12), 0 2px 8px hsl(var(--foreground) / 0.06);
-    width: 16rem; z-index: 200;
+    width: 17rem; z-index: 200; padding: 0.375rem 0;
     animation: theme-panel-in 0.15s ease-out;
 }
 .theme-panel.open .theme-panel-menu { display: block; }
