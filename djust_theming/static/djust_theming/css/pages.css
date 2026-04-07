@@ -1,4 +1,4 @@
-@layer components {
+/* djust-theming page styles */
   /* -----------------------------------------------------------------------
      Page templates — shared styles
      ----------------------------------------------------------------------- */
@@ -178,4 +178,4 @@
   .page-empty-state .page-icon {
     margin-bottom: var(--space-6, 1.5rem);
   }
-}
+

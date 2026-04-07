@@ -1,10 +1,12 @@
-@layer components {
 /*
  * djust-theming component styles
  *
  * Extracted from inline <style> blocks in component templates.
  * These styles are canonical for components rendered via template tags.
  * Included automatically via {% theme_head %}.
+ *
+ * NOT wrapped in @layer — these styles must have higher specificity than
+ * djust-components defaults so theming overrides take effect.
  */
 
 /* ==========================================================================
@@ -1221,9 +1223,9 @@
     animation-direction: reverse;
 }
 
-} /* end @layer components */
+/* end component styles */
 
-/* ── Theme Panel (unlayered — needs priority over resets) ───────────────────── */
+/* ── Theme Panel ────────────────────────────────────────────────────────────── */
 .theme-panel { position: relative; }
 
 .theme-panel-trigger {

@@ -1,4 +1,4 @@
-@layer base {
+/* djust-theming layout styles */
 /*
  * djust_theming - Layout CSS
  *
@@ -231,4 +231,4 @@
   }
 }
 
-} /* end @layer base */
+/* end layout styles */
