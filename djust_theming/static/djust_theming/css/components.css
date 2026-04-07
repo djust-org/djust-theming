@@ -1249,6 +1249,29 @@
     background: none; cursor: pointer; color: hsl(var(--muted-foreground)); transition: all 0.15s;
 }
 .theme-panel-mode-btn:hover { color: hsl(var(--foreground)); background: hsl(var(--accent, var(--muted))); }
+.theme-panel-mode-btn.active { color: hsl(var(--primary-foreground, #fff)); background: hsl(var(--primary)); border-color: hsl(var(--primary)); }
+.theme-panel-packs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem; padding: 0.25rem 0.25rem;
+}
+.theme-panel-pack {
+    padding: 0.375rem 0.5rem; border: 1px solid hsl(var(--border)); border-radius: var(--radius-sm, 0.25rem);
+    background: none; cursor: pointer; color: hsl(var(--muted-foreground)); font-size: 0.75rem;
+    text-align: left; transition: all 0.15s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.theme-panel-pack:hover { color: hsl(var(--foreground)); background: hsl(var(--accent, var(--muted))); border-color: hsl(var(--foreground) / 0.2); }
+.theme-panel-pack.active { color: hsl(var(--primary)); border-color: hsl(var(--primary)); background: hsl(var(--primary) / 0.1); font-weight: 600; }
+.theme-panel-customize-toggle {
+    display: flex; align-items: center; gap: 0.375rem; width: 100%;
+    padding: 0.375rem 0.5rem; border: none; background: none; cursor: pointer;
+    color: hsl(var(--muted-foreground)); font-size: 0.6875rem; font-weight: 500;
+    transition: color 0.15s;
+}
+.theme-panel-customize-toggle:hover { color: hsl(var(--foreground)); }
+.theme-panel-customize-toggle svg { transition: transform 0.2s; }
+.theme-panel-customize.open + .theme-panel-customize-toggle svg,
+.theme-panel-customize-toggle.open svg { transform: rotate(180deg); }
+.theme-panel-customize { display: none; padding-top: 0.25rem; }
+.theme-panel-customize.open { display: block; }
 .theme-panel-select {
     width: 100%; padding: 0.375rem 0.5rem; border: 1px solid hsl(var(--border));
     border-radius: var(--radius-sm, 0.25rem); background: hsl(var(--background, var(--card)));

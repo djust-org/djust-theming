@@ -277,7 +277,7 @@ def theme_panel(
 
     # Build theme pack list
     packs = [
-        {"name": name, "display_name": pack.display_name}
+        {"name": name, "display_name": pack.display_name, "description": pack.description}
         for name, pack in sorted(get_all_theme_packs().items())
     ]
 

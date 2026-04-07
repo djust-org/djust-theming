@@ -8,13 +8,13 @@
         <div class="theme-panel-section">
             <span class="theme-panel-label">Mode</span>
             <div class="theme-panel-modes">
-                <button type="button" data-theme-mode="light" class="theme-panel-mode-btn" title="Light">
+                <button type="button" data-theme-mode="light" class="theme-panel-mode-btn{% if theme_mode == 'light' %} active{% endif %}" title="Light">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                 </button>
-                <button type="button" data-theme-mode="dark" class="theme-panel-mode-btn" title="Dark">
+                <button type="button" data-theme-mode="dark" class="theme-panel-mode-btn{% if theme_mode == 'dark' %} active{% endif %}" title="Dark">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                 </button>
-                <button type="button" data-theme-mode="system" class="theme-panel-mode-btn" title="System">
+                <button type="button" data-theme-mode="system" class="theme-panel-mode-btn{% if theme_mode == 'system' %} active{% endif %}" title="System">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
                 </button>
             </div>
@@ -24,37 +24,48 @@
 
         {% if show_packs and packs %}
         <div class="theme-panel-section">
-            <span class="theme-panel-label">Theme Pack</span>
-            <select class="theme-panel-select" data-theme-pack-select aria-label="Theme pack">
-                <option value="">Custom...</option>
+            <span class="theme-panel-label">Theme</span>
+            <div class="theme-panel-packs">
                 {% for pack in packs %}
-                <option value="{{ pack.name }}"{% if pack.name == current_pack %} selected{% endif %}>{{ pack.display_name }}</option>
+                <button type="button"
+                        class="theme-panel-pack{% if pack.name == current_pack %} active{% endif %}"
+                        data-theme-pack="{{ pack.name }}"
+                        title="{{ pack.description }}">
+                    {{ pack.display_name }}
+                </button>
                 {% endfor %}
-            </select>
+            </div>
         </div>
-        <div class="theme-panel-divider"></div>
         {% endif %}
 
-        {% if show_presets and presets %}
-        <div class="theme-panel-section">
-            <span class="theme-panel-label">Color</span>
-            <select class="theme-panel-select" data-theme-preset-select aria-label="Color preset">
-                {% for preset in presets %}
-                <option value="{{ preset.name }}"{% if preset.is_active %} selected{% endif %}>{{ preset.display_name }}</option>
-                {% endfor %}
-            </select>
-        </div>
+        {% if show_presets or show_design %}
         <div class="theme-panel-divider"></div>
-        {% endif %}
+        <button type="button" class="theme-panel-customize-toggle" data-theme-panel-customize>
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            Customize
+        </button>
+        <div class="theme-panel-customize" data-theme-panel-customize-content>
+            {% if show_presets and presets %}
+            <div class="theme-panel-section">
+                <span class="theme-panel-label">Color</span>
+                <select class="theme-panel-select" data-theme-preset-select aria-label="Color preset">
+                    {% for preset in presets %}
+                    <option value="{{ preset.name }}"{% if preset.is_active %} selected{% endif %}>{{ preset.display_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
 
-        {% if show_design and designs %}
-        <div class="theme-panel-section">
-            <span class="theme-panel-label">Design</span>
-            <select class="theme-panel-select" data-theme-design-select aria-label="Design system">
-                {% for design in designs %}
-                <option value="{{ design.name }}"{% if design.name == current_design %} selected{% endif %}>{{ design.display_name }}</option>
-                {% endfor %}
-            </select>
+            {% if show_design and designs %}
+            <div class="theme-panel-section">
+                <span class="theme-panel-label">Design</span>
+                <select class="theme-panel-select" data-theme-design-select aria-label="Design system">
+                    {% for design in designs %}
+                    <option value="{{ design.name }}"{% if design.name == current_design %} selected{% endif %}>{{ design.display_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
         </div>
         {% endif %}
     </div>

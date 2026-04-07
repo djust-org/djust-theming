@@ -428,19 +428,28 @@
                 window.djustTheme.setMode(modeBtn.getAttribute('data-theme-mode'));
                 return;
             }
+            // Pack buttons (grid)
+            var packBtn = e.target.closest('.theme-panel-pack[data-theme-pack]');
+            if (packBtn && window.djustTheme) {
+                e.preventDefault();
+                window.djustTheme.setPack(packBtn.getAttribute('data-theme-pack'));
+                return;
+            }
+            // Customize toggle
+            var custToggle = e.target.closest('[data-theme-panel-customize]');
+            if (custToggle) {
+                e.preventDefault();
+                var content = custToggle.closest('.theme-panel-menu').querySelector('[data-theme-panel-customize-content]');
+                if (content) {
+                    content.classList.toggle('open');
+                    custToggle.classList.toggle('open');
+                }
+                return;
+            }
         });
 
         // Select changes
         document.addEventListener('change', function(e) {
-            var packSel = e.target.closest('[data-theme-pack-select]');
-            if (packSel && window.djustTheme) {
-                if (packSel.value) {
-                    window.djustTheme.setPack(packSel.value);
-                } else {
-                    window.djustTheme.clearPack();
-                }
-                return;
-            }
             var presetSel = e.target.closest('[data-theme-preset-select]');
             if (presetSel && window.djustTheme) {
                 window.djustTheme.setPreset(presetSel.value);
