@@ -19,22 +19,17 @@
                 </button>
             </div>
         </div>
-        <div class="theme-panel-divider"></div>
         {% endif %}
 
         {% if show_packs and packs %}
+        <div class="theme-panel-divider"></div>
         <div class="theme-panel-section">
             <span class="theme-panel-label">Theme</span>
-            <div class="theme-panel-packs">
+            <select class="theme-panel-select" data-theme-pack-select aria-label="Theme pack">
                 {% for pack in packs %}
-                <button type="button"
-                        class="theme-panel-pack{% if pack.name == current_pack %} active{% endif %}"
-                        data-theme-pack="{{ pack.name }}"
-                        title="{{ pack.description }}">
-                    {{ pack.display_name }}
-                </button>
+                <option value="{{ pack.name }}"{% if pack.name == current_pack %} selected{% endif %}>{{ pack.display_name }}</option>
                 {% endfor %}
-            </div>
+            </select>
         </div>
         {% endif %}
 

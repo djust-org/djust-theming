@@ -428,13 +428,6 @@
                 window.djustTheme.setMode(modeBtn.getAttribute('data-theme-mode'));
                 return;
             }
-            // Pack buttons (grid)
-            var packBtn = e.target.closest('.theme-panel-pack[data-theme-pack]');
-            if (packBtn && window.djustTheme) {
-                e.preventDefault();
-                window.djustTheme.setPack(packBtn.getAttribute('data-theme-pack'));
-                return;
-            }
             // Customize toggle
             var custToggle = e.target.closest('[data-theme-panel-customize]');
             if (custToggle) {
@@ -448,8 +441,13 @@
             }
         });
 
-        // Select changes
+        // Select changes (pack, color, design)
         document.addEventListener('change', function(e) {
+            var packSel = e.target.closest('[data-theme-pack-select]');
+            if (packSel && window.djustTheme) {
+                window.djustTheme.setPack(packSel.value);
+                return;
+            }
             var presetSel = e.target.closest('[data-theme-preset-select]');
             if (presetSel && window.djustTheme) {
                 window.djustTheme.setPreset(presetSel.value);
