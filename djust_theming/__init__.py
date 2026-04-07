@@ -87,6 +87,6 @@ __all__ = [
     "export_preset_as_tailwind_colors",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.4.0rc1"
 
 default_app_config = "djust_theming.apps.DjustThemingConfig"
