@@ -32,6 +32,7 @@ class ThemeRegistry:
                     inst = super().__new__(cls)
                     inst._presets = {}
                     inst._themes = {}  # design systems
+                    inst._packs = {}   # theme packs
                     inst._manifests = {}  # ThemeManifest objects
                     inst._discovered = False
                     cls._instance = inst
@@ -51,6 +52,11 @@ class ThemeRegistry:
         with self._lock:
             self._themes[name] = theme
 
+    def register_pack(self, name: str, pack) -> None:
+        """Register a theme pack. Overwrites if name exists."""
+        with self._lock:
+            self._packs[name] = pack
+
     def register_manifest(self, name: str, manifest) -> None:
         """Register a parsed ThemeManifest."""
         with self._lock:
@@ -68,6 +74,10 @@ class ThemeRegistry:
         """Get a design system by name, or *default* if not found."""
         return self._themes.get(name, default)
 
+    def get_pack(self, name: str, default=None):
+        """Get a theme pack by name, or *default* if not found."""
+        return self._packs.get(name, default)
+
     def get_manifest(self, name: str):
         """Get a ThemeManifest by name, or None if not found."""
         return self._manifests.get(name)
@@ -78,6 +88,9 @@ class ThemeRegistry:
     def has_theme(self, name: str) -> bool:
         return name in self._themes
 
+    def has_pack(self, name: str) -> bool:
+        return name in self._packs
+
     def list_presets(self) -> dict:
         """Return a shallow copy of all registered presets."""
         return dict(self._presets)
@@ -85,6 +98,10 @@ class ThemeRegistry:
     def list_themes(self) -> dict:
         """Return a shallow copy of all registered design systems."""
         return dict(self._themes)
+
+    def list_packs(self) -> dict:
+        """Return a shallow copy of all registered theme packs."""
+        return dict(self._packs)
 
     def list_manifests(self) -> dict:
         """Return a shallow copy of all registered manifests."""
@@ -118,7 +135,13 @@ class ThemeRegistry:
         for name, ds in DESIGN_SYSTEMS.items():
             self._themes[name] = ds
 
-        # 3. DJUST_THEMES setting (pip-installed theme packages)
+        # 3. Built-in theme packs
+        from .theme_packs import THEME_PACKS
+
+        for name, pack in THEME_PACKS.items():
+            self._packs[name] = pack
+
+        # 4. DJUST_THEMES setting (pip-installed theme packages)
         self._discover_from_settings()
 
         # 4. themes_dir (convention-based, from theme.toml files)
@@ -154,6 +177,10 @@ class ThemeRegistry:
         if hasattr(mod, "DESIGN_SYSTEMS"):
             for name, ds in mod.DESIGN_SYSTEMS.items():
                 self._themes[name] = ds
+        # Convention: package exposes THEME_PACKS dict
+        if hasattr(mod, "THEME_PACKS"):
+            for name, pack in mod.THEME_PACKS.items():
+                self._packs[name] = pack
 
     @staticmethod
     def _detect_package_templates(mod, manifest):
@@ -204,3 +231,57 @@ class ThemeRegistry:
 def get_registry() -> ThemeRegistry:
     """Get the global ThemeRegistry singleton."""
     return ThemeRegistry()
+
+
+# ------------------------------------------------------------------
+# Public registration API — use these in AppConfig.ready()
+# ------------------------------------------------------------------
+
+def register_preset(name: str, preset) -> None:
+    """Register a custom color preset.
+
+    Call in your AppConfig.ready():
+
+        from djust_theming.registry import register_preset
+        from djust_theming.presets import ThemePreset, ThemeTokens
+
+        register_preset("my_brand", ThemePreset(
+            name="my_brand",
+            display_name="My Brand",
+            light=ThemeTokens(primary="220 90% 56%", ...),
+            dark=ThemeTokens(primary="220 90% 70%", ...),
+        ))
+    """
+    get_registry().register_preset(name, preset)
+
+
+def register_design_system(name: str, design_system) -> None:
+    """Register a custom design system.
+
+    Call in your AppConfig.ready():
+
+        from djust_theming.registry import register_design_system
+        from djust_theming.theme_packs import DesignSystem
+
+        register_design_system("my_design", DesignSystem(...))
+    """
+    get_registry().register_theme(name, design_system)
+
+
+def register_theme_pack(name: str, pack) -> None:
+    """Register a custom theme pack.
+
+    Call in your AppConfig.ready():
+
+        from djust_theming.registry import register_theme_pack
+        from djust_theming.theme_packs import ThemePack
+
+        register_theme_pack("my_pack", ThemePack(
+            name="my_pack",
+            display_name="My Theme",
+            design_theme="material",
+            color_preset="my_brand",
+            ...
+        ))
+    """
+    get_registry().register_pack(name, pack)

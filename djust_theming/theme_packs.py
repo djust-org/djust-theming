@@ -1308,13 +1308,19 @@ DESIGN_SYSTEMS: Dict[str, DesignSystem] = {
 
 
 def get_design_system(name: str) -> Optional[DesignSystem]:
-    """Get a design system by name."""
-    return DESIGN_SYSTEMS.get(name)
+    """Get a design system by name (includes user-registered systems)."""
+    from .registry import get_registry
+    reg = get_registry()
+    return reg.get_theme(name) or DESIGN_SYSTEMS.get(name)
 
 
 def get_all_design_systems() -> Dict[str, DesignSystem]:
-    """Get all available design systems."""
-    return DESIGN_SYSTEMS.copy()
+    """Get all available design systems (built-in + user-registered)."""
+    from .registry import get_registry
+    reg = get_registry()
+    result = DESIGN_SYSTEMS.copy()
+    result.update(reg.list_themes())
+    return result
 
 
 # =============================================================================
@@ -1899,10 +1905,16 @@ THEME_PACKS: Dict[str, ThemePack] = {
 
 
 def get_theme_pack(name: str) -> Optional[ThemePack]:
-    """Get a theme pack by name."""
-    return THEME_PACKS.get(name)
+    """Get a theme pack by name (includes user-registered packs)."""
+    from .registry import get_registry
+    reg = get_registry()
+    return reg.get_pack(name) or THEME_PACKS.get(name)
 
 
 def get_all_theme_packs() -> Dict[str, ThemePack]:
-    """Get all available theme packs."""
-    return THEME_PACKS.copy()
+    """Get all available theme packs (built-in + user-registered)."""
+    from .registry import get_registry
+    reg = get_registry()
+    result = THEME_PACKS.copy()
+    result.update(reg.list_packs())
+    return result

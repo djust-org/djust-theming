@@ -19,7 +19,13 @@ from .manager import (
     get_css_prefix,
     get_theme_manager,
 )
-from .registry import ThemeRegistry, get_registry
+from .registry import (
+    ThemeRegistry,
+    get_registry,
+    register_preset,
+    register_design_system,
+    register_theme_pack,
+)
 from .mixins import ThemeMixin
 from .palette import PaletteGenerator
 from .tailwind import (
@@ -64,9 +70,12 @@ __all__ = [
     "ROSE_THEME",
     # Manifest
     "ThemeManifest",
-    # Registry
+    # Registry & extension API
     "ThemeRegistry",
     "get_registry",
+    "register_preset",
+    "register_design_system",
+    "register_theme_pack",
     # Core
     "ThemeCSSGenerator",
     "ThemeManager",
