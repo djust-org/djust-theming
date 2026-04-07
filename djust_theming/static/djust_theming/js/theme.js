@@ -453,11 +453,9 @@
             }
         });
 
-        // Sync select values with current cookie state
-        var designSel = document.querySelector('[data-theme-design-select]');
-        var packSel = document.querySelector('[data-theme-pack-select]');
-        if (designSel) designSel.value = getCookie('djust_theme') || 'ios';
-        if (packSel) packSel.value = getCookie('djust_theme_pack') || '';
+        // The server renders the correct `selected` attributes on
+        // <option> tags (resolving pack → design/preset overrides).
+        // No client-side sync needed — trust the server-rendered state.
     }
 
     // Run after DOM ready
