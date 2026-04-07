@@ -588,6 +588,7 @@ All styles use CSS custom properties and automatically adapt to any preset and l
 ## Documentation
 
 - **[Getting Started](docs/getting-started.md)** — Create your first theme in 10 minutes
+- **[Custom Themes](docs/custom-themes.md)** — Register your own presets, design systems, and theme packs
 - **[Customization Guide](docs/customization.md)** — Gallery, live editor, two-panel customization
 - **[Form Integration](docs/forms.md)** — `{% theme_form %}` tag, ThemeFormRenderer, widget templates
 - **[RTL Support](docs/rtl.md)** — Right-to-left language support, logical properties, direction config
