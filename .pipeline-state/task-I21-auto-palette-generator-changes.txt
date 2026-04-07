@@ -1,0 +1,30 @@
+I21: Brand Color Auto-Palette Generator — Changes
+
+NEW FILES:
+- djust_theming/palette.py
+  - PaletteGenerator class with from_brand_colors() classmethod
+  - 4 modes: professional, playful, muted, vibrant (different sat_scale, hue offsets, radius)
+  - _build_light_tokens(): generates all 31 light-mode ColorScale fields from brand HSL values
+  - _build_dark_tokens(): generates all 31 dark-mode ColorScale fields (lightness inversion)
+  - _ensure_contrast(): binary-search lightness adjustment to meet WCAG AA (4.5:1 text, 3:1 borders)
+  - _pick_fg_on(): chooses near-white or near-black foreground based on contrast ratio
+  - _fix_light_contrast() / _fix_dark_contrast(): post-process all fg/bg pairs for WCAG compliance
+  - Helper functions: _luminance(), _contrast_ratio(), _clamp()
+
+- tests/test_palette.py (50 tests)
+  - TestBasicGeneration: single/two/three brand colors, all 4 modes, invalid mode/hex errors, short hex
+  - TestOutputValidation: isinstance checks, light+dark present, all 31 fields are ColorScale, name/radius
+  - TestColorDerivation: primary hue preserved, secondary complementary, accent analogous, user-provided honored
+  - TestWCAGContrast: all fg/bg pairs >= 4.5:1 (light + dark, all modes), border >= 3:1, link readable
+  - TestContrastAutofix: deliberately bad input (#eeeeee) still produces passing output
+  - TestKnownBrandColors: Spotify green, Coca-Cola red, Facebook blue smoke tests
+  - TestModeDifferentiation: muted lower sat, vibrant higher sat, playful wider hue range
+  - TestIntegration: works with ThemeCSSGenerator, AccessibilityValidator, exported from package
+
+MODIFIED FILES:
+- djust_theming/__init__.py
+  - Added import of PaletteGenerator from .palette
+  - Added "PaletteGenerator" to __all__
+
+- CHANGELOG.md
+  - Added feat entry for I21 under [Unreleased] -> Added

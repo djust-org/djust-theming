@@ -1,0 +1,27 @@
+## Changes: Phase 2 Foundation — Component Contracts + Slot System (2.2/I11) + Test Harness (I27)
+
+### New Files
+- djust_theming/contracts.py — Component contract definitions (ContextVar, RequiredElement, AccessibilityRequirement, ComponentContract dataclasses; COMPONENT_CONTRACTS dict with contracts for all 5 components)
+- tests/component_test_base.py — ComponentTestCase base class with render_component(), assert_has_element(), assert_has_class(), assert_contains(), assert_not_contains(), assert_accessible(), assert_contract() helpers
+- tests/test_components.py — 57 tests covering contract definitions, rendering, slots, accessibility, backward compatibility for all 5 components
+- .pipeline-state/task-2.2-I11-I27-component-foundation-plan.md — Implementation plan
+
+### Modified Files
+- djust_theming/templates/djust_theming/components/button.html — Added slot_icon, slot_content, slot_loading slot variables with |safe filter
+- djust_theming/templates/djust_theming/components/card.html — Added slot_header, slot_body, slot_footer slot variables with |safe filter
+- djust_theming/templates/djust_theming/components/alert.html — Added slot_icon, slot_message, slot_actions, slot_dismiss slot variables with |safe filter; new alert-icon and alert-actions wrapper divs
+- djust_theming/templates/djust_theming/components/badge.html — Added slot_content slot variable with |safe filter
+- djust_theming/templates/djust_theming/components/input.html — Added slot_label, slot_input, slot_help_text, slot_error slot variables with |safe filter; new input-help and input-error wrapper divs
+- CHANGELOG.md — Added entries for slot system, contracts, and test harness
+
+### Test Results
+- 57 new tests: ALL PASSED
+- 373 total tests: ALL PASSED (0 failures, 1 skipped, 28 warnings)
+- Zero regressions in existing test suite
+
+### Design Decisions
+1. Slots implemented as optional context variables (not Django {% block %} tags) because component templates are standalone (not extended via {% extends %})
+2. Slot variables use |safe filter to allow HTML content — this is intentional since slots are meant to contain rendered HTML fragments
+3. When no slot variable is provided, templates produce identical output to before — full backward compatibility
+4. Contracts use frozen dataclasses for immutability and hashability
+5. ComponentTestCase uses stdlib html.parser for zero additional dependencies

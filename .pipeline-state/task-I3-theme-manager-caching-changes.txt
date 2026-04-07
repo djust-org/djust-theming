@@ -1,0 +1,29 @@
+## Changes: I3 — ThemeManager Per-Request Caching
+
+### New function
+- `djust_theming/manager.py`: Added `get_theme_manager(request)` helper that caches ThemeManager on `request._djust_theme_manager` (Django `request.user` pattern). Returns fresh instance when `request` is None.
+
+### Updated call sites (ThemeManager(request=request) -> get_theme_manager(request))
+- `djust_theming/templatetags/theme_tags.py`: 8 calls replaced (theme_head, theme_css, theme_switcher, theme_mode_toggle, theme_preset_selector, theme_preset, theme_mode, theme_resolved_mode)
+- `djust_theming/context_processors.py`: 1 call replaced (theme_context)
+- `djust_theming/views.py`: 2 calls replaced (_generate_css_content, _css_etag)
+- `djust_theming/mixins.py`: 1 call replaced (ThemeMixin.mount)
+
+### Public API export
+- `djust_theming/__init__.py`: Added `get_theme_manager` to imports and `__all__`
+
+### Unchanged (by design)
+- `djust_theming/components.py`: Fallback `ThemeManager()` (no request) left as-is; callers already pass cached manager instance
+
+### Files modified: 6
+- djust_theming/__init__.py
+- djust_theming/manager.py
+- djust_theming/context_processors.py
+- djust_theming/views.py
+- djust_theming/mixins.py
+- djust_theming/templatetags/theme_tags.py
+
+### Behavioral impact: NONE
+- All call sites produce identical results; the only difference is instance reuse within a single request
+- No cross-request leakage (cache lives on request object)
+- No-request fallback returns fresh instance each time (unchanged behavior)

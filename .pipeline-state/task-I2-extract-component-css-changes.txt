@@ -1,0 +1,8 @@
+djust_theming/static/djust_theming/css/components.css (NEW)
+djust_theming/templates/djust_theming/components/alert.html
+djust_theming/templates/djust_theming/components/badge.html
+djust_theming/templates/djust_theming/components/button.html
+djust_theming/templates/djust_theming/components/card.html
+djust_theming/templates/djust_theming/components/input.html
+djust_theming/templates/djust_theming/theme_head.html
+djust_theming/templates/djust_theming/theme_switcher.html

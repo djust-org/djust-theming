@@ -1,0 +1,35 @@
+## Changes: Phase 1.1 + I9 — Template Namespace Resolution + CSS Cascade Layers
+
+### New Files
+- djust_theming/template_resolver.py — Template resolution helpers with theme-specific override fallback chain
+- tests/conftest.py — Shared Django configuration for all test files
+- tests/test_template_resolution.py — 16 tests for template resolution (fallback chain, override, HTML output)
+- tests/test_css_layers.py — 19 tests for CSS cascade layers (config, layer order, wrapping, nesting)
+
+### Modified Files
+
+#### Phase 1.1: Template Namespace Resolution
+- djust_theming/templatetags/theme_components.py — Converted all 5 inclusion_tags (theme_button, theme_card, theme_badge, theme_alert, theme_input) to simple_tag(takes_context=True) with dynamic template resolution via resolve_component_template()
+- djust_theming/templatetags/theme_tags.py — Converted theme_switcher from inclusion_tag to simple_tag(takes_context=True) with dynamic template resolution via resolve_theme_template()
+- djust_theming/components.py — Updated ThemeSwitcher.render(), ThemeModeButton.render(), and PresetSelector._render_*() to use select_template() with theme-specific fallback chain instead of hardcoded template paths
+- tests/test_css_prefix.py — Updated TestComponentTemplateContextHasPrefix tests to work with new simple_tag API (pass context, check HTML output instead of dict)
+
+#### I9: CSS Cascade Layers
+- djust_theming/manager.py — Added use_css_layers (default True) and css_layer_order (default "base, tokens, components, theme") to DEFAULT_CONFIG
+- djust_theming/css_generator.py — Added @layer wrapping: layer order declaration as first line, tokens in @layer tokens, base styles in @layer base, utilities in @layer components. Respects use_css_layers config.
+- djust_theming/theme_css_generator.py — Added @layer wrapping: theme vars in @layer tokens, typography and component styles in @layer components. Respects use_css_layers config.
+- djust_theming/component_css_generator.py — Wraps generate_component_css() output in @layer components. Updated _read_static_css() to strip outer @layer wrapper from static file before processing. Respects use_css_layers config.
+- djust_theming/pack_css_generator.py — Wraps pack-specific CSS additions (icons, animations, patterns, interactions, illustrations) in @layer theme. Base theme CSS already has its own layer wrapping. Respects use_css_layers config.
+- djust_theming/static/djust_theming/css/components.css — Wrapped entire file content in @layer components { ... } for direct <link> tag usage.
+- CHANGELOG.md — Added feat: entries for both Phase 1.1 and I9.
+
+### Test Results
+- 191 passed, 1 skipped, 0 failed
+- All existing tests continue to pass with no regressions
+- New template resolution tests: 16 tests
+- New CSS layers tests: 19 tests (1 skipped: pack CSS test when no test pack available)
+
+### Backward Compatibility
+- Template resolution: Default templates always exist in fallback chain. Exact same HTML output preserved.
+- CSS layers: use_css_layers=True by default. Set to False to disable. Layer wrapping is additive and does not break existing CSS.
+- inclusion_tag -> simple_tag conversion: Tags now return HTML strings instead of dicts. Tests that called tag functions directly needed updating.

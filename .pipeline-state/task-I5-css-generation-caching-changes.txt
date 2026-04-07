@@ -1,0 +1,68 @@
+## I5: CSS Generation Caching — Changes
+
+### Summary
+Added `functools.lru_cache` to all CSS generation convenience functions and
+refactored every call site to use the cached functions instead of instantiating
+generator classes directly. Added a `clear_css_cache()` utility for development
+invalidation.
+
+### Files Modified
+
+1. **djust_theming/css_generator.py**
+   - Added `from functools import lru_cache`
+   - Decorated `generate_theme_css()` with `@lru_cache(maxsize=64)`
+
+2. **djust_theming/theme_css_generator.py**
+   - Added `from functools import lru_cache`
+   - Decorated `generate_theme_css()` with `@lru_cache(maxsize=256)`
+   - Added `None`-preset normalization: when `color_preset is None`, resolves
+     to the theme's default `color_preset` before calling the generator, so
+     `generate_theme_css("material")` and `generate_theme_css("material", "default")`
+     share the same cache entry.
+
+3. **djust_theming/pack_css_generator.py**
+   - Added `from functools import lru_cache`
+   - Added new `generate_pack_css(pack_name)` convenience function with
+     `@lru_cache(maxsize=64)` — mirrors the existing `generate_theme_css`
+     pattern for theme packs.
+
+4. **djust_theming/design_system_css.py**
+   - Added `from functools import lru_cache`
+   - Decorated `generate_design_system_css()` with `@lru_cache(maxsize=256)`
+
+5. **djust_theming/views.py**
+   - Changed imports from `CompleteThemeCSSGenerator`/`ThemePackCSSGenerator`
+     to `generate_theme_css`/`generate_pack_css`.
+   - `_generate_css_content()` now calls cached convenience functions.
+
+6. **djust_theming/context_processors.py**
+   - Changed imports from `CompleteThemeCSSGenerator`/`ThemePackCSSGenerator`
+     to `generate_theme_css`/`generate_pack_css`.
+   - `theme_context()` now calls cached convenience functions.
+
+7. **djust_theming/templatetags/theme_tags.py**
+   - Changed imports from `CompleteThemeCSSGenerator`/`ThemePackCSSGenerator`
+     to `generate_theme_css`/`generate_pack_css`.
+   - `theme_head()` and `theme_css()` tags now call cached convenience functions.
+
+8. **djust_theming/mixins.py**
+   - Changed import from `CompleteThemeCSSGenerator` to `generate_theme_css`.
+   - `ThemeMixin._setup_theme_context()` now calls the cached function.
+
+### Files Added
+
+9. **djust_theming/cache.py**
+   - New module with `clear_css_cache()` function that calls `.cache_clear()`
+     on all four cached convenience functions.
+   - Lazy imports to avoid circular dependencies.
+
+10. **djust_theming/__init__.py**
+    - Added `clear_css_cache` to imports and `__all__`.
+
+### Behavioral Preservation
+- All public APIs remain unchanged (same function signatures, same return values).
+- Generator classes (`CompleteThemeCSSGenerator`, `ThemePackCSSGenerator`,
+  `ThemeCSSGenerator`, `DesignSystemCSSGenerator`) are untouched and can still
+  be instantiated directly for custom use cases (e.g., `custom_tokens`).
+- `lru_cache` is thread-safe in CPython (internal lock).
+- Memory bounded: maxsize limits prevent unbounded growth.

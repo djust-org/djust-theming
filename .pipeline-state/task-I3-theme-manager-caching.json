@@ -1,0 +1,156 @@
+{
+  "pipeline_type": "refactor",
+  "task_description": "I3: ThemeManager Reinstantiates on Every Tag — Cache the ThemeManager instance on request (request._djust_theme_manager). First tag creates it; subsequent tags reuse it. Same pattern Django uses for request.user.",
+  "branch_name": "task/I3-theme-manager-caching",
+  "pr_target_branch": "main",
+  "project_path": "/Users/tip/Dropbox/online_projects/ai/djust_project/djust-theming",
+  "started_at": "2026-03-22T02:00:00Z",
+  "completed_at": "2026-03-22T03:00:00Z",
+  "current_stage": 12,
+  "stages": {
+    "1": {
+      "name": "Environment Check",
+      "status": "passed",
+      "verdict": "ENV_OK",
+      "checklist": [
+        {"action": "git fetch origin", "done": false},
+        {"action": "checkout fresh branch task/I3-theme-manager-caching from main", "done": false},
+        {"action": "verify python/venv", "done": false},
+        {"action": "install dependencies", "done": false},
+        {"action": "smoke test imports", "done": false},
+        {"action": "output ENV_OK or ENV_FAILED", "done": false, "mandatory": true}
+      ]
+    },
+    "2": {
+      "name": "Conflict Check",
+      "status": "passed",
+      "verdict": "MERGE_CLEAN",
+      "checklist": [
+        {"action": "git diff --check", "done": false},
+        {"action": "grep for conflict markers", "done": false},
+        {"action": "output MERGE_CLEAN or MERGE_CONFLICTS_FOUND", "done": false, "mandatory": true}
+      ]
+    },
+    "3": {
+      "name": "Analysis",
+      "status": "passed",
+      "verdict": "CODE_CHANGES",
+      "checklist": [
+        {"action": "read manager.py — understand ThemeManager class, constructor, get_state()", "done": false},
+        {"action": "read theme_tags.py — find all places ThemeManager is instantiated", "done": false},
+        {"action": "read context_processors.py — find ThemeManager instantiation", "done": false},
+        {"action": "read mixins.py — find ThemeManager instantiation", "done": false},
+        {"action": "proposed approach: cache on request object", "done": false},
+        {"action": "list all files affected", "done": false},
+        {"action": "risk assessment", "done": false},
+        {"action": "write analysis to .pipeline-state/task-I3-theme-manager-caching-analysis.md", "done": false, "mandatory": true}
+      ]
+    },
+    "4": {
+      "name": "Refactor Execution",
+      "status": "passed",
+      "verdict": "CODE_CHANGES",
+      "checklist": [
+        {"action": "read .pipeline-state/task-I3-theme-manager-caching-analysis.md", "done": false, "mandatory": true},
+        {"action": "implement caching pattern on request object", "done": false},
+        {"action": "preserve ALL existing behavior", "done": false, "mandatory": true},
+        {"action": "no new functionality added", "done": false},
+        {"action": "git add -u + new files", "done": false},
+        {"action": "git status clean", "done": false, "mandatory": true},
+        {"action": "write changes list to .pipeline-state/task-I3-theme-manager-caching-changes.txt", "done": false, "mandatory": true}
+      ]
+    },
+    "5": {
+      "name": "Test Execution",
+      "status": "passed",
+      "verdict": "TESTS_PASSED",
+      "checklist": [
+        {"action": "run full test suite", "done": false},
+        {"action": "report pass/fail counts", "done": false},
+        {"action": "output TESTS_PASSED or TESTS_FAILED", "done": false, "mandatory": true}
+      ]
+    },
+    "6": {
+      "name": "Review",
+      "status": "passed",
+      "verdict": "REVIEW_PASSED",
+      "checklist": [
+        {"action": "read analysis", "done": false},
+        {"action": "cross-ref analysis vs implementation", "done": false},
+        {"action": "verify behavior preserved", "done": false, "mandatory": true},
+        {"action": "no dead code", "done": false},
+        {"action": "naming consistency", "done": false},
+        {"action": "output REVIEW_PASSED or REVIEW_FAILED", "done": false, "mandatory": true}
+      ]
+    },
+    "7": {
+      "name": "Documentation",
+      "status": "passed",
+      "verdict": "DOCS_UPDATED",
+      "checklist": [
+        {"action": "update docstrings", "done": false},
+        {"action": "update CHANGELOG.md", "done": false},
+        {"action": "output DOCS_UPDATED", "done": false, "mandatory": true}
+      ]
+    },
+    "8": {
+      "name": "Commit & PR",
+      "status": "passed",
+      "verdict": "PR_CREATED: https://github.com/djust-org/djust-theming/pull/9",
+      "checklist": [
+        {"action": "commit with refactor: prefix", "done": false},
+        {"action": "git push -u origin", "done": false},
+        {"action": "gh pr create", "done": false},
+        {"action": "output PR_CREATED/PR_EXISTS/PR_SKIPPED", "done": false, "mandatory": true}
+      ]
+    },
+    "9": {
+      "name": "Code Review",
+      "status": "passed",
+      "verdict": "APPROVE",
+      "run_as": "subagent",
+      "subagent_prompt": "You are reviewing PR #{pr_number} for a refactor. Project: {project_path}. PR targets {pr_target_branch}. Step 0: Read .pipeline-state/*-analysis.md. Step 1: Run git diff {pr_target_branch}...HEAD. Step 2: Cross-ref analysis vs implementation. CRITICAL: Verify behavior preserved. Step 3: Review correctness, security, testing, quality. Step 4: Run tests. Step 5: Decide APPROVE/REQUEST_CHANGES/COMMENT. Step 6 MANDATORY: Post review with gh pr review {pr_number} --comment. Step 7: Output verdict.",
+      "checklist": [
+        {"action": "cross-ref analysis vs implementation", "done": false, "mandatory": true},
+        {"action": "verify behavior preserved", "done": false, "mandatory": true},
+        {"action": "run tests", "done": false, "mandatory": true},
+        {"action": "post review to GitHub", "done": false, "mandatory": true},
+        {"action": "output verdict", "done": false, "mandatory": true}
+      ]
+    },
+    "10": {
+      "name": "Review Verdict",
+      "status": "passed",
+      "verdict": "APPROVE",
+      "checklist": [
+        {"action": "if APPROVE: proceed to Merge", "done": true, "mandatory": true}
+      ]
+    },
+    "11": {
+      "name": "Merge PR",
+      "status": "passed",
+      "verdict": "PR_MERGED",
+      "run_as": "subagent",
+      "subagent_prompt": "Merge PR #{pr_number} in {project_path}. Run: gh pr merge {pr_number} --squash --delete-branch. Do NOT self-approve. Output PR_MERGED or MERGE_FAILED.",
+      "checklist": [
+        {"action": "gh pr merge --squash --delete-branch", "done": false, "mandatory": true},
+        {"action": "output PR_MERGED or MERGE_FAILED", "done": false, "mandatory": true}
+      ]
+    },
+    "12": {
+      "name": "Retrospective",
+      "status": "passed",
+      "verdict": "RETRO_COMPLETE",
+      "run_as": "subagent",
+      "subagent_prompt": "Write retrospective for refactor: {task_description}. Project: {project_path}. PR #{pr_number}. Rate quality 1-5, what went well, lessons learned. MANDATORY: Post retro as gh pr comment {pr_number}. MANDATORY: Append to .pipeline-log.md. Output RETRO_COMPLETE.",
+      "checklist": [
+        {"action": "post retrospective to GitHub PR", "done": false, "mandatory": true},
+        {"action": "append to .pipeline-log.md", "done": false, "mandatory": true},
+        {"action": "output RETRO_COMPLETE", "done": false, "mandatory": true}
+      ]
+    }
+  },
+  "pr_number": 9,
+  "pr_url": "https://github.com/djust-org/djust-theming/pull/9",
+  "rewind_count": 0
+}

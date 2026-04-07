@@ -1,0 +1,18 @@
+I10: Critical CSS Inlining — Changes Summary
+
+FILES MODIFIED:
+- djust_theming/css_generator.py — Added generate_critical_css() and generate_deferred_css() methods to ThemeCSSGenerator
+- djust_theming/theme_css_generator.py — Added generate_critical_css() and generate_deferred_css() methods to CompleteThemeCSSGenerator
+- djust_theming/manager.py — Added critical_css config default, generate_critical_css_for_state(), generate_deferred_css_for_state()
+- djust_theming/views.py — Added deferred_theme_css_view with ETag + Cache-Control
+- djust_theming/urls.py — Added /deferred.css URL pattern
+- djust_theming/templatetags/theme_tags.py — Updated theme_head() to split critical/deferred when enabled
+- djust_theming/templates/djust_theming/theme_head.html — Added {{ deferred_css_block }} output
+- djust_theming/__init__.py — Exported new functions
+- CHANGELOG.md — Added I10 entry
+
+FILES CREATED:
+- tests/test_critical_css.py — 38 tests covering split logic, config, view, template tag
+- .pipeline-state/task-I10-critical-css-inlining-plan.md — Implementation plan
+
+TEST RESULTS: 313 passed, 1 skipped (38 new tests + 275 existing)

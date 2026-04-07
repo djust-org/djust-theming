@@ -1,0 +1,25 @@
+## I17: CSS Namespace Prefixing — Changes Summary
+
+### New files
+- `djust_theming/component_css_generator.py` — Reads static `components.css` and applies a configurable prefix to all component class selectors using regex. Uses `@lru_cache` for performance. Exports `generate_component_css(prefix: str) -> str`.
+- `tests/test_css_prefix.py` — 26 tests covering: default empty prefix, prefix in generated CSS, backward compatibility, prefix in theme_css_generator, component template context, ThemeSwitcher/ThemeModeButton context, theme_head inline CSS logic, and system check for bad prefix format.
+
+### Modified files
+- `djust_theming/manager.py` — Added `"css_prefix": ""` to `DEFAULT_CONFIG`.
+- `djust_theming/theme_css_generator.py` — `CompleteThemeCSSGenerator.__init__` accepts new `css_prefix` param; `_generate_component_styles()` uses f-strings with `self.css_prefix` to prefix `.btn`, `.card`, `.form-input` selectors.
+- `djust_theming/templatetags/theme_components.py` — Added `_css_prefix()` helper; all 5 inclusion tags (`theme_button`, `theme_card`, `theme_badge`, `theme_alert`, `theme_input`) now include `css_prefix` in returned context dict.
+- `djust_theming/templatetags/theme_tags.py` — `theme_head()` now imports `generate_component_css`; when `css_prefix` is set, generates inline `<style data-djust-components>` block with prefixed CSS instead of linking static file.
+- `djust_theming/components.py` — `ThemeSwitcher.get_context()` and `ThemeModeButton.get_context()` now include `css_prefix` from config.
+- `djust_theming/checks.py` — New `check_css_prefix()` system check (W002) warns when css_prefix doesn't end with `-`.
+- `djust_theming/templates/djust_theming/theme_head.html` — Conditional component CSS: `{% if include_component_link %}` for static link, `{{ component_css_block }}` for inline prefixed CSS.
+- `djust_theming/templates/djust_theming/theme_switcher.html` — All class attributes use `{{ css_prefix }}` prefix.
+- `djust_theming/templates/djust_theming/components/button.html` — Uses `{{ css_prefix }}btn`, `{{ css_prefix }}btn-{{ variant }}`, `{{ css_prefix }}btn-{{ size }}`.
+- `djust_theming/templates/djust_theming/components/card.html` — Uses `{{ css_prefix }}card`, `{{ css_prefix }}card-header`, etc.
+- `djust_theming/templates/djust_theming/components/alert.html` — Uses `{{ css_prefix }}alert`, `{{ css_prefix }}alert-{{ variant }}`, etc.
+- `djust_theming/templates/djust_theming/components/badge.html` — Uses `{{ css_prefix }}badge`, `{{ css_prefix }}badge-{{ variant }}`.
+- `djust_theming/templates/djust_theming/components/input.html` — Uses `{{ css_prefix }}input-group`, `{{ css_prefix }}input-label`, `{{ css_prefix }}input`.
+- `CHANGELOG.md` — Added feat entry for I17.
+
+### Test results
+- 93 tests pass (67 existing + 26 new), 0 failures.
+- All existing tests unaffected (backward compatible, default prefix is empty).

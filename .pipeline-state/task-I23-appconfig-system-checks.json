@@ -1,0 +1,54 @@
+{
+  "pipeline_type": "feature",
+  "task_description": "I23: AppConfig System Checks — Add Django system checks for common misconfigurations: missing context_processor (E001), invalid preset (E002), invalid design system (E003). Extend existing checks.py which already has W001 (contrast), W002/E004 (css_prefix).",
+  "branch_name": "task/I23-appconfig-system-checks",
+  "pr_target_branch": "main",
+  "project_path": "/Users/tip/Dropbox/online_projects/ai/djust_project/djust-theming",
+  "started_at": "2026-03-23T04:30:00Z",
+  "completed_at": "2026-03-23T05:30:00Z",
+  "current_stage": 6,
+  "stages": {
+    "1": { "name": "Environment Check", "status": "pending", "verdict": null, "checklist": [{"action": "setup env", "done": false}, {"action": "output ENV_OK or ENV_FAILED", "done": false, "mandatory": true}] },
+    "2": { "name": "Change Detection", "status": "pending", "verdict": null, "checklist": [{"action": "output CODE_CHANGES", "done": false, "mandatory": true}] },
+    "3": { "name": "Conflict Check", "status": "pending", "verdict": null, "checklist": [{"action": "check conflicts", "done": false}, {"action": "output MERGE_CLEAN or MERGE_CONFLICTS_FOUND", "done": false, "mandatory": true}] },
+    "4": {
+      "name": "Planning",
+      "status": "pending",
+      "verdict": null,
+      "checklist": [
+        {"action": "read checks.py — existing checks (W001 contrast, W002/E004 css_prefix)", "done": false},
+        {"action": "read apps.py — current ready() that imports checks", "done": false},
+        {"action": "read manager.py get_theme_config — how config is accessed", "done": false},
+        {"action": "design E001: check context_processors in TEMPLATES settings", "done": false},
+        {"action": "design E002: validate preset name against THEME_PRESETS", "done": false},
+        {"action": "design E003: validate theme name against DESIGN_SYSTEMS", "done": false},
+        {"action": "write plan to .pipeline-state/task-I23-appconfig-system-checks-plan.md", "done": false, "mandatory": true}
+      ]
+    },
+    "5": {
+      "name": "Implementation",
+      "status": "pending",
+      "verdict": null,
+      "checklist": [
+        {"action": "read plan", "done": false, "mandatory": true},
+        {"action": "write tests first", "done": false},
+        {"action": "implement checks E001, E002, E003", "done": false},
+        {"action": "update CHANGELOG.md", "done": false, "mandatory": true},
+        {"action": "git add + status clean", "done": false, "mandatory": true},
+        {"action": "write changes", "done": false, "mandatory": true}
+      ]
+    },
+    "6": { "name": "Test Execution", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "run tests", "done": false}, {"action": "output TESTS_PASSED or TESTS_FAILED", "done": false, "mandatory": true}] },
+    "7": { "name": "Self-Review", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "cross-ref plan, auto-reject triggers", "done": false, "mandatory": true}, {"action": "output REVIEW_PASSED or REVIEW_FAILED", "done": false, "mandatory": true}] },
+    "8": { "name": "Security Check", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "scan for injection/mark_safe", "done": false}, {"action": "output SECURITY_PASSED or SECURITY_FAILED", "done": false, "mandatory": true}] },
+    "9": { "name": "Documentation", "status": "pending", "verdict": null, "checklist": [{"action": "update customization.md with system checks reference", "done": false}, {"action": "update CHANGELOG", "done": false, "mandatory": true}, {"action": "output DOCS_UPDATED", "done": false, "mandatory": true}] },
+    "10": { "name": "Commit & PR", "status": "pending", "verdict": null, "checklist": [{"action": "commit, push, create PR", "done": false}, {"action": "output PR_CREATED", "done": false, "mandatory": true}] },
+    "11": { "name": "Code Review", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Review PR #{pr_number} in {project_path} targeting {pr_target_branch}. Read .pipeline-state/*-plan.md. git diff, tests. Post review gh pr review {pr_number} --comment. Output APPROVE/REQUEST_CHANGES.", "checklist": [{"action": "review + post", "done": false, "mandatory": true}] },
+    "12": { "name": "Review Verdict", "status": "pending", "verdict": null, "checklist": [{"action": "proceed if APPROVE", "done": false, "mandatory": true}] },
+    "13": { "name": "Merge PR", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "gh pr merge {pr_number} --squash --delete-branch in {project_path}. Output PR_MERGED or MERGE_FAILED.", "checklist": [{"action": "merge", "done": false, "mandatory": true}] },
+    "14": { "name": "Retrospective", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Retro for {task_description}. PR #{pr_number} in {project_path}. Rate 1-5. gh pr comment {pr_number}. Append .pipeline-log.md. Output RETRO_COMPLETE.", "checklist": [{"action": "post retro + log", "done": false, "mandatory": true}] }
+  },
+  "pr_number": 19,
+  "pr_url": "https://github.com/djust-org/djust-theming/pull/19",
+  "rewind_count": 0
+}

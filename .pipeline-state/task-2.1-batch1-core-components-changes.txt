@@ -1,0 +1,23 @@
+Phase 2.1 Batch 1: 5 new interactive components + components.js
+
+NEW FILES:
+- djust_theming/templates/djust_theming/components/modal.html
+- djust_theming/templates/djust_theming/components/dropdown.html
+- djust_theming/templates/djust_theming/components/tabs.html
+- djust_theming/templates/djust_theming/components/table.html
+- djust_theming/templates/djust_theming/components/pagination.html
+- djust_theming/static/djust_theming/js/components.js
+- tests/test_batch1_components.py
+- .pipeline-state/task-2.1-batch1-core-components-plan.md
+
+MODIFIED FILES:
+- djust_theming/contracts.py — added 5 new ComponentContract definitions (MODAL, DROPDOWN, TABS, TABLE, PAGINATION)
+- djust_theming/templatetags/theme_components.py — added 5 new template tags (theme_modal, theme_dropdown, theme_tabs, theme_table, theme_pagination)
+- djust_theming/static/djust_theming/css/components.css — added CSS for modal, dropdown, tabs, table, pagination
+- djust_theming/templates/djust_theming/theme_head.html — added components.js script include
+- tests/component_test_base.py — extended tag_map with new components
+- CHANGELOG.md — added Batch 1 entry
+
+TESTS:
+- 69 new tests in test_batch1_components.py
+- Full suite: 442 passed, 1 skipped, 0 failed (was 373 passed)

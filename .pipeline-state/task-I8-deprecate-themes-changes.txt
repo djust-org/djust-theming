@@ -1,0 +1,49 @@
+I8: Deprecate themes.py Properly — Changes Summary
+
+Files modified:
+  - djust_theming/themes.py
+  - djust_theming/manager.py
+  - example_project/theme_demo/views.py
+
+---
+
+## djust_theming/themes.py
+
+Added `_DeprecatedThemesDict` class (subclass of dict) that emits
+`DeprecationWarning` on `__getitem__`, `__contains__`, `get`, `items`,
+`keys`, and `values` access. The `THEMES` registry is now an instance
+of this class instead of a plain dict.
+
+Added `DeprecationWarning` to `get_theme()` and `list_themes()` functions.
+Both use `dict.get(THEMES, ...)` / `dict.copy(THEMES)` internally to
+avoid double-warning from the wrapper.
+
+All Theme dataclasses and instances are preserved unchanged for backward
+compatibility (theme_css_generator.py still uses them).
+
+## djust_theming/manager.py
+
+- `get_state()` (line 121): Changed `from .themes import THEMES` to
+  `from .theme_packs import DESIGN_SYSTEMS`. Validation now checks
+  `if theme not in DESIGN_SYSTEMS:` instead of `if theme not in THEMES:`.
+
+- `set_theme()` (line 190): Same change — validates against
+  `DESIGN_SYSTEMS` instead of `THEMES`.
+
+Both registries have the same 11 keys so behavior is identical.
+
+## example_project/theme_demo/views.py
+
+- Replaced `from djust_theming.themes import THEMES` with
+  `from djust_theming.theme_packs import DESIGN_SYSTEMS`.
+- Updated `themes()` view to iterate over `DESIGN_SYSTEMS.items()`
+  instead of `THEMES.items()`. DesignSystem has the same `display_name`
+  and `description` attributes used by the template.
+
+---
+
+Behavior preserved:
+  - Same 11 theme names validated
+  - Same CSS output (theme_css_generator.py unchanged)
+  - All 19 existing tests pass
+  - Deprecation warnings verified for THEMES dict access, get_theme(), list_themes()

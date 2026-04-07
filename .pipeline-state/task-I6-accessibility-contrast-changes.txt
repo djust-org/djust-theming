@@ -1,0 +1,36 @@
+Task I6: Accessibility Contrast Validation at Preset Level — Changes
+
+## Files Modified
+
+### djust_theming/accessibility.py
+- Fixed bug on line 56: `color_scale.l` -> `color_scale.lightness`
+- The ColorScale dataclass uses `lightness` not `l`; this caused AttributeError at runtime
+
+### djust_theming/apps.py
+- Added `ready()` method to DjustThemingConfig
+- Imports `checks` module to trigger Django system check registration via @register
+
+## Files Created
+
+### djust_theming/checks.py
+- Django system check `check_preset_contrast` registered under Tags.compatibility
+- Validates all THEME_PRESETS against WCAG AA contrast ratio (4.5:1) for 12 foreground/background pairs
+- Pairs checked: foreground/background, card, primary, secondary, muted, accent, destructive, success, warning, info, popover, code
+- Both light and dark modes validated per preset
+- Failures emit Warning with id="djust_theming.W001" (silenceable via SILENCED_SYSTEM_CHECKS)
+
+### tests/test_checks.py
+- 10 tests covering:
+  - Bug fix validation: hsl_to_rgb works with ColorScale.lightness (red, white, black)
+  - System check runs without error on all built-in presets
+  - All warnings use correct id djust_theming.W001
+  - High-contrast preset (black/white) produces zero warnings
+  - Low-contrast preset (white-on-white) triggers 24 W001 warnings (12 pairs x 2 modes)
+  - Empty THEME_PRESETS produces no warnings
+  - Warning messages contain preset name and mode
+  - CONTRAST_PAIRS covers all 12 semantic foreground/background token pairs
+
+## Existing Behavior Preserved
+- No changes to presets.py, css_generator.py, manager.py, or any other module
+- AccessibilityValidator class unchanged except the bug fix on line 56
+- All 19 tests pass (9 pre-existing + 10 new)

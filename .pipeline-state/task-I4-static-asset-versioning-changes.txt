@@ -1,0 +1,37 @@
+I4: Static Asset Versioning — Changes
+
+## Summary
+
+Replaced manual `?v=N` cache busters with Django's `{% static %}` tag and
+`staticfiles_storage.url()`. This fixes the version mismatch (theme_tags had
+v=2, mixins had v=3) and the hardcoded `/static/` prefix that breaks with
+custom `STATIC_URL` or `ManifestStaticFilesStorage`.
+
+## Files Changed
+
+### djust_theming/templates/djust_theming/theme_head.html (line 20)
+- Replaced `/static/djust_theming/js/theme.js?v={{ js_version }}` with
+  `{% static 'djust_theming/js/theme.js' %}`
+- The template already had `{% load static %}` on line 2 (used by components.css)
+
+### djust_theming/templatetags/theme_tags.py (line 98)
+- Removed `"js_version": "2"` from the render_to_string context dict
+
+### djust_theming/mixins.py (line 115)
+- Removed `"js_version": "3"` from the render_to_string context dict
+
+### djust_theming/context_processors.py (lines 7, 56-58)
+- Added `from django.contrib.staticfiles.storage import staticfiles_storage`
+- Replaced hardcoded `/static/djust_theming/js/theme.js?v=2` with
+  `staticfiles_storage.url('djust_theming/js/theme.js')`
+
+## Behavior Preserved
+
+- All three code paths (template tag, mixin, context processor) still produce
+  the same `<script src="..." defer></script>` tag for theme.js
+- CSS cache busters (theme-state-based `t=&p=&m=` params) are untouched
+- Anti-FOUC script unchanged
+- components.css link unchanged (already used {% static %})
+- With default StaticFilesStorage: URL resolves to `/static/djust_theming/js/theme.js`
+  (same as before, minus the now-unnecessary `?v=N`)
+- With ManifestStaticFilesStorage: URL includes content hash automatically

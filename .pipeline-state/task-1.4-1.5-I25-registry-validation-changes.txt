@@ -1,0 +1,20 @@
+## Changes — Phase 1.4 + 1.5 + I25: Theme Registry + Validation + Dynamic Preset API
+
+### Files Created
+- djust_theming/registry.py — ThemeRegistry singleton (thread-safe, discover(), register/lookup APIs)
+- tests/test_registry.py — 27 tests covering singleton, registration, discovery, thread safety, reset
+- tests/test_validate_theme_command.py — 10 tests covering valid/invalid themes, --all flag, error cases
+
+### Files Modified
+- djust_theming/apps.py — Added get_registry().discover() call in ready()
+- djust_theming/manager.py — Replaced direct DESIGN_SYSTEMS/THEME_PRESETS imports with registry lookups (get_state, set_theme, set_preset, get_available_presets)
+- djust_theming/checks.py — Replaced direct dict imports with registry lookups (W001, E002, E003)
+- djust_theming/manifest.py — Replaced direct dict imports in validate() with registry lookups
+- djust_theming/management/commands/djust_theme.py — Rewired all subcommands from THEME_PRESETS/DESIGN_SYSTEMS to registry; added handle_validate_theme() method and validate-theme subparser
+- djust_theming/__init__.py — Added ThemeRegistry and get_registry exports
+- tests/test_checks.py — Updated 3 mock targets from djust_theming.checks.THEME_PRESETS to djust_theming.checks.get_registry
+- CHANGELOG.md — Added feat entries for registry, validate-theme command, and rewiring
+
+### Test Results
+- 275 passed, 1 skipped, 0 failures (up from 238 baseline)
+- 37 new tests (27 registry + 10 validate-theme)

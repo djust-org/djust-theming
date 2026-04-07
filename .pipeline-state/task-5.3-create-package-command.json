@@ -1,0 +1,53 @@
+{
+  "pipeline_type": "feature",
+  "task_description": "Phase 5.3: Theme Package Cookiecutter — Add 'python manage.py djust_theme create-package' command that generates a pip-installable Python package with theme.toml, pyproject.toml, templates/, static/, README, and correct package structure for publishing to PyPI.",
+  "branch_name": "task/5.3-create-package-command",
+  "pr_target_branch": "main",
+  "project_path": "/Users/tip/Dropbox/online_projects/ai/djust_project/djust-theming",
+  "started_at": "2026-03-24T03:00:00Z",
+  "completed_at": "2026-03-24T04:30:00Z",
+  "current_stage": 6,
+  "stages": {
+    "1": { "name": "Environment Check", "status": "pending", "verdict": null, "checklist": [{"action": "setup env", "done": false}, {"action": "output ENV_OK or ENV_FAILED", "done": false, "mandatory": true}] },
+    "2": { "name": "Change Detection", "status": "pending", "verdict": null, "checklist": [{"action": "output CODE_CHANGES", "done": false, "mandatory": true}] },
+    "3": { "name": "Conflict Check", "status": "pending", "verdict": null, "checklist": [{"action": "check conflicts", "done": false}, {"action": "output MERGE_CLEAN or MERGE_CONFLICTS_FOUND", "done": false, "mandatory": true}] },
+    "4": {
+      "name": "Planning",
+      "status": "pending",
+      "verdict": null,
+      "checklist": [
+        {"action": "read existing create-theme command in djust_theme.py", "done": false},
+        {"action": "read manifest.py — ThemeManifest structure", "done": false},
+        {"action": "design create-package command args and generated structure", "done": false},
+        {"action": "design pyproject.toml template for generated package", "done": false},
+        {"action": "write plan", "done": false, "mandatory": true}
+      ]
+    },
+    "5": {
+      "name": "Implementation",
+      "status": "pending",
+      "verdict": null,
+      "checklist": [
+        {"action": "read plan", "done": false, "mandatory": true},
+        {"action": "write tests first", "done": false},
+        {"action": "add create-package subcommand", "done": false},
+        {"action": "generate correct package structure", "done": false},
+        {"action": "update CHANGELOG.md", "done": false, "mandatory": true},
+        {"action": "git add + status clean", "done": false, "mandatory": true},
+        {"action": "write changes", "done": false, "mandatory": true}
+      ]
+    },
+    "6": { "name": "Test Execution", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "run tests", "done": false}, {"action": "output TESTS_PASSED or TESTS_FAILED", "done": false, "mandatory": true}] },
+    "7": { "name": "Self-Review", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "cross-ref plan", "done": false, "mandatory": true}, {"action": "output REVIEW_PASSED or REVIEW_FAILED", "done": false, "mandatory": true}] },
+    "8": { "name": "Security Check", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "scan — path traversal in package name", "done": false}, {"action": "output SECURITY_PASSED or SECURITY_FAILED", "done": false, "mandatory": true}] },
+    "9": { "name": "Documentation", "status": "pending", "verdict": null, "checklist": [{"action": "update theme-authoring.md with create-package guide", "done": false}, {"action": "output DOCS_UPDATED", "done": false, "mandatory": true}] },
+    "10": { "name": "Commit & PR", "status": "pending", "verdict": null, "checklist": [{"action": "commit, push, create PR", "done": false}, {"action": "output PR_CREATED", "done": false, "mandatory": true}] },
+    "11": { "name": "Code Review", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Review PR #{pr_number} in {project_path} targeting {pr_target_branch}. Read .pipeline-state/*-plan.md. git diff, tests. Post review gh pr review {pr_number} --comment. Output APPROVE/REQUEST_CHANGES.", "checklist": [{"action": "review + post", "done": false, "mandatory": true}] },
+    "12": { "name": "Review Verdict", "status": "pending", "verdict": null, "checklist": [{"action": "proceed if APPROVE", "done": false, "mandatory": true}] },
+    "13": { "name": "Merge PR", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "gh pr merge {pr_number} --squash --delete-branch in {project_path}. Output PR_MERGED or MERGE_FAILED.", "checklist": [{"action": "merge", "done": false, "mandatory": true}] },
+    "14": { "name": "Retrospective", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Retro for {task_description}. PR #{pr_number} in {project_path}. Rate 1-5. gh pr comment {pr_number}. Append .pipeline-log.md. Output RETRO_COMPLETE.", "checklist": [{"action": "post retro + log", "done": false, "mandatory": true}] }
+  },
+  "pr_number": null,
+  "pr_url": null,
+  "rewind_count": 0
+}

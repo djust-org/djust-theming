@@ -1,0 +1,24 @@
+Files changed:
+
+NEW  djust_theming/colors.py
+  - 6 pure conversion functions: hsl_to_rgb, rgb_to_hsl, hex_to_rgb, rgb_to_hex, hex_to_hsl, hsl_to_hex
+  - Uses colorsys internally, all integer-based interfaces (HSL: 0-360/0-100/0-100, RGB: 0-255)
+
+MOD  djust_theming/presets.py
+  - Added to ColorScale: to_hex(), to_rgb(), to_rgb_func() instance methods
+  - Added to ColorScale: from_hex(), from_rgb() class methods
+  - Added typing.Tuple import
+
+MOD  djust_theming/accessibility.py
+  - Refactored AccessibilityValidator.hsl_to_rgb() to delegate to colors.hsl_to_rgb
+  - Preserves 0-1 float return type for backward compatibility with rgb_to_luminance
+
+MOD  djust_theming/__init__.py
+  - Added import of all 6 color functions from .colors
+  - Added 6 entries to __all__
+
+MOD  CHANGELOG.md
+  - Added feat entry under [Unreleased] for I16
+
+NEW  tests/test_colors.py
+  - 48 tests covering: known color values, round-trips, edge cases, ColorScale methods, accessibility regression

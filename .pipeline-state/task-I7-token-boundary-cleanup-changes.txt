@@ -1,0 +1,63 @@
+# I7: Token Boundary Cleanup — Changes
+
+## Summary
+Moved `radius` from `ThemeTokens` to `ThemePreset` and removed unused animation
+tokens (`card_lift_distance`, `card_glow_opacity`, `transition_speed`,
+`animation_intensity`) from `ThemeTokens` entirely.
+
+## Files Changed
+
+### djust_theming/presets.py
+- Removed 5 fields from `ThemeTokens` dataclass: `radius`, `card_lift_distance`,
+  `card_glow_opacity`, `transition_speed`, `animation_intensity`
+- Added `radius: float = 0.5` to `ThemePreset` dataclass
+- Removed all `radius=` lines from every `ThemeTokens` instance (38 occurrences)
+- Removed all animation field lines from `ThemeTokens` instances (44 occurrences)
+- Added `radius=0.75` to 8 `ThemePreset` constructors: natural20, catppuccin,
+  synthwave, outrun, forest, amber, slate, nebula
+- Other 11 presets use default `radius=0.5`
+- Note: natural20 previously had mismatched radius (light=0.5, dark=0.75);
+  consolidated to 0.75 at the preset level
+
+### djust_theming/css_generator.py
+- Removed animation CSS var lines from `_tokens_to_css_vars()` (--card-lift-distance,
+  --card-glow-opacity, --transition-speed, --animation-intensity)
+- Added `--radius: {self.preset.radius}rem` to `_generate_light_mode()` (:root block)
+- `--radius` now appears once in `:root` instead of duplicated in both light/dark blocks
+
+### djust_theming/high_contrast.py
+- Removed `radius=base_tokens.radius` from `create_high_contrast_tokens()` return values
+- Added `radius=base_preset.radius` to generated `ThemePreset` in
+  `generate_high_contrast_presets()`
+- Moved `radius=8` and `radius=0` from `ThemeTokens` to `ThemePreset` in
+  `HIGH_CONTRAST_PRESETS` dict
+- Fixed pre-existing bug: added missing extension fields (info, info_foreground, link,
+  link_hover, code, code_foreground, selection, selection_foreground) to all
+  `ThemeTokens` instances in `HIGH_CONTRAST_PRESETS` and `create_high_contrast_tokens()`
+
+### djust_theming/shadcn.py
+- Moved radius parsing from `_parse_shadcn_vars()` to `parse_shadcn_theme()` (preset level)
+- Updated `export_to_shadcn_format()` to read radius from `preset.radius` instead of
+  `light.radius` / `dark.radius`
+- Fixed pre-existing bug: added missing extension fields (info, info_foreground, link,
+  link_hover, code, code_foreground, selection, selection_foreground) to `_parse_shadcn_vars()`
+
+### djust_theming/types.d.ts
+- Removed `radius: number` from `ThemeTokens` interface
+- Added `radius: number` to `ThemePreset` interface
+
+## CSS Output Changes
+- `--radius` is still emitted in generated CSS (now in `:root` only, not duplicated
+  in `.dark` and `prefers-color-scheme` blocks)
+- Removed: `--card-lift-distance`, `--card-glow-opacity`, `--transition-speed`,
+  `--animation-intensity` (confirmed unused by any CSS in the codebase)
+
+## Pre-existing Bugs Fixed
+- HIGH_CONTRAST_PRESETS ThemeTokens were missing 8 required fields (info, link, code,
+  selection + foregrounds), causing import-time TypeError
+- shadcn _parse_shadcn_vars() was missing the same 8 fields
+- create_high_contrast_tokens() was missing the same 8 fields
+
+## Test Results
+- All 19 existing tests pass
+- Manual verification: --radius appears in CSS for all presets with correct values

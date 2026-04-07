@@ -1,0 +1,57 @@
+{
+  "pipeline_type": "feature",
+  "task_description": "I10: Critical CSS Inlining — Split CSS into critical (tokens + anti-FOUC) inlined in <style> and deferred (component CSS) loaded via <link rel='preload'>. {% theme_head %} inlines critical CSS and async-loads the rest. Keeps first paint fast.",
+  "branch_name": "task/I10-critical-css-inlining",
+  "pr_target_branch": "main",
+  "project_path": "/Users/tip/Dropbox/online_projects/ai/djust_project/djust-theming",
+  "started_at": "2026-03-23T11:00:00Z",
+  "completed_at": "2026-03-23T12:30:00Z",
+  "current_stage": 6,
+  "stages": {
+    "1": { "name": "Environment Check", "status": "pending", "verdict": null, "checklist": [{"action": "setup env", "done": false}, {"action": "output ENV_OK or ENV_FAILED", "done": false, "mandatory": true}] },
+    "2": { "name": "Change Detection", "status": "pending", "verdict": null, "checklist": [{"action": "output CODE_CHANGES", "done": false, "mandatory": true}] },
+    "3": { "name": "Conflict Check", "status": "pending", "verdict": null, "checklist": [{"action": "check conflicts", "done": false}, {"action": "output MERGE_CLEAN or MERGE_CONFLICTS_FOUND", "done": false, "mandatory": true}] },
+    "4": {
+      "name": "Planning",
+      "status": "pending",
+      "verdict": null,
+      "checklist": [
+        {"action": "read theme_tags.py theme_head — current CSS delivery (inline vs link)", "done": false},
+        {"action": "read theme_head.html template — what it renders", "done": false},
+        {"action": "read css_generator.py — what CSS parts exist (tokens, base, components)", "done": false},
+        {"action": "read generate_css_for_state — how CSS is assembled", "done": false},
+        {"action": "design: what is 'critical' CSS (tokens + anti-FOUC + @layer declaration)", "done": false},
+        {"action": "design: what is 'deferred' CSS (component styles, base.css)", "done": false},
+        {"action": "design: how theme_head splits and delivers each part", "done": false},
+        {"action": "design: link rel=preload + onload pattern for deferred CSS", "done": false},
+        {"action": "write plan", "done": false, "mandatory": true}
+      ]
+    },
+    "5": {
+      "name": "Implementation",
+      "status": "pending",
+      "verdict": null,
+      "checklist": [
+        {"action": "read plan", "done": false, "mandatory": true},
+        {"action": "write tests first (TDD)", "done": false},
+        {"action": "implement critical/deferred CSS split", "done": false},
+        {"action": "update theme_head to inline critical + preload deferred", "done": false},
+        {"action": "update CHANGELOG.md", "done": false, "mandatory": true},
+        {"action": "git add + status clean", "done": false, "mandatory": true},
+        {"action": "write changes", "done": false, "mandatory": true}
+      ]
+    },
+    "6": { "name": "Test Execution", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "run tests", "done": false}, {"action": "output TESTS_PASSED or TESTS_FAILED", "done": false, "mandatory": true}] },
+    "7": { "name": "Self-Review", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "cross-ref plan, auto-reject triggers", "done": false, "mandatory": true}, {"action": "output REVIEW_PASSED or REVIEW_FAILED", "done": false, "mandatory": true}] },
+    "8": { "name": "Security Check", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "scan for mark_safe/injection", "done": false}, {"action": "output SECURITY_PASSED or SECURITY_FAILED", "done": false, "mandatory": true}] },
+    "9": { "name": "Documentation", "status": "pending", "verdict": null, "checklist": [{"action": "update customization.md with critical CSS docs", "done": false}, {"action": "update CHANGELOG", "done": false, "mandatory": true}, {"action": "output DOCS_UPDATED", "done": false, "mandatory": true}] },
+    "10": { "name": "Commit & PR", "status": "pending", "verdict": null, "checklist": [{"action": "commit, push, create PR", "done": false}, {"action": "output PR_CREATED", "done": false, "mandatory": true}] },
+    "11": { "name": "Code Review", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Review PR #{pr_number} in {project_path} targeting {pr_target_branch}. Read .pipeline-state/*-plan.md. git diff, tests. Post review gh pr review {pr_number} --comment. Output APPROVE/REQUEST_CHANGES.", "checklist": [{"action": "review + post", "done": false, "mandatory": true}] },
+    "12": { "name": "Review Verdict", "status": "pending", "verdict": null, "checklist": [{"action": "proceed if APPROVE", "done": false, "mandatory": true}] },
+    "13": { "name": "Merge PR", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "gh pr merge {pr_number} --squash --delete-branch in {project_path}. Output PR_MERGED or MERGE_FAILED.", "checklist": [{"action": "merge", "done": false, "mandatory": true}] },
+    "14": { "name": "Retrospective", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Retro for {task_description}. PR #{pr_number} in {project_path}. Rate 1-5. gh pr comment {pr_number}. Append .pipeline-log.md. Output RETRO_COMPLETE.", "checklist": [{"action": "post retro + log", "done": false, "mandatory": true}] }
+  },
+  "pr_number": 24,
+  "pr_url": "https://github.com/djust-org/djust-theming/pull/24",
+  "rewind_count": 0
+}

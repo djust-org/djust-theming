@@ -1,0 +1,27 @@
+{
+  "pipeline_type": "refactor",
+  "task_description": "I8: Deprecate themes.py Properly — Complete the migration from old Theme class in themes.py to design_tokens.py. Make manager.py validate against design system names from design_tokens.py. Keep themes.py as a shim with deprecation warning, then plan removal in v2.0.",
+  "branch_name": "task/I8-deprecate-themes",
+  "pr_target_branch": "main",
+  "project_path": "/Users/tip/Dropbox/online_projects/ai/djust_project/djust-theming",
+  "started_at": "2026-03-22T07:00:00Z",
+  "completed_at": "2026-03-22T08:00:00Z",
+  "current_stage": 5,
+  "stages": {
+    "1": { "name": "Environment Check", "status": "passed", "verdict": "ENV_OK", "checklist": [{"action": "setup env", "done": false}, {"action": "output ENV_OK or ENV_FAILED", "done": false, "mandatory": true}] },
+    "2": { "name": "Conflict Check", "status": "passed", "verdict": "MERGE_CLEAN", "checklist": [{"action": "check conflicts", "done": false}, {"action": "output MERGE_CLEAN or MERGE_CONFLICTS_FOUND", "done": false, "mandatory": true}] },
+    "3": { "name": "Analysis", "status": "passed", "verdict": "CODE_CHANGES", "checklist": [{"action": "read themes.py — old Theme class, THEMES dict", "done": false}, {"action": "read design_tokens.py — new design system registry", "done": false}, {"action": "read manager.py — find all imports/references to themes.py", "done": false}, {"action": "find all other imports of themes.py across codebase", "done": false}, {"action": "propose deprecation approach", "done": false}, {"action": "write analysis", "done": false, "mandatory": true}] },
+    "4": { "name": "Refactor Execution", "status": "passed", "verdict": "CODE_CHANGES", "checklist": [{"action": "read analysis", "done": false, "mandatory": true}, {"action": "implement deprecation", "done": false}, {"action": "preserve behavior", "done": false, "mandatory": true}, {"action": "stage + write changes", "done": false, "mandatory": true}] },
+    "5": { "name": "Test Execution", "status": "pending", "verdict": null, "checklist": [{"action": "run tests", "done": false}, {"action": "output TESTS_PASSED or TESTS_FAILED", "done": false, "mandatory": true}] },
+    "6": { "name": "Review", "status": "pending", "verdict": null, "checklist": [{"action": "cross-ref + verify", "done": false, "mandatory": true}, {"action": "output REVIEW_PASSED or REVIEW_FAILED", "done": false, "mandatory": true}] },
+    "7": { "name": "Documentation", "status": "pending", "verdict": null, "checklist": [{"action": "update docs/changelog + user-facing migration docs", "done": false}, {"action": "output DOCS_UPDATED", "done": false, "mandatory": true}] },
+    "8": { "name": "Commit & PR", "status": "pending", "verdict": null, "checklist": [{"action": "commit, push, create PR", "done": false}, {"action": "output PR_CREATED", "done": false, "mandatory": true}] },
+    "9": { "name": "Code Review", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Review PR #{pr_number} in {project_path} targeting {pr_target_branch}. Read .pipeline-state/*-analysis.md. git diff, tests. Post review gh pr review {pr_number} --comment. Output APPROVE/REQUEST_CHANGES.", "checklist": [{"action": "review + post", "done": false, "mandatory": true}] },
+    "10": { "name": "Review Verdict", "status": "pending", "verdict": null, "checklist": [{"action": "proceed if APPROVE", "done": false, "mandatory": true}] },
+    "11": { "name": "Merge PR", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "gh pr merge {pr_number} --squash --delete-branch in {project_path}. Output PR_MERGED or MERGE_FAILED.", "checklist": [{"action": "merge", "done": false, "mandatory": true}] },
+    "12": { "name": "Retrospective", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Retro for {task_description}. PR #{pr_number} in {project_path}. Rate 1-5. gh pr comment {pr_number}. Append .pipeline-log.md. Output RETRO_COMPLETE.", "checklist": [{"action": "post retro + log", "done": false, "mandatory": true}] }
+  },
+  "pr_number": 15,
+  "pr_url": "https://github.com/djust-org/djust-theming/pull/15",
+  "rewind_count": 0
+}

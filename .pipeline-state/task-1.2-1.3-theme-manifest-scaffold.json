@@ -1,0 +1,57 @@
+{
+  "pipeline_type": "feature",
+  "task_description": "Phase 1.2 + 1.3: Theme Manifest + Scaffold Command — (1) Define theme.toml manifest format (metadata, extends, tokens, static assets). Add ThemeManifest parser. (2) Add 'python manage.py djust_theme create-theme' command that generates a theme directory with manifest and skeleton.",
+  "branch_name": "task/1.2-1.3-theme-manifest-scaffold",
+  "pr_target_branch": "main",
+  "project_path": "/Users/tip/Dropbox/online_projects/ai/djust_project/djust-theming",
+  "started_at": "2026-03-23T08:00:00Z",
+  "completed_at": "2026-03-23T09:30:00Z",
+  "current_stage": 6,
+  "stages": {
+    "1": { "name": "Environment Check", "status": "pending", "verdict": null, "checklist": [{"action": "setup env", "done": false}, {"action": "output ENV_OK or ENV_FAILED", "done": false, "mandatory": true}] },
+    "2": { "name": "Change Detection", "status": "pending", "verdict": null, "checklist": [{"action": "output CODE_CHANGES", "done": false, "mandatory": true}] },
+    "3": { "name": "Conflict Check", "status": "pending", "verdict": null, "checklist": [{"action": "check conflicts", "done": false}, {"action": "output MERGE_CLEAN or MERGE_CONFLICTS_FOUND", "done": false, "mandatory": true}] },
+    "4": {
+      "name": "Planning",
+      "status": "pending",
+      "verdict": null,
+      "checklist": [
+        {"action": "read management/commands/ — existing djust_theme command structure", "done": false},
+        {"action": "read template_resolver.py — how themes are resolved (from 1.1)", "done": false},
+        {"action": "read presets.py ThemePreset — fields the manifest maps to", "done": false},
+        {"action": "read theme_packs.py DESIGN_SYSTEMS — valid design system names", "done": false},
+        {"action": "design theme.toml manifest schema — required/optional fields", "done": false},
+        {"action": "design ThemeManifest dataclass/parser", "done": false},
+        {"action": "design scaffold command — arguments, generated directory structure", "done": false},
+        {"action": "design how manifest integrates with template_resolver and ThemeManager", "done": false},
+        {"action": "write plan", "done": false, "mandatory": true}
+      ]
+    },
+    "5": {
+      "name": "Implementation",
+      "status": "passed",
+      "verdict": "CODE_CHANGES",
+      "checklist": [
+        {"action": "read plan", "done": false, "mandatory": true},
+        {"action": "write tests first (TDD)", "done": false},
+        {"action": "create djust_theming/manifest.py — ThemeManifest parser", "done": false},
+        {"action": "add create-theme subcommand to management command", "done": false},
+        {"action": "update CHANGELOG.md", "done": false, "mandatory": true},
+        {"action": "git add + status clean", "done": false, "mandatory": true},
+        {"action": "write changes", "done": false, "mandatory": true}
+      ]
+    },
+    "6": { "name": "Test Execution", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "run tests", "done": false}, {"action": "output TESTS_PASSED or TESTS_FAILED", "done": false, "mandatory": true}] },
+    "7": { "name": "Self-Review", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "cross-ref plan, auto-reject triggers, type hints", "done": false, "mandatory": true}, {"action": "output REVIEW_PASSED or REVIEW_FAILED", "done": false, "mandatory": true}] },
+    "8": { "name": "Security Check", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "scan — especially path traversal in theme name, TOML parsing safety", "done": false}, {"action": "output SECURITY_PASSED or SECURITY_FAILED", "done": false, "mandatory": true}] },
+    "9": { "name": "Documentation", "status": "pending", "verdict": null, "checklist": [{"action": "create theme author guide in docs/", "done": false}, {"action": "update customization.md", "done": false}, {"action": "update CHANGELOG", "done": false, "mandatory": true}, {"action": "output DOCS_UPDATED", "done": false, "mandatory": true}] },
+    "10": { "name": "Commit & PR", "status": "pending", "verdict": null, "checklist": [{"action": "commit, push, create PR", "done": false}, {"action": "output PR_CREATED", "done": false, "mandatory": true}] },
+    "11": { "name": "Code Review", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Review PR #{pr_number} in {project_path} targeting {pr_target_branch}. Read .pipeline-state/*-plan.md. git diff, tests. Post review gh pr review {pr_number} --comment. Output APPROVE/REQUEST_CHANGES.", "checklist": [{"action": "review + post", "done": false, "mandatory": true}] },
+    "12": { "name": "Review Verdict", "status": "pending", "verdict": null, "checklist": [{"action": "proceed if APPROVE", "done": false, "mandatory": true}] },
+    "13": { "name": "Merge PR", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "gh pr merge {pr_number} --squash --delete-branch in {project_path}. Output PR_MERGED or MERGE_FAILED.", "checklist": [{"action": "merge", "done": false, "mandatory": true}] },
+    "14": { "name": "Retrospective", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Retro for {task_description}. PR #{pr_number} in {project_path}. Rate 1-5. gh pr comment {pr_number}. Append .pipeline-log.md. Output RETRO_COMPLETE.", "checklist": [{"action": "post retro + log", "done": false, "mandatory": true}] }
+  },
+  "pr_number": 22,
+  "pr_url": "https://github.com/djust-org/djust-theming/pull/22",
+  "rewind_count": 0
+}

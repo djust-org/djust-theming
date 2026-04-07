@@ -1,0 +1,60 @@
+{
+  "pipeline_type": "feature",
+  "task_description": "Phase 2.1 Batch 1: Core Components — Add 5 new components (modal, dropdown, tabs, table, pagination) with templates, CSS, contracts, slots, and tests. Add shared components.js for interactive behaviors (open/close, tab switching). Each component follows the contract+slot pattern from 2.2/I11/I27.",
+  "branch_name": "task/2.1-batch1-core-components",
+  "pr_target_branch": "main",
+  "project_path": "/Users/tip/Dropbox/online_projects/ai/djust_project/djust-theming",
+  "started_at": "2026-03-23T14:00:00Z",
+  "completed_at": "2026-03-23T16:00:00Z",
+  "current_stage": 6,
+  "stages": {
+    "1": { "name": "Environment Check", "status": "pending", "verdict": null, "checklist": [{"action": "setup env", "done": false}, {"action": "output ENV_OK or ENV_FAILED", "done": false, "mandatory": true}] },
+    "2": { "name": "Change Detection", "status": "pending", "verdict": null, "checklist": [{"action": "output CODE_CHANGES", "done": false, "mandatory": true}] },
+    "3": { "name": "Conflict Check", "status": "pending", "verdict": null, "checklist": [{"action": "check conflicts", "done": false}, {"action": "output MERGE_CLEAN or MERGE_CONFLICTS_FOUND", "done": false, "mandatory": true}] },
+    "4": {
+      "name": "Planning",
+      "status": "pending",
+      "verdict": null,
+      "checklist": [
+        {"action": "read contracts.py — existing contract pattern", "done": false},
+        {"action": "read component_test_base.py — existing test harness", "done": false},
+        {"action": "read theme_components.py — existing tag pattern (simple_tag + select_template)", "done": false},
+        {"action": "read components.css — existing CSS structure", "done": false},
+        {"action": "design each component: template structure, CSS classes, context vars, slots, a11y", "done": false},
+        {"action": "design shared components.js — data-attribute hooks for modal/dropdown/tabs", "done": false},
+        {"action": "design how components.js integrates with djust LiveView (dj-click fallback)", "done": false},
+        {"action": "write plan", "done": false, "mandatory": true}
+      ]
+    },
+    "5": {
+      "name": "Implementation",
+      "status": "pending",
+      "verdict": null,
+      "checklist": [
+        {"action": "read plan", "done": false, "mandatory": true},
+        {"action": "write tests first for all 5 components using ComponentTestCase", "done": false},
+        {"action": "create 5 component templates with slots", "done": false},
+        {"action": "add CSS for 5 components to components.css", "done": false},
+        {"action": "register 5 template tags in theme_components.py", "done": false},
+        {"action": "add 5 contracts to contracts.py", "done": false},
+        {"action": "create static/djust_theming/js/components.js for interactive behaviors", "done": false},
+        {"action": "update theme_head to include components.js", "done": false},
+        {"action": "update CHANGELOG.md", "done": false, "mandatory": true},
+        {"action": "git add + status clean", "done": false, "mandatory": true},
+        {"action": "write changes", "done": false, "mandatory": true}
+      ]
+    },
+    "6": { "name": "Test Execution", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "run tests", "done": false}, {"action": "output TESTS_PASSED or TESTS_FAILED", "done": false, "mandatory": true}] },
+    "7": { "name": "Self-Review", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "cross-ref plan, auto-reject triggers", "done": false, "mandatory": true}, {"action": "output REVIEW_PASSED or REVIEW_FAILED", "done": false, "mandatory": true}] },
+    "8": { "name": "Security Check", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "scan — especially components.js for XSS, mark_safe in tags", "done": false}, {"action": "output SECURITY_PASSED or SECURITY_FAILED", "done": false, "mandatory": true}] },
+    "9": { "name": "Documentation", "status": "pending", "verdict": null, "checklist": [{"action": "update component-contracts.md with 5 new contracts", "done": false}, {"action": "update README component library section", "done": false}, {"action": "update CHANGELOG", "done": false, "mandatory": true}, {"action": "output DOCS_UPDATED", "done": false, "mandatory": true}] },
+    "10": { "name": "Commit & PR", "status": "pending", "verdict": null, "checklist": [{"action": "commit, push, create PR", "done": false}, {"action": "output PR_CREATED", "done": false, "mandatory": true}] },
+    "11": { "name": "Code Review", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Review PR #{pr_number} in {project_path} targeting {pr_target_branch}. Read .pipeline-state/*-plan.md. git diff, tests. Post review gh pr review {pr_number} --comment. Output APPROVE/REQUEST_CHANGES.", "checklist": [{"action": "review + post", "done": false, "mandatory": true}] },
+    "12": { "name": "Review Verdict", "status": "pending", "verdict": null, "checklist": [{"action": "proceed if APPROVE", "done": false, "mandatory": true}] },
+    "13": { "name": "Merge PR", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "gh pr merge {pr_number} --squash --delete-branch in {project_path}. Output PR_MERGED or MERGE_FAILED.", "checklist": [{"action": "merge", "done": false, "mandatory": true}] },
+    "14": { "name": "Retrospective", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Retro for {task_description}. PR #{pr_number} in {project_path}. Rate 1-5. gh pr comment {pr_number}. Append .pipeline-log.md. Output RETRO_COMPLETE.", "checklist": [{"action": "post retro + log", "done": false, "mandatory": true}] }
+  },
+  "pr_number": 26,
+  "pr_url": "https://github.com/djust-org/djust-theming/pull/26",
+  "rewind_count": 0
+}

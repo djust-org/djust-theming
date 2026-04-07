@@ -1,0 +1,15 @@
+I23: AppConfig System Checks — Changes Summary
+
+Files modified:
+  - djust_theming/checks.py — Added 3 new system checks (E001, E002, E003) with @register(Tags.compatibility)
+  - tests/test_checks.py — Added 12 new tests across 3 test classes
+  - CHANGELOG.md — Added entry under [Unreleased]
+  - .pipeline-state/task-I23-appconfig-system-checks-plan.md — Implementation plan
+
+New checks:
+  E001 (check_context_processor): Verifies djust_theming.context_processors.theme_context
+        is in at least one TEMPLATES backend's context_processors list.
+  E002 (check_preset_valid): Validates LIVEVIEW_CONFIG['theme']['preset'] against THEME_PRESETS keys.
+  E003 (check_design_system_valid): Validates LIVEVIEW_CONFIG['theme']['theme'] against DESIGN_SYSTEMS keys.
+
+Test results: 156 passed, 3 warnings (12 new tests + 144 existing)

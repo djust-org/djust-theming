@@ -1,0 +1,61 @@
+{
+  "pipeline_type": "feature",
+  "task_description": "I21: Brand Color Auto-Palette Generator — Add PaletteGenerator that derives a complete ThemePreset (light+dark, all 29 color tokens) from 1-3 brand colors. Supports modes (professional, playful, muted, vibrant). Uses I16 color conversions. Validates WCAG AA contrast.",
+  "branch_name": "task/I21-auto-palette-generator",
+  "pr_target_branch": "main",
+  "project_path": "/Users/tip/Dropbox/online_projects/ai/djust_project/djust-theming",
+  "started_at": "2026-03-23T03:00:00Z",
+  "completed_at": "2026-03-23T04:30:00Z",
+  "current_stage": 10,
+  "stages": {
+    "1": { "name": "Environment Check", "status": "passed", "verdict": "ENV_OK", "checklist": [{"action": "setup env", "done": false}, {"action": "output ENV_OK or ENV_FAILED", "done": false, "mandatory": true}] },
+    "2": { "name": "Change Detection", "status": "passed", "verdict": "CODE_CHANGES", "checklist": [{"action": "output CODE_CHANGES", "done": false, "mandatory": true}] },
+    "3": { "name": "Conflict Check", "status": "passed", "verdict": "MERGE_CLEAN", "checklist": [{"action": "check conflicts", "done": false}, {"action": "output MERGE_CLEAN or MERGE_CONFLICTS_FOUND", "done": false, "mandatory": true}] },
+    "4": {
+      "name": "Planning",
+      "status": "pending",
+      "verdict": null,
+      "checklist": [
+        {"action": "read presets.py ThemeTokens — all 29 color fields that need generating", "done": false},
+        {"action": "read colors.py — available conversion functions from I16", "done": false},
+        {"action": "read accessibility.py — contrast checking for validation", "done": false},
+        {"action": "design PaletteGenerator class API", "done": false},
+        {"action": "design color derivation algorithm (complementary, analogous, desaturation)", "done": false},
+        {"action": "design mode presets (professional, playful, muted, vibrant) — how they affect derivation", "done": false},
+        {"action": "design dark mode auto-generation (lightness inversion)", "done": false},
+        {"action": "design WCAG AA validation + auto-adjustment", "done": false},
+        {"action": "test strategy", "done": false},
+        {"action": "write plan to .pipeline-state/task-I21-auto-palette-generator-plan.md", "done": false, "mandatory": true}
+      ]
+    },
+    "5": {
+      "name": "Implementation",
+      "status": "passed",
+      "verdict": "CODE_CHANGES",
+      "checklist": [
+        {"action": "read plan", "done": false, "mandatory": true},
+        {"action": "write tests first (TDD)", "done": false},
+        {"action": "create djust_theming/palette.py with PaletteGenerator", "done": false},
+        {"action": "implement color derivation algorithm", "done": false},
+        {"action": "implement dark mode generation", "done": false},
+        {"action": "implement WCAG contrast validation + adjustment", "done": false},
+        {"action": "export from __init__.py", "done": false},
+        {"action": "update CHANGELOG.md", "done": false, "mandatory": true},
+        {"action": "git add + status clean", "done": false, "mandatory": true},
+        {"action": "write changes", "done": false, "mandatory": true}
+      ]
+    },
+    "6": { "name": "Test Execution", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "run tests", "done": false}, {"action": "output TESTS_PASSED or TESTS_FAILED", "done": false, "mandatory": true}] },
+    "7": { "name": "Self-Review", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "cross-ref plan, auto-reject triggers, type hints", "done": false, "mandatory": true}, {"action": "output REVIEW_PASSED or REVIEW_FAILED", "done": false, "mandatory": true}] },
+    "8": { "name": "Security Check", "status": "pending", "verdict": null, "skip_if": "DOCS_ONLY", "checklist": [{"action": "scan for injection/mark_safe", "done": false}, {"action": "output SECURITY_PASSED or SECURITY_FAILED", "done": false, "mandatory": true}] },
+    "9": { "name": "Documentation", "status": "pending", "verdict": null, "checklist": [{"action": "update customization.md with palette generation guide", "done": false}, {"action": "update README", "done": false}, {"action": "update CHANGELOG", "done": false, "mandatory": true}, {"action": "output DOCS_UPDATED", "done": false, "mandatory": true}] },
+    "10": { "name": "Commit & PR", "status": "pending", "verdict": null, "checklist": [{"action": "commit, push, create PR", "done": false}, {"action": "output PR_CREATED", "done": false, "mandatory": true}] },
+    "11": { "name": "Code Review", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Review PR #{pr_number} in {project_path} targeting {pr_target_branch}. Read .pipeline-state/*-plan.md. git diff, tests. Post review gh pr review {pr_number} --comment. Output APPROVE/REQUEST_CHANGES.", "checklist": [{"action": "review + post", "done": false, "mandatory": true}] },
+    "12": { "name": "Review Verdict", "status": "pending", "verdict": null, "checklist": [{"action": "proceed if APPROVE", "done": false, "mandatory": true}] },
+    "13": { "name": "Merge PR", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "gh pr merge {pr_number} --squash --delete-branch in {project_path}. Output PR_MERGED or MERGE_FAILED.", "checklist": [{"action": "merge", "done": false, "mandatory": true}] },
+    "14": { "name": "Retrospective", "status": "pending", "verdict": null, "run_as": "subagent", "subagent_prompt": "Retro for {task_description}. PR #{pr_number} in {project_path}. Rate 1-5. gh pr comment {pr_number}. Append .pipeline-log.md. Output RETRO_COMPLETE.", "checklist": [{"action": "post retro + log", "done": false, "mandatory": true}] }
+  },
+  "pr_number": 18,
+  "pr_url": "https://github.com/djust-org/djust-theming/pull/18",
+  "rewind_count": 0
+}
