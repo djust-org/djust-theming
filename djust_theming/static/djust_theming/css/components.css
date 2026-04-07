@@ -1221,7 +1221,9 @@
     animation-direction: reverse;
 }
 
-/* ── Theme Panel ────────────────────────────────────────────────────────────── */
+} /* end @layer components */
+
+/* ── Theme Panel (unlayered — needs priority over resets) ───────────────────── */
 .theme-panel { position: relative; }
 
 .theme-panel-trigger {
@@ -1313,4 +1315,3 @@
 
 .theme-panel-field { margin-top: 0.875rem; }
 .theme-panel-field .theme-panel-label { margin-bottom: 0.375rem; }
-}
