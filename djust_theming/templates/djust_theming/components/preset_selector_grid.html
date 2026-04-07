@@ -3,8 +3,7 @@
     {% for preset in presets %}
     <button type="button"
             class="theme-preset-btn{% if preset.is_active %} active{% endif %}"
-            data-djust-event="set_theme_preset"
-            data-djust-params='{"preset": "{{ preset.name }}"}'>
+            data-theme-preset="{{ preset.name }}">
         {{ preset.display_name }}
     </button>
     {% endfor %}
