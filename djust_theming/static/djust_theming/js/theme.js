@@ -428,6 +428,34 @@
                 window.djustTheme.setMode(modeBtn.getAttribute('data-theme-mode'));
                 return;
             }
+            // Custom select toggle
+            var selectBtn = e.target.closest('.tp-select-btn');
+            if (selectBtn) {
+                e.preventDefault();
+                var sel = selectBtn.closest('.tp-select');
+                // Close other open selects
+                document.querySelectorAll('.tp-select.open').forEach(function(s) {
+                    if (s !== sel) s.classList.remove('open');
+                });
+                sel.classList.toggle('open');
+                return;
+            }
+            // Custom select option click
+            var option = e.target.closest('.tp-select-option');
+            if (option && window.djustTheme) {
+                e.preventDefault();
+                var sel = option.closest('[data-tp-select]');
+                var type = sel.getAttribute('data-tp-select');
+                var value = option.getAttribute('data-value');
+                if (type === 'pack') window.djustTheme.setPack(value);
+                else if (type === 'preset') window.djustTheme.setPreset(value);
+                else if (type === 'design') window.djustTheme.setTheme(value);
+                return;
+            }
+            // Close custom selects when clicking elsewhere in panel
+            document.querySelectorAll('.tp-select.open').forEach(function(s) {
+                if (!e.target.closest('.tp-select')) s.classList.remove('open');
+            });
             // Customize toggle
             var custToggle = e.target.closest('[data-theme-panel-customize]');
             if (custToggle) {
@@ -440,29 +468,6 @@
                 return;
             }
         });
-
-        // Select changes (pack, color, design)
-        document.addEventListener('change', function(e) {
-            var packSel = e.target.closest('[data-theme-pack-select]');
-            if (packSel && window.djustTheme) {
-                window.djustTheme.setPack(packSel.value);
-                return;
-            }
-            var presetSel = e.target.closest('[data-theme-preset-select]');
-            if (presetSel && window.djustTheme) {
-                window.djustTheme.setPreset(presetSel.value);
-                return;
-            }
-            var designSel = e.target.closest('[data-theme-design-select]');
-            if (designSel && window.djustTheme) {
-                window.djustTheme.setTheme(designSel.value);
-                return;
-            }
-        });
-
-        // The server renders the correct `selected` attributes on
-        // <option> tags (resolving pack → design/preset overrides).
-        // No client-side sync needed — trust the server-rendered state.
     }
 
     // Run after DOM ready

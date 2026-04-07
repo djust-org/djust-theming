@@ -30,12 +30,18 @@
 
         {% if show_packs and packs %}
         <div class="theme-panel-group">
-            <label class="theme-panel-label" for="theme-panel-pack">Theme</label>
-            <select class="theme-panel-select" id="theme-panel-pack" data-theme-pack-select>
-                {% for pack in packs %}
-                <option value="{{ pack.name }}"{% if pack.name == current_pack %} selected{% endif %}>{{ pack.display_name }}</option>
-                {% endfor %}
-            </select>
+            <label class="theme-panel-label">Theme</label>
+            <div class="tp-select" data-tp-select="pack">
+                <button type="button" class="tp-select-btn">
+                    <span class="tp-select-value">{% for pack in packs %}{% if pack.name == current_pack %}{{ pack.display_name }}{% endif %}{% endfor %}</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="tp-select-list">
+                    {% for pack in packs %}
+                    <button type="button" class="tp-select-option{% if pack.name == current_pack %} active{% endif %}" data-value="{{ pack.name }}">{{ pack.display_name }}</button>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
         {% endif %}
 
@@ -48,23 +54,35 @@
             <div class="theme-panel-customize" data-theme-panel-customize-content>
                 {% if show_presets and presets %}
                 <div class="theme-panel-field">
-                    <label class="theme-panel-label" for="theme-panel-color">Color</label>
-                    <select class="theme-panel-select" id="theme-panel-color" data-theme-preset-select>
-                        {% for preset in presets %}
-                        <option value="{{ preset.name }}"{% if preset.is_active %} selected{% endif %}>{{ preset.display_name }}</option>
-                        {% endfor %}
-                    </select>
+                    <label class="theme-panel-label">Color</label>
+                    <div class="tp-select" data-tp-select="preset">
+                        <button type="button" class="tp-select-btn">
+                            <span class="tp-select-value">{% for preset in presets %}{% if preset.is_active %}{{ preset.display_name }}{% endif %}{% endfor %}</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                        <div class="tp-select-list">
+                            {% for preset in presets %}
+                            <button type="button" class="tp-select-option{% if preset.is_active %} active{% endif %}" data-value="{{ preset.name }}">{{ preset.display_name }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
                 {% endif %}
 
                 {% if show_design and designs %}
                 <div class="theme-panel-field">
-                    <label class="theme-panel-label" for="theme-panel-design">Design</label>
-                    <select class="theme-panel-select" id="theme-panel-design" data-theme-design-select>
-                        {% for design in designs %}
-                        <option value="{{ design.name }}"{% if design.name == current_design %} selected{% endif %}>{{ design.display_name }}</option>
-                        {% endfor %}
-                    </select>
+                    <label class="theme-panel-label">Design</label>
+                    <div class="tp-select" data-tp-select="design">
+                        <button type="button" class="tp-select-btn">
+                            <span class="tp-select-value">{% for design in designs %}{% if design.name == current_design %}{{ design.display_name }}{% endif %}{% endfor %}</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                        <div class="tp-select-list">
+                            {% for design in designs %}
+                            <button type="button" class="tp-select-option{% if design.name == current_design %} active{% endif %}" data-value="{{ design.name }}">{{ design.display_name }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
                 {% endif %}
             </div>
