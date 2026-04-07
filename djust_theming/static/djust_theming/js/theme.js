@@ -401,4 +401,70 @@
     // Also expose constructor for manual instantiation
     window.DjustThemeManager = DjustThemeManager;
 
+    // --- Theme Panel interaction ---
+    function initThemePanel() {
+        function getCookie(name) {
+            var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+            return m ? m[1] : '';
+        }
+
+        // Toggle panel open/close
+        document.addEventListener('click', function(e) {
+            var trigger = e.target.closest('.theme-panel-trigger');
+            if (trigger) {
+                e.preventDefault();
+                trigger.closest('.theme-panel').classList.toggle('open');
+                return;
+            }
+            // Close when clicking outside
+            if (!e.target.closest('.theme-panel')) {
+                var open = document.querySelector('.theme-panel.open');
+                if (open) open.classList.remove('open');
+            }
+            // Mode buttons
+            var modeBtn = e.target.closest('.theme-panel-mode-btn[data-theme-mode]');
+            if (modeBtn && window.djustTheme) {
+                e.preventDefault();
+                window.djustTheme.setMode(modeBtn.getAttribute('data-theme-mode'));
+                return;
+            }
+        });
+
+        // Select changes
+        document.addEventListener('change', function(e) {
+            var packSel = e.target.closest('[data-theme-pack-select]');
+            if (packSel && window.djustTheme) {
+                if (packSel.value) {
+                    window.djustTheme.setPack(packSel.value);
+                } else {
+                    window.djustTheme.clearPack();
+                }
+                return;
+            }
+            var presetSel = e.target.closest('[data-theme-preset-select]');
+            if (presetSel && window.djustTheme) {
+                window.djustTheme.setPreset(presetSel.value);
+                return;
+            }
+            var designSel = e.target.closest('[data-theme-design-select]');
+            if (designSel && window.djustTheme) {
+                window.djustTheme.setTheme(designSel.value);
+                return;
+            }
+        });
+
+        // Sync select values with current cookie state
+        var designSel = document.querySelector('[data-theme-design-select]');
+        var packSel = document.querySelector('[data-theme-pack-select]');
+        if (designSel) designSel.value = getCookie('djust_theme') || 'ios';
+        if (packSel) packSel.value = getCookie('djust_theme_pack') || '';
+    }
+
+    // Run after DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initThemePanel);
+    } else {
+        initThemePanel();
+    }
+
 })();

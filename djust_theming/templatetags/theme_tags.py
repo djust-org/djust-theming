@@ -244,6 +244,59 @@ def theme_preset_selector(
 
 
 @register.simple_tag(takes_context=True)
+def theme_panel(
+    context,
+    show_mode: bool = True,
+    show_packs: bool = True,
+    show_presets: bool = True,
+    show_design: bool = True,
+):
+    """
+    Render a combined theme settings panel in a single dropdown.
+
+    Includes mode toggle, theme pack selector, color preset, and design
+    system — all in one compact dropdown behind a gear icon.
+
+    Usage:
+        {% theme_panel %}
+        {% theme_panel show_packs=False %}
+        {% theme_panel show_design=False %}
+    """
+    from ..theme_packs import get_all_design_systems, get_all_theme_packs
+
+    request = context.get("request")
+    manager = get_theme_manager(request)
+    state = manager.get_state()
+    presets = manager.get_available_presets()
+
+    # Build design system list with display names
+    designs = [
+        {"name": name, "display_name": name.replace("_", " ").title()}
+        for name in sorted(get_all_design_systems().keys())
+    ]
+
+    # Build theme pack list
+    packs = [
+        {"name": name, "display_name": pack.display_name}
+        for name, pack in sorted(get_all_theme_packs().items())
+    ]
+
+    tmpl = resolve_theme_template(request, "components/theme_panel")
+    return mark_safe(tmpl.render({
+        "show_mode": show_mode,
+        "show_packs": show_packs,
+        "show_presets": show_presets,
+        "show_design": show_design,
+        "presets": presets,
+        "designs": designs,
+        "packs": packs,
+        "current_pack": state.pack or "",
+        "current_design": getattr(state, "theme", "") or "ios",
+        "theme_mode": state.mode,
+    }))
+
+
+@register.simple_tag(takes_context=True)
 def theme_preset(context):
     """
     Get current theme preset name.
