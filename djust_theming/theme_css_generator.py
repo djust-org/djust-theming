@@ -149,20 +149,23 @@ class CompleteThemeCSSGenerator:
         # Theme vars (:root with typography, spacing, shadows, etc.)
         theme_vars = self._generate_theme_vars()
 
+        # Base element styles (body bg/color, * border-color, transitions)
+        # Must be in critical CSS to prevent layout shift when deferred CSS loads.
+        base_css = self.color_generator._generate_base_styles() if self.color_generator.include_base_styles else ""
+
         # Combine all token CSS
         all_tokens = "\n".join(color_parts) + "\n\n" + theme_vars
 
         parts = [
             "/* djust-theming - Critical CSS (inline) */",
             "",
+            # CSS variables are NOT wrapped in @layer — they must have
+            # highest priority since all other styles depend on them.
+            all_tokens,
         ]
 
-        if use_layers:
-            parts.append(f"@layer {layer_order};")
-            parts.append("")
-            parts.append(f"@layer tokens {{\n{all_tokens}\n}}")
-        else:
-            parts.append(all_tokens)
+        if base_css:
+            parts.extend(["", base_css])
 
         return "\n".join(parts)
 
@@ -179,7 +182,7 @@ class CompleteThemeCSSGenerator:
         use_layers = config.get("use_css_layers", True)
 
         # Build deferred parts directly (avoiding duplicate comment headers)
-        base_css = self.color_generator._generate_base_styles() if self.color_generator.include_base_styles else ""
+        # Note: base_css (body/border-color/transitions) is now in critical CSS
         utilities_css = self.color_generator._generate_utilities() if self.color_generator.include_utilities else ""
 
         # Design token classes (typography hierarchy, interactive, layout, animations)
@@ -196,8 +199,6 @@ class CompleteThemeCSSGenerator:
         ]
 
         if use_layers:
-            if base_css:
-                parts.extend(["", f"@layer base {{\n{base_css}\n}}"])
             if utilities_css:
                 parts.extend(["", f"@layer components {{\n{utilities_css}\n}}"])
             if design_classes:
@@ -209,8 +210,6 @@ class CompleteThemeCSSGenerator:
                 f"@layer components {{\n{component_css}\n}}",
             ])
         else:
-            if base_css:
-                parts.extend(["", base_css])
             if utilities_css:
                 parts.extend(["", utilities_css])
             if design_classes:
@@ -345,11 +344,8 @@ class CompleteThemeCSSGenerator:
     def _generate_typography_classes(self) -> str:
         """Generate utility classes for typography."""
         return """/* Typography Utilities */
-body {
-  font-family: var(--font-sans);
-  font-size: var(--text-base);
-  line-height: var(--leading-normal);
-}
+/* Note: body font-family/size/line-height is set in critical CSS base styles
+   to prevent layout shift when deferred CSS loads. */
 
 .font-sans { font-family: var(--font-sans); }
 .font-mono { font-family: var(--font-mono); }

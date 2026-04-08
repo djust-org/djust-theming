@@ -40,11 +40,10 @@
             // Setup UI bindings for non-djust usage
             this.setupUIBindings();
 
-            // Mark theme as ready after initial load
-            requestAnimationFrame(() => {
-                document.documentElement.classList.remove('loading');
-                document.documentElement.classList.add('theme-ready');
-            });
+            // Mark theme as ready after deferred CSS has loaded and all
+            // pending DOM updates (applyMode rAF) have completed.
+            // This prevents transitions from animating the initial paint.
+            this._markReadyWhenStable();
         }
 
         /**
@@ -121,6 +120,34 @@
         applyStoredTheme() {
             const mode = this.getMode();
             this.applyMode(mode);
+        }
+
+        /**
+         * Wait for deferred CSS to load and pending rAFs to settle,
+         * then enable transitions by adding 'theme-ready' class.
+         */
+        _markReadyWhenStable() {
+            const enable = () => {
+                // Double-rAF: first rAF waits for applyMode's rAF,
+                // second ensures a full frame has painted with final values
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        document.documentElement.classList.remove('loading');
+                        document.documentElement.classList.add('theme-ready');
+                    });
+                });
+            };
+
+            const deferred = document.querySelector('link[data-djust-theme-deferred]');
+            if (deferred && deferred.rel === 'preload') {
+                // Deferred CSS hasn't swapped in yet — wait for it
+                deferred.addEventListener('load', enable, { once: true });
+                // Fallback: if it takes too long, enable anyway after 2s
+                setTimeout(enable, 2000);
+            } else {
+                // Already loaded or using blocking CSS — just wait for rAFs
+                enable();
+            }
         }
 
         /**

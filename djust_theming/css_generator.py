@@ -118,8 +118,14 @@ class ThemeCSSGenerator:
         return "\n".join(lines)
 
     def _generate_light_mode(self) -> str:
-        """Generate :root light mode variables (or dark mode if default_mode='dark')."""
-        tokens = self.preset.dark if self.preset.default_mode == "dark" else self.preset.light
+        """Generate :root light mode variables.
+
+        Always uses light tokens for :root (the web default). Dark-first
+        themes get their dark values via html[data-theme="dark"] which has
+        higher specificity. This prevents a color flash where dark defaults
+        render before the data-theme attribute selector takes effect.
+        """
+        tokens = self.preset.light
         return f""":root {{
 {self._tokens_to_css_vars(tokens)}
   --radius: {self.preset.radius}rem;
@@ -254,13 +260,16 @@ html[data-theme="dark"] {{
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  font-size: var(--text-base, 1rem);
+  line-height: var(--leading-normal, 1.5);
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 
-/* Smooth theme transitions */
-*,
-*::before,
-*::after {
+/* Smooth theme transitions — only after initial paint to prevent FOUC */
+html.theme-ready *,
+html.theme-ready *::before,
+html.theme-ready *::after {
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
@@ -269,7 +278,7 @@ body {
   *,
   *::before,
   *::after {
-    transition: none;
+    transition: none !important;
   }
 }"""
 
