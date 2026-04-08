@@ -2020,7 +2020,12 @@ _DRACULA_LIGHT = ThemeTokens(
     link=ColorScale(265, 89, 60), link_hover=ColorScale(265, 89, 50),
     code=ColorScale(265, 89, 95), code_foreground=ColorScale(265, 89, 40),
     border=ColorScale(231, 15, 85), input=ColorScale(231, 15, 85),
-    ring=ColorScale(265, 89, 60), radius="0.5rem",
+    ring=ColorScale(265, 89, 60),
+    selection=ColorScale(265, 80, 85),
+    selection_foreground=ColorScale(265, 10, 15),
+    surface_1=ColorScale(265, 5, 96),
+    surface_2=ColorScale(265, 5, 93),
+    surface_3=ColorScale(265, 5, 90),
 )
 _DRACULA_DARK = ThemeTokens(
     background=ColorScale(231, 15, 18), foreground=ColorScale(60, 30, 96),
@@ -2037,8 +2042,12 @@ _DRACULA_DARK = ThemeTokens(
     link=ColorScale(265, 89, 78), link_hover=ColorScale(326, 100, 74),
     code=ColorScale(232, 14, 25), code_foreground=ColorScale(135, 94, 65),
     border=ColorScale(232, 14, 30), input=ColorScale(232, 14, 30),
-    ring=ColorScale(265, 89, 78), radius="0.5rem",
-)
+    ring=ColorScale(265, 89, 78),
+    selection=ColorScale(265, 80, 25),
+    selection_foreground=ColorScale(265, 10, 90),
+    surface_1=ColorScale(265, 5, 6),
+    surface_2=ColorScale(265, 5, 10),
+    surface_3=ColorScale(265, 5, 14))
 DRACULA_THEME = ThemePreset(name="dracula", display_name="Dracula",
     description="Purple-forward gothic with neon accents",
     light=_DRACULA_LIGHT, dark=_DRACULA_DARK, default_mode="dark")
@@ -2062,8 +2071,12 @@ _GRUVBOX_LIGHT = ThemeTokens(
     link=ColorScale(27, 99, 55), link_hover=ColorScale(27, 99, 45),
     code=ColorScale(44, 70, 85), code_foreground=ColorScale(6, 96, 59),
     border=ColorScale(40, 30, 75), input=ColorScale(40, 30, 75),
-    ring=ColorScale(27, 99, 55), radius="0.375rem",
-)
+    ring=ColorScale(27, 99, 55),
+    selection=ColorScale(27, 80, 85),
+    selection_foreground=ColorScale(27, 10, 15),
+    surface_1=ColorScale(27, 5, 96),
+    surface_2=ColorScale(27, 5, 93),
+    surface_3=ColorScale(27, 5, 90))
 _GRUVBOX_DARK = ThemeTokens(
     background=ColorScale(0, 0, 16), foreground=ColorScale(42, 46, 82),
     card=ColorScale(20, 5, 20), card_foreground=ColorScale(42, 46, 82),
@@ -2079,8 +2092,12 @@ _GRUVBOX_DARK = ThemeTokens(
     link=ColorScale(27, 99, 55), link_hover=ColorScale(40, 73, 60),
     code=ColorScale(20, 5, 22), code_foreground=ColorScale(106, 33, 62),
     border=ColorScale(20, 5, 28), input=ColorScale(20, 5, 28),
-    ring=ColorScale(27, 99, 55), radius="0.375rem",
-)
+    ring=ColorScale(27, 99, 55),
+    selection=ColorScale(27, 80, 25),
+    selection_foreground=ColorScale(27, 10, 90),
+    surface_1=ColorScale(27, 5, 6),
+    surface_2=ColorScale(27, 5, 10),
+    surface_3=ColorScale(27, 5, 14))
 GRUVBOX_THEME = ThemePreset(name="gruvbox", display_name="Gruvbox",
     description="Retro-warm earthy palette beloved by vim users",
     light=_GRUVBOX_LIGHT, dark=_GRUVBOX_DARK)
@@ -2104,8 +2121,12 @@ _SOLARIZED_LIGHT = ThemeTokens(
     link=ColorScale(205, 82, 33), link_hover=ColorScale(237, 45, 52),
     code=ColorScale(46, 42, 85), code_foreground=ColorScale(1, 71, 52),
     border=ColorScale(44, 20, 78), input=ColorScale(44, 20, 78),
-    ring=ColorScale(205, 82, 33), radius="0.375rem",
-)
+    ring=ColorScale(205, 82, 33),
+    selection=ColorScale(205, 80, 85),
+    selection_foreground=ColorScale(205, 10, 15),
+    surface_1=ColorScale(205, 5, 96),
+    surface_2=ColorScale(205, 5, 93),
+    surface_3=ColorScale(205, 5, 90))
 _SOLARIZED_DARK = ThemeTokens(
     background=ColorScale(192, 100, 11), foreground=ColorScale(44, 87, 94),
     card=ColorScale(192, 81, 14), card_foreground=ColorScale(44, 87, 94),
@@ -2121,8 +2142,12 @@ _SOLARIZED_DARK = ThemeTokens(
     link=ColorScale(205, 82, 33), link_hover=ColorScale(237, 45, 52),
     code=ColorScale(192, 81, 16), code_foreground=ColorScale(68, 100, 30),
     border=ColorScale(192, 81, 20), input=ColorScale(192, 81, 20),
-    ring=ColorScale(205, 82, 33), radius="0.375rem",
-)
+    ring=ColorScale(205, 82, 33),
+    selection=ColorScale(205, 80, 25),
+    selection_foreground=ColorScale(205, 10, 90),
+    surface_1=ColorScale(205, 5, 6),
+    surface_2=ColorScale(205, 5, 10),
+    surface_3=ColorScale(205, 5, 14))
 SOLARIZED_THEME = ThemePreset(name="solarized", display_name="Solarized",
     description="The OG scientifically designed contrast palette",
     light=_SOLARIZED_LIGHT, dark=_SOLARIZED_DARK)
@@ -2146,8 +2171,12 @@ _HIGH_CONTRAST_LIGHT = ThemeTokens(
     link=ColorScale(220, 100, 35), link_hover=ColorScale(220, 100, 25),
     code=ColorScale(0, 0, 93), code_foreground=ColorScale(0, 100, 40),
     border=ColorScale(0, 0, 0), input=ColorScale(0, 0, 0),
-    ring=ColorScale(220, 100, 40), radius="0.25rem",
-)
+    ring=ColorScale(220, 100, 40),
+    selection=ColorScale(220, 80, 85),
+    selection_foreground=ColorScale(220, 10, 15),
+    surface_1=ColorScale(220, 5, 96),
+    surface_2=ColorScale(220, 5, 93),
+    surface_3=ColorScale(220, 5, 90))
 _HIGH_CONTRAST_DARK = ThemeTokens(
     background=ColorScale(0, 0, 0), foreground=ColorScale(0, 0, 100),
     card=ColorScale(0, 0, 5), card_foreground=ColorScale(0, 0, 100),
@@ -2163,8 +2192,12 @@ _HIGH_CONTRAST_DARK = ThemeTokens(
     link=ColorScale(210, 100, 65), link_hover=ColorScale(210, 100, 80),
     code=ColorScale(0, 0, 10), code_foreground=ColorScale(120, 100, 50),
     border=ColorScale(0, 0, 100), input=ColorScale(0, 0, 100),
-    ring=ColorScale(210, 100, 60), radius="0.25rem",
-)
+    ring=ColorScale(210, 100, 60),
+    selection=ColorScale(210, 80, 25),
+    selection_foreground=ColorScale(210, 10, 90),
+    surface_1=ColorScale(210, 5, 6),
+    surface_2=ColorScale(210, 5, 10),
+    surface_3=ColorScale(210, 5, 14))
 HIGH_CONTRAST_THEME = ThemePreset(name="high_contrast", display_name="High Contrast",
     description="Accessibility-first with maximum contrast ratios",
     light=_HIGH_CONTRAST_LIGHT, dark=_HIGH_CONTRAST_DARK)
@@ -2188,8 +2221,12 @@ _MONO_LIGHT = ThemeTokens(
     link=ColorScale(0, 0, 20), link_hover=ColorScale(0, 0, 10),
     code=ColorScale(0, 0, 94), code_foreground=ColorScale(0, 0, 25),
     border=ColorScale(0, 0, 82), input=ColorScale(0, 0, 82),
-    ring=ColorScale(0, 0, 15), radius="0.375rem",
-)
+    ring=ColorScale(0, 0, 15),
+    selection=ColorScale(0, 0, 85),
+    selection_foreground=ColorScale(0, 10, 15),
+    surface_1=ColorScale(0, 5, 96),
+    surface_2=ColorScale(0, 5, 93),
+    surface_3=ColorScale(0, 5, 90))
 _MONO_DARK = ThemeTokens(
     background=ColorScale(0, 0, 7), foreground=ColorScale(0, 0, 90),
     card=ColorScale(0, 0, 10), card_foreground=ColorScale(0, 0, 90),
@@ -2205,8 +2242,12 @@ _MONO_DARK = ThemeTokens(
     link=ColorScale(0, 0, 80), link_hover=ColorScale(0, 0, 95),
     code=ColorScale(0, 0, 13), code_foreground=ColorScale(0, 0, 70),
     border=ColorScale(0, 0, 20), input=ColorScale(0, 0, 20),
-    ring=ColorScale(0, 0, 85), radius="0.375rem",
-)
+    ring=ColorScale(0, 0, 85),
+    selection=ColorScale(0, 0, 25),
+    selection_foreground=ColorScale(0, 10, 90),
+    surface_1=ColorScale(0, 5, 6),
+    surface_2=ColorScale(0, 5, 10),
+    surface_3=ColorScale(0, 5, 14))
 MONO_THEME = ThemePreset(name="mono", display_name="Mono",
     description="Pure grayscale — zero chroma, maximum discipline",
     light=_MONO_LIGHT, dark=_MONO_DARK)
@@ -2230,8 +2271,12 @@ _EMBER_LIGHT = ThemeTokens(
     link=ColorScale(15, 80, 50), link_hover=ColorScale(15, 80, 40),
     code=ColorScale(30, 15, 90), code_foreground=ColorScale(15, 80, 45),
     border=ColorScale(30, 12, 80), input=ColorScale(30, 12, 80),
-    ring=ColorScale(35, 95, 55), radius="0.5rem",
-)
+    ring=ColorScale(35, 95, 55),
+    selection=ColorScale(35, 80, 85),
+    selection_foreground=ColorScale(35, 10, 15),
+    surface_1=ColorScale(35, 5, 96),
+    surface_2=ColorScale(35, 5, 93),
+    surface_3=ColorScale(35, 5, 90))
 _EMBER_DARK = ThemeTokens(
     background=ColorScale(15, 15, 10), foreground=ColorScale(35, 30, 88),
     card=ColorScale(15, 12, 14), card_foreground=ColorScale(35, 30, 88),
@@ -2247,8 +2292,12 @@ _EMBER_DARK = ThemeTokens(
     link=ColorScale(35, 95, 55), link_hover=ColorScale(35, 95, 70),
     code=ColorScale(15, 12, 16), code_foreground=ColorScale(35, 95, 65),
     border=ColorScale(15, 12, 22), input=ColorScale(15, 12, 22),
-    ring=ColorScale(35, 95, 55), radius="0.5rem",
-)
+    ring=ColorScale(35, 95, 55),
+    selection=ColorScale(35, 80, 25),
+    selection_foreground=ColorScale(35, 10, 90),
+    surface_1=ColorScale(35, 5, 6),
+    surface_2=ColorScale(35, 5, 10),
+    surface_3=ColorScale(35, 5, 14))
 EMBER_THEME = ThemePreset(name="ember", display_name="Ember",
     description="Warm coal and fireplace — cozy dark theme",
     light=_EMBER_LIGHT, dark=_EMBER_DARK, default_mode="dark")
@@ -2272,8 +2321,12 @@ _AURORA_LIGHT = ThemeTokens(
     link=ColorScale(160, 84, 39), link_hover=ColorScale(270, 60, 55),
     code=ColorScale(210, 15, 92), code_foreground=ColorScale(160, 84, 35),
     border=ColorScale(210, 15, 82), input=ColorScale(210, 15, 82),
-    ring=ColorScale(160, 84, 39), radius="0.75rem",
-)
+    ring=ColorScale(160, 84, 39),
+    selection=ColorScale(160, 80, 85),
+    selection_foreground=ColorScale(160, 10, 15),
+    surface_1=ColorScale(160, 5, 96),
+    surface_2=ColorScale(160, 5, 93),
+    surface_3=ColorScale(160, 5, 90))
 _AURORA_DARK = ThemeTokens(
     background=ColorScale(230, 25, 10), foreground=ColorScale(180, 20, 90),
     card=ColorScale(230, 22, 14), card_foreground=ColorScale(180, 20, 90),
@@ -2289,8 +2342,12 @@ _AURORA_DARK = ThemeTokens(
     link=ColorScale(160, 84, 52), link_hover=ColorScale(270, 60, 70),
     code=ColorScale(230, 22, 16), code_foreground=ColorScale(160, 84, 60),
     border=ColorScale(230, 22, 22), input=ColorScale(230, 22, 22),
-    ring=ColorScale(160, 84, 52), radius="0.75rem",
-)
+    ring=ColorScale(160, 84, 52),
+    selection=ColorScale(160, 80, 25),
+    selection_foreground=ColorScale(160, 10, 90),
+    surface_1=ColorScale(160, 5, 6),
+    surface_2=ColorScale(160, 5, 10),
+    surface_3=ColorScale(160, 5, 14))
 AURORA_THEME = ThemePreset(name="aurora", display_name="Aurora",
     description="Northern lights — shifting green-to-violet feel",
     light=_AURORA_LIGHT, dark=_AURORA_DARK, default_mode="dark")
@@ -2314,8 +2371,12 @@ _INK_LIGHT = ThemeTokens(
     link=ColorScale(4, 80, 48), link_hover=ColorScale(4, 80, 38),
     code=ColorScale(40, 10, 92), code_foreground=ColorScale(220, 15, 20),
     border=ColorScale(220, 8, 82), input=ColorScale(220, 8, 82),
-    ring=ColorScale(4, 80, 52), radius="0",
-)
+    ring=ColorScale(4, 80, 52),
+    selection=ColorScale(4, 80, 85),
+    selection_foreground=ColorScale(4, 10, 15),
+    surface_1=ColorScale(4, 5, 96),
+    surface_2=ColorScale(4, 5, 93),
+    surface_3=ColorScale(4, 5, 90))
 _INK_DARK = ThemeTokens(
     background=ColorScale(220, 15, 8), foreground=ColorScale(40, 15, 85),
     card=ColorScale(220, 12, 12), card_foreground=ColorScale(40, 15, 85),
@@ -2331,8 +2392,12 @@ _INK_DARK = ThemeTokens(
     link=ColorScale(4, 80, 58), link_hover=ColorScale(4, 80, 70),
     code=ColorScale(220, 12, 14), code_foreground=ColorScale(4, 80, 65),
     border=ColorScale(220, 12, 18), input=ColorScale(220, 12, 18),
-    ring=ColorScale(4, 80, 58), radius="0",
-)
+    ring=ColorScale(4, 80, 58),
+    selection=ColorScale(4, 80, 25),
+    selection_foreground=ColorScale(4, 10, 90),
+    surface_1=ColorScale(4, 5, 6),
+    surface_2=ColorScale(4, 5, 10),
+    surface_3=ColorScale(4, 5, 14))
 INK_THEME = ThemePreset(name="ink", display_name="Ink",
     description="Japanese calligraphy minimalism — sharp edges, single vermillion accent",
     light=_INK_LIGHT, dark=_INK_DARK)
@@ -2356,8 +2421,12 @@ _SOLARPUNK_LIGHT = ThemeTokens(
     link=ColorScale(145, 63, 38), link_hover=ColorScale(145, 63, 30),
     code=ColorScale(45, 30, 90), code_foreground=ColorScale(145, 63, 35),
     border=ColorScale(45, 20, 78), input=ColorScale(45, 20, 78),
-    ring=ColorScale(145, 63, 42), radius="1rem",
-)
+    ring=ColorScale(145, 63, 42),
+    selection=ColorScale(145, 63, 85),
+    selection_foreground=ColorScale(145, 10, 15),
+    surface_1=ColorScale(145, 5, 96),
+    surface_2=ColorScale(145, 5, 93),
+    surface_3=ColorScale(145, 5, 90))
 _SOLARPUNK_DARK = ThemeTokens(
     background=ColorScale(150, 30, 10), foreground=ColorScale(45, 40, 90),
     card=ColorScale(150, 25, 14), card_foreground=ColorScale(45, 40, 90),
@@ -2373,8 +2442,12 @@ _SOLARPUNK_DARK = ThemeTokens(
     link=ColorScale(145, 63, 52), link_hover=ColorScale(80, 60, 65),
     code=ColorScale(150, 25, 16), code_foreground=ColorScale(80, 60, 60),
     border=ColorScale(150, 25, 22), input=ColorScale(150, 25, 22),
-    ring=ColorScale(145, 63, 52), radius="1rem",
-)
+    ring=ColorScale(145, 63, 52),
+    selection=ColorScale(145, 63, 25),
+    selection_foreground=ColorScale(145, 10, 90),
+    surface_1=ColorScale(145, 5, 6),
+    surface_2=ColorScale(145, 5, 10),
+    surface_3=ColorScale(145, 5, 14))
 SOLARPUNK_THEME = ThemePreset(name="solarpunk", display_name="Solarpunk",
     description="Optimistic nature — lush greens and warm amber, organic shapes",
     light=_SOLARPUNK_LIGHT, dark=_SOLARPUNK_DARK)
@@ -2398,8 +2471,12 @@ _BAUHAUS_LIGHT = ThemeTokens(
     link=ColorScale(220, 80, 50), link_hover=ColorScale(4, 86, 55),
     code=ColorScale(0, 0, 95), code_foreground=ColorScale(4, 86, 50),
     border=ColorScale(0, 0, 8), input=ColorScale(0, 0, 8),
-    ring=ColorScale(4, 86, 58), radius="0",
-)
+    ring=ColorScale(4, 86, 58),
+    selection=ColorScale(4, 80, 85),
+    selection_foreground=ColorScale(4, 10, 15),
+    surface_1=ColorScale(4, 5, 96),
+    surface_2=ColorScale(4, 5, 93),
+    surface_3=ColorScale(4, 5, 90))
 _BAUHAUS_DARK = ThemeTokens(
     background=ColorScale(0, 0, 5), foreground=ColorScale(0, 0, 95),
     card=ColorScale(0, 0, 9), card_foreground=ColorScale(0, 0, 95),
@@ -2415,8 +2492,12 @@ _BAUHAUS_DARK = ThemeTokens(
     link=ColorScale(220, 80, 60), link_hover=ColorScale(4, 86, 65),
     code=ColorScale(0, 0, 12), code_foreground=ColorScale(48, 100, 60),
     border=ColorScale(0, 0, 95), input=ColorScale(0, 0, 95),
-    ring=ColorScale(4, 86, 58), radius="0",
-)
+    ring=ColorScale(4, 86, 58),
+    selection=ColorScale(4, 80, 25),
+    selection_foreground=ColorScale(4, 10, 90),
+    surface_1=ColorScale(4, 5, 6),
+    surface_2=ColorScale(4, 5, 10),
+    surface_3=ColorScale(4, 5, 14))
 BAUHAUS_THEME = ThemePreset(name="bauhaus", display_name="Bauhaus",
     description="Geometric modernist — bold primary colors, sharp edges",
     light=_BAUHAUS_LIGHT, dark=_BAUHAUS_DARK)
@@ -2440,8 +2521,12 @@ _CYBERDECK_LIGHT = ThemeTokens(
     link=ColorScale(120, 100, 30), link_hover=ColorScale(120, 100, 22),
     code=ColorScale(120, 5, 92), code_foreground=ColorScale(120, 100, 30),
     border=ColorScale(120, 10, 80), input=ColorScale(120, 10, 80),
-    ring=ColorScale(120, 100, 35), radius="0.125rem",
-)
+    ring=ColorScale(120, 100, 35),
+    selection=ColorScale(120, 80, 85),
+    selection_foreground=ColorScale(120, 10, 15),
+    surface_1=ColorScale(120, 5, 96),
+    surface_2=ColorScale(120, 5, 93),
+    surface_3=ColorScale(120, 5, 90))
 _CYBERDECK_DARK = ThemeTokens(
     background=ColorScale(0, 0, 2), foreground=ColorScale(120, 100, 50),
     card=ColorScale(120, 10, 5), card_foreground=ColorScale(120, 100, 50),
@@ -2457,8 +2542,12 @@ _CYBERDECK_DARK = ThemeTokens(
     link=ColorScale(120, 100, 50), link_hover=ColorScale(120, 100, 65),
     code=ColorScale(120, 10, 7), code_foreground=ColorScale(120, 100, 55),
     border=ColorScale(120, 100, 18), input=ColorScale(120, 100, 18),
-    ring=ColorScale(120, 100, 50), radius="0.125rem",
-)
+    ring=ColorScale(120, 100, 50),
+    selection=ColorScale(120, 80, 25),
+    selection_foreground=ColorScale(120, 10, 90),
+    surface_1=ColorScale(120, 5, 6),
+    surface_2=ColorScale(120, 5, 10),
+    surface_3=ColorScale(120, 5, 14))
 CYBERDECK_THEME = ThemePreset(name="cyberdeck", display_name="Cyberdeck",
     description="Terminal hacker — matrix green on true black, CRT vibes",
     light=_CYBERDECK_LIGHT, dark=_CYBERDECK_DARK, default_mode="dark")
@@ -2482,8 +2571,12 @@ _PAPER_LIGHT = ThemeTokens(
     link=ColorScale(210, 45, 45), link_hover=ColorScale(210, 45, 35),
     code=ColorScale(40, 22, 90), code_foreground=ColorScale(25, 15, 30),
     border=ColorScale(35, 15, 80), input=ColorScale(35, 15, 80),
-    ring=ColorScale(30, 40, 45), radius="0.625rem",
-)
+    ring=ColorScale(30, 40, 45),
+    selection=ColorScale(30, 40, 85),
+    selection_foreground=ColorScale(30, 10, 15),
+    surface_1=ColorScale(30, 5, 96),
+    surface_2=ColorScale(30, 5, 93),
+    surface_3=ColorScale(30, 5, 90))
 _PAPER_DARK = ThemeTokens(
     background=ColorScale(25, 12, 14), foreground=ColorScale(40, 25, 85),
     card=ColorScale(25, 10, 18), card_foreground=ColorScale(40, 25, 85),
@@ -2499,8 +2592,12 @@ _PAPER_DARK = ThemeTokens(
     link=ColorScale(210, 45, 60), link_hover=ColorScale(210, 45, 72),
     code=ColorScale(25, 10, 20), code_foreground=ColorScale(30, 40, 65),
     border=ColorScale(25, 10, 25), input=ColorScale(25, 10, 25),
-    ring=ColorScale(30, 40, 60), radius="0.625rem",
-)
+    ring=ColorScale(30, 40, 60),
+    selection=ColorScale(30, 40, 25),
+    selection_foreground=ColorScale(30, 10, 90),
+    surface_1=ColorScale(30, 5, 6),
+    surface_2=ColorScale(30, 5, 10),
+    surface_3=ColorScale(30, 5, 14))
 PAPER_THEME = ThemePreset(name="paper", display_name="Paper",
     description="Reading-optimized warm — like sunlit paper, large radius",
     light=_PAPER_LIGHT, dark=_PAPER_DARK)
@@ -2524,8 +2621,12 @@ _NEON_NOIR_LIGHT = ThemeTokens(
     link=ColorScale(330, 100, 55), link_hover=ColorScale(330, 100, 45),
     code=ColorScale(300, 5, 92), code_foreground=ColorScale(330, 100, 50),
     border=ColorScale(300, 5, 82), input=ColorScale(300, 5, 82),
-    ring=ColorScale(330, 100, 60), radius="0.375rem",
-)
+    ring=ColorScale(330, 100, 60),
+    selection=ColorScale(330, 80, 85),
+    selection_foreground=ColorScale(330, 10, 15),
+    surface_1=ColorScale(330, 5, 96),
+    surface_2=ColorScale(330, 5, 93),
+    surface_3=ColorScale(330, 5, 90))
 _NEON_NOIR_DARK = ThemeTokens(
     background=ColorScale(0, 0, 3), foreground=ColorScale(0, 0, 85),
     card=ColorScale(300, 5, 6), card_foreground=ColorScale(0, 0, 85),
@@ -2541,8 +2642,12 @@ _NEON_NOIR_DARK = ThemeTokens(
     link=ColorScale(330, 100, 60), link_hover=ColorScale(330, 100, 75),
     code=ColorScale(300, 5, 8), code_foreground=ColorScale(330, 100, 65),
     border=ColorScale(300, 5, 12), input=ColorScale(300, 5, 12),
-    ring=ColorScale(330, 100, 60), radius="0.375rem",
-)
+    ring=ColorScale(330, 100, 60),
+    selection=ColorScale(330, 80, 25),
+    selection_foreground=ColorScale(330, 10, 90),
+    surface_1=ColorScale(330, 5, 6),
+    surface_2=ColorScale(330, 5, 10),
+    surface_3=ColorScale(330, 5, 14))
 NEON_NOIR_THEME = ThemePreset(name="neon_noir", display_name="Neon Noir",
     description="Film noir meets neon — piercing hot pink on true black",
     light=_NEON_NOIR_LIGHT, dark=_NEON_NOIR_DARK, default_mode="dark")
@@ -2566,8 +2671,12 @@ _OCEAN_LIGHT = ThemeTokens(
     link=ColorScale(200, 80, 40), link_hover=ColorScale(200, 80, 32),
     code=ColorScale(200, 18, 91), code_foreground=ColorScale(200, 80, 35),
     border=ColorScale(200, 15, 80), input=ColorScale(200, 15, 80),
-    ring=ColorScale(200, 80, 45), radius="0.5rem",
-)
+    ring=ColorScale(200, 80, 45),
+    selection=ColorScale(200, 80, 85),
+    selection_foreground=ColorScale(200, 10, 15),
+    surface_1=ColorScale(200, 5, 96),
+    surface_2=ColorScale(200, 5, 93),
+    surface_3=ColorScale(200, 5, 90))
 _OCEAN_DARK = ThemeTokens(
     background=ColorScale(210, 60, 8), foreground=ColorScale(195, 30, 88),
     card=ColorScale(210, 50, 12), card_foreground=ColorScale(195, 30, 88),
@@ -2583,8 +2692,12 @@ _OCEAN_DARK = ThemeTokens(
     link=ColorScale(200, 80, 55), link_hover=ColorScale(180, 50, 65),
     code=ColorScale(210, 50, 14), code_foreground=ColorScale(180, 50, 60),
     border=ColorScale(210, 50, 20), input=ColorScale(210, 50, 20),
-    ring=ColorScale(200, 80, 55), radius="0.5rem",
-)
+    ring=ColorScale(200, 80, 55),
+    selection=ColorScale(200, 80, 25),
+    selection_foreground=ColorScale(200, 10, 90),
+    surface_1=ColorScale(200, 5, 6),
+    surface_2=ColorScale(200, 5, 10),
+    surface_3=ColorScale(200, 5, 14))
 OCEAN_THEME = ThemePreset(name="ocean", display_name="Ocean",
     description="Deep sea gradient depth — coastal sky to ocean floor",
     light=_OCEAN_LIGHT, dark=_OCEAN_DARK, default_mode="dark")
