@@ -2005,51 +2005,83 @@ DJUST_THEME = ThemePreset(
 # Dracula Theme
 # =============================================================================
 
+# Alucard light mode — official warm cream palette
 _DRACULA_LIGHT = ThemeTokens(
-    background=ColorScale(0, 0, 98), foreground=ColorScale(231, 15, 20),
-    card=ColorScale(231, 15, 95), card_foreground=ColorScale(231, 15, 20),
-    popover=ColorScale(231, 15, 95), popover_foreground=ColorScale(231, 15, 20),
-    primary=ColorScale(265, 89, 60), primary_foreground=ColorScale(0, 0, 100),
-    secondary=ColorScale(231, 15, 88), secondary_foreground=ColorScale(231, 15, 20),
-    muted=ColorScale(231, 15, 88), muted_foreground=ColorScale(231, 15, 45),
-    accent=ColorScale(191, 97, 60), accent_foreground=ColorScale(0, 0, 10),
-    destructive=ColorScale(0, 100, 67), destructive_foreground=ColorScale(0, 0, 100),
-    success=ColorScale(135, 94, 65), success_foreground=ColorScale(0, 0, 10),
-    warning=ColorScale(65, 92, 76), warning_foreground=ColorScale(0, 0, 10),
-    info=ColorScale(191, 97, 60), info_foreground=ColorScale(0, 0, 10),
-    link=ColorScale(265, 89, 60), link_hover=ColorScale(265, 89, 50),
-    code=ColorScale(265, 89, 95), code_foreground=ColorScale(265, 89, 40),
-    border=ColorScale(231, 15, 85), input=ColorScale(231, 15, 85),
-    ring=ColorScale(265, 89, 60),
-    selection=ColorScale(265, 80, 85),
-    selection_foreground=ColorScale(265, 10, 15),
-    surface_1=ColorScale(265, 5, 96),
-    surface_2=ColorScale(265, 5, 93),
-    surface_3=ColorScale(265, 5, 90),
+    background=ColorScale(45, 100, 96),           # #FFFBEB — Alucard Background
+    foreground=ColorScale(0, 0, 12),              # #1F1F1F — Alucard Foreground
+    card=ColorScale(45, 60, 93),                  # Warm cream card
+    card_foreground=ColorScale(0, 0, 12),
+    popover=ColorScale(45, 80, 95),               # Slightly brighter cream
+    popover_foreground=ColorScale(0, 0, 12),
+    primary=ColorScale(265, 89, 55),              # Darkened Purple for AA on cream
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(45, 30, 90),             # Warm secondary
+    secondary_foreground=ColorScale(0, 0, 12),
+    muted=ColorScale(45, 30, 88),                 # Warm muted
+    muted_foreground=ColorScale(0, 0, 40),
+    accent=ColorScale(326, 100, 45),              # Darkened Pink for cream contrast
+    accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(0, 100, 50),           # Darkened Red
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(135, 80, 35),              # Darkened Green
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(31, 100, 50),              # Darkened Orange
+    warning_foreground=ColorScale(0, 0, 100),
+    info=ColorScale(191, 97, 40),                 # Darkened Cyan
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(326, 100, 40),                # Darkened Pink links
+    link_hover=ColorScale(265, 89, 45),           # Purple on hover
+    code=ColorScale(45, 40, 90),                  # Warm cream code bg
+    code_foreground=ColorScale(265, 89, 40),      # Purple code text
+    border=ColorScale(240, 15, 82),               # Soft blue-gray border
+    input=ColorScale(240, 15, 85),
+    ring=ColorScale(265, 89, 55),                 # Purple focus ring
+    selection=ColorScale(240, 20, 84),            # #CFCFDE — Alucard Selection
+    selection_foreground=ColorScale(0, 0, 12),
+    surface_1=ColorScale(45, 60, 97),             # Lightest warm cream
+    surface_2=ColorScale(45, 40, 94),             # Mid warm cream
+    surface_3=ColorScale(45, 30, 91),             # Deepest warm cream
 )
+# Dark mode — pixel-perfect official Dracula spec
 _DRACULA_DARK = ThemeTokens(
-    background=ColorScale(231, 15, 18), foreground=ColorScale(60, 30, 96),
-    card=ColorScale(232, 14, 22), card_foreground=ColorScale(60, 30, 96),
-    popover=ColorScale(232, 14, 22), popover_foreground=ColorScale(60, 30, 96),
-    primary=ColorScale(265, 89, 78), primary_foreground=ColorScale(231, 15, 18),
-    secondary=ColorScale(232, 14, 28), secondary_foreground=ColorScale(60, 30, 96),
-    muted=ColorScale(232, 14, 28), muted_foreground=ColorScale(228, 8, 60),
-    accent=ColorScale(191, 97, 77), accent_foreground=ColorScale(231, 15, 18),
-    destructive=ColorScale(0, 100, 67), destructive_foreground=ColorScale(0, 0, 100),
-    success=ColorScale(135, 94, 65), success_foreground=ColorScale(0, 0, 10),
-    warning=ColorScale(65, 92, 76), warning_foreground=ColorScale(0, 0, 10),
-    info=ColorScale(191, 97, 77), info_foreground=ColorScale(0, 0, 10),
-    link=ColorScale(265, 89, 78), link_hover=ColorScale(326, 100, 74),
-    code=ColorScale(232, 14, 25), code_foreground=ColorScale(135, 94, 65),
-    border=ColorScale(232, 14, 30), input=ColorScale(232, 14, 30),
-    ring=ColorScale(265, 89, 78),
-    selection=ColorScale(265, 80, 25),
-    selection_foreground=ColorScale(265, 10, 90),
-    surface_1=ColorScale(265, 5, 6),
-    surface_2=ColorScale(265, 5, 10),
-    surface_3=ColorScale(265, 5, 14))
-DRACULA_THEME = ThemePreset(name="dracula", display_name="Dracula",
-    description="Purple-forward gothic with neon accents",
+    background=ColorScale(231, 15, 18),           # #282A36 — Official Background
+    foreground=ColorScale(60, 30, 96),            # #F8F8F2 — Official Foreground
+    card=ColorScale(232, 15, 15),                 # #21222C — Official "Dark" bg level
+    card_foreground=ColorScale(60, 30, 96),
+    popover=ColorScale(231, 15, 24),              # #343746 — Official "Light" bg level
+    popover_foreground=ColorScale(60, 30, 96),
+    primary=ColorScale(265, 89, 78),              # #BD93F9 — Official Purple
+    primary_foreground=ColorScale(231, 15, 18),
+    secondary=ColorScale(231, 8, 29),             # #424450 — Official "Lighter" bg
+    secondary_foreground=ColorScale(60, 30, 96),
+    muted=ColorScale(232, 14, 31),                # #44475A — Official Selection
+    muted_foreground=ColorScale(225, 27, 51),     # #6272A4 — Official Comment
+    accent=ColorScale(326, 100, 74),              # #FF79C6 — Official Pink (signature!)
+    accent_foreground=ColorScale(231, 15, 18),
+    destructive=ColorScale(0, 100, 67),           # #FF5555 — Official Red
+    destructive_foreground=ColorScale(60, 30, 96),
+    success=ColorScale(135, 94, 65),              # #50FA7B — Official Green
+    success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(31, 100, 71),              # #FFB86C — Official Orange
+    warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(191, 97, 77),                 # #8BE9FD — Official Cyan
+    info_foreground=ColorScale(0, 0, 10),
+    link=ColorScale(326, 100, 74),                # #FF79C6 — Pink links (most distinctive)
+    link_hover=ColorScale(265, 89, 78),           # Purple on hover (complementary)
+    code=ColorScale(230, 15, 11),                 # #191A21 — Official "Darker" bg
+    code_foreground=ColorScale(191, 97, 77),      # Cyan for code identifiers
+    border=ColorScale(225, 27, 51),               # #6272A4 — Comment color (visible borders)
+    input=ColorScale(232, 14, 31),                # #44475A — Selection (subtler inputs)
+    ring=ColorScale(265, 89, 78),                 # Purple focus ring
+    selection=ColorScale(232, 14, 31),            # #44475A — Official Selection
+    selection_foreground=ColorScale(60, 30, 96),  # #F8F8F2
+    surface_1=ColorScale(230, 15, 11),            # #191A21 — Official "Darker"
+    surface_2=ColorScale(232, 15, 15),            # #21222C — Official "Dark"
+    surface_3=ColorScale(231, 15, 24),            # #343746 — Official "Light"
+)
+DRACULA_THEME = ThemePreset(name="dracula",
+    display_name="Dracula",
+    description="Pixel-perfect official palette with Alucard light mode",
     light=_DRACULA_LIGHT, dark=_DRACULA_DARK, default_mode="dark")
 
 # =============================================================================
