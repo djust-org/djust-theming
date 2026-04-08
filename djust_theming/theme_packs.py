@@ -1887,6 +1887,135 @@ PACK_DJUST = ThemePack(
 )
 
 
+# --- New Preset Packs ---
+
+PACK_DRACULA = ThemePack(
+    name="dracula", display_name="Dracula", category="bold",
+    description="Purple gothic with neon accents",
+    design_theme="fluent", color_preset="dracula",
+    icon_style=ICON_OUTLINED, animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_GRUVBOX = ThemePack(
+    name="gruvbox", display_name="Gruvbox", category="retro",
+    description="Retro-warm earthy palette for terminal lovers",
+    design_theme="retro", color_preset="gruvbox",
+    icon_style=ICON_RETRO, animation_style=ANIM_SNAPPY,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_BOLD,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_SOLARIZED = ThemePack(
+    name="solarized", display_name="Solarized", category="professional",
+    description="Scientifically designed contrast ratios",
+    design_theme="minimalist", color_preset="solarized",
+    icon_style=ICON_MINIMAL, animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_HIGH_CONTRAST = ThemePack(
+    name="high_contrast", display_name="High Contrast", category="minimal",
+    description="Accessibility-first maximum contrast",
+    design_theme="corporate", color_preset="high_contrast",
+    icon_style=ICON_SHARP, animation_style=ANIM_SNAPPY,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_BOLD,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_MONO = ThemePack(
+    name="mono", display_name="Mono", category="minimal",
+    description="Pure grayscale — zero chroma discipline",
+    design_theme="minimalist", color_preset="mono",
+    icon_style=ICON_MINIMAL, animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_EMBER = ThemePack(
+    name="ember", display_name="Ember", category="elegant",
+    description="Warm coal and fireplace vibes",
+    design_theme="elegant", color_preset="ember",
+    icon_style=ICON_ELEGANT, animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_AURORA = ThemePack(
+    name="aurora", display_name="Aurora", category="bold",
+    description="Northern lights — green to violet",
+    design_theme="organic", color_preset="aurora",
+    icon_style=ICON_ORGANIC, animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_INK = ThemePack(
+    name="ink", display_name="Ink", category="minimal",
+    description="Japanese calligraphy minimalism",
+    design_theme="minimalist", color_preset="ink",
+    icon_style=ICON_MINIMAL, animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_SOLARPUNK = ThemePack(
+    name="solarpunk", display_name="Solarpunk", category="playful",
+    description="Optimistic nature — lush greens and amber",
+    design_theme="organic", color_preset="solarpunk",
+    icon_style=ICON_ORGANIC, animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_BAUHAUS = ThemePack(
+    name="bauhaus", display_name="Bauhaus", category="bold",
+    description="Geometric modernist — bold primary colors",
+    design_theme="dense", color_preset="bauhaus",
+    icon_style=ICON_BRUTALIST, animation_style=ANIM_SNAPPY,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_BOLD,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_CYBERDECK = ThemePack(
+    name="cyberdeck", display_name="Cyberdeck", category="bold",
+    description="Terminal hacker — matrix green on black",
+    design_theme="dense", color_preset="cyberdeck",
+    icon_style=ICON_SHARP, animation_style=ANIM_SNAPPY,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_BOLD,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_PAPER = ThemePack(
+    name="paper", display_name="Paper", category="elegant",
+    description="Reading-optimized warm sepia tones",
+    design_theme="elegant", color_preset="paper",
+    icon_style=ICON_ELEGANT, animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_NEON_NOIR = ThemePack(
+    name="neon_noir", display_name="Neon Noir", category="bold",
+    description="Film noir meets piercing neon pink",
+    design_theme="fluent", color_preset="neon_noir",
+    icon_style=ICON_OUTLINED, animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_LINE,
+)
+
+PACK_OCEAN_DEEP = ThemePack(
+    name="ocean_deep", display_name="Ocean Deep", category="elegant",
+    description="Deep sea — coastal sky to ocean floor",
+    design_theme="ios", color_preset="ocean_deep",
+    icon_style=ICON_IOS, animation_style=ANIM_SMOOTH,
+    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
+    illustration_style=ILLUST_LINE,
+)
+
+
 # Theme Pack Registry
 THEME_PACKS: Dict[str, ThemePack] = {
     "djust": PACK_DJUST,
@@ -1901,6 +2030,20 @@ THEME_PACKS: Dict[str, ThemePack] = {
     "forest": PACK_FOREST,
     "ocean": PACK_OCEAN,
     "metallic": PACK_METALLIC,
+    "dracula": PACK_DRACULA,
+    "gruvbox": PACK_GRUVBOX,
+    "solarized": PACK_SOLARIZED,
+    "high_contrast": PACK_HIGH_CONTRAST,
+    "mono": PACK_MONO,
+    "ember": PACK_EMBER,
+    "aurora": PACK_AURORA,
+    "ink": PACK_INK,
+    "solarpunk": PACK_SOLARPUNK,
+    "bauhaus": PACK_BAUHAUS,
+    "cyberdeck": PACK_CYBERDECK,
+    "paper": PACK_PAPER,
+    "neon_noir": PACK_NEON_NOIR,
+    "ocean_deep": PACK_OCEAN_DEEP,
 }
 
 
