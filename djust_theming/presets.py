@@ -2253,6 +2253,342 @@ EMBER_THEME = ThemePreset(name="ember", display_name="Ember",
     description="Warm coal and fireplace — cozy dark theme",
     light=_EMBER_LIGHT, dark=_EMBER_DARK, default_mode="dark")
 
+# =============================================================================
+# Aurora Theme (Northern Lights)
+# =============================================================================
+
+_AURORA_LIGHT = ThemeTokens(
+    background=ColorScale(210, 20, 98), foreground=ColorScale(220, 25, 15),
+    card=ColorScale(210, 18, 95), card_foreground=ColorScale(220, 25, 15),
+    popover=ColorScale(210, 18, 95), popover_foreground=ColorScale(220, 25, 15),
+    primary=ColorScale(160, 84, 39), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(210, 15, 90), secondary_foreground=ColorScale(220, 25, 15),
+    muted=ColorScale(210, 15, 90), muted_foreground=ColorScale(220, 15, 45),
+    accent=ColorScale(270, 60, 60), accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(0, 72, 55), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(160, 84, 39), success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(45, 90, 55), warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(200, 80, 55), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(160, 84, 39), link_hover=ColorScale(270, 60, 55),
+    code=ColorScale(210, 15, 92), code_foreground=ColorScale(160, 84, 35),
+    border=ColorScale(210, 15, 82), input=ColorScale(210, 15, 82),
+    ring=ColorScale(160, 84, 39), radius="0.75rem",
+)
+_AURORA_DARK = ThemeTokens(
+    background=ColorScale(230, 25, 10), foreground=ColorScale(180, 20, 90),
+    card=ColorScale(230, 22, 14), card_foreground=ColorScale(180, 20, 90),
+    popover=ColorScale(230, 22, 14), popover_foreground=ColorScale(180, 20, 90),
+    primary=ColorScale(160, 84, 52), primary_foreground=ColorScale(230, 25, 10),
+    secondary=ColorScale(230, 22, 18), secondary_foreground=ColorScale(180, 20, 90),
+    muted=ColorScale(230, 22, 18), muted_foreground=ColorScale(200, 15, 55),
+    accent=ColorScale(270, 60, 65), accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(0, 72, 55), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(160, 84, 52), success_foreground=ColorScale(230, 25, 10),
+    warning=ColorScale(45, 90, 60), warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(200, 80, 60), info_foreground=ColorScale(230, 25, 10),
+    link=ColorScale(160, 84, 52), link_hover=ColorScale(270, 60, 70),
+    code=ColorScale(230, 22, 16), code_foreground=ColorScale(160, 84, 60),
+    border=ColorScale(230, 22, 22), input=ColorScale(230, 22, 22),
+    ring=ColorScale(160, 84, 52), radius="0.75rem",
+)
+AURORA_THEME = ThemePreset(name="aurora", display_name="Aurora",
+    description="Northern lights — shifting green-to-violet feel",
+    light=_AURORA_LIGHT, dark=_AURORA_DARK, default_mode="dark")
+
+# =============================================================================
+# Ink Theme (Japanese Calligraphy Minimalism)
+# =============================================================================
+
+_INK_LIGHT = ThemeTokens(
+    background=ColorScale(40, 15, 97), foreground=ColorScale(220, 15, 12),
+    card=ColorScale(40, 12, 94), card_foreground=ColorScale(220, 15, 12),
+    popover=ColorScale(40, 12, 94), popover_foreground=ColorScale(220, 15, 12),
+    primary=ColorScale(4, 80, 52), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(40, 10, 90), secondary_foreground=ColorScale(220, 15, 12),
+    muted=ColorScale(40, 10, 90), muted_foreground=ColorScale(220, 10, 45),
+    accent=ColorScale(40, 10, 88), accent_foreground=ColorScale(220, 15, 12),
+    destructive=ColorScale(4, 80, 52), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(150, 30, 40), success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(40, 60, 50), warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(210, 30, 50), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(4, 80, 48), link_hover=ColorScale(4, 80, 38),
+    code=ColorScale(40, 10, 92), code_foreground=ColorScale(220, 15, 20),
+    border=ColorScale(220, 8, 82), input=ColorScale(220, 8, 82),
+    ring=ColorScale(4, 80, 52), radius="0",
+)
+_INK_DARK = ThemeTokens(
+    background=ColorScale(220, 15, 8), foreground=ColorScale(40, 15, 85),
+    card=ColorScale(220, 12, 12), card_foreground=ColorScale(40, 15, 85),
+    popover=ColorScale(220, 12, 12), popover_foreground=ColorScale(40, 15, 85),
+    primary=ColorScale(4, 80, 58), primary_foreground=ColorScale(220, 15, 8),
+    secondary=ColorScale(220, 12, 15), secondary_foreground=ColorScale(40, 15, 85),
+    muted=ColorScale(220, 12, 15), muted_foreground=ColorScale(40, 10, 55),
+    accent=ColorScale(220, 12, 18), accent_foreground=ColorScale(40, 15, 85),
+    destructive=ColorScale(4, 80, 58), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(150, 30, 50), success_foreground=ColorScale(220, 15, 8),
+    warning=ColorScale(40, 60, 55), warning_foreground=ColorScale(220, 15, 8),
+    info=ColorScale(210, 30, 60), info_foreground=ColorScale(220, 15, 8),
+    link=ColorScale(4, 80, 58), link_hover=ColorScale(4, 80, 70),
+    code=ColorScale(220, 12, 14), code_foreground=ColorScale(4, 80, 65),
+    border=ColorScale(220, 12, 18), input=ColorScale(220, 12, 18),
+    ring=ColorScale(4, 80, 58), radius="0",
+)
+INK_THEME = ThemePreset(name="ink", display_name="Ink",
+    description="Japanese calligraphy minimalism — sharp edges, single vermillion accent",
+    light=_INK_LIGHT, dark=_INK_DARK)
+
+# =============================================================================
+# Solarpunk Theme
+# =============================================================================
+
+_SOLARPUNK_LIGHT = ThemeTokens(
+    background=ColorScale(45, 40, 96), foreground=ColorScale(145, 30, 15),
+    card=ColorScale(45, 35, 93), card_foreground=ColorScale(145, 30, 15),
+    popover=ColorScale(45, 35, 93), popover_foreground=ColorScale(145, 30, 15),
+    primary=ColorScale(145, 63, 42), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(45, 30, 88), secondary_foreground=ColorScale(145, 30, 15),
+    muted=ColorScale(45, 30, 88), muted_foreground=ColorScale(145, 15, 40),
+    accent=ColorScale(35, 80, 55), accent_foreground=ColorScale(0, 0, 10),
+    destructive=ColorScale(0, 65, 50), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(145, 63, 42), success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(35, 80, 55), warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(190, 55, 45), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(145, 63, 38), link_hover=ColorScale(145, 63, 30),
+    code=ColorScale(45, 30, 90), code_foreground=ColorScale(145, 63, 35),
+    border=ColorScale(45, 20, 78), input=ColorScale(45, 20, 78),
+    ring=ColorScale(145, 63, 42), radius="1rem",
+)
+_SOLARPUNK_DARK = ThemeTokens(
+    background=ColorScale(150, 30, 10), foreground=ColorScale(45, 40, 90),
+    card=ColorScale(150, 25, 14), card_foreground=ColorScale(45, 40, 90),
+    popover=ColorScale(150, 25, 14), popover_foreground=ColorScale(45, 40, 90),
+    primary=ColorScale(145, 63, 52), primary_foreground=ColorScale(150, 30, 10),
+    secondary=ColorScale(150, 25, 18), secondary_foreground=ColorScale(45, 40, 90),
+    muted=ColorScale(150, 25, 18), muted_foreground=ColorScale(120, 15, 55),
+    accent=ColorScale(35, 80, 60), accent_foreground=ColorScale(0, 0, 10),
+    destructive=ColorScale(0, 65, 55), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(145, 63, 52), success_foreground=ColorScale(150, 30, 10),
+    warning=ColorScale(35, 80, 60), warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(190, 55, 55), info_foreground=ColorScale(150, 30, 10),
+    link=ColorScale(145, 63, 52), link_hover=ColorScale(80, 60, 65),
+    code=ColorScale(150, 25, 16), code_foreground=ColorScale(80, 60, 60),
+    border=ColorScale(150, 25, 22), input=ColorScale(150, 25, 22),
+    ring=ColorScale(145, 63, 52), radius="1rem",
+)
+SOLARPUNK_THEME = ThemePreset(name="solarpunk", display_name="Solarpunk",
+    description="Optimistic nature — lush greens and warm amber, organic shapes",
+    light=_SOLARPUNK_LIGHT, dark=_SOLARPUNK_DARK)
+
+# =============================================================================
+# Bauhaus Theme (Geometric Modernist)
+# =============================================================================
+
+_BAUHAUS_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 100), foreground=ColorScale(0, 0, 8),
+    card=ColorScale(0, 0, 98), card_foreground=ColorScale(0, 0, 8),
+    popover=ColorScale(0, 0, 98), popover_foreground=ColorScale(0, 0, 8),
+    primary=ColorScale(4, 86, 58), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(0, 0, 94), secondary_foreground=ColorScale(0, 0, 8),
+    muted=ColorScale(0, 0, 94), muted_foreground=ColorScale(0, 0, 40),
+    accent=ColorScale(220, 80, 55), accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(4, 86, 58), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(120, 50, 40), success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(48, 100, 50), warning_foreground=ColorScale(0, 0, 8),
+    info=ColorScale(220, 80, 55), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(220, 80, 50), link_hover=ColorScale(4, 86, 55),
+    code=ColorScale(0, 0, 95), code_foreground=ColorScale(4, 86, 50),
+    border=ColorScale(0, 0, 8), input=ColorScale(0, 0, 8),
+    ring=ColorScale(4, 86, 58), radius="0",
+)
+_BAUHAUS_DARK = ThemeTokens(
+    background=ColorScale(0, 0, 5), foreground=ColorScale(0, 0, 95),
+    card=ColorScale(0, 0, 9), card_foreground=ColorScale(0, 0, 95),
+    popover=ColorScale(0, 0, 9), popover_foreground=ColorScale(0, 0, 95),
+    primary=ColorScale(4, 86, 58), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(0, 0, 14), secondary_foreground=ColorScale(0, 0, 95),
+    muted=ColorScale(0, 0, 14), muted_foreground=ColorScale(0, 0, 55),
+    accent=ColorScale(220, 80, 60), accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(4, 86, 58), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(120, 50, 50), success_foreground=ColorScale(0, 0, 5),
+    warning=ColorScale(48, 100, 55), warning_foreground=ColorScale(0, 0, 5),
+    info=ColorScale(220, 80, 60), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(220, 80, 60), link_hover=ColorScale(4, 86, 65),
+    code=ColorScale(0, 0, 12), code_foreground=ColorScale(48, 100, 60),
+    border=ColorScale(0, 0, 95), input=ColorScale(0, 0, 95),
+    ring=ColorScale(4, 86, 58), radius="0",
+)
+BAUHAUS_THEME = ThemePreset(name="bauhaus", display_name="Bauhaus",
+    description="Geometric modernist — bold primary colors, sharp edges",
+    light=_BAUHAUS_LIGHT, dark=_BAUHAUS_DARK)
+
+# =============================================================================
+# Cyberdeck Theme (Terminal Hacker)
+# =============================================================================
+
+_CYBERDECK_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 97), foreground=ColorScale(120, 10, 15),
+    card=ColorScale(120, 5, 94), card_foreground=ColorScale(120, 10, 15),
+    popover=ColorScale(120, 5, 94), popover_foreground=ColorScale(120, 10, 15),
+    primary=ColorScale(120, 100, 35), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(120, 5, 90), secondary_foreground=ColorScale(120, 10, 15),
+    muted=ColorScale(120, 5, 90), muted_foreground=ColorScale(120, 5, 45),
+    accent=ColorScale(120, 100, 90), accent_foreground=ColorScale(120, 10, 15),
+    destructive=ColorScale(0, 80, 55), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(120, 100, 35), success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(60, 80, 45), warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(180, 80, 40), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(120, 100, 30), link_hover=ColorScale(120, 100, 22),
+    code=ColorScale(120, 5, 92), code_foreground=ColorScale(120, 100, 30),
+    border=ColorScale(120, 10, 80), input=ColorScale(120, 10, 80),
+    ring=ColorScale(120, 100, 35), radius="0.125rem",
+)
+_CYBERDECK_DARK = ThemeTokens(
+    background=ColorScale(0, 0, 2), foreground=ColorScale(120, 100, 50),
+    card=ColorScale(120, 10, 5), card_foreground=ColorScale(120, 100, 50),
+    popover=ColorScale(120, 10, 5), popover_foreground=ColorScale(120, 100, 50),
+    primary=ColorScale(120, 100, 50), primary_foreground=ColorScale(0, 0, 2),
+    secondary=ColorScale(120, 10, 8), secondary_foreground=ColorScale(120, 100, 50),
+    muted=ColorScale(120, 10, 8), muted_foreground=ColorScale(120, 50, 35),
+    accent=ColorScale(120, 100, 12), accent_foreground=ColorScale(120, 100, 50),
+    destructive=ColorScale(0, 100, 50), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(120, 100, 50), success_foreground=ColorScale(0, 0, 2),
+    warning=ColorScale(60, 100, 50), warning_foreground=ColorScale(0, 0, 2),
+    info=ColorScale(180, 100, 45), info_foreground=ColorScale(0, 0, 2),
+    link=ColorScale(120, 100, 50), link_hover=ColorScale(120, 100, 65),
+    code=ColorScale(120, 10, 7), code_foreground=ColorScale(120, 100, 55),
+    border=ColorScale(120, 100, 18), input=ColorScale(120, 100, 18),
+    ring=ColorScale(120, 100, 50), radius="0.125rem",
+)
+CYBERDECK_THEME = ThemePreset(name="cyberdeck", display_name="Cyberdeck",
+    description="Terminal hacker — matrix green on true black, CRT vibes",
+    light=_CYBERDECK_LIGHT, dark=_CYBERDECK_DARK, default_mode="dark")
+
+# =============================================================================
+# Paper Theme (Reading-Optimized Warm)
+# =============================================================================
+
+_PAPER_LIGHT = ThemeTokens(
+    background=ColorScale(40, 33, 96), foreground=ColorScale(25, 15, 20),
+    card=ColorScale(40, 28, 93), card_foreground=ColorScale(25, 15, 20),
+    popover=ColorScale(40, 28, 93), popover_foreground=ColorScale(25, 15, 20),
+    primary=ColorScale(30, 40, 45), primary_foreground=ColorScale(40, 33, 96),
+    secondary=ColorScale(40, 22, 88), secondary_foreground=ColorScale(25, 15, 20),
+    muted=ColorScale(40, 22, 88), muted_foreground=ColorScale(25, 10, 45),
+    accent=ColorScale(40, 22, 85), accent_foreground=ColorScale(25, 15, 20),
+    destructive=ColorScale(0, 55, 50), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(100, 35, 42), success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(35, 65, 50), warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(210, 35, 50), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(210, 45, 45), link_hover=ColorScale(210, 45, 35),
+    code=ColorScale(40, 22, 90), code_foreground=ColorScale(25, 15, 30),
+    border=ColorScale(35, 15, 80), input=ColorScale(35, 15, 80),
+    ring=ColorScale(30, 40, 45), radius="0.625rem",
+)
+_PAPER_DARK = ThemeTokens(
+    background=ColorScale(25, 12, 14), foreground=ColorScale(40, 25, 85),
+    card=ColorScale(25, 10, 18), card_foreground=ColorScale(40, 25, 85),
+    popover=ColorScale(25, 10, 18), popover_foreground=ColorScale(40, 25, 85),
+    primary=ColorScale(30, 40, 60), primary_foreground=ColorScale(25, 12, 14),
+    secondary=ColorScale(25, 10, 22), secondary_foreground=ColorScale(40, 25, 85),
+    muted=ColorScale(25, 10, 22), muted_foreground=ColorScale(30, 10, 55),
+    accent=ColorScale(25, 10, 25), accent_foreground=ColorScale(40, 25, 85),
+    destructive=ColorScale(0, 55, 55), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(100, 35, 52), success_foreground=ColorScale(25, 12, 14),
+    warning=ColorScale(35, 65, 55), warning_foreground=ColorScale(25, 12, 14),
+    info=ColorScale(210, 35, 60), info_foreground=ColorScale(25, 12, 14),
+    link=ColorScale(210, 45, 60), link_hover=ColorScale(210, 45, 72),
+    code=ColorScale(25, 10, 20), code_foreground=ColorScale(30, 40, 65),
+    border=ColorScale(25, 10, 25), input=ColorScale(25, 10, 25),
+    ring=ColorScale(30, 40, 60), radius="0.625rem",
+)
+PAPER_THEME = ThemePreset(name="paper", display_name="Paper",
+    description="Reading-optimized warm — like sunlit paper, large radius",
+    light=_PAPER_LIGHT, dark=_PAPER_DARK)
+
+# =============================================================================
+# Neon Noir Theme (Film Noir + Neon)
+# =============================================================================
+
+_NEON_NOIR_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 98), foreground=ColorScale(300, 10, 15),
+    card=ColorScale(300, 5, 95), card_foreground=ColorScale(300, 10, 15),
+    popover=ColorScale(300, 5, 95), popover_foreground=ColorScale(300, 10, 15),
+    primary=ColorScale(330, 100, 60), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(300, 5, 90), secondary_foreground=ColorScale(300, 10, 15),
+    muted=ColorScale(300, 5, 90), muted_foreground=ColorScale(300, 5, 45),
+    accent=ColorScale(300, 5, 88), accent_foreground=ColorScale(300, 10, 15),
+    destructive=ColorScale(0, 85, 55), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(160, 60, 45), success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(45, 85, 55), warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(210, 70, 55), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(330, 100, 55), link_hover=ColorScale(330, 100, 45),
+    code=ColorScale(300, 5, 92), code_foreground=ColorScale(330, 100, 50),
+    border=ColorScale(300, 5, 82), input=ColorScale(300, 5, 82),
+    ring=ColorScale(330, 100, 60), radius="0.375rem",
+)
+_NEON_NOIR_DARK = ThemeTokens(
+    background=ColorScale(0, 0, 3), foreground=ColorScale(0, 0, 85),
+    card=ColorScale(300, 5, 6), card_foreground=ColorScale(0, 0, 85),
+    popover=ColorScale(300, 5, 6), popover_foreground=ColorScale(0, 0, 85),
+    primary=ColorScale(330, 100, 60), primary_foreground=ColorScale(0, 0, 3),
+    secondary=ColorScale(300, 5, 10), secondary_foreground=ColorScale(0, 0, 85),
+    muted=ColorScale(300, 5, 10), muted_foreground=ColorScale(0, 0, 45),
+    accent=ColorScale(300, 5, 12), accent_foreground=ColorScale(0, 0, 85),
+    destructive=ColorScale(0, 85, 55), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(160, 60, 50), success_foreground=ColorScale(0, 0, 3),
+    warning=ColorScale(45, 85, 55), warning_foreground=ColorScale(0, 0, 3),
+    info=ColorScale(210, 70, 60), info_foreground=ColorScale(0, 0, 3),
+    link=ColorScale(330, 100, 60), link_hover=ColorScale(330, 100, 75),
+    code=ColorScale(300, 5, 8), code_foreground=ColorScale(330, 100, 65),
+    border=ColorScale(300, 5, 12), input=ColorScale(300, 5, 12),
+    ring=ColorScale(330, 100, 60), radius="0.375rem",
+)
+NEON_NOIR_THEME = ThemePreset(name="neon_noir", display_name="Neon Noir",
+    description="Film noir meets neon — piercing hot pink on true black",
+    light=_NEON_NOIR_LIGHT, dark=_NEON_NOIR_DARK, default_mode="dark")
+
+# =============================================================================
+# Ocean Theme (Deep Sea)
+# =============================================================================
+
+_OCEAN_LIGHT = ThemeTokens(
+    background=ColorScale(200, 25, 97), foreground=ColorScale(210, 40, 15),
+    card=ColorScale(200, 22, 94), card_foreground=ColorScale(210, 40, 15),
+    popover=ColorScale(200, 22, 94), popover_foreground=ColorScale(210, 40, 15),
+    primary=ColorScale(200, 80, 45), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(200, 18, 88), secondary_foreground=ColorScale(210, 40, 15),
+    muted=ColorScale(200, 18, 88), muted_foreground=ColorScale(210, 20, 45),
+    accent=ColorScale(180, 50, 45), accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(0, 70, 55), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(160, 60, 42), success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(40, 80, 55), warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(200, 80, 45), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(200, 80, 40), link_hover=ColorScale(200, 80, 32),
+    code=ColorScale(200, 18, 91), code_foreground=ColorScale(200, 80, 35),
+    border=ColorScale(200, 15, 80), input=ColorScale(200, 15, 80),
+    ring=ColorScale(200, 80, 45), radius="0.5rem",
+)
+_OCEAN_DARK = ThemeTokens(
+    background=ColorScale(210, 60, 8), foreground=ColorScale(195, 30, 88),
+    card=ColorScale(210, 50, 12), card_foreground=ColorScale(195, 30, 88),
+    popover=ColorScale(210, 50, 12), popover_foreground=ColorScale(195, 30, 88),
+    primary=ColorScale(200, 80, 55), primary_foreground=ColorScale(210, 60, 8),
+    secondary=ColorScale(210, 50, 16), secondary_foreground=ColorScale(195, 30, 88),
+    muted=ColorScale(210, 50, 16), muted_foreground=ColorScale(200, 20, 55),
+    accent=ColorScale(180, 50, 50), accent_foreground=ColorScale(210, 60, 8),
+    destructive=ColorScale(0, 70, 55), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(160, 60, 50), success_foreground=ColorScale(210, 60, 8),
+    warning=ColorScale(40, 80, 60), warning_foreground=ColorScale(210, 60, 8),
+    info=ColorScale(200, 80, 55), info_foreground=ColorScale(210, 60, 8),
+    link=ColorScale(200, 80, 55), link_hover=ColorScale(180, 50, 65),
+    code=ColorScale(210, 50, 14), code_foreground=ColorScale(180, 50, 60),
+    border=ColorScale(210, 50, 20), input=ColorScale(210, 50, 20),
+    ring=ColorScale(200, 80, 55), radius="0.5rem",
+)
+OCEAN_THEME = ThemePreset(name="ocean", display_name="Ocean",
+    description="Deep sea gradient depth — coastal sky to ocean floor",
+    light=_OCEAN_LIGHT, dark=_OCEAN_DARK, default_mode="dark")
+
 
 THEME_PRESETS: dict[str, ThemePreset] = {
     "default": DEFAULT_THEME,
@@ -2281,6 +2617,14 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "high_contrast": HIGH_CONTRAST_THEME,
     "mono": MONO_THEME,
     "ember": EMBER_THEME,
+    "aurora": AURORA_THEME,
+    "ink": INK_THEME,
+    "solarpunk": SOLARPUNK_THEME,
+    "bauhaus": BAUHAUS_THEME,
+    "cyberdeck": CYBERDECK_THEME,
+    "paper": PAPER_THEME,
+    "neon_noir": NEON_NOIR_THEME,
+    "ocean_deep": OCEAN_THEME,
 }
 
 
