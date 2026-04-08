@@ -2001,6 +2001,259 @@ DJUST_THEME = ThemePreset(
 # Theme Presets Registry
 # =============================================================================
 
+# =============================================================================
+# Dracula Theme
+# =============================================================================
+
+_DRACULA_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 98), foreground=ColorScale(231, 15, 20),
+    card=ColorScale(231, 15, 95), card_foreground=ColorScale(231, 15, 20),
+    popover=ColorScale(231, 15, 95), popover_foreground=ColorScale(231, 15, 20),
+    primary=ColorScale(265, 89, 60), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(231, 15, 88), secondary_foreground=ColorScale(231, 15, 20),
+    muted=ColorScale(231, 15, 88), muted_foreground=ColorScale(231, 15, 45),
+    accent=ColorScale(191, 97, 60), accent_foreground=ColorScale(0, 0, 10),
+    destructive=ColorScale(0, 100, 67), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(135, 94, 65), success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(65, 92, 76), warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(191, 97, 60), info_foreground=ColorScale(0, 0, 10),
+    link=ColorScale(265, 89, 60), link_hover=ColorScale(265, 89, 50),
+    code=ColorScale(265, 89, 95), code_foreground=ColorScale(265, 89, 40),
+    border=ColorScale(231, 15, 85), input=ColorScale(231, 15, 85),
+    ring=ColorScale(265, 89, 60), radius="0.5rem",
+)
+_DRACULA_DARK = ThemeTokens(
+    background=ColorScale(231, 15, 18), foreground=ColorScale(60, 30, 96),
+    card=ColorScale(232, 14, 22), card_foreground=ColorScale(60, 30, 96),
+    popover=ColorScale(232, 14, 22), popover_foreground=ColorScale(60, 30, 96),
+    primary=ColorScale(265, 89, 78), primary_foreground=ColorScale(231, 15, 18),
+    secondary=ColorScale(232, 14, 28), secondary_foreground=ColorScale(60, 30, 96),
+    muted=ColorScale(232, 14, 28), muted_foreground=ColorScale(228, 8, 60),
+    accent=ColorScale(191, 97, 77), accent_foreground=ColorScale(231, 15, 18),
+    destructive=ColorScale(0, 100, 67), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(135, 94, 65), success_foreground=ColorScale(0, 0, 10),
+    warning=ColorScale(65, 92, 76), warning_foreground=ColorScale(0, 0, 10),
+    info=ColorScale(191, 97, 77), info_foreground=ColorScale(0, 0, 10),
+    link=ColorScale(265, 89, 78), link_hover=ColorScale(326, 100, 74),
+    code=ColorScale(232, 14, 25), code_foreground=ColorScale(135, 94, 65),
+    border=ColorScale(232, 14, 30), input=ColorScale(232, 14, 30),
+    ring=ColorScale(265, 89, 78), radius="0.5rem",
+)
+DRACULA_THEME = ThemePreset(name="dracula", display_name="Dracula",
+    description="Purple-forward gothic with neon accents",
+    light=_DRACULA_LIGHT, dark=_DRACULA_DARK, default_mode="dark")
+
+# =============================================================================
+# Gruvbox Theme
+# =============================================================================
+
+_GRUVBOX_LIGHT = ThemeTokens(
+    background=ColorScale(44, 87, 94), foreground=ColorScale(0, 0, 16),
+    card=ColorScale(47, 80, 90), card_foreground=ColorScale(0, 0, 16),
+    popover=ColorScale(47, 80, 90), popover_foreground=ColorScale(0, 0, 16),
+    primary=ColorScale(27, 99, 55), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(44, 70, 85), secondary_foreground=ColorScale(0, 0, 16),
+    muted=ColorScale(44, 70, 85), muted_foreground=ColorScale(24, 12, 45),
+    accent=ColorScale(175, 42, 52), accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(6, 96, 59), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(106, 33, 51), success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(40, 73, 49), warning_foreground=ColorScale(0, 0, 100),
+    info=ColorScale(175, 42, 52), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(27, 99, 55), link_hover=ColorScale(27, 99, 45),
+    code=ColorScale(44, 70, 85), code_foreground=ColorScale(6, 96, 59),
+    border=ColorScale(40, 30, 75), input=ColorScale(40, 30, 75),
+    ring=ColorScale(27, 99, 55), radius="0.375rem",
+)
+_GRUVBOX_DARK = ThemeTokens(
+    background=ColorScale(0, 0, 16), foreground=ColorScale(42, 46, 82),
+    card=ColorScale(20, 5, 20), card_foreground=ColorScale(42, 46, 82),
+    popover=ColorScale(20, 5, 20), popover_foreground=ColorScale(42, 46, 82),
+    primary=ColorScale(27, 99, 55), primary_foreground=ColorScale(0, 0, 16),
+    secondary=ColorScale(20, 5, 24), secondary_foreground=ColorScale(42, 46, 82),
+    muted=ColorScale(20, 5, 24), muted_foreground=ColorScale(30, 12, 55),
+    accent=ColorScale(175, 42, 63), accent_foreground=ColorScale(0, 0, 16),
+    destructive=ColorScale(6, 96, 59), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(106, 33, 62), success_foreground=ColorScale(0, 0, 16),
+    warning=ColorScale(40, 73, 49), warning_foreground=ColorScale(0, 0, 16),
+    info=ColorScale(175, 42, 63), info_foreground=ColorScale(0, 0, 16),
+    link=ColorScale(27, 99, 55), link_hover=ColorScale(40, 73, 60),
+    code=ColorScale(20, 5, 22), code_foreground=ColorScale(106, 33, 62),
+    border=ColorScale(20, 5, 28), input=ColorScale(20, 5, 28),
+    ring=ColorScale(27, 99, 55), radius="0.375rem",
+)
+GRUVBOX_THEME = ThemePreset(name="gruvbox", display_name="Gruvbox",
+    description="Retro-warm earthy palette beloved by vim users",
+    light=_GRUVBOX_LIGHT, dark=_GRUVBOX_DARK)
+
+# =============================================================================
+# Solarized Theme
+# =============================================================================
+
+_SOLARIZED_LIGHT = ThemeTokens(
+    background=ColorScale(44, 87, 94), foreground=ColorScale(194, 14, 40),
+    card=ColorScale(46, 42, 88), card_foreground=ColorScale(194, 14, 40),
+    popover=ColorScale(46, 42, 88), popover_foreground=ColorScale(194, 14, 40),
+    primary=ColorScale(205, 82, 33), primary_foreground=ColorScale(44, 87, 94),
+    secondary=ColorScale(46, 42, 88), secondary_foreground=ColorScale(194, 14, 40),
+    muted=ColorScale(46, 42, 88), muted_foreground=ColorScale(196, 13, 55),
+    accent=ColorScale(175, 59, 40), accent_foreground=ColorScale(44, 87, 94),
+    destructive=ColorScale(1, 71, 52), destructive_foreground=ColorScale(44, 87, 94),
+    success=ColorScale(68, 100, 30), success_foreground=ColorScale(44, 87, 94),
+    warning=ColorScale(45, 100, 35), warning_foreground=ColorScale(194, 14, 40),
+    info=ColorScale(175, 59, 40), info_foreground=ColorScale(44, 87, 94),
+    link=ColorScale(205, 82, 33), link_hover=ColorScale(237, 45, 52),
+    code=ColorScale(46, 42, 85), code_foreground=ColorScale(1, 71, 52),
+    border=ColorScale(44, 20, 78), input=ColorScale(44, 20, 78),
+    ring=ColorScale(205, 82, 33), radius="0.375rem",
+)
+_SOLARIZED_DARK = ThemeTokens(
+    background=ColorScale(192, 100, 11), foreground=ColorScale(44, 87, 94),
+    card=ColorScale(192, 81, 14), card_foreground=ColorScale(44, 87, 94),
+    popover=ColorScale(192, 81, 14), popover_foreground=ColorScale(44, 87, 94),
+    primary=ColorScale(205, 82, 33), primary_foreground=ColorScale(44, 87, 94),
+    secondary=ColorScale(192, 81, 18), secondary_foreground=ColorScale(44, 87, 94),
+    muted=ColorScale(192, 81, 18), muted_foreground=ColorScale(180, 9, 63),
+    accent=ColorScale(175, 59, 40), accent_foreground=ColorScale(44, 87, 94),
+    destructive=ColorScale(1, 71, 52), destructive_foreground=ColorScale(44, 87, 94),
+    success=ColorScale(68, 100, 30), success_foreground=ColorScale(44, 87, 94),
+    warning=ColorScale(45, 100, 35), warning_foreground=ColorScale(192, 100, 11),
+    info=ColorScale(175, 59, 40), info_foreground=ColorScale(44, 87, 94),
+    link=ColorScale(205, 82, 33), link_hover=ColorScale(237, 45, 52),
+    code=ColorScale(192, 81, 16), code_foreground=ColorScale(68, 100, 30),
+    border=ColorScale(192, 81, 20), input=ColorScale(192, 81, 20),
+    ring=ColorScale(205, 82, 33), radius="0.375rem",
+)
+SOLARIZED_THEME = ThemePreset(name="solarized", display_name="Solarized",
+    description="The OG scientifically designed contrast palette",
+    light=_SOLARIZED_LIGHT, dark=_SOLARIZED_DARK)
+
+# =============================================================================
+# High Contrast Theme (Accessibility)
+# =============================================================================
+
+_HIGH_CONTRAST_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 100), foreground=ColorScale(0, 0, 0),
+    card=ColorScale(0, 0, 100), card_foreground=ColorScale(0, 0, 0),
+    popover=ColorScale(0, 0, 100), popover_foreground=ColorScale(0, 0, 0),
+    primary=ColorScale(220, 100, 40), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(0, 0, 95), secondary_foreground=ColorScale(0, 0, 0),
+    muted=ColorScale(0, 0, 95), muted_foreground=ColorScale(0, 0, 30),
+    accent=ColorScale(0, 0, 90), accent_foreground=ColorScale(0, 0, 0),
+    destructive=ColorScale(0, 100, 40), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(120, 100, 25), success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(40, 100, 40), warning_foreground=ColorScale(0, 0, 0),
+    info=ColorScale(220, 100, 40), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(220, 100, 35), link_hover=ColorScale(220, 100, 25),
+    code=ColorScale(0, 0, 93), code_foreground=ColorScale(0, 100, 40),
+    border=ColorScale(0, 0, 0), input=ColorScale(0, 0, 0),
+    ring=ColorScale(220, 100, 40), radius="0.25rem",
+)
+_HIGH_CONTRAST_DARK = ThemeTokens(
+    background=ColorScale(0, 0, 0), foreground=ColorScale(0, 0, 100),
+    card=ColorScale(0, 0, 5), card_foreground=ColorScale(0, 0, 100),
+    popover=ColorScale(0, 0, 5), popover_foreground=ColorScale(0, 0, 100),
+    primary=ColorScale(210, 100, 60), primary_foreground=ColorScale(0, 0, 0),
+    secondary=ColorScale(0, 0, 12), secondary_foreground=ColorScale(0, 0, 100),
+    muted=ColorScale(0, 0, 12), muted_foreground=ColorScale(0, 0, 70),
+    accent=ColorScale(0, 0, 15), accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(0, 100, 55), destructive_foreground=ColorScale(0, 0, 0),
+    success=ColorScale(120, 100, 45), success_foreground=ColorScale(0, 0, 0),
+    warning=ColorScale(45, 100, 50), warning_foreground=ColorScale(0, 0, 0),
+    info=ColorScale(210, 100, 60), info_foreground=ColorScale(0, 0, 0),
+    link=ColorScale(210, 100, 65), link_hover=ColorScale(210, 100, 80),
+    code=ColorScale(0, 0, 10), code_foreground=ColorScale(120, 100, 50),
+    border=ColorScale(0, 0, 100), input=ColorScale(0, 0, 100),
+    ring=ColorScale(210, 100, 60), radius="0.25rem",
+)
+HIGH_CONTRAST_THEME = ThemePreset(name="high_contrast", display_name="High Contrast",
+    description="Accessibility-first with maximum contrast ratios",
+    light=_HIGH_CONTRAST_LIGHT, dark=_HIGH_CONTRAST_DARK)
+
+# =============================================================================
+# Mono Theme (Pure Grayscale)
+# =============================================================================
+
+_MONO_LIGHT = ThemeTokens(
+    background=ColorScale(0, 0, 100), foreground=ColorScale(0, 0, 10),
+    card=ColorScale(0, 0, 98), card_foreground=ColorScale(0, 0, 10),
+    popover=ColorScale(0, 0, 98), popover_foreground=ColorScale(0, 0, 10),
+    primary=ColorScale(0, 0, 15), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(0, 0, 93), secondary_foreground=ColorScale(0, 0, 15),
+    muted=ColorScale(0, 0, 93), muted_foreground=ColorScale(0, 0, 45),
+    accent=ColorScale(0, 0, 90), accent_foreground=ColorScale(0, 0, 10),
+    destructive=ColorScale(0, 0, 30), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(0, 0, 35), success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(0, 0, 40), warning_foreground=ColorScale(0, 0, 100),
+    info=ColorScale(0, 0, 35), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(0, 0, 20), link_hover=ColorScale(0, 0, 10),
+    code=ColorScale(0, 0, 94), code_foreground=ColorScale(0, 0, 25),
+    border=ColorScale(0, 0, 82), input=ColorScale(0, 0, 82),
+    ring=ColorScale(0, 0, 15), radius="0.375rem",
+)
+_MONO_DARK = ThemeTokens(
+    background=ColorScale(0, 0, 7), foreground=ColorScale(0, 0, 90),
+    card=ColorScale(0, 0, 10), card_foreground=ColorScale(0, 0, 90),
+    popover=ColorScale(0, 0, 10), popover_foreground=ColorScale(0, 0, 90),
+    primary=ColorScale(0, 0, 85), primary_foreground=ColorScale(0, 0, 7),
+    secondary=ColorScale(0, 0, 15), secondary_foreground=ColorScale(0, 0, 85),
+    muted=ColorScale(0, 0, 15), muted_foreground=ColorScale(0, 0, 55),
+    accent=ColorScale(0, 0, 18), accent_foreground=ColorScale(0, 0, 90),
+    destructive=ColorScale(0, 0, 70), destructive_foreground=ColorScale(0, 0, 7),
+    success=ColorScale(0, 0, 65), success_foreground=ColorScale(0, 0, 7),
+    warning=ColorScale(0, 0, 60), warning_foreground=ColorScale(0, 0, 7),
+    info=ColorScale(0, 0, 65), info_foreground=ColorScale(0, 0, 7),
+    link=ColorScale(0, 0, 80), link_hover=ColorScale(0, 0, 95),
+    code=ColorScale(0, 0, 13), code_foreground=ColorScale(0, 0, 70),
+    border=ColorScale(0, 0, 20), input=ColorScale(0, 0, 20),
+    ring=ColorScale(0, 0, 85), radius="0.375rem",
+)
+MONO_THEME = ThemePreset(name="mono", display_name="Mono",
+    description="Pure grayscale — zero chroma, maximum discipline",
+    light=_MONO_LIGHT, dark=_MONO_DARK)
+
+# =============================================================================
+# Ember Theme (Warm Coal)
+# =============================================================================
+
+_EMBER_LIGHT = ThemeTokens(
+    background=ColorScale(30, 20, 97), foreground=ColorScale(15, 20, 15),
+    card=ColorScale(30, 18, 94), card_foreground=ColorScale(15, 20, 15),
+    popover=ColorScale(30, 18, 94), popover_foreground=ColorScale(15, 20, 15),
+    primary=ColorScale(35, 95, 55), primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(30, 15, 88), secondary_foreground=ColorScale(15, 20, 15),
+    muted=ColorScale(30, 15, 88), muted_foreground=ColorScale(15, 10, 45),
+    accent=ColorScale(15, 80, 55), accent_foreground=ColorScale(0, 0, 100),
+    destructive=ColorScale(0, 72, 51), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(85, 45, 45), success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(35, 95, 55), warning_foreground=ColorScale(15, 20, 15),
+    info=ColorScale(200, 40, 50), info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(15, 80, 50), link_hover=ColorScale(15, 80, 40),
+    code=ColorScale(30, 15, 90), code_foreground=ColorScale(15, 80, 45),
+    border=ColorScale(30, 12, 80), input=ColorScale(30, 12, 80),
+    ring=ColorScale(35, 95, 55), radius="0.5rem",
+)
+_EMBER_DARK = ThemeTokens(
+    background=ColorScale(15, 15, 10), foreground=ColorScale(35, 30, 88),
+    card=ColorScale(15, 12, 14), card_foreground=ColorScale(35, 30, 88),
+    popover=ColorScale(15, 12, 14), popover_foreground=ColorScale(35, 30, 88),
+    primary=ColorScale(35, 95, 55), primary_foreground=ColorScale(15, 15, 10),
+    secondary=ColorScale(15, 12, 18), secondary_foreground=ColorScale(35, 30, 88),
+    muted=ColorScale(15, 12, 18), muted_foreground=ColorScale(25, 15, 55),
+    accent=ColorScale(15, 80, 55), accent_foreground=ColorScale(15, 15, 10),
+    destructive=ColorScale(0, 72, 55), destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(85, 45, 55), success_foreground=ColorScale(15, 15, 10),
+    warning=ColorScale(35, 95, 55), warning_foreground=ColorScale(15, 15, 10),
+    info=ColorScale(200, 40, 60), info_foreground=ColorScale(15, 15, 10),
+    link=ColorScale(35, 95, 55), link_hover=ColorScale(35, 95, 70),
+    code=ColorScale(15, 12, 16), code_foreground=ColorScale(35, 95, 65),
+    border=ColorScale(15, 12, 22), input=ColorScale(15, 12, 22),
+    ring=ColorScale(35, 95, 55), radius="0.5rem",
+)
+EMBER_THEME = ThemePreset(name="ember", display_name="Ember",
+    description="Warm coal and fireplace — cozy dark theme",
+    light=_EMBER_LIGHT, dark=_EMBER_DARK, default_mode="dark")
+
+
 THEME_PRESETS: dict[str, ThemePreset] = {
     "default": DEFAULT_THEME,
     "shadcn": SHADCN_THEME,
@@ -2022,6 +2275,12 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "slate": SLATE_THEME,
     "nebula": NEBULA_THEME,
     "djust": DJUST_THEME,
+    "dracula": DRACULA_THEME,
+    "gruvbox": GRUVBOX_THEME,
+    "solarized": SOLARIZED_THEME,
+    "high_contrast": HIGH_CONTRAST_THEME,
+    "mono": MONO_THEME,
+    "ember": EMBER_THEME,
 }
 
 
