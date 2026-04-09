@@ -1,4 +1,4 @@
-"""Adaptive — Bold royal blue with orange energy, enterprise clarity, forward momentum."""
+"""Adaptive — Bold royal blue with vermillion energy, enterprise clarity, forward momentum."""
 
 from ._base import (
     ColorScale, ThemeTokens, ThemePreset,
@@ -39,12 +39,12 @@ LIGHT = ThemeTokens(
     info=ColorScale(228, 61, 50),                  # Lighter royal blue
     info_foreground=ColorScale(0, 0, 100),
     link=ColorScale(228, 61, 41),                  # Blue links — trustworthy
-    link_hover=ColorScale(18, 80, 50),             # Orange on hover — energy shift
+    link_hover=ColorScale(12, 66, 48),             # Vermillion on hover — energy shift
     code=ColorScale(215, 28, 17),                  # Dark navy code bg
-    code_foreground=ColorScale(18, 80, 65),        # Orange code text
+    code_foreground=ColorScale(12, 66, 65),        # Vermillion code text
     selection=ColorScale(228, 61, 85),             # Pale blue selection
     selection_foreground=ColorScale(215, 28, 17),
-    brand=ColorScale(18, 80, 55),                  # Orange — the energy accent
+    brand=ColorScale(12, 66, 50),                  # Warm vermillion — the energy accent
     brand_foreground=ColorScale(0, 0, 100),
     border=ColorScale(210, 15, 88),                # Cool subtle border
     input=ColorScale(210, 12, 95),
@@ -78,12 +78,12 @@ DARK = ThemeTokens(
     info=ColorScale(228, 61, 60),
     info_foreground=ColorScale(0, 0, 100),
     link=ColorScale(228, 61, 60),
-    link_hover=ColorScale(18, 80, 60),             # Orange hover
+    link_hover=ColorScale(12, 66, 58),             # Vermillion hover
     code=ColorScale(215, 30, 12),
-    code_foreground=ColorScale(18, 80, 65),
+    code_foreground=ColorScale(12, 66, 65),
     selection=ColorScale(228, 50, 28),
     selection_foreground=ColorScale(210, 15, 92),
-    brand=ColorScale(18, 80, 60),                  # Orange — brightened
+    brand=ColorScale(12, 66, 58),                  # Warm vermillion — brightened
     brand_foreground=ColorScale(0, 0, 100),
     border=ColorScale(215, 18, 26),
     input=ColorScale(215, 18, 22),
@@ -96,7 +96,7 @@ DARK = ThemeTokens(
 PRESET = ThemePreset(
     name="adaptive",
     display_name="Adaptive",
-    description="Royal blue trust with orange energy — bold enterprise clarity, forward momentum",
+    description="Royal blue trust with vermillion energy — bold enterprise clarity, forward momentum",
     light=LIGHT,
     dark=DARK,
     radius=0,  # Sharp corners — decisive, no softness
@@ -198,7 +198,7 @@ INTERACTION = InteractionStyle(
 DESIGN_SYSTEM = DesignSystem(
     name="adaptive",
     display_name="Adaptive",
-    description="Royal blue trust, orange energy — enterprise clarity with forward momentum",
+    description="Royal blue trust, vermillion energy — enterprise clarity with forward momentum",
     category="professional",
     typography=TYPOGRAPHY,
     layout=LAYOUT,
@@ -211,7 +211,7 @@ DESIGN_SYSTEM = DesignSystem(
 PACK = ThemePack(
     name="adaptive",
     display_name="Adaptive",
-    description="Royal blue trust with orange energy — bold enterprise clarity",
+    description="Royal blue trust with vermillion energy — bold enterprise clarity",
     category="professional",
     design_theme="adaptive",
     color_preset="adaptive",
