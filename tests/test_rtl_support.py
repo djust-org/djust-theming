@@ -38,7 +38,7 @@ CSS_DIR = Path(__file__).resolve().parent.parent / "djust_theming" / "static" / 
 
 # Properties that should be absent entirely:
 _FORBIDDEN_PATTERNS = {
-    "base.css": [
+    "scaffold.css": [
         (r"(?<!inline-)(?<!-)margin-left(?!.*margin-right)", "unpaired margin-left"),
         (r"(?<!inline-)(?<!-)margin-right(?!.*margin-left)", "unpaired margin-right"),
         (r"\btext-align\s*:\s*left\b", "text-align: left (should be start)"),
@@ -77,65 +77,65 @@ class TestLogicalPropertiesBase:
     """base.css should use CSS logical properties."""
 
     def test_sidebar_uses_border_inline_end(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert "border-inline-end" in css, "sidebar should use border-inline-end"
 
     def test_container_uses_padding_inline(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert "padding-inline" in css, "container should use padding-inline"
 
     def test_search_icon_uses_inset_inline_start(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert "inset-inline-start" in css, "search icon should use inset-inline-start"
 
     def test_table_uses_text_align_start(self):
-        css = _strip_comments(_read_css("base.css"))
+        css = _strip_comments(_read_css("scaffold.css"))
         # Should not have text-align: left for table cells
         # (only text-align: start should be used)
         table_section = css[css.find(".table"):]
         assert "text-align: start" in table_section
 
     def test_alert_close_uses_margin_inline_start(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert "margin-inline-start: auto" in css
 
     def test_toast_container_uses_inset_inline_end(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert "inset-inline-end" in css
 
     def test_me_utilities_use_margin_inline_end(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert "margin-inline-end" in css
 
     def test_ms_utilities_use_margin_inline_start(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert "margin-inline-start" in css
 
     def test_mx_utilities_use_margin_inline(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         # mx-* should use margin-inline shorthand
         mx_section = css[css.find(".mx-2"):]
         assert "margin-inline:" in mx_section
 
     def test_px_utilities_use_padding_inline(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         px_section = css[css.find(".px-1"):]
         assert "padding-inline:" in px_section
 
     def test_end_0_uses_inset_inline_end(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert "inset-inline-end: 0" in css
 
     def test_start_0_uses_inset_inline_start(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert "inset-inline-start: 0" in css
 
     def test_spinner_uses_border_inline_end_color(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert "border-inline-end-color" in css
 
     def test_list_group_flush_uses_border_inline(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert "border-inline" in css
 
 
@@ -371,7 +371,7 @@ class TestRTLAwareComponents:
     """CSS files should have [dir="rtl"] overrides for directional components."""
 
     def test_base_css_has_rtl_section(self):
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert '[dir="rtl"]' in css, "base.css should have RTL overrides"
 
     def test_components_css_has_rtl_section(self):
@@ -380,18 +380,18 @@ class TestRTLAwareComponents:
 
     def test_rtl_nav_link_underline_flip(self):
         """Nav link underline should flip in RTL."""
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         # Should have RTL rule for nav-link::after
         assert '[dir="rtl"] .nav-link::after' in css or '[dir="rtl"]' in css
 
     def test_rtl_sidebar_active_indicator_flip(self):
         """Sidebar active indicator should flip in RTL."""
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert '[dir="rtl"] .sidebar-item::before' in css
 
     def test_rtl_toast_animation_direction(self):
         """Toast slide animation should reverse in RTL."""
-        css = _read_css("base.css")
+        css = _read_css("scaffold.css")
         assert '[dir="rtl"]' in css
         # Should have RTL-specific animation or transform
 

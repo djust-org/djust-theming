@@ -2487,52 +2487,92 @@ SOLARPUNK_THEME = ThemePreset(name="solarpunk", display_name="Solarpunk",
 # =============================================================================
 # Bauhaus Theme (Geometric Modernist)
 # =============================================================================
+# Colors traced to Johannes Itten's primary triad from "The Art of Color" (1961)
+# and archival reproductions at the Bauhaus-Archiv Berlin.
+# Kandinsky's form-color theory: square=red, circle=blue, triangle=yellow.
 
+# Light mode — warm Bauhaus paper with Itten's triad
 _BAUHAUS_LIGHT = ThemeTokens(
-    background=ColorScale(0, 0, 100), foreground=ColorScale(0, 0, 8),
-    card=ColorScale(0, 0, 98), card_foreground=ColorScale(0, 0, 8),
-    popover=ColorScale(0, 0, 98), popover_foreground=ColorScale(0, 0, 8),
-    primary=ColorScale(4, 86, 58), primary_foreground=ColorScale(0, 0, 100),
-    secondary=ColorScale(0, 0, 94), secondary_foreground=ColorScale(0, 0, 8),
-    muted=ColorScale(0, 0, 94), muted_foreground=ColorScale(0, 0, 40),
-    accent=ColorScale(220, 80, 55), accent_foreground=ColorScale(0, 0, 100),
-    destructive=ColorScale(4, 86, 58), destructive_foreground=ColorScale(0, 0, 100),
-    success=ColorScale(120, 50, 40), success_foreground=ColorScale(0, 0, 100),
-    warning=ColorScale(48, 100, 50), warning_foreground=ColorScale(0, 0, 8),
-    info=ColorScale(220, 80, 55), info_foreground=ColorScale(0, 0, 100),
-    link=ColorScale(220, 80, 50), link_hover=ColorScale(4, 86, 55),
-    code=ColorScale(0, 0, 95), code_foreground=ColorScale(4, 86, 50),
-    border=ColorScale(0, 0, 8), input=ColorScale(0, 0, 8),
-    ring=ColorScale(4, 86, 58),
-    selection=ColorScale(4, 80, 85),
-    selection_foreground=ColorScale(4, 10, 15),
-    surface_1=ColorScale(4, 5, 96),
-    surface_2=ColorScale(4, 5, 93),
-    surface_3=ColorScale(4, 5, 90))
+    background=ColorScale(37, 39, 94),            # #F5F0E8 — warm Bauhaus paper/cream
+    foreground=ColorScale(0, 0, 8),               # #141414 — Bauhaus black
+    card=ColorScale(0, 0, 100),                   # #FFFFFF — pure white cards (poster panels)
+    card_foreground=ColorScale(0, 0, 8),
+    popover=ColorScale(0, 0, 100),                # White popovers
+    popover_foreground=ColorScale(0, 0, 8),
+    primary=ColorScale(2, 65, 47),                # #C8302A — Itten Red (the square)
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(40, 20, 90),             # Warm neutral panel
+    secondary_foreground=ColorScale(0, 0, 8),
+    muted=ColorScale(40, 15, 88),                 # Warm muted
+    muted_foreground=ColorScale(0, 0, 35),
+    accent=ColorScale(40, 20, 90),                 # Warm hover surface (accent = hover bg in shadcn)
+    accent_foreground=ColorScale(0, 0, 8),
+    destructive=ColorScale(2, 65, 47),            # Itten Red doubles as destructive
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(120, 45, 35),              # Muted green (not a Bauhaus color — kept subdued)
+    success_foreground=ColorScale(0, 0, 100),
+    warning=ColorScale(48, 82, 50),               # #E8C018 — Itten Yellow (the triangle)
+    warning_foreground=ColorScale(0, 0, 8),       # Black on yellow for contrast
+    info=ColorScale(223, 60, 29),                 # Itten Blue
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(223, 60, 40),                 # Itten Blue — brightened for link legibility
+    link_hover=ColorScale(2, 65, 47),             # Red on hover (blue→red shift)
+    code=ColorScale(0, 0, 12),                    # Dark code bg (dark blocks in light pages — GitHub/VS Code convention)
+    code_foreground=ColorScale(48, 82, 60),       # Yellow code text (Itten Yellow on dark)
+    border=ColorScale(0, 0, 8),                   # #141414 — hard black borders (defining Bauhaus)
+    input=ColorScale(40, 15, 93),                 # Near-card warm white — djust-components uses as bg AND border
+    ring=ColorScale(2, 65, 47),                   # Red focus ring
+    selection=ColorScale(48, 82, 80),             # Pale yellow selection (triangle highlight)
+    selection_foreground=ColorScale(0, 0, 8),
+    surface_1=ColorScale(37, 39, 94),             # Paper base
+    surface_2=ColorScale(40, 20, 90),             # Slightly deeper warm
+    surface_3=ColorScale(40, 15, 86),             # Deepest warm panel
+)
+# Dark mode — Bauhaus poster on black: white type, primary colors pop
 _BAUHAUS_DARK = ThemeTokens(
-    background=ColorScale(0, 0, 5), foreground=ColorScale(0, 0, 95),
-    card=ColorScale(0, 0, 9), card_foreground=ColorScale(0, 0, 95),
-    popover=ColorScale(0, 0, 9), popover_foreground=ColorScale(0, 0, 95),
-    primary=ColorScale(4, 86, 58), primary_foreground=ColorScale(0, 0, 100),
-    secondary=ColorScale(0, 0, 14), secondary_foreground=ColorScale(0, 0, 95),
-    muted=ColorScale(0, 0, 14), muted_foreground=ColorScale(0, 0, 55),
-    accent=ColorScale(220, 80, 60), accent_foreground=ColorScale(0, 0, 100),
-    destructive=ColorScale(4, 86, 58), destructive_foreground=ColorScale(0, 0, 100),
-    success=ColorScale(120, 50, 50), success_foreground=ColorScale(0, 0, 5),
-    warning=ColorScale(48, 100, 55), warning_foreground=ColorScale(0, 0, 5),
-    info=ColorScale(220, 80, 60), info_foreground=ColorScale(0, 0, 100),
-    link=ColorScale(220, 80, 60), link_hover=ColorScale(4, 86, 65),
-    code=ColorScale(0, 0, 12), code_foreground=ColorScale(48, 100, 60),
-    border=ColorScale(0, 0, 95), input=ColorScale(0, 0, 95),
-    ring=ColorScale(4, 86, 58),
-    selection=ColorScale(4, 80, 25),
-    selection_foreground=ColorScale(4, 10, 90),
-    surface_1=ColorScale(4, 5, 6),
-    surface_2=ColorScale(4, 5, 10),
-    surface_3=ColorScale(4, 5, 14))
-BAUHAUS_THEME = ThemePreset(name="bauhaus", display_name="Bauhaus",
-    description="Geometric modernist — bold primary colors, sharp edges",
-    light=_BAUHAUS_LIGHT, dark=_BAUHAUS_DARK)
+    background=ColorScale(0, 0, 5),               # #0D0D0D — near-black (printing black)
+    foreground=ColorScale(37, 39, 94),            # #F5F0E8 — warm paper-white text
+    card=ColorScale(0, 0, 10),                    # #1A1A1A — dark card panel
+    card_foreground=ColorScale(37, 39, 94),
+    popover=ColorScale(0, 0, 10),
+    popover_foreground=ColorScale(37, 39, 94),
+    primary=ColorScale(2, 65, 47),                # #C8302A — Itten Red (unchanged in dark)
+    primary_foreground=ColorScale(0, 0, 100),
+    secondary=ColorScale(0, 0, 15),               # Neutral dark panel
+    secondary_foreground=ColorScale(37, 39, 94),
+    muted=ColorScale(0, 0, 15),
+    muted_foreground=ColorScale(0, 0, 55),
+    accent=ColorScale(0, 0, 18),                  # Subtle dark hover surface (accent = hover bg)
+    accent_foreground=ColorScale(37, 39, 94),
+    destructive=ColorScale(2, 65, 52),            # Itten Red — slightly brighter on dark
+    destructive_foreground=ColorScale(0, 0, 100),
+    success=ColorScale(120, 45, 45),              # Subdued green
+    success_foreground=ColorScale(0, 0, 5),
+    warning=ColorScale(48, 82, 50),               # #E8C018 — Itten Yellow (pops on dark)
+    warning_foreground=ColorScale(0, 0, 5),
+    info=ColorScale(223, 60, 50),                 # Blue — brightened for dark
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(223, 60, 62),                 # Itten Blue — brightened for dark bg readability
+    link_hover=ColorScale(2, 65, 60),             # Red hover
+    code=ColorScale(0, 0, 8),                     # Near-black code bg
+    code_foreground=ColorScale(48, 82, 60),       # Yellow code text (triangle color)
+    border=ColorScale(37, 39, 94),                # Paper-white borders on dark (inverted Bauhaus)
+    input=ColorScale(0, 0, 50),                   # Mid-gray input borders
+    ring=ColorScale(2, 65, 47),                   # Red focus ring
+    selection=ColorScale(223, 60, 25),            # Deep blue selection
+    selection_foreground=ColorScale(37, 39, 94),
+    surface_1=ColorScale(0, 0, 3),                # Deepest black
+    surface_2=ColorScale(0, 0, 7),                # Printing black
+    surface_3=ColorScale(0, 0, 12),               # Elevated panel
+)
+BAUHAUS_THEME = ThemePreset(
+    name="bauhaus",
+    display_name="Bauhaus",
+    description="Itten's primary triad on warm paper — geometric, functional, zero decoration",
+    light=_BAUHAUS_LIGHT,
+    dark=_BAUHAUS_DARK,
+    radius=0,  # Sharp corners — geometry is king
+)
 
 # =============================================================================
 # Cyberdeck Theme (Terminal Hacker)

@@ -1289,6 +1289,111 @@ DESIGN_DJUST = DesignSystem(
     interaction=INTERACT_DJUST
 )
 
+# =============================================================================
+# Bauhaus Design System (Geometric Modernist)
+# =============================================================================
+# Based on actual Bauhaus school principles (1919–1933):
+# - Herbert Bayer's Universal Typeface: geometric sans-serif, single-case ideal
+# - Grid-based layout with strict alignment
+# - No decoration — form follows function
+# - Hard edges, no border-radius, deliberate thick borders
+# - Flat surfaces — no glass, no gradients, no texture
+# - Static, poster-like — minimal animation
+
+TYPO_BAUHAUS = TypographyStyle(
+    name="bauhaus",
+    heading_font='"DM Sans", "Inter", system-ui',  # Geometric sans — closest to Bayer's Universal
+    body_font='"DM Sans", "Inter", system-ui',      # Same family throughout (Bauhaus uniformity)
+    base_size="16px",
+    heading_scale=1.4,           # Bold scale — poster-like hierarchy
+    line_height="1.4",          # Tighter than default — controlled grid
+    body_line_height="1.6",     # Readable body but not loose
+    heading_weight="900",       # Black weight — Bauhaus headings are bold statements
+    section_heading_weight="800",
+    body_weight="400",
+    letter_spacing="0.025em",   # Slightly spaced — Bayer's Universal was open
+    prose_max_width="48rem",    # Moderate measure
+    badge_radius="0px",         # Sharp badges — no pills in Bauhaus
+)
+
+LAYOUT_BAUHAUS = LayoutStyle(
+    name="bauhaus",
+    space_unit="1rem",
+    space_scale=1.618,          # Golden ratio — Bauhaus loved mathematical proportion
+    border_radius_sm="0px",     # Zero radius everywhere
+    border_radius_md="0px",
+    border_radius_lg="0px",
+    button_shape="sharp",       # Sharp rectangles
+    card_shape="sharp",         # Sharp cards
+    input_shape="sharp",        # Sharp inputs
+    container_width="1200px",
+    grid_gap="1.5rem",          # Grid-based, deliberate spacing
+    section_spacing="4rem",     # Generous section breaks (poster breathing room)
+    hero_padding_top="8rem",    # Grand geometric entrance
+    hero_padding_bottom="5rem",
+    hero_line_height="1.0",     # Ultra-tight hero headlines
+    hero_max_width="56rem",
+)
+
+SURFACE_BAUHAUS = SurfaceStyle(
+    name="bauhaus",
+    shadow_sm="3px 3px 0px rgba(0,0,0,0.9)",    # Hard offset shadow (no blur)
+    shadow_md="6px 6px 0px rgba(0,0,0,0.9)",    # Larger hard offset
+    shadow_lg="10px 10px 0px rgba(0,0,0,0.9)",  # Dramatic hard offset
+    border_width="3px",          # Thick deliberate borders (defining Bauhaus characteristic)
+    border_style="solid",
+    surface_treatment="flat",    # Absolutely flat — no glass, no gradient, no texture
+    backdrop_blur="0px",
+    noise_opacity=0.0,
+)
+
+ICON_BAUHAUS = IconStyle(
+    name="bauhaus",
+    style="filled",              # Solid geometric fills (circle, square, triangle)
+    weight="bold",
+    size_scale=1.1,              # Slightly larger — icons are geometric elements
+    stroke_width="3",            # Thick strokes
+    corner_rounding="0px",       # No rounding
+)
+
+ANIM_BAUHAUS = AnimationStyle(
+    name="bauhaus",
+    entrance_effect="none",      # No entrance animation — content is just there (poster-like)
+    exit_effect="none",
+    hover_effect="none",         # No hover transform — Bauhaus is static, not interactive
+    hover_scale=1.0,             # No scale
+    hover_translate_y="0px",     # No lift
+    click_effect="none",         # No click animation
+    loading_style="spinner",
+    transition_style="instant",  # Instant state changes
+    duration_fast="0.05s",       # Near-instant
+    duration_normal="0.08s",
+    duration_slow="0.12s",
+    easing="linear",             # No easing curves — linear is geometric
+)
+
+INTERACT_BAUHAUS = InteractionStyle(
+    name="bauhaus",
+    button_hover="darken",       # Simple darken — no glow, no lift, no scale
+    link_hover="underline",      # Functional underline only
+    card_hover="border",         # Border color change — flat, no shadow shift
+    focus_style="outline",       # Hard outline focus (not glow)
+    focus_ring_width="3px",      # Thick focus ring matching border-width
+)
+
+DESIGN_BAUHAUS = DesignSystem(
+    name="bauhaus",
+    display_name="Bauhaus",
+    description="Geometric modernist — Itten's triad, Bayer's type, zero decoration",
+    category="bold",
+    typography=TYPO_BAUHAUS,
+    layout=LAYOUT_BAUHAUS,
+    surface=SURFACE_BAUHAUS,
+    icons=ICON_BAUHAUS,
+    animation=ANIM_BAUHAUS,
+    interaction=INTERACT_BAUHAUS,
+)
+
 
 # Design System Registry
 DESIGN_SYSTEMS: Dict[str, DesignSystem] = {
@@ -1304,6 +1409,7 @@ DESIGN_SYSTEMS: Dict[str, DesignSystem] = {
     "retro": DESIGN_RETRO,
     "organic": DESIGN_ORGANIC,
     "djust": DESIGN_DJUST,
+    "bauhaus": DESIGN_BAUHAUS,
 }
 
 
@@ -1972,11 +2078,11 @@ PACK_SOLARPUNK = ThemePack(
 
 PACK_BAUHAUS = ThemePack(
     name="bauhaus", display_name="Bauhaus", category="bold",
-    description="Geometric modernist — bold primary colors",
-    design_theme="dense", color_preset="bauhaus",
-    icon_style=ICON_BRUTALIST, animation_style=ANIM_SNAPPY,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_BOLD,
-    illustration_style=ILLUST_LINE,
+    description="Itten's primary triad, Bayer's geometric type, zero decoration",
+    design_theme="bauhaus", color_preset="bauhaus",
+    icon_style=ICON_BAUHAUS, animation_style=ANIM_BAUHAUS,
+    pattern_style=PATTERN_GRID, interaction_style=INTERACT_BAUHAUS,
+    illustration_style=ILLUST_FLAT,
 )
 
 PACK_CYBERDECK = ThemePack(

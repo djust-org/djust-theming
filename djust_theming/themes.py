@@ -829,6 +829,75 @@ DJUST_THEME = Theme(
 
 
 # Theme Registry (deprecated — use DESIGN_SYSTEMS from theme_packs.py)
+# Bauhaus theme — geometric modernist, Itten's triad, Bayer's type
+BAUHAUS_THEME = Theme(
+    name="bauhaus",
+    display_name="Bauhaus",
+    description="Itten's primary triad, Bayer's geometric type, zero decoration",
+    typography=Typography(
+        font_sans="'DM Sans', 'Inter', system-ui, sans-serif",
+        font_mono="'DM Mono', 'JetBrains Mono', monospace",
+        font_display="'DM Sans', 'Inter', system-ui, sans-serif",
+        text_base="1rem",
+        text_sm="0.875rem",
+        text_lg="1.125rem",
+        text_xl="1.5rem",
+        text_2xl="2rem",
+        text_3xl="2.5rem",
+        text_4xl="3.5rem",       # Large poster-scale headings
+        text_5xl="4.5rem",
+        font_normal=400,
+        font_medium=500,
+        font_semibold=700,
+        font_bold=900,           # Black weight headings
+        leading_tight=1.0,       # Ultra-tight for poster headlines
+        leading_normal=1.4,      # Controlled grid
+        leading_relaxed=1.6,
+        leading_loose=1.8,
+    ),
+    spacing=Spacing(
+        scale="normal",
+        base=0.25,
+    ),
+    border_radius=BorderRadius(
+        style="sharp",
+        radius_sm="0px",         # Zero radius everywhere
+        radius="0px",
+        radius_md="0px",
+        radius_lg="0px",
+        radius_xl="0px",
+        radius_2xl="0px",
+        radius_3xl="0px",
+    ),
+    shadows=Shadows(
+        style="dramatic",
+        shadow_xs="2px 2px 0 rgba(0,0,0,0.9)",
+        shadow_sm="3px 3px 0 rgba(0,0,0,0.9)",      # Hard offset, no blur
+        shadow="6px 6px 0 rgba(0,0,0,0.9)",
+        shadow_md="6px 6px 0 rgba(0,0,0,0.9)",
+        shadow_lg="10px 10px 0 rgba(0,0,0,0.9)",     # Dramatic hard offset
+        shadow_xl="14px 14px 0 rgba(0,0,0,0.9)",
+        shadow_2xl="18px 18px 0 rgba(0,0,0,0.9)",
+        shadow_inner="inset 3px 3px 0 rgba(0,0,0,0.2)",
+    ),
+    animations=Animations(
+        style="instant",
+        duration_fast="0.05s",   # Near-instant — poster, not app
+        duration_normal="0.08s",
+        duration_slow="0.12s",
+        ease_in="linear",        # No easing curves — geometric = linear
+        ease_out="linear",
+        ease_in_out="linear",
+    ),
+    component_styles=ComponentStyles(
+        button_style="solid",    # Solid filled buttons
+        card_style="outlined",   # Heavy border cards
+        input_style="outlined",  # Heavy border inputs
+    ),
+    color_preset="bauhaus",
+)
+
+
 THEMES: Dict[str, Theme] = _DeprecatedThemesDict({
     "material": MATERIAL_THEME,
     "ios": IOS_THEME,
@@ -842,6 +911,7 @@ THEMES: Dict[str, Theme] = _DeprecatedThemesDict({
     "organic": THEME_ORGANIC,
     "dense": THEME_DENSE,
     "djust": DJUST_THEME,
+    "bauhaus": BAUHAUS_THEME,
 })
 
 

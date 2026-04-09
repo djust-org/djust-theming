@@ -542,15 +542,15 @@ body::before {{
             focus_css = f"""
 *:focus-visible {{
   outline: none;
-  box-shadow: 0 0 0 {interact.focus_ring_offset} hsl(var(--background)),
-              0 0 0 calc({interact.focus_ring_offset} + {interact.focus_ring_width}) hsl(var(--ring));
+  box-shadow: 0 0 0 2px hsl(var(--background)),
+              0 0 0 calc(2px + {interact.focus_ring_width}) hsl(var(--ring));
 }}
 """
         elif interact.focus_style == "outline":
             focus_css = f"""
 *:focus-visible {{
   outline: {interact.focus_ring_width} solid hsl(var(--ring));
-  outline-offset: {interact.focus_ring_offset};
+  outline-offset: 2px;
 }}
 """
         elif interact.focus_style == "glow":
@@ -586,12 +586,8 @@ a:hover {{
 
 {focus_css}
 
-* {{
-  cursor: {interact.cursor_style};
-}}
-
 button, a, .clickable {{
-  cursor: {interact.cursor_style};
+  cursor: pointer;
 }}
 """
 
