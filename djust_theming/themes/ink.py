@@ -1,200 +1,205 @@
-"""Ink -- Japanese calligraphy minimalism — sharp edges, single vermillion accent."""
+"""Ink — Japanese calligraphy minimalism. Sumi ink on washi paper, single vermillion accent."""
 
 from ._base import (
-    AnimationStyle,
-    ColorScale,
-    DesignSystem,
-    IconStyle,
-    InteractionStyle,
-    LayoutStyle,
-    SurfaceStyle,
-    ThemePack,
-    ThemePreset,
-    ThemeTokens,
-    TypographyStyle,
-    ILLUST_LINE,
-    PATTERN_DOTS,
-    PATTERN_MINIMAL,
+    ColorScale, ThemeTokens, ThemePreset,
+    TypographyStyle, LayoutStyle, SurfaceStyle, IconStyle,
+    AnimationStyle, InteractionStyle, DesignSystem, ThemePack,
+    PATTERN_MINIMAL, ILLUST_LINE,
 )
 
-# --- Color Preset ---
+
+# =============================================================================
+# Color Preset
+# =============================================================================
+# Ink palette philosophy: restraint above all.
+# - Sumi ink (墨): blue-black, not warm brown
+# - Washi paper (和紙): cool off-white with subtle blue-gray undertone
+# - Vermillion (朱): the single deliberate accent — red-orange seal ink
+# - Everything else: quiet, receding, monochromatic
+# - No decoration, no gradients, no glow — just ink on paper.
 
 LIGHT = ThemeTokens(
-    background=ColorScale(40, 15, 97),
-    foreground=ColorScale(220, 15, 12),
-    card=ColorScale(40, 12, 94),
-    card_foreground=ColorScale(220, 15, 12),
-    popover=ColorScale(40, 12, 94),
-    popover_foreground=ColorScale(220, 15, 12),
-    primary=ColorScale(4, 80, 52),
+    background=ColorScale(220, 15, 97),            # Washi paper — cool off-white, NOT warm
+    foreground=ColorScale(220, 20, 12),            # Sumi ink — blue-black, deep
+    card=ColorScale(220, 10, 99),                  # Slightly brighter washi
+    card_foreground=ColorScale(220, 20, 12),
+    popover=ColorScale(220, 10, 99),
+    popover_foreground=ColorScale(220, 20, 12),
+    primary=ColorScale(8, 85, 48),                 # 朱 Vermillion — traditional seal red
     primary_foreground=ColorScale(0, 0, 100),
-    secondary=ColorScale(40, 10, 90),
-    secondary_foreground=ColorScale(220, 15, 12),
-    muted=ColorScale(40, 10, 90),
-    muted_foreground=ColorScale(220, 10, 45),
-    accent=ColorScale(40, 10, 88),
-    accent_foreground=ColorScale(220, 15, 12),
-    destructive=ColorScale(4, 80, 52),
+    secondary=ColorScale(220, 8, 93),              # Pale washi
+    secondary_foreground=ColorScale(220, 20, 12),
+    muted=ColorScale(220, 8, 91),
+    muted_foreground=ColorScale(220, 10, 45),      # Diluted ink
+    accent=ColorScale(220, 8, 95),                 # Subtle hover — barely there
+    accent_foreground=ColorScale(220, 20, 12),
+    destructive=ColorScale(8, 85, 48),             # Vermillion doubles as destructive
     destructive_foreground=ColorScale(0, 0, 100),
-    success=ColorScale(150, 30, 40),
+    success=ColorScale(160, 25, 40),               # Muted pine green — subdued like nature
     success_foreground=ColorScale(0, 0, 100),
-    warning=ColorScale(40, 60, 50),
-    warning_foreground=ColorScale(0, 0, 10),
-    info=ColorScale(210, 30, 50),
+    warning=ColorScale(45, 50, 50),                # Muted ochre — earthy, not bright
+    warning_foreground=ColorScale(220, 20, 12),
+    info=ColorScale(220, 20, 35),                  # Deep ink-blue — informational
     info_foreground=ColorScale(0, 0, 100),
-    link=ColorScale(4, 80, 48),
-    link_hover=ColorScale(4, 80, 38),
-    code=ColorScale(40, 10, 92),
-    code_foreground=ColorScale(220, 15, 20),
-    selection=ColorScale(4, 80, 85),
-    selection_foreground=ColorScale(4, 10, 15),
-    brand=ColorScale(4, 80, 52),
+    link=ColorScale(8, 85, 43),                    # Darker vermillion — links are deliberate marks
+    link_hover=ColorScale(8, 85, 33),              # Deeper on hover — ink pressed harder
+    code=ColorScale(220, 20, 12),                  # Sumi ink code bg — full darkness
+    code_foreground=ColorScale(8, 85, 60),         # Vermillion code text
+    selection=ColorScale(8, 60, 88),               # Pale vermillion wash — like diluted ink
+    selection_foreground=ColorScale(220, 20, 12),
+    brand=ColorScale(8, 85, 48),                   # Vermillion IS the brand — the hanko seal
     brand_foreground=ColorScale(0, 0, 100),
-    border=ColorScale(220, 8, 82),
-    input=ColorScale(220, 8, 82),
-    ring=ColorScale(4, 80, 52),
-    surface_1=ColorScale(4, 5, 96),
-    surface_2=ColorScale(4, 5, 93),
-    surface_3=ColorScale(4, 5, 90),
+    border=ColorScale(220, 10, 82),                # Light ink wash border
+    input=ColorScale(220, 8, 95),                  # Near-paper input bg
+    ring=ColorScale(8, 85, 48),                    # Vermillion focus
+    surface_1=ColorScale(220, 15, 97),             # Washi base
+    surface_2=ColorScale(220, 10, 94),             # Slightly deeper
+    surface_3=ColorScale(220, 8, 91),              # Deepest washi
 )
 
 DARK = ThemeTokens(
-    background=ColorScale(220, 15, 8),
-    foreground=ColorScale(40, 15, 85),
-    card=ColorScale(220, 12, 12),
-    card_foreground=ColorScale(40, 15, 85),
-    popover=ColorScale(220, 12, 12),
-    popover_foreground=ColorScale(40, 15, 85),
-    primary=ColorScale(4, 80, 58),
-    primary_foreground=ColorScale(220, 15, 8),
-    secondary=ColorScale(220, 12, 15),
-    secondary_foreground=ColorScale(40, 15, 85),
-    muted=ColorScale(220, 12, 15),
-    muted_foreground=ColorScale(40, 10, 55),
-    accent=ColorScale(220, 12, 18),
-    accent_foreground=ColorScale(40, 15, 85),
-    destructive=ColorScale(4, 80, 58),
+    # Dark mode: ink-soaked paper — deep blue-black with pale ink text
+    background=ColorScale(220, 25, 7),             # Deep sumi — nearly black with blue
+    foreground=ColorScale(220, 10, 80),            # Worn ink on dark paper
+    card=ColorScale(220, 20, 10),
+    card_foreground=ColorScale(220, 10, 80),
+    popover=ColorScale(220, 20, 10),
+    popover_foreground=ColorScale(220, 10, 80),
+    primary=ColorScale(8, 85, 55),                 # Vermillion — brightened for dark
+    primary_foreground=ColorScale(220, 25, 7),
+    secondary=ColorScale(220, 18, 12),
+    secondary_foreground=ColorScale(220, 10, 80),
+    muted=ColorScale(220, 15, 14),
+    muted_foreground=ColorScale(220, 8, 50),       # Faded ink
+    accent=ColorScale(220, 15, 12),                # Barely visible hover
+    accent_foreground=ColorScale(220, 10, 80),
+    destructive=ColorScale(8, 85, 55),
     destructive_foreground=ColorScale(0, 0, 100),
-    success=ColorScale(150, 30, 50),
-    success_foreground=ColorScale(220, 15, 8),
-    warning=ColorScale(40, 60, 55),
-    warning_foreground=ColorScale(220, 15, 8),
-    info=ColorScale(210, 30, 60),
-    info_foreground=ColorScale(220, 15, 8),
-    link=ColorScale(4, 80, 58),
-    link_hover=ColorScale(4, 80, 70),
-    code=ColorScale(220, 12, 14),
-    code_foreground=ColorScale(4, 80, 65),
-    selection=ColorScale(4, 80, 25),
-    selection_foreground=ColorScale(4, 10, 90),
-    brand=ColorScale(4, 80, 58),
-    brand_foreground=ColorScale(220, 15, 8),
-    border=ColorScale(220, 12, 18),
-    input=ColorScale(220, 12, 18),
-    ring=ColorScale(4, 80, 58),
-    surface_1=ColorScale(4, 5, 6),
-    surface_2=ColorScale(4, 5, 10),
-    surface_3=ColorScale(4, 5, 14),
+    success=ColorScale(160, 25, 50),
+    success_foreground=ColorScale(220, 25, 7),
+    warning=ColorScale(45, 50, 55),
+    warning_foreground=ColorScale(220, 25, 7),
+    info=ColorScale(220, 20, 55),
+    info_foreground=ColorScale(0, 0, 100),
+    link=ColorScale(8, 85, 58),
+    link_hover=ColorScale(8, 85, 68),
+    code=ColorScale(220, 30, 5),                   # Deepest ink
+    code_foreground=ColorScale(8, 85, 60),         # Vermillion
+    selection=ColorScale(8, 60, 20),               # Dark vermillion wash
+    selection_foreground=ColorScale(220, 10, 85),
+    brand=ColorScale(8, 85, 55),
+    brand_foreground=ColorScale(220, 25, 7),
+    border=ColorScale(220, 15, 18),
+    input=ColorScale(220, 15, 12),
+    ring=ColorScale(8, 85, 55),
+    surface_1=ColorScale(220, 30, 4),              # Deepest
+    surface_2=ColorScale(220, 25, 7),              # Sumi black
+    surface_3=ColorScale(220, 20, 10),             # Raised
 )
 
 PRESET = ThemePreset(
     name="ink",
     display_name="Ink",
-    description="Japanese calligraphy minimalism — sharp edges, single vermillion accent",
+    description="Sumi ink on washi paper — vermillion seal accent, calligraphic restraint",
     light=LIGHT,
     dark=DARK,
+    radius=0,  # Sharp — calligraphy is precise, no softness
 )
 
 
 # =============================================================================
 # Design System
 # =============================================================================
+# Japanese calligraphy principles:
+# - Ma (間): negative space is content, not emptiness
+# - Wabi-sabi (侘寂): beauty in imperfection and simplicity
+# - One stroke, one meaning — no redundant decoration
 
 TYPOGRAPHY = TypographyStyle(
     name="ink",
-    heading_font='"Noto Serif JP", Georgia, serif',
-    body_font="system-ui, sans-serif",
+    heading_font='"Noto Serif JP", "Noto Serif", Georgia, serif',  # Serif for brush-stroke character
+    body_font='"Noto Sans JP", system-ui, sans-serif',              # Clean sans for body readability
     base_size="16px",
-    heading_scale=1.2,
-    line_height="1.7",
-    body_line_height="1.8",
-    heading_weight="400",
-    section_heading_weight="400",
+    heading_scale=1.3,           # Moderate — calligraphy isn't shouty
+    line_height="1.7",          # Generous — ma (negative space) between lines
+    body_line_height="1.85",    # Very generous body — reading is contemplative
+    heading_weight="400",       # Light weight — calligraphy strokes vary, not uniformly bold
+    section_heading_weight="500",
     body_weight="400",
-    letter_spacing="0.02em",
-    prose_max_width="36rem",
-    badge_radius="0px",
+    letter_spacing="0.03em",    # Slightly open — each character breathes
+    prose_max_width="34rem",    # Narrow — like a scroll, not a billboard
+    badge_radius="0px",         # Sharp — no pills
 )
 
 LAYOUT = LayoutStyle(
     name="ink",
     space_unit="1rem",
-    space_scale=1.5,
+    space_scale=1.618,          # Golden ratio — natural proportion
     border_radius_sm="0px",
     border_radius_md="0px",
     border_radius_lg="0px",
     button_shape="sharp",
     card_shape="sharp",
     input_shape="sharp",
-    container_width="900px",
-    grid_gap="1.5rem",
-    section_spacing="4rem",
-    hero_padding_top="8rem",
-    hero_padding_bottom="4rem",
-    hero_line_height="1.0",
-    hero_max_width="40rem",
+    container_width="860px",    # Very narrow — scroll-like
+    grid_gap="2rem",            # Generous gaps — ma
+    section_spacing="5rem",     # Dramatic section breathing
+    hero_padding_top="10rem",   # Grand emptiness before content
+    hero_padding_bottom="5rem",
+    hero_line_height="1.0",     # Tight hero — calligraphic impact
+    hero_max_width="36rem",     # Narrow hero
 )
 
 SURFACE = SurfaceStyle(
     name="ink",
-    shadow_sm="none",
+    shadow_sm="none",           # No shadows — ink is flat
     shadow_md="none",
     shadow_lg="none",
-    border_width="1px",
+    border_width="1px",         # Single precise stroke
     border_style="solid",
-    surface_treatment="flat",
+    surface_treatment="flat",   # Absolutely flat — washi is flat
     backdrop_blur="0px",
-    noise_opacity=0.0,
+    noise_opacity=0.0,          # No texture — washi's texture is too subtle for screen
 )
 
 ICON = IconStyle(
     name="ink",
-    style="outlined",
+    style="outlined",           # Thin outlines — brush strokes
     weight="thin",
-    size_scale=1.0,
-    stroke_width="1",
+    size_scale=0.95,            # Slightly smaller — humble
+    stroke_width="1",           # Hairline — like a fine brush
     corner_rounding="0px",
 )
 
 ANIMATION = AnimationStyle(
     name="ink",
-    entrance_effect="none",
+    entrance_effect="none",     # No animation — content appears like ink on paper
     exit_effect="none",
-    hover_effect="none",
+    hover_effect="none",        # No hover transform — stillness
     hover_scale=1.0,
     hover_translate_y="0px",
     click_effect="none",
     loading_style="spinner",
-    transition_style="instant",
+    transition_style="instant", # Instant — ink doesn't animate
     duration_fast="0s",
-    duration_normal="0s",
+    duration_normal="0.05s",    # Near-zero for color transitions
     duration_slow="0.1s",
     easing="linear",
 )
 
 INTERACTION = InteractionStyle(
     name="ink",
-    button_hover="darken",
-    link_hover="underline",
-    card_hover="border",
-    focus_style="outline",
-    focus_ring_width="1px",
+    button_hover="darken",      # Simple darken — ink pressed harder
+    link_hover="underline",     # Underline only — the minimum gesture
+    card_hover="none",          # No card hover — stillness
+    focus_style="outline",      # Hard outline — precise
+    focus_ring_width="1px",     # Hairline focus ring
 )
 
 DESIGN_SYSTEM = DesignSystem(
     name="ink",
     display_name="Ink",
-    description="Japanese calligraphy -- sharp edges, single vermillion accent, poster-like",
+    description="Sumi ink on washi — calligraphic restraint, vermillion seal, 間 negative space",
     category="minimal",
     typography=TYPOGRAPHY,
     layout=LAYOUT,
@@ -204,15 +209,10 @@ DESIGN_SYSTEM = DesignSystem(
     interaction=INTERACTION,
 )
 
-
-# =============================================================================
-# Theme Pack
-# =============================================================================
-
 PACK = ThemePack(
     name="ink",
     display_name="Ink",
-    description="Japanese calligraphy -- sharp edges, single vermillion accent, poster-like",
+    description="Sumi ink on washi paper — calligraphic restraint, vermillion seal accent",
     category="minimal",
     design_theme="ink",
     color_preset="ink",
