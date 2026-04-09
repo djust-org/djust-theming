@@ -16,10 +16,12 @@
     const STORAGE_KEY_PRESET = 'djust-theme-preset';
     const STORAGE_KEY_THEME = 'djust-theme-design';
     const STORAGE_KEY_PACK = 'djust-theme-pack';
-    
+    const STORAGE_KEY_LAYOUT = 'djust-theme-layout';
+
     const COOKIE_KEY_PRESET = 'djust_theme_preset';
     const COOKIE_KEY_THEME = 'djust_theme';
     const COOKIE_KEY_PACK = 'djust_theme_pack';
+    const COOKIE_KEY_LAYOUT = 'djust_theme_layout';
 
     class DjustThemeManager {
         constructor() {
@@ -223,6 +225,20 @@
         clearPack() {
             localStorage.removeItem(STORAGE_KEY_PACK);
             document.cookie = `${COOKIE_KEY_PACK}=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+        }
+
+        /**
+         * Set layout and apply via CSS class (no reload needed)
+         */
+        setLayout(layout) {
+            localStorage.setItem(STORAGE_KEY_LAYOUT, layout);
+            document.cookie = `${COOKIE_KEY_LAYOUT}=${layout};path=/;max-age=31536000;SameSite=Lax`;
+
+            // Apply layout class immediately (CSS-only switching)
+            const wrapper = document.querySelector('[data-layout]');
+            if (wrapper) {
+                wrapper.setAttribute('data-layout', layout);
+            }
         }
 
         /**
@@ -477,6 +493,7 @@
                 if (type === 'pack') window.djustTheme.setPack(value);
                 else if (type === 'preset') window.djustTheme.setPreset(value);
                 else if (type === 'design') window.djustTheme.setTheme(value);
+                else if (type === 'layout') window.djustTheme.setLayout(value);
                 return;
             }
             // Close custom selects when clicking elsewhere in panel

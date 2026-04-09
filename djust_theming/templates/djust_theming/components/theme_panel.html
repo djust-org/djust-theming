@@ -85,6 +85,23 @@
                     </div>
                 </div>
                 {% endif %}
+
+                {% if show_layout and layouts %}
+                <div class="theme-panel-field">
+                    <label class="theme-panel-label">Layout</label>
+                    <div class="tp-select" data-tp-select="layout">
+                        <button type="button" class="tp-select-btn">
+                            <span class="tp-select-value">{% for layout in layouts %}{% if layout.name == current_layout %}{{ layout.display_name }}{% elif not current_layout and layout.name == "" %}Base{% endif %}{% endfor %}{% if not current_layout %}Base{% endif %}</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                        <div class="tp-select-list">
+                            {% for layout in layouts %}
+                            <button type="button" class="tp-select-option{% if layout.name == current_layout %} active{% endif %}" data-value="{{ layout.name }}">{{ layout.display_name }}</button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
         {% endif %}

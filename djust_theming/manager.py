@@ -62,6 +62,7 @@ class ThemeState:
     mode: ThemeMode
     resolved_mode: str  # 'light' or 'dark' (system resolved to actual)
     pack: str = None  # Theme pack name (optional, overrides theme + preset)
+    layout: str = ""  # Layout template (sidebar, topbar, dashboard, centered, etc.)
 
     def to_dict(self) -> dict:
         """Convert to dictionary for serialization."""
@@ -268,11 +269,13 @@ class ThemeManager:
         theme = None
         preset = None
         pack = None
+        layout = ""
         if self.request:
             theme = self.request.COOKIES.get("djust_theme")
             preset = self.request.COOKIES.get("djust_theme_preset")
             pack = self.request.COOKIES.get("djust_theme_pack")
-            logger.debug("Cookies: theme=%s, preset=%s, pack=%s", theme, preset, pack)
+            layout = self.request.COOKIES.get("djust_theme_layout", "")
+            logger.debug("Cookies: theme=%s, preset=%s, pack=%s, layout=%s", theme, preset, pack, layout)
 
         # Fall back to session, then config default
         if not theme:
@@ -315,6 +318,7 @@ class ThemeManager:
             mode=mode,
             resolved_mode=resolved_mode,
             pack=pack,
+            layout=layout or session_data.get("layout", ""),
         )
 
     def set_theme(self, theme_name: str) -> bool:

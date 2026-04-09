@@ -250,6 +250,7 @@ def theme_panel(
     show_packs: bool = True,
     show_presets: bool = True,
     show_design: bool = True,
+    show_layout: bool = True,
 ):
     """
     Render a combined theme settings panel in a single dropdown.
@@ -281,17 +282,30 @@ def theme_panel(
         for name, pack in sorted(get_all_theme_packs().items())
     ]
 
+    # Build layout list
+    layouts = [
+        {"name": "", "display_name": "Base"},
+        {"name": "sidebar", "display_name": "Sidebar"},
+        {"name": "topbar", "display_name": "Top Bar"},
+        {"name": "sidebar-topbar", "display_name": "Sidebar + Top Bar"},
+        {"name": "dashboard", "display_name": "Dashboard Grid"},
+        {"name": "centered", "display_name": "Centered"},
+    ]
+
     tmpl = resolve_theme_template(request, "components/theme_panel")
     return mark_safe(tmpl.render({
         "show_mode": show_mode,
         "show_packs": show_packs,
         "show_presets": show_presets,
         "show_design": show_design,
+        "show_layout": show_layout,
         "presets": presets,
         "designs": designs,
         "packs": packs,
+        "layouts": layouts,
         "current_pack": state.pack or "",
         "current_design": getattr(state, "theme", "") or "ios",
+        "current_layout": getattr(state, "layout", "") or "",
         "theme_mode": state.mode,
     }))
 
