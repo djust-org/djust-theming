@@ -52,9 +52,9 @@ LIGHT = ThemeTokens(
     border=ColorScale(38, 30, 82),
     input=ColorScale(0, 0, 100),
     ring=ColorScale(38, 92, 50),
-    surface_1=ColorScale(0, 0, 99),
-    surface_2=ColorScale(0, 0, 97),
-    surface_3=ColorScale(0, 0, 95),
+    surface_1=ColorScale(38, 40, 98),
+    surface_2=ColorScale(38, 35, 96),
+    surface_3=ColorScale(38, 30, 93),
 )
 
 DARK = ThemeTokens(
@@ -91,9 +91,9 @@ DARK = ThemeTokens(
     border=ColorScale(34, 100, 10),
     input=ColorScale(36, 100, 8),
     ring=ColorScale(38, 92, 50),
-    surface_1=ColorScale(240, 4, 8),
-    surface_2=ColorScale(240, 4, 12),
-    surface_3=ColorScale(240, 4, 16),
+    surface_1=ColorScale(34, 30, 4),
+    surface_2=ColorScale(34, 25, 7),
+    surface_3=ColorScale(34, 20, 11),
 )
 
 PRESET = ThemePreset(
