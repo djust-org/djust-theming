@@ -164,7 +164,7 @@ SURFACE = SurfaceStyle(
     border_style="solid",
     surface_treatment="noise",    # Paper grain — the defining texture
     backdrop_blur="0px",
-    noise_opacity=0.025,          # Very subtle — just enough to feel like paper
+    noise_opacity=0.06,           # Visible paper grain — the defining texture
 )
 
 ICON = IconStyle(

@@ -153,7 +153,7 @@ SURFACE = SurfaceStyle(
     border_style="solid",
     surface_treatment="noise",    # Paper/grain texture — handmade feel
     backdrop_blur="0px",
-    noise_opacity=0.04,           # Subtle grain
+    noise_opacity=0.06,           # Paper/canvas grain
 )
 
 ICON = IconStyle(
