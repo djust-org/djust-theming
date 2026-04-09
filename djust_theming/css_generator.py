@@ -264,8 +264,28 @@ body {
   color: hsl(var(--foreground));
   font-family: var(--font-sans);
   font-size: var(--text-base, 1rem);
-  line-height: var(--leading-normal, 1.5);
+  line-height: var(--leading-body, var(--leading-normal, 1.5));
   font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Heading typography — uses design system tokens */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display, var(--font-sans));
+  font-weight: var(--font-bold, 700);
+  letter-spacing: var(--letter-spacing, normal);
+  line-height: var(--leading-tight, 1.25);
+}
+
+h1 { font-size: var(--text-4xl, 2.25rem); }
+h2 { font-size: var(--text-3xl, 1.875rem); }
+h3 { font-size: var(--text-2xl, 1.5rem); }
+h4 { font-size: var(--text-xl, 1.25rem); }
+h5 { font-size: var(--text-lg, 1.125rem); }
+h6 { font-size: var(--text-base, 1rem); }
+
+/* Prose width for reading themes */
+p {
+  max-width: var(--prose-max-width, none);
 }
 
 /* Smooth theme transitions — only after initial paint to prevent FOUC */
