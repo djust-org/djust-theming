@@ -548,11 +548,17 @@ class CompleteThemeCSSGenerator:
         entrance_anim = entrance_map.get(anim.entrance_effect, "none")
         click_anim = click_map.get(anim.click_effect, "none")
 
+        # Glow hover — emits a colored shadow for neon/glass themes
+        hover_glow = "0 0 0 transparent"
+        if anim.hover_effect == "glow":
+            hover_glow = "0 0 20px hsl(var(--brand, var(--primary)) / 0.3)"
+
         parts.extend([
             "",
             "  /* Animation Behavior */",
             f"  --hover-scale: {anim.hover_scale};",
             f"  --hover-translate-y: {anim.hover_translate_y};",
+            f"  --hover-glow: {hover_glow};",
             f"  --entrance-animation: {entrance_anim};",
             f"  --click-animation: {click_anim};",
         ])
