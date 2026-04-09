@@ -531,11 +531,30 @@ class CompleteThemeCSSGenerator:
             parts.append("  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);")
 
         # Animation behavior
+        entrance_map = {
+            "fade": "dj-fade-in",
+            "slide": "dj-slide-in",
+            "scale": "dj-scale-in",
+            "bounce": "dj-bounce-in",
+            "none": "none",
+        }
+        click_map = {
+            "pulse": "dj-click-pulse",
+            "bounce": "dj-click-bounce",
+            "scale": "dj-click-pulse",   # scale uses pulse (similar feel)
+            "ripple": "dj-click-pulse",  # ripple falls back to pulse (pure CSS)
+            "none": "none",
+        }
+        entrance_anim = entrance_map.get(anim.entrance_effect, "none")
+        click_anim = click_map.get(anim.click_effect, "none")
+
         parts.extend([
             "",
             "  /* Animation Behavior */",
             f"  --hover-scale: {anim.hover_scale};",
             f"  --hover-translate-y: {anim.hover_translate_y};",
+            f"  --entrance-animation: {entrance_anim};",
+            f"  --click-animation: {click_anim};",
         ])
 
         # Layout

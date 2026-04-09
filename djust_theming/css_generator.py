@@ -301,6 +301,7 @@ html.theme-ready *::after {
   *::before,
   *::after {
     transition: none !important;
+    animation: none !important;
   }
 }"""
 
@@ -485,6 +486,50 @@ pre code {
 ::-moz-selection {
   background-color: hsl(var(--selection));
   color: hsl(var(--selection-foreground));
+}
+
+/* ── Entrance animations (theme-controlled via --entrance-animation) ───── */
+@keyframes dj-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes dj-slide-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes dj-scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes dj-bounce-in {
+  0% { opacity: 0; transform: scale(0.9) translateY(10px); }
+  60% { opacity: 1; transform: scale(1.02) translateY(-2px); }
+  100% { transform: scale(1) translateY(0); }
+}
+
+/* Staggered card entrance */
+.card, .dj-card {
+  animation: var(--entrance-animation, none) var(--duration-normal, 0.2s) var(--ease-out, ease-out) both;
+}
+.card:nth-child(2), .dj-card:nth-child(2) { animation-delay: calc(var(--duration-fast, 0.1s) * 1); }
+.card:nth-child(3), .dj-card:nth-child(3) { animation-delay: calc(var(--duration-fast, 0.1s) * 2); }
+.card:nth-child(4), .dj-card:nth-child(4) { animation-delay: calc(var(--duration-fast, 0.1s) * 3); }
+
+/* ── Click feedback (theme-controlled via --click-animation) ───────────── */
+@keyframes dj-click-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+@keyframes dj-click-bounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.93); }
+  70% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.btn:active:not(:disabled), .dj-btn:active:not(:disabled) {
+  animation: var(--click-animation, none) var(--duration-fast, 0.15s) var(--ease-out, ease-out);
 }"""
 
     def generate_css(self) -> str:
