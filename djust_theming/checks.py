@@ -22,6 +22,7 @@ CONTRAST_PAIRS = [
     ("info_foreground", "info", "text on info"),
     ("popover_foreground", "popover", "text on popover"),
     ("code_foreground", "code", "text on code"),
+    ("brand_foreground", "brand", "text on brand"),
 ]
 
 

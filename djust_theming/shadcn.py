@@ -142,6 +142,9 @@ def _parse_shadcn_vars(vars_dict: Dict[str, str]) -> ThemeTokens:
     selection = parse_hsl(vars_dict.get("selection", "240 100% 80%"))
     selection_foreground = parse_hsl(vars_dict.get("selection-foreground", "240 10% 4%"))
 
+    brand = parse_hsl(vars_dict.get("brand", vars_dict.get("primary", "221.2 83.2% 53.3%")))
+    brand_foreground = parse_hsl(vars_dict.get("brand-foreground", vars_dict.get("primary-foreground", "210 40% 98%")))
+
     border = parse_hsl(vars_dict.get("border", "214.3 31.8% 91.4%"))
     input_color = parse_hsl(vars_dict.get("input", "214.3 31.8% 91.4%"))
     ring = parse_hsl(vars_dict.get("ring", "221.2 83.2% 53.3%"))
@@ -180,6 +183,8 @@ def _parse_shadcn_vars(vars_dict: Dict[str, str]) -> ThemeTokens:
         code_foreground=code_foreground,
         selection=selection,
         selection_foreground=selection_foreground,
+        brand=brand,
+        brand_foreground=brand_foreground,
         border=border,
         input=input_color,
         ring=ring,

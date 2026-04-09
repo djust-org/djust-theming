@@ -71,10 +71,17 @@ class HighContrastPresets:
                 selection=ColorScale(base_tokens.primary.h, 100, 80),
                 selection_foreground=ColorScale(0, 0, 0),
 
+                brand=ColorScale(base_tokens.primary.h, 100, 25),
+                brand_foreground=ColorScale(0, 0, 100),
+
                 # UI elements with high contrast
                 border=ColorScale(0, 0, 20),          # Very dark borders
                 input=ColorScale(0, 0, 95),           # Light input background
                 ring=ColorScale(base_tokens.primary.h, 100, 30),  # High contrast focus
+
+                surface_1=ColorScale(0, 0, 99),
+                surface_2=ColorScale(0, 0, 97),
+                surface_3=ColorScale(0, 0, 95),
             )
         else:
             # High contrast dark mode - very light text on very dark backgrounds
@@ -124,10 +131,17 @@ class HighContrastPresets:
                 selection=ColorScale(base_tokens.primary.h, 100, 30),
                 selection_foreground=ColorScale(0, 0, 100),
 
+                brand=ColorScale(base_tokens.primary.h, 100, 75),
+                brand_foreground=ColorScale(0, 0, 0),
+
                 # UI elements with high contrast
                 border=ColorScale(0, 0, 80),         # Very light borders
                 input=ColorScale(0, 0, 5),           # Dark input background
                 ring=ColorScale(base_tokens.primary.h, 100, 70), # High contrast focus
+
+                surface_1=ColorScale(0, 0, 3),
+                surface_2=ColorScale(0, 0, 6),
+                surface_3=ColorScale(0, 0, 10),
             )
 
 
@@ -204,9 +218,14 @@ HIGH_CONTRAST_PRESETS = {
             code_foreground=ColorScale(0, 0, 0),
             selection=ColorScale(0, 0, 0),
             selection_foreground=ColorScale(0, 0, 100),
+            brand=ColorScale(0, 0, 0),
+            brand_foreground=ColorScale(0, 0, 100),
             border=ColorScale(0, 0, 0),            # Black borders
             input=ColorScale(0, 0, 100),           # White inputs
             ring=ColorScale(0, 0, 0),              # Black focus
+            surface_1=ColorScale(0, 0, 99),
+            surface_2=ColorScale(0, 0, 97),
+            surface_3=ColorScale(0, 0, 95),
         ),
         dark=ThemeTokens(
             background=ColorScale(0, 0, 0),        # Pure black
@@ -237,9 +256,14 @@ HIGH_CONTRAST_PRESETS = {
             code_foreground=ColorScale(0, 0, 100),
             selection=ColorScale(0, 0, 100),
             selection_foreground=ColorScale(0, 0, 0),
+            brand=ColorScale(0, 0, 100),
+            brand_foreground=ColorScale(0, 0, 0),
             border=ColorScale(0, 0, 100),          # White borders
             input=ColorScale(0, 0, 0),             # Black inputs
             ring=ColorScale(0, 0, 100),            # White focus
+            surface_1=ColorScale(0, 0, 3),
+            surface_2=ColorScale(0, 0, 6),
+            surface_3=ColorScale(0, 0, 10),
         ),
         radius=8,
     ),
@@ -278,9 +302,14 @@ HIGH_CONTRAST_PRESETS = {
             code_foreground=ColorScale(60, 100, 50),
             selection=ColorScale(60, 100, 50),
             selection_foreground=ColorScale(0, 0, 0),
+            brand=ColorScale(60, 100, 50),
+            brand_foreground=ColorScale(0, 0, 0),
             border=ColorScale(60, 100, 50),
             input=ColorScale(0, 0, 5),
             ring=ColorScale(60, 100, 50),
+            surface_1=ColorScale(0, 0, 3),
+            surface_2=ColorScale(0, 0, 6),
+            surface_3=ColorScale(0, 0, 10),
         ),
         dark=ThemeTokens(
             background=ColorScale(0, 0, 0),        # Still black
@@ -311,9 +340,14 @@ HIGH_CONTRAST_PRESETS = {
             code_foreground=ColorScale(60, 100, 50),
             selection=ColorScale(60, 100, 50),
             selection_foreground=ColorScale(0, 0, 0),
+            brand=ColorScale(60, 100, 50),
+            brand_foreground=ColorScale(0, 0, 0),
             border=ColorScale(60, 100, 50),
             input=ColorScale(0, 0, 5),
             ring=ColorScale(60, 100, 50),
+            surface_1=ColorScale(0, 0, 3),
+            surface_2=ColorScale(0, 0, 6),
+            surface_3=ColorScale(0, 0, 10),
         ),
         radius=0,  # Sharp corners for high contrast
     )

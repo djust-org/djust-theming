@@ -77,6 +77,8 @@ class ThemeCSSGenerator:
             ("code-foreground", tokens.code_foreground),
             ("selection", tokens.selection),
             ("selection-foreground", tokens.selection_foreground),
+            ("brand", tokens.brand),
+            ("brand-foreground", tokens.brand_foreground),
             ("border", tokens.border),
             ("input", tokens.input),
             ("ring", tokens.ring),

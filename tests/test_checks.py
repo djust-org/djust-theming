@@ -99,6 +99,8 @@ class TestCheckPresetContrast:
             code_foreground=near_white,
             selection=white,
             selection_foreground=near_white,
+            brand=white,
+            brand_foreground=near_white,
             border=white,
             input=white,
             ring=white,
@@ -158,6 +160,8 @@ class TestCheckPresetContrast:
             code_foreground=black,
             selection=black,
             selection_foreground=white,
+            brand=black,
+            brand_foreground=white,
             border=black,
             input=black,
             ring=black,
@@ -216,6 +220,7 @@ class TestContrastPairsCompleteness:
             "warning_foreground",
             "info_foreground",
             "code_foreground",
+            "brand_foreground",
         }
         actual_fg_attrs = {pair[0] for pair in CONTRAST_PAIRS}
         assert actual_fg_attrs == expected_pairs
