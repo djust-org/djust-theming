@@ -250,6 +250,7 @@ from .themes.linear import PRESET as LINEAR_THEME  # noqa: E402
 from .themes.notion import PRESET as NOTION_THEME  # noqa: E402
 from .themes.vercel import PRESET as VERCEL_THEME  # noqa: E402
 from .themes.github import PRESET as GITHUB_THEME  # noqa: E402
+from .themes.art_deco import PRESET as ART_DECO_THEME  # noqa: E402
 
 
 # =============================================================================
@@ -296,6 +297,7 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "notion": NOTION_THEME,
     "vercel": VERCEL_THEME,
     "github": GITHUB_THEME,
+    "art_deco": ART_DECO_THEME,
 }
 
 

@@ -66,4 +66,5 @@ from . import (  # noqa: F401
     notion,
     vercel,
     github,
+    art_deco,
 )

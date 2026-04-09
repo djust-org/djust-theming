@@ -1894,6 +1894,7 @@ def _ensure_theme_imports() -> None:
     from .themes.notion import PACK as _PACK_NOTION, DESIGN_SYSTEM as _DESIGN_NOTION
     from .themes.vercel import PACK as _PACK_VERCEL, DESIGN_SYSTEM as _DESIGN_VERCEL
     from .themes.github import PACK as _PACK_GITHUB, DESIGN_SYSTEM as _DESIGN_GITHUB
+    from .themes.art_deco import PACK as _PACK_ART_DECO, DESIGN_SYSTEM as _DESIGN_ART_DECO
 
     THEME_PACKS.update({
         "djust": _PACK_DJUST,
@@ -1918,6 +1919,7 @@ def _ensure_theme_imports() -> None:
         "notion": _PACK_NOTION,
         "vercel": _PACK_VERCEL,
         "github": _PACK_GITHUB,
+        "art_deco": _PACK_ART_DECO,
     })
 
     DESIGN_SYSTEMS["bauhaus"] = _DESIGN_BAUHAUS
@@ -1926,6 +1928,7 @@ def _ensure_theme_imports() -> None:
     DESIGN_SYSTEMS["notion"] = _DESIGN_NOTION
     DESIGN_SYSTEMS["vercel"] = _DESIGN_VERCEL
     DESIGN_SYSTEMS["github"] = _DESIGN_GITHUB
+    DESIGN_SYSTEMS["art_deco"] = _DESIGN_ART_DECO
 
 
 def get_theme_pack(name: str) -> Optional[ThemePack]:
