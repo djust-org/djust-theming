@@ -530,6 +530,21 @@ class CompleteThemeCSSGenerator:
         if anim.transition_style == "bouncy":
             parts.append("  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);")
 
+        # Surface treatment properties
+        if surface.backdrop_blur and surface.backdrop_blur != "0px":
+            parts.extend([
+                "",
+                "  /* Surface Treatment */",
+                f"  --glass-blur: {surface.backdrop_blur};",
+                f"  --navbar-opacity: 0.85;",
+            ])
+        if surface.noise_opacity and surface.noise_opacity > 0:
+            parts.extend([
+                "" if "Surface Treatment" not in "\n".join(parts[-3:]) else "",
+                *(["  /* Surface Treatment */"] if "Surface Treatment" not in "\n".join(parts[-5:]) else []),
+                f"  --noise-opacity: {surface.noise_opacity};",
+            ])
+
         parts.append("}")
 
         return "\n".join(parts)
