@@ -152,7 +152,7 @@ SURFACE = SurfaceStyle(
     border_style="solid",
     surface_treatment="flat",
     backdrop_blur="0px",
-    noise_opacity=0.1,             # Dither pattern — visible retro CRT effect
+    noise_opacity=0.05,            # Subtle retro dither — visible but not overwhelming
 )
 
 ICON = IconStyle(

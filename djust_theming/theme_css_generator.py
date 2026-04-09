@@ -566,10 +566,19 @@ class CompleteThemeCSSGenerator:
             "",
             "  /* Surface Treatment */",
             f"  --border-width: {surface.border_width};",
+            f"  --surface-treatment: {surface.surface_treatment};",
         ])
+        # Glass — frosted blur effect for overlays, navbars, cards
         if surface.backdrop_blur and surface.backdrop_blur != "0px":
             parts.append(f"  --glass-blur: {surface.backdrop_blur};")
+            parts.append(f"  --glass-bg: hsl(var(--card) / 0.7);")
+            parts.append(f"  --glass-border: hsl(var(--border) / 0.3);")
             parts.append(f"  --navbar-opacity: 0.85;")
+        # Gradient — derived from theme brand/primary colors
+        if surface.surface_treatment == "gradient":
+            parts.append(f"  --gradient-from: hsl(var(--brand, var(--primary)) / 0.08);")
+            parts.append(f"  --gradient-to: transparent;")
+        # Noise — grain/dither overlay on body::after
         if surface.noise_opacity and surface.noise_opacity > 0:
             parts.append(f"  --noise-opacity: {surface.noise_opacity};")
 
