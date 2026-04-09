@@ -253,6 +253,16 @@ from .themes.github import PRESET as GITHUB_THEME  # noqa: E402
 from .themes.art_deco import PRESET as ART_DECO_THEME  # noqa: E402
 from .themes.handcraft import PRESET as HANDCRAFT_THEME  # noqa: E402
 from .themes.terminal import PRESET as TERMINAL_THEME  # noqa: E402
+from .themes.magazine import PRESET as MAGAZINE_THEME  # noqa: E402
+from .themes.swiss import PRESET as SWISS_THEME  # noqa: E402
+from .themes.candy import PRESET as CANDY_THEME  # noqa: E402
+from .themes.retro_computing import PRESET as RETRO_COMPUTING_THEME  # noqa: E402
+from .themes.medical import PRESET as MEDICAL_THEME  # noqa: E402
+from .themes.legal import PRESET as LEGAL_THEME  # noqa: E402
+from .themes.midnight import PRESET as MIDNIGHT_THEME  # noqa: E402
+from .themes.sunrise import PRESET as SUNRISE_THEME  # noqa: E402
+from .themes.forest_floor import PRESET as FOREST_FLOOR_THEME  # noqa: E402
+from .themes.dashboard import PRESET as DASHBOARD_THEME  # noqa: E402
 
 
 # =============================================================================
@@ -302,6 +312,16 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "art_deco": ART_DECO_THEME,
     "handcraft": HANDCRAFT_THEME,
     "terminal": TERMINAL_THEME,
+    "magazine": MAGAZINE_THEME,
+    "swiss": SWISS_THEME,
+    "candy": CANDY_THEME,
+    "retro_computing": RETRO_COMPUTING_THEME,
+    "medical": MEDICAL_THEME,
+    "legal": LEGAL_THEME,
+    "midnight": MIDNIGHT_THEME,
+    "sunrise": SUNRISE_THEME,
+    "forest_floor": FOREST_FLOOR_THEME,
+    "dashboard": DASHBOARD_THEME,
 }
 
 

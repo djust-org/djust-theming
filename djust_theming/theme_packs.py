@@ -1897,6 +1897,16 @@ def _ensure_theme_imports() -> None:
     from .themes.art_deco import PACK as _PACK_ART_DECO, DESIGN_SYSTEM as _DESIGN_ART_DECO
     from .themes.handcraft import PACK as _PACK_HANDCRAFT, DESIGN_SYSTEM as _DESIGN_HANDCRAFT
     from .themes.terminal import PACK as _PACK_TERMINAL, DESIGN_SYSTEM as _DESIGN_TERMINAL
+    from .themes.magazine import PACK as _PACK_MAGAZINE, DESIGN_SYSTEM as _DESIGN_MAGAZINE
+    from .themes.swiss import PACK as _PACK_SWISS, DESIGN_SYSTEM as _DESIGN_SWISS
+    from .themes.candy import PACK as _PACK_CANDY, DESIGN_SYSTEM as _DESIGN_CANDY
+    from .themes.retro_computing import PACK as _PACK_RETRO_COMPUTING, DESIGN_SYSTEM as _DESIGN_RETRO_COMPUTING
+    from .themes.medical import PACK as _PACK_MEDICAL, DESIGN_SYSTEM as _DESIGN_MEDICAL
+    from .themes.legal import PACK as _PACK_LEGAL, DESIGN_SYSTEM as _DESIGN_LEGAL
+    from .themes.midnight import PACK as _PACK_MIDNIGHT, DESIGN_SYSTEM as _DESIGN_MIDNIGHT
+    from .themes.sunrise import PACK as _PACK_SUNRISE, DESIGN_SYSTEM as _DESIGN_SUNRISE
+    from .themes.forest_floor import PACK as _PACK_FOREST_FLOOR, DESIGN_SYSTEM as _DESIGN_FOREST_FLOOR
+    from .themes.dashboard import PACK as _PACK_DASHBOARD, DESIGN_SYSTEM as _DESIGN_DASHBOARD
 
     THEME_PACKS.update({
         "djust": _PACK_DJUST,
@@ -1924,6 +1934,16 @@ def _ensure_theme_imports() -> None:
         "art_deco": _PACK_ART_DECO,
         "handcraft": _PACK_HANDCRAFT,
         "terminal": _PACK_TERMINAL,
+        "magazine": _PACK_MAGAZINE,
+        "swiss": _PACK_SWISS,
+        "candy": _PACK_CANDY,
+        "retro_computing": _PACK_RETRO_COMPUTING,
+        "medical": _PACK_MEDICAL,
+        "legal": _PACK_LEGAL,
+        "midnight": _PACK_MIDNIGHT,
+        "sunrise": _PACK_SUNRISE,
+        "forest_floor": _PACK_FOREST_FLOOR,
+        "dashboard": _PACK_DASHBOARD,
     })
 
     DESIGN_SYSTEMS["bauhaus"] = _DESIGN_BAUHAUS
@@ -1935,6 +1955,16 @@ def _ensure_theme_imports() -> None:
     DESIGN_SYSTEMS["art_deco"] = _DESIGN_ART_DECO
     DESIGN_SYSTEMS["handcraft"] = _DESIGN_HANDCRAFT
     DESIGN_SYSTEMS["terminal"] = _DESIGN_TERMINAL
+    DESIGN_SYSTEMS["magazine"] = _DESIGN_MAGAZINE
+    DESIGN_SYSTEMS["swiss"] = _DESIGN_SWISS
+    DESIGN_SYSTEMS["candy"] = _DESIGN_CANDY
+    DESIGN_SYSTEMS["retro_computing"] = _DESIGN_RETRO_COMPUTING
+    DESIGN_SYSTEMS["medical"] = _DESIGN_MEDICAL
+    DESIGN_SYSTEMS["legal"] = _DESIGN_LEGAL
+    DESIGN_SYSTEMS["midnight"] = _DESIGN_MIDNIGHT
+    DESIGN_SYSTEMS["sunrise"] = _DESIGN_SUNRISE
+    DESIGN_SYSTEMS["forest_floor"] = _DESIGN_FOREST_FLOOR
+    DESIGN_SYSTEMS["dashboard"] = _DESIGN_DASHBOARD
 
 
 def get_theme_pack(name: str) -> Optional[ThemePack]:
