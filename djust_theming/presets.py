@@ -246,6 +246,10 @@ from .themes.paper import PRESET as PAPER_THEME  # noqa: E402
 from .themes.neon_noir import PRESET as NEON_NOIR_THEME  # noqa: E402
 from .themes.ocean_deep import PRESET as OCEAN_THEME  # noqa: E402
 from .themes.stripe import PRESET as STRIPE_THEME  # noqa: E402
+from .themes.linear import PRESET as LINEAR_THEME  # noqa: E402
+from .themes.notion import PRESET as NOTION_THEME  # noqa: E402
+from .themes.vercel import PRESET as VERCEL_THEME  # noqa: E402
+from .themes.github import PRESET as GITHUB_THEME  # noqa: E402
 
 
 # =============================================================================
@@ -288,6 +292,10 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "neon_noir": NEON_NOIR_THEME,
     "ocean_deep": OCEAN_THEME,
     "stripe": STRIPE_THEME,
+    "linear": LINEAR_THEME,
+    "notion": NOTION_THEME,
+    "vercel": VERCEL_THEME,
+    "github": GITHUB_THEME,
 }
 
 

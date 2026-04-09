@@ -62,4 +62,8 @@ from . import (  # noqa: F401
     neon_noir,
     ocean_deep,
     stripe,
+    linear,
+    notion,
+    vercel,
+    github,
 )

@@ -1890,6 +1890,10 @@ def _ensure_theme_imports() -> None:
     from .themes.solarized import PACK as _PACK_SOLARIZED
     from .themes.solarpunk import PACK as _PACK_SOLARPUNK
     from .themes.stripe import PACK as _PACK_STRIPE, DESIGN_SYSTEM as _DESIGN_STRIPE
+    from .themes.linear import PACK as _PACK_LINEAR, DESIGN_SYSTEM as _DESIGN_LINEAR
+    from .themes.notion import PACK as _PACK_NOTION, DESIGN_SYSTEM as _DESIGN_NOTION
+    from .themes.vercel import PACK as _PACK_VERCEL, DESIGN_SYSTEM as _DESIGN_VERCEL
+    from .themes.github import PACK as _PACK_GITHUB, DESIGN_SYSTEM as _DESIGN_GITHUB
 
     THEME_PACKS.update({
         "djust": _PACK_DJUST,
@@ -1910,10 +1914,18 @@ def _ensure_theme_imports() -> None:
         "neon_noir": _PACK_NEON_NOIR,
         "ocean_deep": _PACK_OCEAN_DEEP,
         "stripe": _PACK_STRIPE,
+        "linear": _PACK_LINEAR,
+        "notion": _PACK_NOTION,
+        "vercel": _PACK_VERCEL,
+        "github": _PACK_GITHUB,
     })
 
     DESIGN_SYSTEMS["bauhaus"] = _DESIGN_BAUHAUS
     DESIGN_SYSTEMS["stripe"] = _DESIGN_STRIPE
+    DESIGN_SYSTEMS["linear"] = _DESIGN_LINEAR
+    DESIGN_SYSTEMS["notion"] = _DESIGN_NOTION
+    DESIGN_SYSTEMS["vercel"] = _DESIGN_VERCEL
+    DESIGN_SYSTEMS["github"] = _DESIGN_GITHUB
 
 
 def get_theme_pack(name: str) -> Optional[ThemePack]:
