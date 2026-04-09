@@ -1,15 +1,20 @@
 """Ink -- Japanese calligraphy minimalism — sharp edges, single vermillion accent."""
 
 from ._base import (
+    AnimationStyle,
     ColorScale,
+    DesignSystem,
+    IconStyle,
+    InteractionStyle,
+    LayoutStyle,
+    SurfaceStyle,
     ThemePack,
     ThemePreset,
     ThemeTokens,
-    ANIM_SMOOTH,
-    ICON_MINIMAL,
+    TypographyStyle,
     ILLUST_LINE,
-    INTERACT_SUBTLE,
     PATTERN_DOTS,
+    PATTERN_MINIMAL,
 )
 
 # --- Color Preset ---
@@ -100,18 +105,120 @@ PRESET = ThemePreset(
     dark=DARK,
 )
 
-# --- Theme Pack ---
+
+# =============================================================================
+# Design System
+# =============================================================================
+
+TYPOGRAPHY = TypographyStyle(
+    name="ink",
+    heading_font='"Noto Serif JP", Georgia, serif',
+    body_font="system-ui, sans-serif",
+    base_size="16px",
+    heading_scale=1.2,
+    line_height="1.7",
+    body_line_height="1.8",
+    heading_weight="400",
+    section_heading_weight="400",
+    body_weight="400",
+    letter_spacing="0.02em",
+    prose_max_width="36rem",
+    badge_radius="0px",
+)
+
+LAYOUT = LayoutStyle(
+    name="ink",
+    space_unit="1rem",
+    space_scale=1.5,
+    border_radius_sm="0px",
+    border_radius_md="0px",
+    border_radius_lg="0px",
+    button_shape="sharp",
+    card_shape="sharp",
+    input_shape="sharp",
+    container_width="900px",
+    grid_gap="1.5rem",
+    section_spacing="4rem",
+    hero_padding_top="8rem",
+    hero_padding_bottom="4rem",
+    hero_line_height="1.0",
+    hero_max_width="40rem",
+)
+
+SURFACE = SurfaceStyle(
+    name="ink",
+    shadow_sm="none",
+    shadow_md="none",
+    shadow_lg="none",
+    border_width="1px",
+    border_style="solid",
+    surface_treatment="flat",
+    backdrop_blur="0px",
+    noise_opacity=0.0,
+)
+
+ICON = IconStyle(
+    name="ink",
+    style="outlined",
+    weight="thin",
+    size_scale=1.0,
+    stroke_width="1",
+    corner_rounding="0px",
+)
+
+ANIMATION = AnimationStyle(
+    name="ink",
+    entrance_effect="none",
+    exit_effect="none",
+    hover_effect="none",
+    hover_scale=1.0,
+    hover_translate_y="0px",
+    click_effect="none",
+    loading_style="spinner",
+    transition_style="instant",
+    duration_fast="0s",
+    duration_normal="0s",
+    duration_slow="0.1s",
+    easing="linear",
+)
+
+INTERACTION = InteractionStyle(
+    name="ink",
+    button_hover="darken",
+    link_hover="underline",
+    card_hover="border",
+    focus_style="outline",
+    focus_ring_width="1px",
+)
+
+DESIGN_SYSTEM = DesignSystem(
+    name="ink",
+    display_name="Ink",
+    description="Japanese calligraphy -- sharp edges, single vermillion accent, poster-like",
+    category="minimal",
+    typography=TYPOGRAPHY,
+    layout=LAYOUT,
+    surface=SURFACE,
+    icons=ICON,
+    animation=ANIMATION,
+    interaction=INTERACTION,
+)
+
+
+# =============================================================================
+# Theme Pack
+# =============================================================================
 
 PACK = ThemePack(
     name="ink",
     display_name="Ink",
-    description="Japanese calligraphy minimalism",
+    description="Japanese calligraphy -- sharp edges, single vermillion accent, poster-like",
     category="minimal",
-    design_theme="minimalist",
+    design_theme="ink",
     color_preset="ink",
-    icon_style=ICON_MINIMAL,
-    animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS,
-    interaction_style=INTERACT_SUBTLE,
+    icon_style=ICON,
+    animation_style=ANIMATION,
+    pattern_style=PATTERN_MINIMAL,
+    interaction_style=INTERACTION,
     illustration_style=ILLUST_LINE,
 )

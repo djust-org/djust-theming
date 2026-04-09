@@ -1,15 +1,20 @@
 """Solarized -- The OG scientifically designed contrast palette."""
 
 from ._base import (
+    AnimationStyle,
     ColorScale,
+    DesignSystem,
+    IconStyle,
+    InteractionStyle,
+    LayoutStyle,
+    SurfaceStyle,
     ThemePack,
     ThemePreset,
     ThemeTokens,
-    ANIM_SMOOTH,
-    ICON_MINIMAL,
+    TypographyStyle,
     ILLUST_LINE,
-    INTERACT_SUBTLE,
     PATTERN_DOTS,
+    PATTERN_MINIMAL,
 )
 
 # --- Color Preset ---
@@ -100,18 +105,120 @@ PRESET = ThemePreset(
     dark=DARK,
 )
 
-# --- Theme Pack ---
+
+# =============================================================================
+# Design System
+# =============================================================================
+
+TYPOGRAPHY = TypographyStyle(
+    name="solarized",
+    heading_font='"Inter", system-ui, sans-serif',
+    body_font='"Inter", system-ui, sans-serif',
+    base_size="16px",
+    heading_scale=1.2,
+    line_height="1.5",
+    body_line_height="1.6",
+    heading_weight="500",
+    section_heading_weight="500",
+    body_weight="400",
+    letter_spacing="normal",
+    prose_max_width="44rem",
+    badge_radius="9999px",
+)
+
+LAYOUT = LayoutStyle(
+    name="solarized",
+    space_unit="1rem",
+    space_scale=1.5,
+    border_radius_sm="4px",
+    border_radius_md="6px",
+    border_radius_lg="8px",
+    button_shape="rounded",
+    card_shape="rounded",
+    input_shape="rounded",
+    container_width="1100px",
+    grid_gap="1.5rem",
+    section_spacing="4rem",
+    hero_padding_top="7rem",
+    hero_padding_bottom="4rem",
+    hero_line_height="1.15",
+    hero_max_width="50rem",
+)
+
+SURFACE = SurfaceStyle(
+    name="solarized",
+    shadow_sm="0 1px 2px rgba(0, 0, 0, 0.06)",
+    shadow_md="0 4px 6px -1px rgba(0, 0, 0, 0.08)",
+    shadow_lg="0 8px 16px -2px rgba(0, 0, 0, 0.1)",
+    border_width="1px",
+    border_style="solid",
+    surface_treatment="flat",
+    backdrop_blur="0px",
+    noise_opacity=0.0,
+)
+
+ICON = IconStyle(
+    name="solarized",
+    style="outlined",
+    weight="regular",
+    size_scale=1.0,
+    stroke_width="1.5",
+    corner_rounding="2px",
+)
+
+ANIMATION = AnimationStyle(
+    name="solarized",
+    entrance_effect="fade",
+    exit_effect="fade",
+    hover_effect="lift",
+    hover_scale=1.0,
+    hover_translate_y="-1px",
+    click_effect="none",
+    loading_style="spinner",
+    transition_style="smooth",
+    duration_fast="0.1s",
+    duration_normal="0.15s",
+    duration_slow="0.25s",
+    easing="cubic-bezier(0.4, 0, 0.2, 1)",
+)
+
+INTERACTION = InteractionStyle(
+    name="solarized",
+    button_hover="lift",
+    link_hover="color",
+    card_hover="shadow",
+    focus_style="ring",
+    focus_ring_width="2px",
+)
+
+DESIGN_SYSTEM = DesignSystem(
+    name="solarized",
+    display_name="Solarized",
+    description="Scientifically designed -- elegant dev classic",
+    category="elegant",
+    typography=TYPOGRAPHY,
+    layout=LAYOUT,
+    surface=SURFACE,
+    icons=ICON,
+    animation=ANIMATION,
+    interaction=INTERACTION,
+)
+
+
+# =============================================================================
+# Theme Pack
+# =============================================================================
 
 PACK = ThemePack(
     name="solarized",
     display_name="Solarized",
-    description="Scientifically designed contrast ratios",
-    category="professional",
-    design_theme="minimalist",
+    description="Scientifically designed -- elegant dev classic",
+    category="elegant",
+    design_theme="solarized",
     color_preset="solarized",
-    icon_style=ICON_MINIMAL,
-    animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS,
-    interaction_style=INTERACT_SUBTLE,
+    icon_style=ICON,
+    animation_style=ANIMATION,
+    pattern_style=PATTERN_MINIMAL,
+    interaction_style=INTERACTION,
     illustration_style=ILLUST_LINE,
 )

@@ -1,15 +1,21 @@
 """Cyberdeck -- Terminal hacker — matrix green on true black, CRT vibes."""
 
 from ._base import (
+    AnimationStyle,
     ColorScale,
+    DesignSystem,
+    IconStyle,
+    InteractionStyle,
+    LayoutStyle,
+    SurfaceStyle,
     ThemePack,
     ThemePreset,
     ThemeTokens,
-    ANIM_SNAPPY,
-    ICON_SHARP,
+    TypographyStyle,
+    ILLUST_FLAT,
     ILLUST_LINE,
-    INTERACT_BOLD,
     PATTERN_DOTS,
+    PATTERN_NOISE,
 )
 
 # --- Color Preset ---
@@ -101,18 +107,120 @@ PRESET = ThemePreset(
     default_mode="dark",
 )
 
-# --- Theme Pack ---
+
+# =============================================================================
+# Design System
+# =============================================================================
+
+TYPOGRAPHY = TypographyStyle(
+    name="cyberdeck",
+    heading_font='"JetBrains Mono", monospace',
+    body_font='"JetBrains Mono", monospace',
+    base_size="14px",
+    heading_scale=1.15,
+    line_height="1.5",
+    body_line_height="1.6",
+    heading_weight="700",
+    section_heading_weight="700",
+    body_weight="400",
+    letter_spacing="normal",
+    prose_max_width="72rem",
+    badge_radius="0px",
+)
+
+LAYOUT = LayoutStyle(
+    name="cyberdeck",
+    space_unit="1rem",
+    space_scale=1.5,
+    border_radius_sm="0px",
+    border_radius_md="0px",
+    border_radius_lg="0px",
+    button_shape="sharp",
+    card_shape="sharp",
+    input_shape="sharp",
+    container_width="1400px",
+    grid_gap="1rem",
+    section_spacing="2rem",
+    hero_padding_top="4rem",
+    hero_padding_bottom="2rem",
+    hero_line_height="1.2",
+    hero_max_width="72rem",
+)
+
+SURFACE = SurfaceStyle(
+    name="cyberdeck",
+    shadow_sm="none",
+    shadow_md="none",
+    shadow_lg="none",
+    border_width="1px",
+    border_style="solid",
+    surface_treatment="noise",
+    backdrop_blur="0px",
+    noise_opacity=0.04,
+)
+
+ICON = IconStyle(
+    name="cyberdeck",
+    style="sharp",
+    weight="bold",
+    size_scale=0.9,
+    stroke_width="2",
+    corner_rounding="0px",
+)
+
+ANIMATION = AnimationStyle(
+    name="cyberdeck",
+    entrance_effect="none",
+    exit_effect="none",
+    hover_effect="none",
+    hover_scale=1.0,
+    hover_translate_y="0px",
+    click_effect="none",
+    loading_style="spinner",
+    transition_style="instant",
+    duration_fast="0s",
+    duration_normal="0s",
+    duration_slow="0.05s",
+    easing="linear",
+)
+
+INTERACTION = InteractionStyle(
+    name="cyberdeck",
+    button_hover="darken",
+    link_hover="underline",
+    card_hover="border",
+    focus_style="outline",
+    focus_ring_width="2px",
+)
+
+DESIGN_SYSTEM = DesignSystem(
+    name="cyberdeck",
+    display_name="Cyberdeck",
+    description="Terminal hacker -- matrix green, CRT vibes, monospace everything",
+    category="bold",
+    typography=TYPOGRAPHY,
+    layout=LAYOUT,
+    surface=SURFACE,
+    icons=ICON,
+    animation=ANIMATION,
+    interaction=INTERACTION,
+)
+
+
+# =============================================================================
+# Theme Pack
+# =============================================================================
 
 PACK = ThemePack(
     name="cyberdeck",
     display_name="Cyberdeck",
-    description="Terminal hacker — matrix green on black",
+    description="Terminal hacker -- matrix green, CRT vibes, monospace everything",
     category="bold",
-    design_theme="dense",
+    design_theme="cyberdeck",
     color_preset="cyberdeck",
-    icon_style=ICON_SHARP,
-    animation_style=ANIM_SNAPPY,
-    pattern_style=PATTERN_DOTS,
-    interaction_style=INTERACT_BOLD,
-    illustration_style=ILLUST_LINE,
+    icon_style=ICON,
+    animation_style=ANIMATION,
+    pattern_style=PATTERN_NOISE,
+    interaction_style=INTERACTION,
+    illustration_style=ILLUST_FLAT,
 )

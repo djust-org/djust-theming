@@ -1872,24 +1872,41 @@ def _ensure_theme_imports() -> None:
         return
     _theme_imports_done = True
 
-    from .themes.aurora import PACK as _PACK_AURORA
+    from .themes.amber import PACK as _PACK_AMBER, DESIGN_SYSTEM as _DESIGN_AMBER
+    from .themes.aurora import PACK as _PACK_AURORA, DESIGN_SYSTEM as _DESIGN_AURORA
     from .themes.bauhaus import PACK as _PACK_BAUHAUS, DESIGN_SYSTEM as _DESIGN_BAUHAUS
-    from .themes.cyberdeck import PACK as _PACK_CYBERDECK
-    from .themes.cyberpunk import PACK as _PACK_CYBERPUNK
+    from .themes.blue import PACK as _PACK_BLUE, DESIGN_SYSTEM as _DESIGN_BLUE
+    from .themes.catppuccin import PACK as _PACK_CATPPUCCIN, DESIGN_SYSTEM as _DESIGN_CATPPUCCIN
+    from .themes.cyberdeck import PACK as _PACK_CYBERDECK, DESIGN_SYSTEM as _DESIGN_CYBERDECK
+    from .themes.cyberpunk import PACK as _PACK_CYBERPUNK, DESIGN_SYSTEM as _DESIGN_CYBERPUNK
+    from .themes.default import PACK as _PACK_DEFAULT, DESIGN_SYSTEM as _DESIGN_DEFAULT
     from .themes.djust import PACK as _PACK_DJUST
-    from .themes.dracula import PACK as _PACK_DRACULA
-    from .themes.ember import PACK as _PACK_EMBER
-    from .themes.forest import PACK as _PACK_FOREST
-    from .themes.gruvbox import PACK as _PACK_GRUVBOX
-    from .themes.high_contrast import PACK as _PACK_HIGH_CONTRAST
-    from .themes.ink import PACK as _PACK_INK
-    from .themes.mono import PACK as _PACK_MONO
-    from .themes.neon_noir import PACK as _PACK_NEON_NOIR
-    from .themes.ocean_deep import PACK as _PACK_OCEAN_DEEP
-    from .themes.paper import PACK as _PACK_PAPER
-    from .themes.solarized import PACK as _PACK_SOLARIZED
-    from .themes.solarpunk import PACK as _PACK_SOLARPUNK
+    from .themes.dracula import PACK as _PACK_DRACULA, DESIGN_SYSTEM as _DESIGN_DRACULA
+    from .themes.ember import PACK as _PACK_EMBER, DESIGN_SYSTEM as _DESIGN_EMBER
+    from .themes.forest import PACK as _PACK_FOREST, DESIGN_SYSTEM as _DESIGN_FOREST
+    from .themes.green import PACK as _PACK_GREEN, DESIGN_SYSTEM as _DESIGN_GREEN
+    from .themes.gruvbox import PACK as _PACK_GRUVBOX, DESIGN_SYSTEM as _DESIGN_GRUVBOX
+    from .themes.high_contrast import PACK as _PACK_HIGH_CONTRAST, DESIGN_SYSTEM as _DESIGN_HIGH_CONTRAST
+    from .themes.ink import PACK as _PACK_INK, DESIGN_SYSTEM as _DESIGN_INK
+    from .themes.mono import PACK as _PACK_MONO, DESIGN_SYSTEM as _DESIGN_MONO
+    from .themes.natural20 import PACK as _PACK_NATURAL20, DESIGN_SYSTEM as _DESIGN_NATURAL20
+    from .themes.nebula import PACK as _PACK_NEBULA, DESIGN_SYSTEM as _DESIGN_NEBULA
+    from .themes.neon_noir import PACK as _PACK_NEON_NOIR, DESIGN_SYSTEM as _DESIGN_NEON_NOIR
+    from .themes.nord import PACK as _PACK_NORD, DESIGN_SYSTEM as _DESIGN_NORD
+    from .themes.ocean_deep import PACK as _PACK_OCEAN_DEEP, DESIGN_SYSTEM as _DESIGN_OCEAN_DEEP
+    from .themes.orange import PACK as _PACK_ORANGE, DESIGN_SYSTEM as _DESIGN_ORANGE
+    from .themes.outrun import PACK as _PACK_OUTRUN, DESIGN_SYSTEM as _DESIGN_OUTRUN
+    from .themes.paper import PACK as _PACK_PAPER, DESIGN_SYSTEM as _DESIGN_PAPER
+    from .themes.purple import PACK as _PACK_PURPLE, DESIGN_SYSTEM as _DESIGN_PURPLE
+    from .themes.rose import PACK as _PACK_ROSE, DESIGN_SYSTEM as _DESIGN_ROSE
+    from .themes.rose_pine import PACK as _PACK_ROSE_PINE, DESIGN_SYSTEM as _DESIGN_ROSE_PINE
+    from .themes.shadcn import PACK as _PACK_SHADCN, DESIGN_SYSTEM as _DESIGN_SHADCN
+    from .themes.slate import PACK as _PACK_SLATE, DESIGN_SYSTEM as _DESIGN_SLATE
+    from .themes.solarized import PACK as _PACK_SOLARIZED, DESIGN_SYSTEM as _DESIGN_SOLARIZED
+    from .themes.solarpunk import PACK as _PACK_SOLARPUNK, DESIGN_SYSTEM as _DESIGN_SOLARPUNK
     from .themes.stripe import PACK as _PACK_STRIPE, DESIGN_SYSTEM as _DESIGN_STRIPE
+    from .themes.synthwave import PACK as _PACK_SYNTHWAVE, DESIGN_SYSTEM as _DESIGN_SYNTHWAVE
+    from .themes.tokyo_night import PACK as _PACK_TOKYO_NIGHT, DESIGN_SYSTEM as _DESIGN_TOKYO_NIGHT
     from .themes.linear import PACK as _PACK_LINEAR, DESIGN_SYSTEM as _DESIGN_LINEAR
     from .themes.notion import PACK as _PACK_NOTION, DESIGN_SYSTEM as _DESIGN_NOTION
     from .themes.vercel import PACK as _PACK_VERCEL, DESIGN_SYSTEM as _DESIGN_VERCEL
@@ -1909,24 +1926,41 @@ def _ensure_theme_imports() -> None:
     from .themes.dashboard import PACK as _PACK_DASHBOARD, DESIGN_SYSTEM as _DESIGN_DASHBOARD
 
     THEME_PACKS.update({
-        "djust": _PACK_DJUST,
-        "cyberpunk": _PACK_CYBERPUNK,
-        "forest": _PACK_FOREST,
-        "dracula": _PACK_DRACULA,
-        "gruvbox": _PACK_GRUVBOX,
-        "solarized": _PACK_SOLARIZED,
-        "high_contrast": _PACK_HIGH_CONTRAST,
-        "mono": _PACK_MONO,
-        "ember": _PACK_EMBER,
+        "amber": _PACK_AMBER,
         "aurora": _PACK_AURORA,
-        "ink": _PACK_INK,
-        "solarpunk": _PACK_SOLARPUNK,
         "bauhaus": _PACK_BAUHAUS,
+        "blue": _PACK_BLUE,
+        "catppuccin": _PACK_CATPPUCCIN,
         "cyberdeck": _PACK_CYBERDECK,
-        "paper": _PACK_PAPER,
+        "cyberpunk": _PACK_CYBERPUNK,
+        "default": _PACK_DEFAULT,
+        "djust": _PACK_DJUST,
+        "dracula": _PACK_DRACULA,
+        "ember": _PACK_EMBER,
+        "forest": _PACK_FOREST,
+        "green": _PACK_GREEN,
+        "gruvbox": _PACK_GRUVBOX,
+        "high_contrast": _PACK_HIGH_CONTRAST,
+        "ink": _PACK_INK,
+        "mono": _PACK_MONO,
+        "natural20": _PACK_NATURAL20,
+        "nebula": _PACK_NEBULA,
         "neon_noir": _PACK_NEON_NOIR,
+        "nord": _PACK_NORD,
         "ocean_deep": _PACK_OCEAN_DEEP,
+        "orange": _PACK_ORANGE,
+        "outrun": _PACK_OUTRUN,
+        "paper": _PACK_PAPER,
+        "purple": _PACK_PURPLE,
+        "rose": _PACK_ROSE,
+        "rose_pine": _PACK_ROSE_PINE,
+        "shadcn": _PACK_SHADCN,
+        "slate": _PACK_SLATE,
+        "solarized": _PACK_SOLARIZED,
+        "solarpunk": _PACK_SOLARPUNK,
         "stripe": _PACK_STRIPE,
+        "synthwave": _PACK_SYNTHWAVE,
+        "tokyo_night": _PACK_TOKYO_NIGHT,
         "linear": _PACK_LINEAR,
         "notion": _PACK_NOTION,
         "vercel": _PACK_VERCEL,
@@ -1946,8 +1980,40 @@ def _ensure_theme_imports() -> None:
         "dashboard": _PACK_DASHBOARD,
     })
 
+    DESIGN_SYSTEMS["amber"] = _DESIGN_AMBER
+    DESIGN_SYSTEMS["aurora"] = _DESIGN_AURORA
     DESIGN_SYSTEMS["bauhaus"] = _DESIGN_BAUHAUS
+    DESIGN_SYSTEMS["blue"] = _DESIGN_BLUE
+    DESIGN_SYSTEMS["catppuccin"] = _DESIGN_CATPPUCCIN
+    DESIGN_SYSTEMS["cyberdeck"] = _DESIGN_CYBERDECK
+    DESIGN_SYSTEMS["cyberpunk"] = _DESIGN_CYBERPUNK
+    DESIGN_SYSTEMS["default"] = _DESIGN_DEFAULT
+    DESIGN_SYSTEMS["dracula"] = _DESIGN_DRACULA
+    DESIGN_SYSTEMS["ember"] = _DESIGN_EMBER
+    DESIGN_SYSTEMS["forest"] = _DESIGN_FOREST
+    DESIGN_SYSTEMS["green"] = _DESIGN_GREEN
+    DESIGN_SYSTEMS["gruvbox"] = _DESIGN_GRUVBOX
+    DESIGN_SYSTEMS["high_contrast"] = _DESIGN_HIGH_CONTRAST
+    DESIGN_SYSTEMS["ink"] = _DESIGN_INK
+    DESIGN_SYSTEMS["mono"] = _DESIGN_MONO
+    DESIGN_SYSTEMS["natural20"] = _DESIGN_NATURAL20
+    DESIGN_SYSTEMS["nebula"] = _DESIGN_NEBULA
+    DESIGN_SYSTEMS["neon_noir"] = _DESIGN_NEON_NOIR
+    DESIGN_SYSTEMS["nord"] = _DESIGN_NORD
+    DESIGN_SYSTEMS["ocean_deep"] = _DESIGN_OCEAN_DEEP
+    DESIGN_SYSTEMS["orange"] = _DESIGN_ORANGE
+    DESIGN_SYSTEMS["outrun"] = _DESIGN_OUTRUN
+    DESIGN_SYSTEMS["paper"] = _DESIGN_PAPER
+    DESIGN_SYSTEMS["purple"] = _DESIGN_PURPLE
+    DESIGN_SYSTEMS["rose"] = _DESIGN_ROSE
+    DESIGN_SYSTEMS["rose_pine"] = _DESIGN_ROSE_PINE
+    DESIGN_SYSTEMS["shadcn"] = _DESIGN_SHADCN
+    DESIGN_SYSTEMS["slate"] = _DESIGN_SLATE
+    DESIGN_SYSTEMS["solarized"] = _DESIGN_SOLARIZED
+    DESIGN_SYSTEMS["solarpunk"] = _DESIGN_SOLARPUNK
     DESIGN_SYSTEMS["stripe"] = _DESIGN_STRIPE
+    DESIGN_SYSTEMS["synthwave"] = _DESIGN_SYNTHWAVE
+    DESIGN_SYSTEMS["tokyo_night"] = _DESIGN_TOKYO_NIGHT
     DESIGN_SYSTEMS["linear"] = _DESIGN_LINEAR
     DESIGN_SYSTEMS["notion"] = _DESIGN_NOTION
     DESIGN_SYSTEMS["vercel"] = _DESIGN_VERCEL

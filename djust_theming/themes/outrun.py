@@ -1,9 +1,19 @@
 """Outrun -- 80s retro racing with hot pink, purple, and sunset gradients."""
 
 from ._base import (
+    AnimationStyle,
     ColorScale,
+    DesignSystem,
+    IconStyle,
+    InteractionStyle,
+    LayoutStyle,
+    SurfaceStyle,
+    ThemePack,
     ThemePreset,
     ThemeTokens,
+    TypographyStyle,
+    ILLUST_FLAT,
+    PATTERN_GRID,
 )
 
 # --- Color Preset ---
@@ -93,4 +103,122 @@ PRESET = ThemePreset(
     light=LIGHT,
     dark=DARK,
     radius=0.75,
+)
+
+
+# =============================================================================
+# Design System
+# =============================================================================
+
+TYPOGRAPHY = TypographyStyle(
+    name="outrun",
+    heading_font='"Inter", system-ui, sans-serif',
+    body_font='"Inter", system-ui, sans-serif',
+    base_size="16px",
+    heading_scale=1.3,
+    line_height="1.5",
+    body_line_height="1.6",
+    heading_weight="700",
+    section_heading_weight="700",
+    body_weight="400",
+    letter_spacing="-0.01em",
+    prose_max_width="42rem",
+    badge_radius="9999px",
+)
+
+LAYOUT = LayoutStyle(
+    name="outrun",
+    space_unit="1rem",
+    space_scale=1.5,
+    border_radius_sm="6px",
+    border_radius_md="8px",
+    border_radius_lg="12px",
+    button_shape="rounded",
+    card_shape="rounded",
+    input_shape="rounded",
+    container_width="1200px",
+    grid_gap="1.5rem",
+    section_spacing="4rem",
+    hero_padding_top="7rem",
+    hero_padding_bottom="4rem",
+    hero_line_height="1.1",
+    hero_max_width="54rem",
+)
+
+SURFACE = SurfaceStyle(
+    name="outrun",
+    shadow_sm="0 2px 8px rgba(255, 80, 180, 0.15)",
+    shadow_md="0 6px 16px rgba(255, 80, 180, 0.2)",
+    shadow_lg="0 12px 32px rgba(255, 80, 180, 0.25), 0 0 16px rgba(255, 80, 180, 0.1)",
+    border_width="1px",
+    border_style="solid",
+    surface_treatment="glass",
+    backdrop_blur="8px",
+    noise_opacity=0.0,
+)
+
+ICON = IconStyle(
+    name="outrun",
+    style="sharp",
+    weight="bold",
+    size_scale=1.0,
+    stroke_width="2",
+    corner_rounding="0px",
+)
+
+ANIMATION = AnimationStyle(
+    name="outrun",
+    entrance_effect="fade",
+    exit_effect="fade",
+    hover_effect="glow",
+    hover_scale=1.02,
+    hover_translate_y="-2px",
+    click_effect="pulse",
+    loading_style="pulse",
+    transition_style="snappy",
+    duration_fast="0.08s",
+    duration_normal="0.15s",
+    duration_slow="0.25s",
+    easing="cubic-bezier(0.22, 1, 0.36, 1)",
+)
+
+INTERACTION = InteractionStyle(
+    name="outrun",
+    button_hover="glow",
+    link_hover="color",
+    card_hover="shadow",
+    focus_style="ring",
+    focus_ring_width="2px",
+)
+
+DESIGN_SYSTEM = DesignSystem(
+    name="outrun",
+    display_name="Outrun",
+    description="80s retro racing -- hot pink, purple, sunset glow",
+    category="bold",
+    typography=TYPOGRAPHY,
+    layout=LAYOUT,
+    surface=SURFACE,
+    icons=ICON,
+    animation=ANIMATION,
+    interaction=INTERACTION,
+)
+
+
+# =============================================================================
+# Theme Pack
+# =============================================================================
+
+PACK = ThemePack(
+    name="outrun",
+    display_name="Outrun",
+    description="80s retro racing -- hot pink, purple, sunset glow",
+    category="bold",
+    design_theme="outrun",
+    color_preset="outrun",
+    icon_style=ICON,
+    animation_style=ANIMATION,
+    pattern_style=PATTERN_GRID,
+    interaction_style=INTERACTION,
+    illustration_style=ILLUST_FLAT,
 )

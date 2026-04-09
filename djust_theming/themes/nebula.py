@@ -1,9 +1,19 @@
 """Nebula -- Deep space — dark slate & violet."""
 
 from ._base import (
+    AnimationStyle,
     ColorScale,
+    DesignSystem,
+    IconStyle,
+    InteractionStyle,
+    LayoutStyle,
+    SurfaceStyle,
+    ThemePack,
     ThemePreset,
     ThemeTokens,
+    TypographyStyle,
+    ILLUST_3D,
+    PATTERN_GLASS,
 )
 
 # --- Color Preset ---
@@ -93,4 +103,122 @@ PRESET = ThemePreset(
     light=LIGHT,
     dark=DARK,
     radius=0.75,
+)
+
+
+# =============================================================================
+# Design System
+# =============================================================================
+
+TYPOGRAPHY = TypographyStyle(
+    name="nebula",
+    heading_font='"Inter", system-ui, sans-serif',
+    body_font='"Inter", system-ui, sans-serif',
+    base_size="16px",
+    heading_scale=1.25,
+    line_height="1.5",
+    body_line_height="1.6",
+    heading_weight="500",
+    section_heading_weight="500",
+    body_weight="400",
+    letter_spacing="-0.01em",
+    prose_max_width="42rem",
+    badge_radius="9999px",
+)
+
+LAYOUT = LayoutStyle(
+    name="nebula",
+    space_unit="1rem",
+    space_scale=1.5,
+    border_radius_sm="6px",
+    border_radius_md="8px",
+    border_radius_lg="12px",
+    button_shape="rounded",
+    card_shape="rounded",
+    input_shape="rounded",
+    container_width="1200px",
+    grid_gap="1.5rem",
+    section_spacing="5rem",
+    hero_padding_top="8rem",
+    hero_padding_bottom="5rem",
+    hero_line_height="1.15",
+    hero_max_width="52rem",
+)
+
+SURFACE = SurfaceStyle(
+    name="nebula",
+    shadow_sm="0 2px 8px rgba(130, 80, 220, 0.12)",
+    shadow_md="0 6px 16px rgba(130, 80, 220, 0.18)",
+    shadow_lg="0 12px 32px rgba(130, 80, 220, 0.24), 0 0 20px rgba(130, 80, 220, 0.08)",
+    border_width="1px",
+    border_style="solid",
+    surface_treatment="glass",
+    backdrop_blur="10px",
+    noise_opacity=0.0,
+)
+
+ICON = IconStyle(
+    name="nebula",
+    style="outlined",
+    weight="regular",
+    size_scale=1.0,
+    stroke_width="1.5",
+    corner_rounding="2px",
+)
+
+ANIMATION = AnimationStyle(
+    name="nebula",
+    entrance_effect="fade",
+    exit_effect="fade",
+    hover_effect="glow",
+    hover_scale=1.0,
+    hover_translate_y="-1px",
+    click_effect="none",
+    loading_style="pulse",
+    transition_style="smooth",
+    duration_fast="0.15s",
+    duration_normal="0.25s",
+    duration_slow="0.4s",
+    easing="cubic-bezier(0.4, 0, 0.2, 1)",
+)
+
+INTERACTION = InteractionStyle(
+    name="nebula",
+    button_hover="glow",
+    link_hover="color",
+    card_hover="shadow",
+    focus_style="ring",
+    focus_ring_width="2px",
+)
+
+DESIGN_SYSTEM = DesignSystem(
+    name="nebula",
+    display_name="Nebula",
+    description="Space cosmic -- purple-tinted glow, glass surfaces, dark-first",
+    category="dark",
+    typography=TYPOGRAPHY,
+    layout=LAYOUT,
+    surface=SURFACE,
+    icons=ICON,
+    animation=ANIMATION,
+    interaction=INTERACTION,
+)
+
+
+# =============================================================================
+# Theme Pack
+# =============================================================================
+
+PACK = ThemePack(
+    name="nebula",
+    display_name="Nebula",
+    description="Space cosmic -- purple-tinted glow, glass surfaces, dark-first",
+    category="dark",
+    design_theme="nebula",
+    color_preset="nebula",
+    icon_style=ICON,
+    animation_style=ANIMATION,
+    pattern_style=PATTERN_GLASS,
+    interaction_style=INTERACTION,
+    illustration_style=ILLUST_3D,
 )

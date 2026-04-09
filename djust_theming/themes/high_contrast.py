@@ -1,15 +1,21 @@
 """High Contrast -- Accessibility-first with maximum contrast ratios."""
 
 from ._base import (
+    AnimationStyle,
     ColorScale,
+    DesignSystem,
+    IconStyle,
+    InteractionStyle,
+    LayoutStyle,
+    SurfaceStyle,
     ThemePack,
     ThemePreset,
     ThemeTokens,
-    ANIM_SNAPPY,
-    ICON_SHARP,
+    TypographyStyle,
+    ILLUST_FLAT,
     ILLUST_LINE,
-    INTERACT_BOLD,
     PATTERN_DOTS,
+    PATTERN_MINIMAL,
 )
 
 # --- Color Preset ---
@@ -100,18 +106,120 @@ PRESET = ThemePreset(
     dark=DARK,
 )
 
-# --- Theme Pack ---
+
+# =============================================================================
+# Design System
+# =============================================================================
+
+TYPOGRAPHY = TypographyStyle(
+    name="high_contrast",
+    heading_font="system-ui, sans-serif",
+    body_font="system-ui, sans-serif",
+    base_size="16px",
+    heading_scale=1.3,
+    line_height="1.7",
+    body_line_height="1.7",
+    heading_weight="700",
+    section_heading_weight="700",
+    body_weight="400",
+    letter_spacing="normal",
+    prose_max_width="42rem",
+    badge_radius="4px",
+)
+
+LAYOUT = LayoutStyle(
+    name="high_contrast",
+    space_unit="1rem",
+    space_scale=1.5,
+    border_radius_sm="2px",
+    border_radius_md="4px",
+    border_radius_lg="6px",
+    button_shape="rounded",
+    card_shape="rounded",
+    input_shape="rounded",
+    container_width="1200px",
+    grid_gap="1.5rem",
+    section_spacing="4rem",
+    hero_padding_top="7rem",
+    hero_padding_bottom="4rem",
+    hero_line_height="1.15",
+    hero_max_width="52rem",
+)
+
+SURFACE = SurfaceStyle(
+    name="high_contrast",
+    shadow_sm="0 2px 4px rgba(0, 0, 0, 0.15)",
+    shadow_md="0 4px 8px rgba(0, 0, 0, 0.2)",
+    shadow_lg="0 8px 16px rgba(0, 0, 0, 0.25)",
+    border_width="2px",
+    border_style="solid",
+    surface_treatment="flat",
+    backdrop_blur="0px",
+    noise_opacity=0.0,
+)
+
+ICON = IconStyle(
+    name="high_contrast",
+    style="sharp",
+    weight="bold",
+    size_scale=1.05,
+    stroke_width="2.5",
+    corner_rounding="0px",
+)
+
+ANIMATION = AnimationStyle(
+    name="high_contrast",
+    entrance_effect="fade",
+    exit_effect="fade",
+    hover_effect="none",
+    hover_scale=1.0,
+    hover_translate_y="0px",
+    click_effect="none",
+    loading_style="spinner",
+    transition_style="snappy",
+    duration_fast="0.08s",
+    duration_normal="0.15s",
+    duration_slow="0.25s",
+    easing="cubic-bezier(0.4, 0, 0.2, 1)",
+)
+
+INTERACTION = InteractionStyle(
+    name="high_contrast",
+    button_hover="darken",
+    link_hover="underline",
+    card_hover="border",
+    focus_style="outline",
+    focus_ring_width="3px",
+)
+
+DESIGN_SYSTEM = DesignSystem(
+    name="high_contrast",
+    display_name="High Contrast",
+    description="Accessibility-first -- bold weight, thick borders, strong depth cues",
+    category="minimal",
+    typography=TYPOGRAPHY,
+    layout=LAYOUT,
+    surface=SURFACE,
+    icons=ICON,
+    animation=ANIMATION,
+    interaction=INTERACTION,
+)
+
+
+# =============================================================================
+# Theme Pack
+# =============================================================================
 
 PACK = ThemePack(
     name="high_contrast",
     display_name="High Contrast",
-    description="Accessibility-first maximum contrast",
+    description="Accessibility-first -- bold weight, thick borders, strong depth cues",
     category="minimal",
-    design_theme="corporate",
+    design_theme="high_contrast",
     color_preset="high_contrast",
-    icon_style=ICON_SHARP,
-    animation_style=ANIM_SNAPPY,
-    pattern_style=PATTERN_DOTS,
-    interaction_style=INTERACT_BOLD,
-    illustration_style=ILLUST_LINE,
+    icon_style=ICON,
+    animation_style=ANIMATION,
+    pattern_style=PATTERN_MINIMAL,
+    interaction_style=INTERACTION,
+    illustration_style=ILLUST_FLAT,
 )
