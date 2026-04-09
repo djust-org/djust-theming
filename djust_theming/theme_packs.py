@@ -1924,6 +1924,15 @@ def _ensure_theme_imports() -> None:
     from .themes.sunrise import PACK as _PACK_SUNRISE, DESIGN_SYSTEM as _DESIGN_SUNRISE
     from .themes.forest_floor import PACK as _PACK_FOREST_FLOOR, DESIGN_SYSTEM as _DESIGN_FOREST_FLOOR
     from .themes.dashboard import PACK as _PACK_DASHBOARD, DESIGN_SYSTEM as _DESIGN_DASHBOARD
+    from .themes.one_dark import PACK as _PACK_ONE_DARK, DESIGN_SYSTEM as _DESIGN_ONE_DARK
+    from .themes.monokai import PACK as _PACK_MONOKAI, DESIGN_SYSTEM as _DESIGN_MONOKAI
+    from .themes.ayu import PACK as _PACK_AYU, DESIGN_SYSTEM as _DESIGN_AYU
+    from .themes.kanagawa import PACK as _PACK_KANAGAWA, DESIGN_SYSTEM as _DESIGN_KANAGAWA
+    from .themes.everforest import PACK as _PACK_EVERFOREST, DESIGN_SYSTEM as _DESIGN_EVERFOREST
+    from .themes.poimandres import PACK as _PACK_POIMANDRES, DESIGN_SYSTEM as _DESIGN_POIMANDRES
+    from .themes.tailwind import PACK as _PACK_TAILWIND, DESIGN_SYSTEM as _DESIGN_TAILWIND
+    from .themes.supabase import PACK as _PACK_SUPABASE, DESIGN_SYSTEM as _DESIGN_SUPABASE
+    from .themes.raycast import PACK as _PACK_RAYCAST, DESIGN_SYSTEM as _DESIGN_RAYCAST
 
     THEME_PACKS.update({
         "amber": _PACK_AMBER,
@@ -1978,6 +1987,15 @@ def _ensure_theme_imports() -> None:
         "sunrise": _PACK_SUNRISE,
         "forest_floor": _PACK_FOREST_FLOOR,
         "dashboard": _PACK_DASHBOARD,
+        "one_dark": _PACK_ONE_DARK,
+        "monokai": _PACK_MONOKAI,
+        "ayu": _PACK_AYU,
+        "kanagawa": _PACK_KANAGAWA,
+        "everforest": _PACK_EVERFOREST,
+        "poimandres": _PACK_POIMANDRES,
+        "tailwind": _PACK_TAILWIND,
+        "supabase": _PACK_SUPABASE,
+        "raycast": _PACK_RAYCAST,
     })
 
     DESIGN_SYSTEMS["amber"] = _DESIGN_AMBER
@@ -2031,6 +2049,15 @@ def _ensure_theme_imports() -> None:
     DESIGN_SYSTEMS["sunrise"] = _DESIGN_SUNRISE
     DESIGN_SYSTEMS["forest_floor"] = _DESIGN_FOREST_FLOOR
     DESIGN_SYSTEMS["dashboard"] = _DESIGN_DASHBOARD
+    DESIGN_SYSTEMS["one_dark"] = _DESIGN_ONE_DARK
+    DESIGN_SYSTEMS["monokai"] = _DESIGN_MONOKAI
+    DESIGN_SYSTEMS["ayu"] = _DESIGN_AYU
+    DESIGN_SYSTEMS["kanagawa"] = _DESIGN_KANAGAWA
+    DESIGN_SYSTEMS["everforest"] = _DESIGN_EVERFOREST
+    DESIGN_SYSTEMS["poimandres"] = _DESIGN_POIMANDRES
+    DESIGN_SYSTEMS["tailwind"] = _DESIGN_TAILWIND
+    DESIGN_SYSTEMS["supabase"] = _DESIGN_SUPABASE
+    DESIGN_SYSTEMS["raycast"] = _DESIGN_RAYCAST
 
 
 def get_theme_pack(name: str) -> Optional[ThemePack]:

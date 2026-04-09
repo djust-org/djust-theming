@@ -79,4 +79,13 @@ from . import (  # noqa: F401
     sunrise,
     forest_floor,
     dashboard,
+    one_dark,
+    monokai,
+    ayu,
+    kanagawa,
+    everforest,
+    poimandres,
+    tailwind,
+    supabase,
+    raycast,
 )

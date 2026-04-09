@@ -263,6 +263,15 @@ from .themes.midnight import PRESET as MIDNIGHT_THEME  # noqa: E402
 from .themes.sunrise import PRESET as SUNRISE_THEME  # noqa: E402
 from .themes.forest_floor import PRESET as FOREST_FLOOR_THEME  # noqa: E402
 from .themes.dashboard import PRESET as DASHBOARD_THEME  # noqa: E402
+from .themes.one_dark import PRESET as ONE_DARK_THEME  # noqa: E402
+from .themes.monokai import PRESET as MONOKAI_THEME  # noqa: E402
+from .themes.ayu import PRESET as AYU_THEME  # noqa: E402
+from .themes.kanagawa import PRESET as KANAGAWA_THEME  # noqa: E402
+from .themes.everforest import PRESET as EVERFOREST_THEME  # noqa: E402
+from .themes.poimandres import PRESET as POIMANDRES_THEME  # noqa: E402
+from .themes.tailwind import PRESET as TAILWIND_THEME  # noqa: E402
+from .themes.supabase import PRESET as SUPABASE_THEME  # noqa: E402
+from .themes.raycast import PRESET as RAYCAST_THEME  # noqa: E402
 
 
 # =============================================================================
@@ -322,6 +331,15 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "sunrise": SUNRISE_THEME,
     "forest_floor": FOREST_FLOOR_THEME,
     "dashboard": DASHBOARD_THEME,
+    "one_dark": ONE_DARK_THEME,
+    "monokai": MONOKAI_THEME,
+    "ayu": AYU_THEME,
+    "kanagawa": KANAGAWA_THEME,
+    "everforest": EVERFOREST_THEME,
+    "poimandres": POIMANDRES_THEME,
+    "tailwind": TAILWIND_THEME,
+    "supabase": SUPABASE_THEME,
+    "raycast": RAYCAST_THEME,
 }
 
 
