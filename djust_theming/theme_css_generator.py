@@ -530,20 +530,48 @@ class CompleteThemeCSSGenerator:
         if anim.transition_style == "bouncy":
             parts.append("  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);")
 
-        # Surface treatment properties
+        # Animation behavior
+        parts.extend([
+            "",
+            "  /* Animation Behavior */",
+            f"  --hover-scale: {anim.hover_scale};",
+            f"  --hover-translate-y: {anim.hover_translate_y};",
+        ])
+
+        # Layout
+        parts.extend([
+            "",
+            "  /* Layout */",
+            f"  --container-width: {layout.container_width};",
+            f"  --grid-gap: {layout.grid_gap};",
+            f"  --section-spacing: {layout.section_spacing};",
+            f"  --hero-padding-top: {layout.hero_padding_top};",
+            f"  --hero-padding-bottom: {layout.hero_padding_bottom};",
+            f"  --hero-line-height: {layout.hero_line_height};",
+            f"  --hero-max-width: {layout.hero_max_width};",
+        ])
+
+        # Typography extras
+        parts.extend([
+            "",
+            "  /* Typography Extras */",
+            f"  --letter-spacing: {typo.letter_spacing};",
+            f"  --prose-max-width: {typo.prose_max_width};",
+            f"  --badge-radius: {getattr(typo, 'badge_radius', '9999px')};",
+            f"  --leading-body: {body_line_h};",
+        ])
+
+        # Surface treatment
+        parts.extend([
+            "",
+            "  /* Surface Treatment */",
+            f"  --border-width: {surface.border_width};",
+        ])
         if surface.backdrop_blur and surface.backdrop_blur != "0px":
-            parts.extend([
-                "",
-                "  /* Surface Treatment */",
-                f"  --glass-blur: {surface.backdrop_blur};",
-                f"  --navbar-opacity: 0.85;",
-            ])
+            parts.append(f"  --glass-blur: {surface.backdrop_blur};")
+            parts.append(f"  --navbar-opacity: 0.85;")
         if surface.noise_opacity and surface.noise_opacity > 0:
-            parts.extend([
-                "" if "Surface Treatment" not in "\n".join(parts[-3:]) else "",
-                *(["  /* Surface Treatment */"] if "Surface Treatment" not in "\n".join(parts[-5:]) else []),
-                f"  --noise-opacity: {surface.noise_opacity};",
-            ])
+            parts.append(f"  --noise-opacity: {surface.noise_opacity};")
 
         parts.append("}")
 
