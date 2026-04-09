@@ -155,7 +155,7 @@ SURFACE = SurfaceStyle(
     border_style="solid",
     surface_treatment="noise",    # CRT scanline noise
     backdrop_blur="0px",
-    noise_opacity=0.07,           # CRT scanline grain — visible
+    noise_opacity=0.08,           # CRT scanline grain
 )
 
 ICON = IconStyle(
