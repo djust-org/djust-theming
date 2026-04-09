@@ -12,10 +12,7 @@ from ._base import (
     ThemePreset,
     ThemeTokens,
     TypographyStyle,
-    ANIM_BAUHAUS,
-    ICON_BAUHAUS,
     ILLUST_FLAT,
-    INTERACT_BAUHAUS,
     PATTERN_GRID,
 )
 
@@ -199,9 +196,9 @@ PACK = ThemePack(
     category="bold",
     design_theme="bauhaus",
     color_preset="bauhaus",
-    icon_style=ICON_BAUHAUS,
-    animation_style=ANIM_BAUHAUS,
+    icon_style=ICON,
+    animation_style=ANIMATION,
     pattern_style=PATTERN_GRID,
-    interaction_style=INTERACT_BAUHAUS,
+    interaction_style=INTERACTION,
     illustration_style=ILLUST_FLAT,
 )

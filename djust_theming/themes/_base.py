@@ -42,20 +42,15 @@ from ..theme_packs import (
     ICON_ORGANIC,
     ICON_IOS,
     ICON_MINIMAL,
-    ICON_BAUHAUS,
     # Shared animation presets (pack-level)
     ANIM_SMOOTH,
     ANIM_SNAPPY,
     ANIM_BOUNCY,
     ANIM_INSTANT,
     ANIM_GENTLE,
-    # Design-system-specific animation presets used by packs
-    ANIM_BAUHAUS,
     # Shared interaction presets (pack-level)
     INTERACT_SUBTLE,
     INTERACT_BOLD,
-    # Design-system-specific interaction presets used by packs
-    INTERACT_BAUHAUS,
 )
 # Re-import the pack-level INTERACT_MINIMAL and INTERACT_PLAYFUL with distinct names
 # to avoid conflict with design-system-level ones
@@ -98,16 +93,13 @@ __all__ = [
     "ICON_ORGANIC",
     "ICON_IOS",
     "ICON_MINIMAL",
-    "ICON_BAUHAUS",
     "ANIM_SMOOTH",
     "ANIM_SNAPPY",
     "ANIM_BOUNCY",
     "ANIM_INSTANT",
     "ANIM_GENTLE",
-    "ANIM_BAUHAUS",
     "INTERACT_SUBTLE",
     "INTERACT_BOLD",
     "INTERACT_MINIMAL_PACK",
     "INTERACT_PLAYFUL_PACK",
-    "INTERACT_BAUHAUS",
 ]

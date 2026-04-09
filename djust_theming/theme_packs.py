@@ -1289,113 +1289,8 @@ DESIGN_DJUST = DesignSystem(
     interaction=INTERACT_DJUST
 )
 
-# =============================================================================
-# Bauhaus Design System (Geometric Modernist)
-# =============================================================================
-# Based on actual Bauhaus school principles (1919–1933):
-# - Herbert Bayer's Universal Typeface: geometric sans-serif, single-case ideal
-# - Grid-based layout with strict alignment
-# - No decoration — form follows function
-# - Hard edges, no border-radius, deliberate thick borders
-# - Flat surfaces — no glass, no gradients, no texture
-# - Static, poster-like — minimal animation
-
-TYPO_BAUHAUS = TypographyStyle(
-    name="bauhaus",
-    heading_font='"DM Sans", "Inter", system-ui',  # Geometric sans — closest to Bayer's Universal
-    body_font='"DM Sans", "Inter", system-ui',      # Same family throughout (Bauhaus uniformity)
-    base_size="16px",
-    heading_scale=1.4,           # Bold scale — poster-like hierarchy
-    line_height="1.4",          # Tighter than default — controlled grid
-    body_line_height="1.6",     # Readable body but not loose
-    heading_weight="900",       # Black weight — Bauhaus headings are bold statements
-    section_heading_weight="800",
-    body_weight="400",
-    letter_spacing="0.025em",   # Slightly spaced — Bayer's Universal was open
-    prose_max_width="48rem",    # Moderate measure
-    badge_radius="0px",         # Sharp badges — no pills in Bauhaus
-)
-
-LAYOUT_BAUHAUS = LayoutStyle(
-    name="bauhaus",
-    space_unit="1rem",
-    space_scale=1.618,          # Golden ratio — Bauhaus loved mathematical proportion
-    border_radius_sm="0px",     # Zero radius everywhere
-    border_radius_md="0px",
-    border_radius_lg="0px",
-    button_shape="sharp",       # Sharp rectangles
-    card_shape="sharp",         # Sharp cards
-    input_shape="sharp",        # Sharp inputs
-    container_width="1200px",
-    grid_gap="1.5rem",          # Grid-based, deliberate spacing
-    section_spacing="4rem",     # Generous section breaks (poster breathing room)
-    hero_padding_top="8rem",    # Grand geometric entrance
-    hero_padding_bottom="5rem",
-    hero_line_height="1.0",     # Ultra-tight hero headlines
-    hero_max_width="56rem",
-)
-
-SURFACE_BAUHAUS = SurfaceStyle(
-    name="bauhaus",
-    shadow_sm="3px 3px 0px rgba(0,0,0,0.9)",    # Hard offset shadow (no blur)
-    shadow_md="6px 6px 0px rgba(0,0,0,0.9)",    # Larger hard offset
-    shadow_lg="10px 10px 0px rgba(0,0,0,0.9)",  # Dramatic hard offset
-    border_width="3px",          # Thick deliberate borders (defining Bauhaus characteristic)
-    border_style="solid",
-    surface_treatment="flat",    # Absolutely flat — no glass, no gradient, no texture
-    backdrop_blur="0px",
-    noise_opacity=0.0,
-)
-
-ICON_BAUHAUS = IconStyle(
-    name="bauhaus",
-    style="filled",              # Solid geometric fills (circle, square, triangle)
-    weight="bold",
-    size_scale=1.1,              # Slightly larger — icons are geometric elements
-    stroke_width="3",            # Thick strokes
-    corner_rounding="0px",       # No rounding
-)
-
-ANIM_BAUHAUS = AnimationStyle(
-    name="bauhaus",
-    entrance_effect="none",      # No entrance animation — content is just there (poster-like)
-    exit_effect="none",
-    hover_effect="none",         # No hover transform — Bauhaus is static, not interactive
-    hover_scale=1.0,             # No scale
-    hover_translate_y="0px",     # No lift
-    click_effect="none",         # No click animation
-    loading_style="spinner",
-    transition_style="instant",  # Instant state changes
-    duration_fast="0.05s",       # Near-instant
-    duration_normal="0.08s",
-    duration_slow="0.12s",
-    easing="linear",             # No easing curves — linear is geometric
-)
-
-INTERACT_BAUHAUS = InteractionStyle(
-    name="bauhaus",
-    button_hover="darken",       # Simple darken — no glow, no lift, no scale
-    link_hover="underline",      # Functional underline only
-    card_hover="border",         # Border color change — flat, no shadow shift
-    focus_style="outline",       # Hard outline focus (not glow)
-    focus_ring_width="3px",      # Thick focus ring matching border-width
-)
-
-DESIGN_BAUHAUS = DesignSystem(
-    name="bauhaus",
-    display_name="Bauhaus",
-    description="Geometric modernist — Itten's triad, Bayer's type, zero decoration",
-    category="bold",
-    typography=TYPO_BAUHAUS,
-    layout=LAYOUT_BAUHAUS,
-    surface=SURFACE_BAUHAUS,
-    icons=ICON_BAUHAUS,
-    animation=ANIM_BAUHAUS,
-    interaction=INTERACT_BAUHAUS,
-)
-
-
 # Design System Registry
+# NOTE: "bauhaus" is added lazily in _ensure_theme_imports() to avoid circular imports.
 DESIGN_SYSTEMS: Dict[str, DesignSystem] = {
     "material": DESIGN_MATERIAL,
     "ios": DESIGN_IOS,
@@ -1409,12 +1304,12 @@ DESIGN_SYSTEMS: Dict[str, DesignSystem] = {
     "retro": DESIGN_RETRO,
     "organic": DESIGN_ORGANIC,
     "djust": DESIGN_DJUST,
-    "bauhaus": DESIGN_BAUHAUS,
 }
 
 
 def get_design_system(name: str) -> Optional[DesignSystem]:
     """Get a design system by name (includes user-registered systems)."""
+    _ensure_theme_imports()
     from .registry import get_registry
     reg = get_registry()
     return reg.get_theme(name) or DESIGN_SYSTEMS.get(name)
@@ -1422,6 +1317,7 @@ def get_design_system(name: str) -> Optional[DesignSystem]:
 
 def get_all_design_systems() -> Dict[str, DesignSystem]:
     """Get all available design systems (built-in + user-registered)."""
+    _ensure_theme_imports()
     from .registry import get_registry
     reg = get_registry()
     result = DESIGN_SYSTEMS.copy()
@@ -1904,24 +1800,6 @@ PACK_NATURE = ThemePack(
     illustration_style=ILLUST_HAND_DRAWN,
 )
 
-# ============================================
-# Qwen-Generated Theme Packs
-# ============================================
-
-PACK_CYBERPUNK = ThemePack(
-    name="cyberpunk",
-    display_name="Cyberpunk Future",
-    description="Futuristic interface with neon highlights and dark aesthetics",
-    category="bold",
-    design_theme="neo_brutalist",
-    color_preset="cyberpunk",
-    icon_style=ICON_SHARP,
-    animation_style=ANIM_SNAPPY,
-    pattern_style=PATTERN_GRID,
-    interaction_style=INTERACT_BOLD,
-    illustration_style=ILLUST_FLAT,
-)
-
 PACK_SUNSET = ThemePack(
     name="sunset",
     display_name="Golden Sunset",
@@ -1932,20 +1810,6 @@ PACK_SUNSET = ThemePack(
     icon_style=ICON_ROUNDED,
     animation_style=ANIM_GENTLE,
     pattern_style=PATTERN_GRADIENT,
-    interaction_style=INTERACT_SUBTLE,
-    illustration_style=ILLUST_HAND_DRAWN,
-)
-
-PACK_FOREST = ThemePack(
-    name="forest",
-    display_name="Forest Explorer",
-    description="Natural, earthy design inspired by woodland environments",
-    category="playful",
-    design_theme="organic",
-    color_preset="forest",
-    icon_style=ICON_ROUNDED,
-    animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS,
     interaction_style=INTERACT_SUBTLE,
     illustration_style=ILLUST_HAND_DRAWN,
 )
@@ -1978,183 +1842,80 @@ PACK_METALLIC = ThemePack(
     illustration_style=ILLUST_LINE,
 )
 
-PACK_DJUST = ThemePack(
-    name="djust",
-    display_name="djust.org",
-    description="djust.org brand — dark, professional, with rust orange accents",
-    category="professional",
-    design_theme="djust",
-    color_preset="djust",
-    icon_style=ICON_OUTLINED,
-    animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS,
-    interaction_style=INTERACT_SUBTLE,
-    illustration_style=ILLUST_LINE,
-)
+# =============================================================================
+# Theme packs and design systems from per-theme files (lazy-loaded)
+# =============================================================================
+# Per-theme files import shared presets via themes/_base.py -> theme_packs.py,
+# creating a circular import if we import them at module level. Instead, we
+# populate the registries on first access.
 
-
-# --- New Preset Packs ---
-
-PACK_DRACULA = ThemePack(
-    name="dracula", display_name="Dracula", category="bold",
-    description="Purple gothic with neon accents",
-    design_theme="fluent", color_preset="dracula",
-    icon_style=ICON_OUTLINED, animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
-    illustration_style=ILLUST_LINE,
-)
-
-PACK_GRUVBOX = ThemePack(
-    name="gruvbox", display_name="Gruvbox", category="retro",
-    description="Retro-warm earthy palette for terminal lovers",
-    design_theme="retro", color_preset="gruvbox",
-    icon_style=ICON_RETRO, animation_style=ANIM_SNAPPY,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_BOLD,
-    illustration_style=ILLUST_LINE,
-)
-
-PACK_SOLARIZED = ThemePack(
-    name="solarized", display_name="Solarized", category="professional",
-    description="Scientifically designed contrast ratios",
-    design_theme="minimalist", color_preset="solarized",
-    icon_style=ICON_MINIMAL, animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
-    illustration_style=ILLUST_LINE,
-)
-
-PACK_HIGH_CONTRAST = ThemePack(
-    name="high_contrast", display_name="High Contrast", category="minimal",
-    description="Accessibility-first maximum contrast",
-    design_theme="corporate", color_preset="high_contrast",
-    icon_style=ICON_SHARP, animation_style=ANIM_SNAPPY,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_BOLD,
-    illustration_style=ILLUST_LINE,
-)
-
-PACK_MONO = ThemePack(
-    name="mono", display_name="Mono", category="minimal",
-    description="Pure grayscale — zero chroma discipline",
-    design_theme="minimalist", color_preset="mono",
-    icon_style=ICON_MINIMAL, animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
-    illustration_style=ILLUST_LINE,
-)
-
-PACK_EMBER = ThemePack(
-    name="ember", display_name="Ember", category="elegant",
-    description="Warm coal and fireplace vibes",
-    design_theme="elegant", color_preset="ember",
-    icon_style=ICON_ELEGANT, animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
-    illustration_style=ILLUST_LINE,
-)
-
-PACK_AURORA = ThemePack(
-    name="aurora", display_name="Aurora", category="bold",
-    description="Northern lights — green to violet",
-    design_theme="organic", color_preset="aurora",
-    icon_style=ICON_ORGANIC, animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
-    illustration_style=ILLUST_LINE,
-)
-
-PACK_INK = ThemePack(
-    name="ink", display_name="Ink", category="minimal",
-    description="Japanese calligraphy minimalism",
-    design_theme="minimalist", color_preset="ink",
-    icon_style=ICON_MINIMAL, animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
-    illustration_style=ILLUST_LINE,
-)
-
-PACK_SOLARPUNK = ThemePack(
-    name="solarpunk", display_name="Solarpunk", category="playful",
-    description="Optimistic nature — lush greens and amber",
-    design_theme="organic", color_preset="solarpunk",
-    icon_style=ICON_ORGANIC, animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
-    illustration_style=ILLUST_LINE,
-)
-
-PACK_BAUHAUS = ThemePack(
-    name="bauhaus", display_name="Bauhaus", category="bold",
-    description="Itten's primary triad, Bayer's geometric type, zero decoration",
-    design_theme="bauhaus", color_preset="bauhaus",
-    icon_style=ICON_BAUHAUS, animation_style=ANIM_BAUHAUS,
-    pattern_style=PATTERN_GRID, interaction_style=INTERACT_BAUHAUS,
-    illustration_style=ILLUST_FLAT,
-)
-
-PACK_CYBERDECK = ThemePack(
-    name="cyberdeck", display_name="Cyberdeck", category="bold",
-    description="Terminal hacker — matrix green on black",
-    design_theme="dense", color_preset="cyberdeck",
-    icon_style=ICON_SHARP, animation_style=ANIM_SNAPPY,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_BOLD,
-    illustration_style=ILLUST_LINE,
-)
-
-PACK_PAPER = ThemePack(
-    name="paper", display_name="Paper", category="elegant",
-    description="Reading-optimized warm sepia tones",
-    design_theme="elegant", color_preset="paper",
-    icon_style=ICON_ELEGANT, animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
-    illustration_style=ILLUST_LINE,
-)
-
-PACK_NEON_NOIR = ThemePack(
-    name="neon_noir", display_name="Neon Noir", category="bold",
-    description="Film noir meets piercing neon pink",
-    design_theme="fluent", color_preset="neon_noir",
-    icon_style=ICON_OUTLINED, animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
-    illustration_style=ILLUST_LINE,
-)
-
-PACK_OCEAN_DEEP = ThemePack(
-    name="ocean_deep", display_name="Ocean Deep", category="elegant",
-    description="Deep sea — coastal sky to ocean floor",
-    design_theme="ios", color_preset="ocean_deep",
-    icon_style=ICON_IOS, animation_style=ANIM_SMOOTH,
-    pattern_style=PATTERN_DOTS, interaction_style=INTERACT_SUBTLE,
-    illustration_style=ILLUST_LINE,
-)
-
-
-# Theme Pack Registry
+# Theme Pack Registry — inline packs added immediately, per-theme packs lazily.
 THEME_PACKS: Dict[str, ThemePack] = {
-    "djust": PACK_DJUST,
     "corporate": PACK_CORPORATE,
     "playful": PACK_PLAYFUL,
     "retro": PACK_RETRO,
     "elegant": PACK_ELEGANT,
     "brutalist": PACK_BRUTALIST,
     "nature": PACK_NATURE,
-    "cyberpunk": PACK_CYBERPUNK,
     "sunset": PACK_SUNSET,
-    "forest": PACK_FOREST,
     "ocean": PACK_OCEAN,
     "metallic": PACK_METALLIC,
-    "dracula": PACK_DRACULA,
-    "gruvbox": PACK_GRUVBOX,
-    "solarized": PACK_SOLARIZED,
-    "high_contrast": PACK_HIGH_CONTRAST,
-    "mono": PACK_MONO,
-    "ember": PACK_EMBER,
-    "aurora": PACK_AURORA,
-    "ink": PACK_INK,
-    "solarpunk": PACK_SOLARPUNK,
-    "bauhaus": PACK_BAUHAUS,
-    "cyberdeck": PACK_CYBERDECK,
-    "paper": PACK_PAPER,
-    "neon_noir": PACK_NEON_NOIR,
-    "ocean_deep": PACK_OCEAN_DEEP,
 }
+
+_theme_imports_done = False
+
+
+def _ensure_theme_imports() -> None:
+    """Lazily import theme packs and design systems from per-theme files."""
+    global _theme_imports_done
+    if _theme_imports_done:
+        return
+    _theme_imports_done = True
+
+    from .themes.aurora import PACK as _PACK_AURORA
+    from .themes.bauhaus import PACK as _PACK_BAUHAUS, DESIGN_SYSTEM as _DESIGN_BAUHAUS
+    from .themes.cyberdeck import PACK as _PACK_CYBERDECK
+    from .themes.cyberpunk import PACK as _PACK_CYBERPUNK
+    from .themes.djust import PACK as _PACK_DJUST
+    from .themes.dracula import PACK as _PACK_DRACULA
+    from .themes.ember import PACK as _PACK_EMBER
+    from .themes.forest import PACK as _PACK_FOREST
+    from .themes.gruvbox import PACK as _PACK_GRUVBOX
+    from .themes.high_contrast import PACK as _PACK_HIGH_CONTRAST
+    from .themes.ink import PACK as _PACK_INK
+    from .themes.mono import PACK as _PACK_MONO
+    from .themes.neon_noir import PACK as _PACK_NEON_NOIR
+    from .themes.ocean_deep import PACK as _PACK_OCEAN_DEEP
+    from .themes.paper import PACK as _PACK_PAPER
+    from .themes.solarized import PACK as _PACK_SOLARIZED
+    from .themes.solarpunk import PACK as _PACK_SOLARPUNK
+
+    THEME_PACKS.update({
+        "djust": _PACK_DJUST,
+        "cyberpunk": _PACK_CYBERPUNK,
+        "forest": _PACK_FOREST,
+        "dracula": _PACK_DRACULA,
+        "gruvbox": _PACK_GRUVBOX,
+        "solarized": _PACK_SOLARIZED,
+        "high_contrast": _PACK_HIGH_CONTRAST,
+        "mono": _PACK_MONO,
+        "ember": _PACK_EMBER,
+        "aurora": _PACK_AURORA,
+        "ink": _PACK_INK,
+        "solarpunk": _PACK_SOLARPUNK,
+        "bauhaus": _PACK_BAUHAUS,
+        "cyberdeck": _PACK_CYBERDECK,
+        "paper": _PACK_PAPER,
+        "neon_noir": _PACK_NEON_NOIR,
+        "ocean_deep": _PACK_OCEAN_DEEP,
+    })
+
+    DESIGN_SYSTEMS["bauhaus"] = _DESIGN_BAUHAUS
 
 
 def get_theme_pack(name: str) -> Optional[ThemePack]:
     """Get a theme pack by name (includes user-registered packs)."""
+    _ensure_theme_imports()
     from .registry import get_registry
     reg = get_registry()
     return reg.get_pack(name) or THEME_PACKS.get(name)
@@ -2162,6 +1923,7 @@ def get_theme_pack(name: str) -> Optional[ThemePack]:
 
 def get_all_theme_packs() -> Dict[str, ThemePack]:
     """Get all available theme packs (built-in + user-registered)."""
+    _ensure_theme_imports()
     from .registry import get_registry
     reg = get_registry()
     result = THEME_PACKS.copy()
