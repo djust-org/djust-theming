@@ -67,4 +67,6 @@ from . import (  # noqa: F401
     vercel,
     github,
     art_deco,
+    handcraft,
+    terminal,
 )

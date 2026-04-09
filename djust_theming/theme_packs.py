@@ -1895,6 +1895,8 @@ def _ensure_theme_imports() -> None:
     from .themes.vercel import PACK as _PACK_VERCEL, DESIGN_SYSTEM as _DESIGN_VERCEL
     from .themes.github import PACK as _PACK_GITHUB, DESIGN_SYSTEM as _DESIGN_GITHUB
     from .themes.art_deco import PACK as _PACK_ART_DECO, DESIGN_SYSTEM as _DESIGN_ART_DECO
+    from .themes.handcraft import PACK as _PACK_HANDCRAFT, DESIGN_SYSTEM as _DESIGN_HANDCRAFT
+    from .themes.terminal import PACK as _PACK_TERMINAL, DESIGN_SYSTEM as _DESIGN_TERMINAL
 
     THEME_PACKS.update({
         "djust": _PACK_DJUST,
@@ -1920,6 +1922,8 @@ def _ensure_theme_imports() -> None:
         "vercel": _PACK_VERCEL,
         "github": _PACK_GITHUB,
         "art_deco": _PACK_ART_DECO,
+        "handcraft": _PACK_HANDCRAFT,
+        "terminal": _PACK_TERMINAL,
     })
 
     DESIGN_SYSTEMS["bauhaus"] = _DESIGN_BAUHAUS
@@ -1929,6 +1933,8 @@ def _ensure_theme_imports() -> None:
     DESIGN_SYSTEMS["vercel"] = _DESIGN_VERCEL
     DESIGN_SYSTEMS["github"] = _DESIGN_GITHUB
     DESIGN_SYSTEMS["art_deco"] = _DESIGN_ART_DECO
+    DESIGN_SYSTEMS["handcraft"] = _DESIGN_HANDCRAFT
+    DESIGN_SYSTEMS["terminal"] = _DESIGN_TERMINAL
 
 
 def get_theme_pack(name: str) -> Optional[ThemePack]:
