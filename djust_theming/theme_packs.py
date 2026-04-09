@@ -1933,6 +1933,7 @@ def _ensure_theme_imports() -> None:
     from .themes.tailwind import PACK as _PACK_TAILWIND, DESIGN_SYSTEM as _DESIGN_TAILWIND
     from .themes.supabase import PACK as _PACK_SUPABASE, DESIGN_SYSTEM as _DESIGN_SUPABASE
     from .themes.raycast import PACK as _PACK_RAYCAST, DESIGN_SYSTEM as _DESIGN_RAYCAST
+    from .themes.adaptive import PACK as _PACK_ADAPTIVE, DESIGN_SYSTEM as _DESIGN_ADAPTIVE
 
     THEME_PACKS.update({
         "amber": _PACK_AMBER,
@@ -1996,6 +1997,7 @@ def _ensure_theme_imports() -> None:
         "tailwind": _PACK_TAILWIND,
         "supabase": _PACK_SUPABASE,
         "raycast": _PACK_RAYCAST,
+        "adaptive": _PACK_ADAPTIVE,
     })
 
     DESIGN_SYSTEMS["amber"] = _DESIGN_AMBER
@@ -2058,6 +2060,7 @@ def _ensure_theme_imports() -> None:
     DESIGN_SYSTEMS["tailwind"] = _DESIGN_TAILWIND
     DESIGN_SYSTEMS["supabase"] = _DESIGN_SUPABASE
     DESIGN_SYSTEMS["raycast"] = _DESIGN_RAYCAST
+    DESIGN_SYSTEMS["adaptive"] = _DESIGN_ADAPTIVE
 
 
 def get_theme_pack(name: str) -> Optional[ThemePack]:

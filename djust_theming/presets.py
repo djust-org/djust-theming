@@ -272,6 +272,7 @@ from .themes.poimandres import PRESET as POIMANDRES_THEME  # noqa: E402
 from .themes.tailwind import PRESET as TAILWIND_THEME  # noqa: E402
 from .themes.supabase import PRESET as SUPABASE_THEME  # noqa: E402
 from .themes.raycast import PRESET as RAYCAST_THEME  # noqa: E402
+from .themes.adaptive import PRESET as ADAPTIVE_THEME  # noqa: E402
 
 
 # =============================================================================
@@ -340,6 +341,7 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "tailwind": TAILWIND_THEME,
     "supabase": SUPABASE_THEME,
     "raycast": RAYCAST_THEME,
+    "adaptive": ADAPTIVE_THEME,
 }
 
 
