@@ -61,4 +61,5 @@ from . import (  # noqa: F401
     paper,
     neon_noir,
     ocean_deep,
+    stripe,
 )

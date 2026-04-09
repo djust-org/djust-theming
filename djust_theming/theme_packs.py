@@ -1889,6 +1889,7 @@ def _ensure_theme_imports() -> None:
     from .themes.paper import PACK as _PACK_PAPER
     from .themes.solarized import PACK as _PACK_SOLARIZED
     from .themes.solarpunk import PACK as _PACK_SOLARPUNK
+    from .themes.stripe import PACK as _PACK_STRIPE, DESIGN_SYSTEM as _DESIGN_STRIPE
 
     THEME_PACKS.update({
         "djust": _PACK_DJUST,
@@ -1908,9 +1909,11 @@ def _ensure_theme_imports() -> None:
         "paper": _PACK_PAPER,
         "neon_noir": _PACK_NEON_NOIR,
         "ocean_deep": _PACK_OCEAN_DEEP,
+        "stripe": _PACK_STRIPE,
     })
 
     DESIGN_SYSTEMS["bauhaus"] = _DESIGN_BAUHAUS
+    DESIGN_SYSTEMS["stripe"] = _DESIGN_STRIPE
 
 
 def get_theme_pack(name: str) -> Optional[ThemePack]:

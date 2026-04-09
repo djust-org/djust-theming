@@ -245,6 +245,7 @@ from .themes.cyberdeck import PRESET as CYBERDECK_THEME  # noqa: E402
 from .themes.paper import PRESET as PAPER_THEME  # noqa: E402
 from .themes.neon_noir import PRESET as NEON_NOIR_THEME  # noqa: E402
 from .themes.ocean_deep import PRESET as OCEAN_THEME  # noqa: E402
+from .themes.stripe import PRESET as STRIPE_THEME  # noqa: E402
 
 
 # =============================================================================
@@ -286,6 +287,7 @@ THEME_PRESETS: dict[str, ThemePreset] = {
     "paper": PAPER_THEME,
     "neon_noir": NEON_NOIR_THEME,
     "ocean_deep": OCEAN_THEME,
+    "stripe": STRIPE_THEME,
 }
 
 
